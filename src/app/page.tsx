@@ -4,11 +4,16 @@ export default function Home() {
   const [showFirstDiv, setShowFirstDiv] = useState(true);
   return (
     <div>
-       <video style={{margin:'-20px', width:'150%', position: 'fixed', zIndex: '-1'}}  autoPlay loop preload="none">
-      <source src="container07.mp4" type="video/mp4" />
-  
-      Your browser does not support the video tag.
-    </video>
+       <video 
+        className="rounded-lg shadow-lg w-full h-auto" 
+        src="container07.mp4" // Path to the video file in the public folder
+        controls 
+        autoPlay 
+        loop 
+        muted
+      >
+        Your browser does not support the video tag.
+      </video>
       <h1 className='text-3xl font-semibold'>Home Page</h1>
 
       <div className="wrapper" style={{width:'30%', margin: 'auto'}}>
