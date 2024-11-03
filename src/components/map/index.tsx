@@ -4,7 +4,7 @@
 
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { LatLngExpression, LatLngTuple } from 'leaflet';
-import markerData from '/public/markers.json';
+import markerData from '../../../public/markers.json';
 
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css";
