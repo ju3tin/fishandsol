@@ -32,15 +32,20 @@ const Map = (Map: MapProps) => {
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-               {markerData.map((marker, index) => (
-        <Marker
-          key={index}
-          position={marker.position}
-          draggable={marker.draggable}
-        >
-          <Popup>{marker.popup}</Popup>
-        </Marker>
-      ))}
+               {markerData.map((marker, index) => {
+                   const position: LatLngTuple = Array.isArray(marker.position) && marker.position.length === 2
+                       ? marker.position as LatLngTuple
+                       : [0, 0]; // Fallback to a default position if invalid
+                   return (
+                       <Marker
+                           key={index}
+                           position={position}
+                           draggable={marker.draggable}
+                       >
+                           <Popup>{marker.popup}</Popup>
+                       </Marker>
+                   );
+               })}
         </MapContainer>
     )
 }
