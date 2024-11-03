@@ -4,10 +4,10 @@ export default function Home() {
   const [showFirstDiv, setShowFirstDiv] = useState(true);
   return (
     <div>
-       <video 
-        className="rounded-lg shadow-lg w-full h-auto" 
+       <video
+       style={{margin:'-20px', width:'150%', position: 'fixed', zIndex: '-1'}} 
+        className="shadow-lg w-full h-auto" 
         src="container07.mp4" // Path to the video file in the public folder
-        controls 
         autoPlay 
         loop 
         muted
