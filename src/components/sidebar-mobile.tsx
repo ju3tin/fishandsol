@@ -1,5 +1,5 @@
 'use client';
-
+import Image from 'next/image';
 import { SidebarItems } from '@/types';
 import {
   Sheet,
@@ -34,7 +34,7 @@ export function SidebarMobile(props: SidebarMobileProps) {
       <SheetContent side='left' className='px-3 py-4' hideClose>
         <SheetHeader className='flex flex-row justify-between items-center space-y-0'>
           <span className='text-lg font-semibold text-foreground mx-3'>
-          <img src="image07.png" />
+          <Image alt='' src="image07.png" />
           </span>
           <SheetClose asChild>
             <Button className='h-7 w-7 p-0' variant='ghost'>
