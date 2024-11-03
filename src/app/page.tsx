@@ -26,7 +26,7 @@ export default function Home() {
             </div>
             <div id="image07" className="image" style={{}}>
               <span className="frame deferred" style={{}}>
-              <Image src="/image07.png" width={100} height={100} data-src="done" alt="" style={{}} />
+              <Image src="/image07.png" width={300} height={300} data-src="done" alt="" style={{}} />
               </span></div>
               <ul id="buttons03" className="buttons" style={{}}>
                 <li>
