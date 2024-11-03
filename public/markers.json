@@ -1,0 +1,17 @@
+[
+    {
+      "position": [40.7128, -74.0060],
+      "popup": "Hey! I study here - New York",
+      "draggable": false
+    },
+    {
+      "position": [34.0522, -118.2437],
+      "popup": "Hey! I study here - Los Angeles",
+      "draggable": false
+    },
+    {
+      "position": [51.5074, -0.1278],
+      "popup": "Hey! I study here - London",
+      "draggable": false
+    }
+  ]
