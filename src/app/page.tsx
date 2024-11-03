@@ -21,12 +21,12 @@ export default function Home() {
         <div className="inner">
           <div id="image05" className="image" style={{opacity: '1', filter: 'none'}}>
             <span className="frame deferred" style={{}}>
-            <Image src="image05.png" data-src="done" alt="" style={{}} />
+            <Image src="/image05.png" width={100} height={100} data-src="done" alt="" style={{width:'100%'}} />
             </span>
             </div>
             <div id="image07" className="image" style={{}}>
               <span className="frame deferred" style={{}}>
-              <Image src="image07.png?v=4d5dd3d7" data-src="done" alt="" style={{}} />
+              <Image src="/image07.png" width={100} height={100} data-src="done" alt="" style={{}} />
               </span></div>
               <ul id="buttons03" className="buttons" style={{}}>
                 <li>
