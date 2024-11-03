@@ -6,7 +6,7 @@ export default function Home() {
   return (
     <div>
        <video
-       style={{margin:'-20px', width:'150%', position: 'fixed', zIndex: '-1'}} 
+       style={{margin:'-30px', width:'150%', position: 'fixed', zIndex: '-1'}} 
         className="shadow-lg w-full h-auto" 
         src="container07.mp4" // Path to the video file in the public folder
         autoPlay 
