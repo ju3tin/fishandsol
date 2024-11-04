@@ -11,7 +11,7 @@ export default function social() {
 <script async src="https://platform.twitter.com/widgets.js" charSet="utf-8"></script>
 
 <div>
-      <h1>Instagram Post Embed Example</h1>
+     <br></br>
       <InstagramEmbed url={instagramPostUrl} />
     </div>
 

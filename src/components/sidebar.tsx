@@ -26,7 +26,7 @@ const sidebarItems: SidebarItems = {
     { href: '/game', icon: Users, label: 'Game',},
     { href: '/leaderboard', icon: User, label: 'Leaderboards', },
     { href: '/map', icon: User, label: 'Maps', },
-    { href: '/item/social', icon: User, label: 'Social Media', },
+    { href: '/social', icon: User, label: 'Social Media', },
     { href: '/item/gameinstruct', icon: User, label: 'Game Instructions', },
   ],
   extras: (
