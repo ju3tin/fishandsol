@@ -7,7 +7,7 @@ const TikTokEmbed = ({ url }) => {
       className="tiktok-embed"
       cite={url}
       data-video-id={url.split('/').pop()}
-      style={{ maxWidth: '605px', margin: '0 auto', }}
+      style={{ maxWidth: '605px', margin: '0 auto', backgroundColor: 'black' }}
     >
       <section>
         <a href={url}>Watch this TikTok video</a>
