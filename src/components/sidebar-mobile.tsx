@@ -31,7 +31,7 @@ export function SidebarMobile(props: SidebarMobileProps) {
           <Menu size={20} />
         </Button>
       </SheetTrigger>
-      <SheetContent side='left' className='px-3 py-4' hideClose>
+      <SheetContent side='left' className='px-3 py-4' hideClose style={{zIndex:'1001'}}>
         <SheetHeader className='flex flex-row justify-between items-center space-y-0'>
           <span className='text-lg font-semibold text-foreground mx-3'>
           <Image alt='' width={300} height={300} src="/image07.png" />
