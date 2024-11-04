@@ -74,6 +74,28 @@ var fishMode =
 //BROWSER DETECTION
 ///////////////////
 
+function showAlert() {
+   
+    info.style.visibility = 'hidden';
+    flag = true;
+    timer = performance.now();
+    goldfish.style.visibility = 'visible';
+    score.style.visibility = 'visible';
+    hiddenCamera.position.set(finalCameraPos.x, finalCameraPos.y, finalCameraPos.z);
+    hiddenCamera.lookAt(0, 3, 0);
+    endRotation = new THREE.Euler().copy(hiddenCamera.rotation);
+    navigationTween.start();
+    rotationTween = new TWEEN.Tween(camera.rotation)
+        .to({
+            x: endRotation.x,
+            y: endRotation.y,
+            z: endRotation.z
+        }, 3000)
+        .easing(TWEEN.Easing.Quadratic.InOut)
+        .start();
+    stopMod = false;
+  }
+
 function BrowserDetection() {
     //Check if browser is IE
     if (navigator.userAgent.search("MSIE") >= 0) {
@@ -1407,6 +1429,8 @@ var animate = function () {
             }
         }
     }
+
+    
 
     //FISHING MODE
     if (keyboard.pressed("f")) {
