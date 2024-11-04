@@ -1,7 +1,7 @@
 import styles from './global1.module.css';
 export default function leaderboard() {
   return (
-    <div id={styles.main1}>
+    <div id="main1">
 <div id={styles.header}>
 <h1>Ranking</h1>
 <button className={styles.share}>
@@ -11,6 +11,7 @@ export default function leaderboard() {
 <div id={styles.leaderboard}>
 <div className={styles.ribbon}></div>
 <table>
+<tbody>
   <tr>
     <td className={styles.number}>1</td>
     <td className={styles.name}>Lee Taeyong</td>
@@ -34,14 +35,15 @@ export default function leaderboard() {
     <td className={styles.points}>258.212</td>
   </tr>
   <tr>
-    <td className="number">5</td>
-    <td className="name">Johnny Suh</td>
-    <td className="points">258.208</td>
+    <td className={styles.number}>5</td>
+    <td className={styles.name}>Johnny Suh</td>
+    <td className={styles.points}>258.208</td>
   </tr>
+  </tbody>
 </table>
-<div id="buttons">
-  <button className="exit">Exit</button>
-  <button className="continue">Continue</button>
+<div id={styles.buttons}>
+  <button className={styles.exit}>Exit</button>
+  <button className={styles.continue}>Continue</button>
 </div>
 </div>
 
