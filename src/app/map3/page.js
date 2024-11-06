@@ -24,10 +24,12 @@ const MapWrapper = () => {
   const tileRef = useRef(null);
 
   useEffect(() => {
+    
     if (!map) return;
     tileRef.current.getContainer().style.setProperty("filter", `grayscale(1)`);
   }, [map]);
-
+  if (typeof window !== 'undefined') {
+            
   return (
     <div>
     <MapContainer
@@ -41,6 +43,6 @@ const MapWrapper = () => {
     </MapContainer>
     </div>
   );
-};
+}};
 
 export default MapWrapper;
