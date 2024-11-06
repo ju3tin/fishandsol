@@ -1,0 +1,12 @@
+[
+    {
+        "lat": 25,
+        "lng": -4,
+        "popupText": "Marker 1: Location A"
+    },
+    {
+        "lat": 26,
+        "lng": -5,
+        "popupText": "Marker 2: Location B"
+    }
+]
