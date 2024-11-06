@@ -30,8 +30,7 @@ const Map = (Map: MapProps) => {
             style={{ height: "100%", width: "100%" }}
         >
             <TileLayer
-                url="http://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}.png"
-                
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
                {markerData.map((marker, index) => {
                    const position: LatLngTuple = Array.isArray(marker.position) && marker.position.length === 2
