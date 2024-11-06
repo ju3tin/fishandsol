@@ -44,6 +44,19 @@ const points = [
 
 // Or -----------------------------------------
 
+
+const MyMarkers = ({ data }) => {
+  return data.map(({ lat, lng, title }, index) => (
+    <Marker
+      key={index}
+      position={{ lat, lng }}
+    >
+      <Popup>{title}</Popup>
+    </Marker>
+  ));
+}
+
+
 const MapWrapper = () => {
   const [map, setMap] = useState(null);
   const tileRef = useRef(null);
