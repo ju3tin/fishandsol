@@ -10,6 +10,8 @@ import '../../../public/TileLayer.Grayscale.js'; // Adjust the path as necessary
 
 const MapComponent: React.FC = () => {
     useEffect(() => {
+        if (typeof window !== 'undefined') {
+             
         const map = L.map('map', { fadeAnimation: false }).setView([25, -4], 3);
         
         // Use the grayscale tile layer
@@ -42,7 +44,7 @@ const MapComponent: React.FC = () => {
         // Cleanup on unmount
         return () => {
             map.remove();
-        };
+        };}
     }, []);
 
     return <div id="map" style={{ height: '100vh', width: '100%' }} />;
