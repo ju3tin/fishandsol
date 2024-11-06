@@ -20,7 +20,7 @@ const sidebarItems: SidebarItems = {
   links: [
     { label: 'Home', href: '/', icon: Home },
     { label: 'Whitepaper', href: '/whitepaper', icon: Bell },
-    { label: 'Roadmap', href: '/item/messages', icon: Mail },
+    { label: 'Roadmap', href: '/roadmap', icon: Mail },
     { href: '/item/lists', icon: List, label: 'Stake', },
     { href: '/item/solana', icon: Bookmark, label: 'Solana Information',},
     { href: '/game', icon: Users, label: 'Game',},
