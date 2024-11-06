@@ -77,7 +77,9 @@ const MapWrapper = () => {
       scrollWheelZoom={false}
       style={{ height: '100vh', width: '100%' }}
     >
-      <TileLayer ref={tileRef} {...tileLayer} />
+      <TileLayer ref={tileRef} {...tileLayer} /> 
+      
+      <MyMarkers data={points} />
     </MapContainer>
     </div>
   );
