@@ -3,7 +3,7 @@ import React from 'react';
 import dynamic from 'next/dynamic';
 
 // Dynamically import the MapComponent with no SSR
-const MapComponent = dynamic(() => import('../components/page'), { ssr: false });
+const MapComponent = dynamic(() => import('../components/map'), { ssr: false });
 
 const Home: React.FC = () => {
     return (
