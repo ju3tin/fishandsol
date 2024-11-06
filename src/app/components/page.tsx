@@ -21,7 +21,7 @@ const MapComponent: React.FC = () => {
 
         // Define a custom icon
         const customIcon = L.icon({
-            iconUrl: '/path/to/your/custom-icon.png', // Adjust the path as needed
+            iconUrl: '/image05.png', // Adjust the path as needed
             iconSize: [25, 41],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
