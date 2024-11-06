@@ -26,7 +26,7 @@ const MapComponent: React.FC = () => {
         });
 
         // Fetch markers from a JSON file
-        fetch('/markers.json') // Ensure this path is correct
+        fetch('/markers1.json') // Ensure this path is correct
             .then((response) => response.json())
             .then((data) => {
                 data.forEach((marker: { lat: number; lng: number; popupText: string }) => {
