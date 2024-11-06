@@ -25,7 +25,8 @@ const sidebarItems: SidebarItems = {
     { href: '/item/solana', icon: Bookmark, label: 'Solana Information',},
     { href: '/game', icon: Users, label: 'Game',},
     { href: '/leaderboard', icon: User, label: 'Leaderboards', },
-    { href: '/map', icon: User, label: 'Maps', },
+    /*{ href: '/map', icon: User, label: 'Maps', },*/
+    { href: '/map3', icon: User, label: 'Maps', },
     { href: '/social', icon: User, label: 'Social Media', },
     { href: '/item/gameinstruct', icon: User, label: 'Game Instructions', },
   ],
