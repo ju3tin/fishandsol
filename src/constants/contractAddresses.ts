@@ -1,5 +1,7 @@
 import { Abi, Address, getAddress } from 'viem'
-import { sepolia } from 'wagmi'
+//import { sepolia } from 'wagmi'
+
+
 
 import { simpleNftABI } from '../../abis/SimpleNFT'
 
@@ -12,7 +14,7 @@ export type ContractABIPair = {
 type ContractDeployments = {
 	NFT_COLLECTION: ContractABIPair
 }
-
+/*
 const SEPOLIA: ContractDeployments = {
 	// SimpleNFT: https://sepolia.etherscan.io/address/0x1cfD246a218b35e359584979dDBeAD1f567d9C88
 	NFT_COLLECTION: {
@@ -20,9 +22,9 @@ const SEPOLIA: ContractDeployments = {
 		ABI: simpleNftABI,
 	},
 }
-
+*/
 const CONTRACTS = {
-	SEPOLIA,
+	//SEPOLIA,
 }
 
 export default CONTRACTS
