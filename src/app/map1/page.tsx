@@ -1,6 +1,9 @@
 // pages/index.tsx
 import React from 'react';
-import MapComponent from '../components/page';
+import dynamic from 'next/dynamic';
+
+// Dynamically import the MapComponent with no SSR
+const MapComponent = dynamic(() => import('../components/page'), { ssr: false });
 
 const Home: React.FC = () => {
     return (
