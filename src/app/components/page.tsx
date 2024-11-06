@@ -1,4 +1,5 @@
 // components/MapComponent.tsx
+"use client"
 import React, { useEffect } from 'react';
 import L from 'leaflet';
 import '../../../public/leaflet.css'; // Ensure Leaflet CSS is imported
