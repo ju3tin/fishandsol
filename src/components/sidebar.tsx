@@ -19,7 +19,7 @@ import { SidebarMobile } from './sidebar-mobile';
 const sidebarItems: SidebarItems = {
   links: [
     { label: 'Home', href: '/', icon: Home },
-    { label: 'Whitepaper', href: '/item/notifications', icon: Bell },
+    { label: 'Whitepaper', href: '/whitepaper', icon: Bell },
     { label: 'Roadmap', href: '/item/messages', icon: Mail },
     { href: '/item/lists', icon: List, label: 'Stake', },
     { href: '/item/solana', icon: Bookmark, label: 'Solana Information',},
