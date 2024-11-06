@@ -9,7 +9,7 @@ export default function leaderboard() {
 </button>
 </div>
 <div id={styles.leaderboard}>
-<div className={styles.ribbon}></div>
+{/*<div className={styles.ribbon}></div>*/}
 <table>
 <tbody>
   <tr>
