@@ -5,8 +5,16 @@ export default function Home() {
   const [showFirstDiv, setShowFirstDiv] = useState(true);
   return (
     <div>
-       <video
-       style={{margin:'-30px', width:'150%', position: 'fixed', zIndex: '-1'}} 
+        <video
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: -1,
+        }} 
         className="shadow-lg w-full h-auto" 
         src="container07.mp4" // Path to the video file in the public folder
         autoPlay 
