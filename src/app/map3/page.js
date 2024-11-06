@@ -19,6 +19,42 @@ const center = [52.22977, 21.01178];
 
 // Or -----------------------------------------
 
+
+const points = [
+  {
+    lat: 52.230020586193795,
+    lng: 21.01083755493164,
+    title: 'point 1'
+  },
+  {
+    lat: 52.22924516170657,
+    lng: 21.011320352554325,
+    title: 'point 2'
+  },
+  {
+    lat: 52.229511304688444,
+    lng: 21.01270973682404,
+    title: 'point 3'
+  },
+  {
+    lat: 52.23040500771883,
+    lng: 21.012146472930908,
+    title: 'point 4'
+  },
+];
+
+
+const MyMarkers = ({ data }) => {
+  return data.map(({ lat, lng, title }, index) => (
+    <Marker
+      key={index}
+      position={{ lat, lng }}
+    >
+      <Popup>{title}</Popup>
+    </Marker>
+  ));
+}
+
 const MapWrapper = () => {
   const [map, setMap] = useState(null);
   const tileRef = useRef(null);
@@ -29,38 +65,20 @@ const MapWrapper = () => {
   }, [map]);
 
 
-  const customIcon = L.icon({
-    iconUrl: '/path/to/your/custom-icon.png', // Adjust the path as needed
-    iconSize: [25, 41],
-    iconAnchor: [12, 41],
-    popupAnchor: [1, -34],
-});
 
-// Fetch markers from a JSON file
-fetch('/markers1.json') // Ensure this path is correct
-    .then((response) => response.json())
-    .then((data) => {
-        data.forEach((marker) => {
-            L.marker([marker.lat, marker.lng], { icon: customIcon })
-                .addTo(map)
-                .bindPopup(marker.popupText);
-        });
-    })
-    .catch((error) => console.error('Error loading markers:', error));
-
-
-
-
+  
   return (
     <div>
     <MapContainer
       whenReady={setMap}
       center={center}
-      zoom={8}
+      zoom={18}
       scrollWheelZoom={false}
       style={{ height: '100vh', width: '100%' }}
     >
       <TileLayer ref={tileRef} {...tileLayer} />
+      <MyMarkers data={points} />
+
     </MapContainer>
     </div>
   );
