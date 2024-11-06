@@ -41,6 +41,7 @@ export default function Home() {
         autoPlay 
         loop 
         muted
+        playsInline // Added for mobile compatibility
       >
         Your browser does not support the video tag.
       </video>
