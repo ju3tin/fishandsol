@@ -30,7 +30,7 @@ const Map = (Map: MapProps) => {
             style={{ height: "100%", width: "100%" }}
         >
             <TileLayer
-                url="https://{s}.tiles.mapbox.com/v3/stamen.trees-cabs-crime/{z}/{x}/{y}.png"
+                url="https://tiles.stadiamaps.com/tiles/stamen_toner/{z}/{x}/{y}.png"
                 
             />
                {markerData.map((marker, index) => {
