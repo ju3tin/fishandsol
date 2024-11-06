@@ -35,6 +35,7 @@ const MapWrapper = () => {
       center={center}
       zoom={18}
       scrollWheelZoom={false}
+      style={{ height: '100vh', width: '100%' }}
     >
       <TileLayer ref={tileRef} {...tileLayer} />
     </MapContainer>
