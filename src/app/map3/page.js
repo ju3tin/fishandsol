@@ -41,11 +41,13 @@ const MapWrapper = () => {
   }, []); // Run only once on mount
 
   useEffect(() => {
+    if (typeof window !== 'undefined') { // Check if running in the browser
+    
     if (!map) return;
     tileRef.current.getContainer().style.setProperty("filter", `grayscale(1)`);
-  }, [map]);
+ } }, [map]);
 
-  if (typeof window === 'undefined') return null;
+  //if (typeof window === 'undefined') return null;
 
   return (
     <div>
