@@ -56,33 +56,48 @@ const MyMarkers = ({ data }) => {
   ));
 }
 
-
 const MapWrapper = () => {
   const [map, setMap] = useState(null);
+  const [points, setPoints] = useState([]); // State to hold the fetched points
   const tileRef = useRef(null);
 
   useEffect(() => {
-    
-    if (!map) return;
+    // Fetch external JSON data
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://example.com/data.json'); // Replace with your JSON URL
+        const data = await response.json();
+        setPoints(data); // Assuming the JSON structure matches your points format
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Empty dependency array to run once on mount
+
+  useEffect(() => {
+    if (!map || !tileRef.current) return;
     tileRef.current.getContainer().style.setProperty("filter", `grayscale(1)`);
   }, [map]);
+
   if (typeof window !== 'undefined') {
-            
-  return (
-    <div>
-    <MapContainer
-      whenReady={setMap}
-      center={center}
-      zoom={18}
-      scrollWheelZoom={false}
-      style={{ height: '100vh', width: '100%' }}
-    >
-      <TileLayer ref={tileRef} {...tileLayer} /> 
-      
-      <MyMarkers data={points} />
-    </MapContainer>
-    </div>
-  );
-}};
+    return (
+      <div>
+        <MapContainer
+          whenReady={setMap}
+          center={center}
+          zoom={18}
+          scrollWheelZoom={false}
+          style={{ height: '100vh', width: '100%' }}
+        >
+          <TileLayer ref={tileRef} {...tileLayer} />
+          
+          <MyMarkers data={points} /> {/* Use fetched points */}
+        </MapContainer>
+      </div>
+    );
+  }
+};
 
 export default MapWrapper;
