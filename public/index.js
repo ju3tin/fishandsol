@@ -1000,6 +1000,63 @@ function initBasicGraphics() {
 }
 
 
+
+function nav11() {
+    if (!stopMod) {
+        if (!modality) {
+            stopMod = true;
+            document.getElementById("mode").innerHTML = navMode;
+
+
+            hiddenCamera.position.set(finalCameraPos.x, finalCameraPos.y, finalCameraPos.z);
+            hiddenCamera.lookAt(0, 3, 0);
+            endRotation = new THREE.Euler().copy(hiddenCamera.rotation);
+            navigationTween.start();
+            rotationTween = new TWEEN.Tween(camera.rotation)
+                .to({
+                    x: endRotation.x,
+                    y: endRotation.y,
+                    z: endRotation.z
+                }, 3000)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+            humanNavigationTween();
+
+            setTimeout(function () {
+                document.getElementById("mode").innerHTML = "";
+                stopMod = false;
+            }, 2950);
+            modality = !modality;
+        } else if (modality) {
+            stopMod = true;
+            document.getElementById("mode").innerHTML = fishMode;
+
+            /* hiddenCamera.position.set(6, 9, 4.5);
+            hiddenCamera.lookAt(0, 3, 0); */
+            endRotation = new THREE.Euler(-0.78, 0.34, 0.32, 'XYZ')
+
+            fishingTween.start();
+
+            rotationTween = new TWEEN.Tween(camera.rotation)
+                .to({
+                    x: endRotation.x,
+                    y: endRotation.y,
+                    z: endRotation.z
+                }, 3000)
+                .easing(TWEEN.Easing.Quadratic.InOut)
+                .start();
+            humanFishingTween();
+
+            setTimeout(function () {
+                document.getElementById("mode").innerHTML = "";
+                stopMod = false;
+            }, 2950);
+            modality = !modality;
+        }
+    }
+}
+
+
 ///////////////////
 //3D MODELS
 ///////////////////
