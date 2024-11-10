@@ -1,3 +1,5 @@
+import { doc } from "prettier";
+
 var pesce = [];
 var cast, pullup, whistle;
 var boat, lighthouse;
@@ -14,6 +16,8 @@ var scene, renderer, camera;
 var light, light2;
 var progress;
 var controller;
+var fish1;
+var rod1;
 var quickTime = false;
 var pressSpace = false;
 //var endQTEvent = false;
@@ -718,11 +722,24 @@ function init() {
     controller = document.getElementById('controller');
     controller.style.position = 'absolute';
     controller.style.bottom = '25px';
-    controller.style.right = '95%';
-    controller.style.width = '25px!important';
+    controller.style.left = '25px';
+   // controller.style.width = '25px!important';
     controller.style.height = '25px';
+    container.style.padding = '0px';
+    //controller.style.paddingRight = '25px';
     //controller.style.visibility = 'hidden';
     container.appendChild(controller);
+
+    /*
+fish1 = document.getElementById('fish');
+fish1.style.position = 'absolute';
+fish1.style.bottom = '25px';
+container.appendChild(fish1);
+
+rod1 = document.getElementById('navigate');
+container.appendChild(rod1);
+*/
+
 
     // SCORE
     score = document.getElementsByClassName("item")[0];
