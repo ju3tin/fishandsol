@@ -1006,7 +1006,11 @@ function nav11() {
         if (!modality) {
             stopMod = true;
             document.getElementById("mode").innerHTML = navMode;
-
+            navigate = document.getElementById("navigate")
+            navigate.classList.add('highlight'); // Add the 'highlight' class
+   
+            fish1 = document.getElementById('fish');
+            fish1.classList.remove('highlight');
 
             hiddenCamera.position.set(finalCameraPos.x, finalCameraPos.y, finalCameraPos.z);
             hiddenCamera.lookAt(0, 3, 0);
@@ -1030,6 +1034,12 @@ function nav11() {
         } else if (modality) {
             stopMod = true;
             document.getElementById("mode").innerHTML = fishMode;
+
+            fish1 = document.getElementById("navigate")
+            fish1.classList.add('highlight'); // Add the 'highlight' class
+   
+            navigate = document.getElementById('fish');
+            navigate.classList.remove('highlight');
 
             /* hiddenCamera.position.set(6, 9, 4.5);
             hiddenCamera.lookAt(0, 3, 0); */
