@@ -13,6 +13,7 @@ var container, stats, info;
 var scene, renderer, camera;
 var light, light2;
 var progress;
+var controller;
 var quickTime = false;
 var pressSpace = false;
 //var endQTEvent = false;
@@ -712,6 +713,16 @@ function init() {
     progress.style.left = '50%';
     progress.style.visibility = 'hidden';
     container.appendChild(progress);
+
+    //CONTROLLER
+    controller = document.getElementById('controller');
+    controller.style.position = 'absolute';
+    controller.style.bottom = '25px';
+    controller.style.right = '95%';
+    controller.style.width = '25px!important';
+    controller.style.height = '25px';
+    //controller.style.visibility = 'hidden';
+    container.appendChild(controller);
 
     // SCORE
     score = document.getElementsByClassName("item")[0];
