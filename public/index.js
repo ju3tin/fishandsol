@@ -720,7 +720,7 @@ function init() {
     navigate = document.getElementById('navigate');
     navigate.style.position = 'absolute';
     navigate.style.bottom = '25px';
-    navigate.style.right = '25px';
+    navigate.style.right = '70px';
     container.appendChild(navigate);
 
     //
