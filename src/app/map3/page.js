@@ -22,6 +22,10 @@ const MapWrapper = () => {
 
   useEffect(() => {
     // Fetch data from an external JSON file
+
+    if (typeof window !== 'undefined') { // Check if running in the browser
+    
+  
     async function fetchPoints() {
       try {
         const res = await fetch('data.json');
@@ -33,6 +37,7 @@ const MapWrapper = () => {
     }
 
     fetchPoints();
+  }
   }, []); // Run only once on mount
 
   useEffect(() => {
