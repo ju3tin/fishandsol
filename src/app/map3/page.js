@@ -65,7 +65,7 @@ const MapWrapper = () => {
     // Fetch external JSON data
     const fetchData = async () => {
       try {
-        const response = await fetch('https://example.com/data.json'); // Replace with your JSON URL
+        const response = await fetch('data.json'); // Replace with your JSON URL
         const data = await response.json();
         setPoints(data); // Assuming the JSON structure matches your points format
       } catch (error) {
