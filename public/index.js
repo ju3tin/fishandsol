@@ -1035,10 +1035,10 @@ function nav11() {
             stopMod = true;
             document.getElementById("mode").innerHTML = fishMode;
 
-            fish1 = document.getElementById("navigate")
+            fish1 = document.getElementById("fish")
             fish1.classList.add('highlight'); // Add the 'highlight' class
    
-            navigate = document.getElementById('fish');
+            navigate = document.getElementById('navigate');
             navigate.classList.remove('highlight');
 
             /* hiddenCamera.position.set(6, 9, 4.5);
