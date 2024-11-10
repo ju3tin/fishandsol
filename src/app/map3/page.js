@@ -1,4 +1,4 @@
-"use client"
+
 import { useRef, useState, useEffect } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import tileLayer from "../../../util/tileLayer";
