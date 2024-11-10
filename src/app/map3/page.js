@@ -67,7 +67,21 @@ const MapWrapper = () => {
     tileRef.current.getContainer().style.setProperty("filter", `grayscale(1)`);
   }, [map]);
   if (typeof window !== 'undefined') {
-            
+        
+    
+  
+    async function fetchPoints() {
+      try {
+        const res = await fetch('data.json');
+        const data = await res.json();
+        setPoints(data); // Set points from JSON data
+      } catch (error) {
+        console.error("Failed to load points:", error);
+      }
+    }
+
+    fetchPoints();
+
   return (
     <div>
     <MapContainer
