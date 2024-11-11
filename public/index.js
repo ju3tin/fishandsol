@@ -16,6 +16,8 @@ var progress;
 var controller;
 var fish1;
 var navigate;
+var castline;
+var hook;
 var quickTime = false;
 var pressSpace = false;
 //var endQTEvent = false;
@@ -723,6 +725,20 @@ function init() {
     navigate.style.right = '70px';
     container.appendChild(navigate);
 
+    //castline
+    castline = document.getElementById('castline');
+    castline.style.position = 'absolute';
+    castline.style.bottom = '25px';
+    castline.style.left = '20px';
+    container.appendChild(castline);    
+
+    //hook
+    hook = document.getElementById('hook');
+    hook.style.position = 'absolute';
+    hook.style.bottom = '85px';
+    hook.style.left = '20px';
+    container.appendChild(hook); 
+
     //
     fish1 = document.getElementById('fish');
     fish1.style.position = 'absolute';
@@ -1008,9 +1024,20 @@ function nav11() {
             document.getElementById("mode").innerHTML = navMode;
             navigate = document.getElementById("navigate")
             navigate.classList.add('highlight'); // Add the 'highlight' class
-   
+   //
+castline = document.getElementById('castline');
+castline.classList.add('highlight');
+
+hook = document.getElementById('hook');
+hook.classList.add('highlight');
+   //
+            
+            
             fish1 = document.getElementById('fish');
             fish1.classList.remove('highlight');
+
+            controller = document.getElementById('controller');
+            controller.classList.remove('highlight');
 
             hiddenCamera.position.set(finalCameraPos.x, finalCameraPos.y, finalCameraPos.z);
             hiddenCamera.lookAt(0, 3, 0);
@@ -1041,6 +1068,14 @@ function nav11() {
             navigate = document.getElementById('navigate');
             navigate.classList.remove('highlight');
 
+            controller = document.getElementById('controller');
+            controller.classList.add('highlight');
+
+            castline = document.getElementById('castline');
+castline.classList.remove('highlight');
+
+hook = document.getElementById('hook');
+hook.classList.remove('highlight');
             /* hiddenCamera.position.set(6, 9, 4.5);
             hiddenCamera.lookAt(0, 3, 0); */
             endRotation = new THREE.Euler(-0.78, 0.34, 0.32, 'XYZ')
@@ -1690,6 +1725,78 @@ animate();
 // create the nodes
 for (i = 0; i <= numNodes; i++) initNodes(i);
 render(); */
+
+function castline1() {
+    if (!modality) {
+        if (!stopArm) {
+            if (rodInHand) {
+                baitUp();
+                setTimeout(function () {
+                    stopArm = true;
+                    armUp();
+                }, 1000);
+
+                setTimeout(function () {
+                    body.add(rod1);
+                    rod1.rotation.x = 0;
+                    rod1.rotation.y = Math.PI / 2;
+                    rod1.position.x = 1;
+                    rod1.position.y = -1;
+                    rod1.position.z = 1;
+                }, 2000);
+
+                setTimeout(function () {
+                    rodInHand = !rodInHand;
+                    stopArm = false;
+                }, 2000);
+            } else {
+                stopArm = true;
+                armUp();
+                setTimeout(function () {
+                    LUA.add(rod1);
+                    rod1.rotation.x = -Math.PI / 4;
+                    rod1.rotation.y = 0;
+                    rod1.position.x = 0;
+                    rod1.position.z = -1;
+                    rod1.position.y = -4;
+                }, 1000);
+                setTimeout(function () {
+                    baitDown();
+                    rodInHand = !rodInHand;
+                    stopArm = false;
+                }, 2000);
+            }
+        }
+        /* 
+        if (rodInHand) {
+            armUp();
+            setTimeout(function () {
+                body.add(rod1);
+                rod1.rotation.x = 0;
+                rod1.rotation.y = Math.PI / 2;
+                rod1.position.x = 1;
+            }, 1000);
+            armDown();
+            setTimeout(function () {
+                rodInHand = !rodInHand;
+            }, 1000);
+        } else { */
+        //armUp();
+        /* setTimeout(function () {
+            LUA.add(rod1);
+            rod1.rotation.x = -Math.PI / 2;
+            rod1.rotation.y = 0;
+            rod1.position.x = 0;
+        }, 1000); */
+        //armDown();
+        /* setTimeout(function () {
+                rodInHand = !rodInHand;
+            }, 1000);
+        } */
+    }
+}
+
+
 
 var max = 100;
 var initialOffset = '175';

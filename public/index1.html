@@ -21,6 +21,42 @@
         .highlight {
             display: none;
         }
+        .circular-button {
+            width: 60px; /* Width of the button */
+            height: 60px; /* Height of the button */
+            background-color: #4CAF50; /* Green background */
+            color: white; /* White text color */
+            border: none; /* No border */
+            border-radius: 50%; /* Make it circular */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            display: flex; /* Use flexbox for centering */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+        .circular-button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        .circular-button1 {
+            width: 60px; /* Width of the button */
+            height: 60px; /* Height of the button */
+            background-color: #1fd7ec; /* Green background */
+            color: white; /* White text color */
+            border: none; /* No border */
+            border-radius: 50%; /* Make it circular */
+            font-size: 16px; /* Font size */
+            cursor: pointer; /* Pointer cursor on hover */
+            display: flex; /* Use flexbox for centering */
+            align-items: center; /* Center vertically */
+            justify-content: center; /* Center horizontally */
+            transition: background-color 0.3s; /* Smooth transition */
+        }
+
+        .circular-button1:hover {
+            background-color: #1fd7ec; /* Darker green on hover */
+        }
     </style>
 
 </head>
@@ -89,12 +125,20 @@
 
 </div>
 
+<div class="highlight" id="castline">
+<button class="circular-button" onclick="castline1()">Castline</button>
+</div>
+
+<div class="highlight" id="hook">
+<button class="circular-button1" onclick="hook1()">Hook</button>
+</div>
+
 <div  id="fish">
-    <button onclick="nav11()" class="button button5">navigate</button>
+    <button onclick="nav11()" class="button button5">fishing</button>
 </div>
 
 <div class="highlight" id="navigate">
-    <button onclick="nav11()" class="button button5">fishing</button>
+    <button onclick="nav11()" class="button button5">navigate</button>
 </div>
 
 <div class="goldFish">
