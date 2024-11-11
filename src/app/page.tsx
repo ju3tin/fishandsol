@@ -50,7 +50,7 @@ export default function Home() {
       </video>
      {/*  <h1 className='text-3xl font-semibold' style={{ position: 'relative', zIndex: 1 }}>Home Page</h1>
 */}
-      <div className="wrapper" style={{ width: '30%', margin: 'auto', position: 'relative', zIndex: 1 }}>
+      <div className="wrapper" style={{ width: '30%', margin: 'auto', position: 'relative', zIndex: -20 }}>
         <div className="inner">
           <div id="image05" className="image" style={{ opacity: '1', filter: 'none' }}>
             <span className="frame deferred" style={{}}>
