@@ -26,6 +26,7 @@ export default function Home() {
   }, []);
 
   return (
+    <div>
     <div style={{ position: 'relative',width:'120%', height: '100vh', top: '-40px', right: '10px', zIndex: '-20' }}>
       <video
         ref={videoRef}
@@ -52,8 +53,9 @@ export default function Home() {
       </video>
      {/*  <h1 className='text-3xl font-semibold' style={{ position: 'relative', zIndex: 1 }}>Home Page</h1>
 */}
-      <div className="wrapper" style={{ width: '30%', margin: 'auto', position: 'relative', zIndex: -1 }}>
-        <div className="inner">
+ </div>
+      <div className="wrapper" style={{top:'0', width: '100%', marginRight: 'auto', marginLeft: 'auto', position: 'absolute'}}>
+        <div className="inner" style={{width:'40%', marginRight:'auto', marginLeft:'auto'}}>
           <div id="image05" className="image" style={{ opacity: '1', filter: 'none' }}>
             <span className="frame deferred" style={{}}>
               <Image src="/image05.png" width={100} height={100} data-src="done" alt="" style={{ width: '100%' }} />
@@ -65,7 +67,7 @@ export default function Home() {
             </span>
           </div>
           <br />
-          <ul id="buttons04" className="buttons" style={{minWidth: '70px',display:'block',marginLeft:'auto',marginRight:'auto',width:'50%'}}>
+          <ul id="buttons04" className="buttons" style={{minWidth: '70px',display:'block',marginLeft:'auto',marginRight:'auto',width:'50%', zIndex: 30 }}>
             <li>
             <a className="btn btn-primary shadow" href="/athena">ENTER SITE</a>
           
@@ -73,6 +75,7 @@ export default function Home() {
           </ul>
         </div>
       </div>
+   
     </div>
   );
 }
