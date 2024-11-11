@@ -5,7 +5,7 @@ export default function whitepaper() {
         <div>
     <section id="witepaper-section" className="active" style={{}}>
     <div id="container13" className="container default">
-        <div className="wrapper">
+        <div className="wrapper1">
             <div className="inner">
                 <div id="image17" className="image"></div>
                 <span className="p"><span style={{color: '#9EFF00'}}>FishNChips SOLANA Witepaper</span></span>
@@ -27,7 +27,7 @@ export default function whitepaper() {
 
     <section id="witepaper-section1" className="active" style={{}}>
     <div id="container13" className="container default">
-        <div className="wrapper">
+        <div className="wrapper1">
             <div className="inner">
               
             <span className="p"><span style={{color: '#9EFF00'}}>FishNChips SOLANA Litepaper</span></span>
@@ -79,7 +79,7 @@ This creates more unemployment, more poverty and general societal decline.
 
                 <section id="witepaper-section3" className="active" style={{}}>
     <div id="container13" className="container default">
-        <div className="wrapper">
+        <div className="wrapper1">
             <div className="inner">
             Solution
 $CHIPPY Fish N Chips on SOLANA is part of the solution to fix the Fishing
@@ -131,7 +131,7 @@ given enough time.
 
                 <section id="witepaper-section4" className="active" style={{}}>
     <div id="container13" className="container default">
-        <div className="wrapper">
+        <div className="wrapper1">
             <div className="inner">
 
             Also, not every person claims their free food every week. So far we have found
@@ -197,7 +197,7 @@ weeks in all areas across the world.
 
                 <section id="witepaper-section5" className="active" style={{}}>
     <div id="container13" className="container default">
-        <div className="wrapper">
+        <div className="wrapper1">
             <div className="inner">
 
             When giving away free food we naturally get a lot of questions. We have found that the local press tend to cover our events which gets us exposure to a lot more people than actually attend the event, increasing the size of our community.

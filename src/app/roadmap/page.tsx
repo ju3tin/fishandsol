@@ -2,7 +2,7 @@
 export default function Roadmap() {
     return (
 <div id="container12" className="container default">
-    <div className="wrapper">
+    <div className="wrapper1">
         <div className="inner">
             <h2 id="text15" className="style3" style={{opacity: 1, transform: 'none'}}>
                 <span className="p">0. Launch token - DONE</span><br />

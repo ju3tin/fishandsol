@@ -2,6 +2,8 @@
 "use client";
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import '../../styles/fonts.css';
+import '../../styles/globals.css';
 
 export default function Home() {
   const [showFirstDiv, setShowFirstDiv] = useState(true);
