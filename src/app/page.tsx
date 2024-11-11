@@ -24,7 +24,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div style={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+    <div style={{ position: 'relative',width:'120%', height: '100vh', top: '-40px', right: '10px' }}>
       <video
         ref={videoRef}
         style={{
@@ -32,11 +32,12 @@ export default function Home() {
           top: 0,
           left: 0,
           marginTop: -40,
-          marginLeft: -40,
-          width: '150%',
+          marginLeft: -20,
+          marginRight: 30,
+          width: '250%',
           height: '150%',
           objectFit: 'cover',
-          zIndex: -1,
+          zIndex: -2,
         }} 
         className="shadow-lg w-full h-auto" 
         src="/container07.mp4" // Path to the video file in the public folder
@@ -47,8 +48,8 @@ export default function Home() {
       >
         Your browser does not support the video tag.
       </video>
-      <h1 className='text-3xl font-semibold' style={{ position: 'relative', zIndex: 1 }}>Home Page</h1>
-
+     {/*  <h1 className='text-3xl font-semibold' style={{ position: 'relative', zIndex: 1 }}>Home Page</h1>
+*/}
       <div className="wrapper" style={{ width: '30%', margin: 'auto', position: 'relative', zIndex: 1 }}>
         <div className="inner">
           <div id="image05" className="image" style={{ opacity: '1', filter: 'none' }}>
@@ -61,9 +62,11 @@ export default function Home() {
               <Image src="/image07.png" width={300} height={300} data-src="done" alt="" style={{}} />
             </span>
           </div>
-          <ul id="buttons03" className="buttons" style={{}}>
+          <br />
+          <ul id="buttons04" className="buttons" style={{display:'block',marginLeft:'auto',marginRight:'auto',width:'50%'}}>
             <li>
-              <a onClick={() => setShowFirstDiv(!showFirstDiv)} href="#enter" className="button n01">ENTER SITE</a>
+            <a className="btn btn-primary shadow" href="/athena">ENTER SITE</a>
+          
             </li>
           </ul>
         </div>
