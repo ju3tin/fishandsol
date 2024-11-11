@@ -751,7 +751,7 @@ function init() {
     //CONTROLLER
     controller = document.getElementById('controller');
     controller.style.position = 'absolute';
-    controller.style.bottom = '25px';
+    controller.style.bottom = '150px';
     controller.style.left = '25px';
    // controller.style.width = '25px!important';
     controller.style.height = '25px';
@@ -1660,6 +1660,7 @@ var animate = function () {
 
 
     if (pressSpace) {
+       
         if (keyboard.pressed("space")) {
             //endQTEvent();
             pullup.play();
@@ -1725,6 +1726,44 @@ animate();
 // create the nodes
 for (i = 0; i <= numNodes; i++) initNodes(i);
 render(); */
+
+
+    // NAVIGATION MODE
+    function up() {
+        if (modality) {
+            boat.translateOnAxis(xAxis, 0.5);
+        }
+    }
+
+    function left() {
+        if (modality) {
+            boat.rotation.y += 0.05;
+        }
+    }
+
+    function right() {
+        if (modality) {
+            boat.rotation.y -= 0.05;
+        }
+    }
+
+
+
+
+
+function space1(){
+    if (pressSpace) {
+    pullup.play();
+    collisi = true;
+    updateScore(collisi);
+    console.log("got it!");
+    bar.progress = 100;
+
+    //flag = true;
+    pressSpace = false;
+
+}
+}
 
 function castline1() {
     if (!modality) {
