@@ -31,7 +31,7 @@ const sidebarItems: SidebarItems = {
     { href: '/item/gameinstruct', icon: User, label: 'Game Instructions', },
   ],
   extras: (
-    <div className='flex flex-col gap-2'>
+    <div style={{backgroundColor:'black'}} className='flex flex-col gap-2'>
     
       <SidebarButton
         className='w-full justify-center text-white'
