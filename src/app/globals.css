@@ -65,7 +65,7 @@ body {
 
 .wrapper1 {
   display: inline-block;
-  width: 74rem;
+  width: 100%;
   background-image: linear-gradient(45deg, #003052 0%, #07A5BA 60%);
   background-position: 0% 0%;
   background-repeat: repeat;
