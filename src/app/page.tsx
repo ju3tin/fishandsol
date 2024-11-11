@@ -65,7 +65,7 @@ export default function Home() {
             </span>
           </div>
           <br />
-          <ul id="buttons04" className="buttons" style={{display:'block',marginLeft:'auto',marginRight:'auto',width:'50%'}}>
+          <ul id="buttons04" className="buttons" style={{minWidth: '70px',display:'block',marginLeft:'auto',marginRight:'auto',width:'50%'}}>
             <li>
             <a className="btn btn-primary shadow" href="/athena">ENTER SITE</a>
           
