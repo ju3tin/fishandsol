@@ -11,10 +11,36 @@ import {
   Users,
 } from 'lucide-react';
 import { SidebarDesktop } from './sidebar-desktop';
+import LoginButton from './login-buton';
+
 import { SidebarItems } from '@/types';
 import { SidebarButton } from './sidebar-button';
 import { useMediaQuery } from 'usehooks-ts';
 import { SidebarMobile } from './sidebar-mobile';
+import { useMemo } from "react";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
+import {
+  WalletModalProvider,
+  WalletMultiButton,
+} from "@solana/wallet-adapter-react-ui";
+//import "./App.css";
+
+// Default styles that can be overridden by your app
+import "@solana/wallet-adapter-react-ui/styles.css";
+
+
+const handleLoginClick = () => {
+  // Handle login logic here
+  alert('Login button clicked!');
+};
+  const wallets = [new PhantomWalletAdapter()];
 
 const sidebarItems: SidebarItems = {
   links: [
@@ -33,12 +59,7 @@ const sidebarItems: SidebarItems = {
   extras: (
     <div style={{backgroundColor:'black'}} className='flex flex-col gap-2'>
     
-      <SidebarButton
-        className='w-full justify-center text-white'
-        variant='default'
-      >
-        Login
-      </SidebarButton>
+    <LoginButton onClick={handleLoginClick} label="Login" />
     </div>
   ),
 };

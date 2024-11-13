@@ -4,11 +4,41 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import '../../styles/fonts.css';
 import '../../styles/globals.css';
+import { useMemo } from "react";
+import {
+  ConnectionProvider,
+  WalletProvider,
+} from "@solana/wallet-adapter-react";
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+} from "@solana/wallet-adapter-wallets";
+import {
+  WalletModalProvider,
+  WalletMultiButton,
+} from "@solana/wallet-adapter-react-ui";
+//import "./App.css";
+
+// Default styles that can be overridden by your app
+import "@solana/wallet-adapter-react-ui/styles.css";
 
 export default function Home() {
   const [showFirstDiv, setShowFirstDiv] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
-
+    // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
+    const network = "https://rpc.test.honeycombprotocol.com";
+    // You can also provide a custom RPC endpoint.
+    const endpoint = useMemo(() => network, [network]);
+  
+    const wallets = useMemo(
+      () => [
+        // Manually define specific/custom wallets here
+        new PhantomWalletAdapter(),
+        new SolflareWalletAdapter(),
+      ],
+      [network]
+    );
+  
   useEffect(() => {
     // Play the video when the component mounts
     if (videoRef.current) {
@@ -67,6 +97,15 @@ export default function Home() {
             </span>
           </div>
           <br />
+
+          <ConnectionProvider endpoint={endpoint}>
+      <WalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <WalletMultiButton />
+        </WalletModalProvider>
+      </WalletProvider>
+    </ConnectionProvider>
+
           <ul id="buttons04" className="buttons" style={{minWidth: '70px',display:'block',marginLeft:'auto',marginRight:'auto',width:'50%', zIndex: 30 }}>
             <li>
             <a className="btn btn-primary shadow" href="/athena">ENTER SITE</a>
