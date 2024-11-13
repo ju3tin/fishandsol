@@ -98,14 +98,6 @@ export default function Home() {
           </div>
           <br />
 
-          <ConnectionProvider endpoint={endpoint}>
-      <WalletProvider wallets={wallets} autoConnect>
-        <WalletModalProvider>
-          <WalletMultiButton />
-        </WalletModalProvider>
-      </WalletProvider>
-    </ConnectionProvider>
-
           <ul id="buttons04" className="buttons" style={{minWidth: '70px',display:'block',marginLeft:'auto',marginRight:'auto',width:'50%', zIndex: 30 }}>
             <li>
             <a className="btn btn-primary shadow" href="/athena">ENTER SITE</a>

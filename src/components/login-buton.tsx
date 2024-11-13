@@ -14,9 +14,14 @@ import '@solana/wallet-adapter-react-ui/styles.css';
 
 function LoginButton() {
     // Set network to 'devnet', 'testnet', or 'mainnet-beta'
-    const network = WalletAdapterNetwork.Devnet;
-    const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+   // const network = WalletAdapterNetwork.Devnet;
+    //const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
+
+    const network = "https://rpc.test.honeycombprotocol.com";
+    // You can also provide a custom RPC endpoint.
+    const endpoint = useMemo(() => network, [network]);
+  
     // Define wallet adapters you want to support
     const wallets = useMemo(
         () => [
