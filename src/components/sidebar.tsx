@@ -59,7 +59,7 @@ const sidebarItems: SidebarItems = {
   extras: (
     <div style={{backgroundColor:'black'}} className='flex flex-col gap-2'>
     
-    <LoginButton onClick={handleLoginClick} label="Login" />
+    <LoginButton />
     </div>
   ),
 };
