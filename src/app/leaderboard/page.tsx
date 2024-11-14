@@ -10,7 +10,7 @@ export default function leaderboard() {
 </div>
 <div id={styles.leaderboard}>
 {/*<div className={styles.ribbon}></div>*/}
-<table>
+<table style={{width:'100%'}}>
 <tbody>
   <tr>
     <td className={styles.number}>1</td>
@@ -42,8 +42,9 @@ export default function leaderboard() {
   </tbody>
 </table>
 <div id={styles.buttons}>
-  <button className={styles.exit}>Exit</button>
-  <button className={styles.continue}>Continue</button>
+<button className={styles.exit}>Chippies</button>
+  <button className={styles.exit}>Chipsters</button>
+  <button className={styles.continue}>Gamers</button>
 </div>
 </div>
 
