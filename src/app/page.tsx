@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import '../../styles/fonts.css';
 import '../../styles/globals.css';
+import io from 'socket.io-client';
 import { useMemo } from "react";
 import {
   ConnectionProvider,
@@ -21,6 +22,9 @@ import {
 
 // Default styles that can be overridden by your app
 import "@solana/wallet-adapter-react-ui/styles.css";
+
+const socket = io('wss://crashserver.onrender.com'); // Replace with your server URL
+
 
 export default function Home() {
   const [showFirstDiv, setShowFirstDiv] = useState(true);
