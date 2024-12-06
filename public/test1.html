@@ -1,0 +1,131 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <script>
+      window.onload = function() {
+      
+      var dataPoints = [];
+      
+      var chart = new CanvasJS.Chart("chartContainer", {
+        theme: "light2",
+        title: {
+          text: "Live Data"
+        },
+        backgroundColor: "rgba(255, 255, 255, .0)",
+        data: [{
+          type: "line",
+          dataPoints: dataPoints
+        }]
+      });
+      updateData();
+      
+      // Initial Values
+      var xValue = 0;
+      var yValue = 1;
+      var newDataCount = 3;
+      
+      function addData(data) {
+        if(newDataCount != 1) {
+          $.each(data, function(key, value) {
+            dataPoints.push({x: value[0], y: parseInt(value[1])});
+            xValue++;
+            yValue = parseInt(value[1]);
+          });
+        } else {
+          //dataPoints.shift();
+          dataPoints.push({x: data[0][0], y: parseInt(data[0][1])});
+          xValue++;
+          yValue = parseInt(data[0][1]);
+        }
+        
+        newDataCount = 1;
+        chart.render();
+        setTimeout(updateData, 1500);
+      }
+      
+      function updateData() {
+        $.getJSON("https://canvasjs.com/services/data/datapoints.php?xstart="+xValue+"&ystart="+yValue+"&length="+newDataCount+"type=json", addData);
+      }
+      
+      }
+      </script>
+      <style>
+        .canvasjs-chart-credit{
+          color: #69696900 !important;
+        }
+      </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Grid Template for Bootstrap</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/grid/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/boot.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/grid.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="row">
+        <div style="background-image: url('/images/water.png');min-height:50vh;" class="col-md-8">
+          <div id="chartContainer" style="height: 300px; max-width: 920px; margin: 0px auto;z-index: 99999;"></div>
+          <div id = "panel1" >
+            <div id = "panel1Head">
+              <div id = "infoHead" class = "InfoHead" style="text-align: center;">
+                <span id ="multLbl"  name = "multInfo" class = "InfoHead Label">
+   
+                </span>
+                <span style="text-align: center;"  id ="multCounter"  name = "multCounter" class = "InfoHead Counter" >
+                </span>	
+    
+              </div>	
+            </div>
+           <div id = "panel1Body" class="panel-body">
+           
+        
+            </div>	
+          </div>
+       <!--   <div class="row">
+            <div class="col-md-6">.col-md-6</div>
+            <div class="col-md-6">.col-md-6</div>
+          </div>-->
+        </div>
+        <div class="col-md-4">   
+          <div id = "balanceInfo" class = "BalanceInfo">
+          <span  id = "balanceLabel" name = "BalanceInfo" >
+            BALANCE:
+          </span>
+            <span id ="balanceCounter" name = "balanceCounter" class = "BalanceInfo Counter">
+          </span>	
+          
+        
+        </div>
+        <div id="formBet">
+          <input id="inputBet" name="formBet"  type="number" min = "0"  placeholder="BET VALUE" >
+        </div>
+        <div id="buttonBet">
+          <button id = "btnBet" name = "btnBet"  >
+          </button>
+        </div>	
+      
+      </div>
+      </div>
+
+      <hr>
+
+    </div> <!-- /container -->
+  </body>
+  <script type = "text/javascript" src = "js/script1.js"></script>
+  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+</html>

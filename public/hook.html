@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script>
+      var chart;
+      var dataPoints = []; // Initialize dataPoints globally
+      var jsonData; // Declare a global variable for JSON data
+
+window.onload = function() {
+
+  
+    function dude1() {
+  var flickerAPI = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+  $.getJSON( flickerAPI, {
+    tags: "mount rainier",
+    tagmode: "any",
+    format: "json"
+  })
+    .done(function( data ) {
+      $.each( data.items, function( i, item ) {
+        $( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+        if ( i === 3 ) {
+          return false;
+        }
+      });
+    });
+};
+    // Initialize the chart
+    dude1();
+    createChart(); // Call the function to create the chart
+    updateData(); // Call to update data after chart initialization
+
+    // Initial Values
+    var xValue = 0;
+    var yValue = 1;
+    var newDataCount = 3;
+
+    function addData(data) {
+        // Assuming data is an array of objects with x and y properties
+        $.each(data, function(key, value) {
+            dataPoints.push({ x: value.x, y: value.y });
+            xValue++;
+            yValue = value.y; // Update yValue to the last y value
+        });
+
+        newDataCount = 1; // Set newDataCount to 1 for the next update
+        chart.render(); // Render the chart with updated data
+        setTimeout(updateData, 1500); // Schedule the next data update
+    }
+
+    function updateData() {
+        // Fetch data from the local JSON file and assign it to the global variable
+        $.getJSON("data.json", function(data) {
+            jsonData = data; // Assign fetched data to the global variable
+            addData(jsonData); // Call addData with the fetched JSON data
+        })
+        .fail(function() {
+            console.log("Error loading JSON data.");
+        });
+    }
+
+    // Function to create a new chart
+    function createChart() {
+        if (chart) {
+            chart.destroy(); // Destroy the existing chart if it exists
+        }
+
+        // Initialize the chart
+        chart = new CanvasJS.Chart("chartContainer", {
+            theme: "light2",
+            title: {
+                text: "Hooked"
+            },
+            backgroundColor: "rgba(255, 255, 255, .0)",
+            data: [{
+                type: "line",
+                dataPoints: dataPoints
+            }]
+        });
+    }
+
+    // Function to reset dataPoints and recreate the chart
+    function resetDataPoints() {
+        dataPoints = []; // Reset the dataPoints array to an empty array
+        console.log("Data points have been reset.");
+        createChart(); // Recreate the chart after resetting data points
+        chart.render(); // Render the new chart
+    }
+
+    // Function to log current data points
+    function logCurrentData() {
+        console.log("Current Data Points:", dataPoints);
+    }
+
+    // Function to modify data points
+    function modifyData() {
+        // Example: Change the y value of the first data point
+        if (dataPoints.length > 0) {
+            dataPoints[0].y += 10; // Increase the y value of the first point by 10
+            console.log("Modified Data Points:", dataPoints);
+            chart.render(); // Re-render the chart to reflect changes
+        } else {
+            console.log("No data points to modify.");
+        }
+    }
+
+    // Function to handle the ROUND_ENDED action
+    function handleRoundEnded() {
+        console.log("Round has ended. Handling cleanup or updates.");
+        resetDataPoints(); // Call to reset data points
+    }
+
+    // WebSocket message handler
+    myWs.onmessage = function (message) {
+        try {
+            const jsonMessage = JSON.parse(message.data);
+            switch (jsonMessage.action) {
+                // ... other cases ...
+                case "ROUND_ENDED":
+                    handleRoundEnded(); // Call the function when ROUND_ENDED is received
+                    break;
+                // ... other cases ...
+            }
+        } catch (error) {
+            console.log('Error', error);
+        }
+    };
+}
+      
+      
+      </script>
+      <style>
+        .canvasjs-chart-credit{
+          color: #69696900 !important;
+        }
+      </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Hooked</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/grid/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/boot.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/grid.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="row">
+        <div style="background-image: url('/images/water.png');min-height:50vh;" class="col-md-8">
+          <div id="chartContainer" style="height: 300px; max-width: 920px; margin: 0px auto;z-index: 99999; display: none;"></div>
+          <div id = "panel1" >
+            <div id = "panel1Head">
+              <div id = "infoHead" class = "InfoHead" style="text-align: center;">
+                <span id ="multLbl"  name = "multInfo" class = "InfoHead Label">
+   
+                </span>
+                <span style="text-align: center;"  id ="multCounter"  name = "multCounter" class = "InfoHead Counter" >
+                </span>	
+    
+              </div>	
+            </div>
+           <div id = "panel1Body" class="panel-body">
+           
+        
+            </div>	
+          </div>
+       <!--   <div class="row">
+            <div class="col-md-6">.col-md-6</div>
+            <div class="col-md-6">.col-md-6</div>
+          </div>-->
+        </div>
+        <div class="col-md-4">   
+          <div id = "balanceInfo" class = "BalanceInfo">
+          <span  id = "balanceLabel" name = "BalanceInfo" >
+            BALANCE:
+          </span>
+            <span id ="balanceCounter" name = "balanceCounter" class = "BalanceInfo Counter">
+          </span>	
+          
+        
+        </div>
+        <div id="formBet">
+          <input id="inputBet" name="formBet"  type="number" min = "0"  placeholder="BET VALUE" >
+        </div>
+        <div id="buttonBet">
+          <button id = "btnBet" name = "btnBet"  >
+          </button>
+        </div>	
+      
+      </div>
+      </div>
+
+      <hr>
+
+    </div> <!-- /container -->
+  </body>
+  <script type = "text/javascript" src = "js/script.js"></script>
+  <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+<script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+</html>

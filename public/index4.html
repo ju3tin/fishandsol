@@ -1,0 +1,214 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
+    <script>
+      window.onload = function() {
+      
+     
+      
+      }
+      </script>
+      <style>
+        .canvasjs-chart-credit{
+          color: #69696900 !important;
+        }
+      </style>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Hooked</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/grid/">
+
+    <!-- Bootstrap core CSS -->
+    <link href="/css/boot.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/grid.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="container">
+
+      <div class="row">
+        <div style="background-image: url('/images/water.png');min-height:50vh;" class="col-md-8">
+      
+          <div class="w-full mt-10">
+            <canvas id="myChart"></canvas>
+        </div>
+        <script>
+          var dude1;
+          const ctx = document.getElementById("myChart");
+          const myChart = new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: [ "Player 1", "Player 2", "Player 3", "Player 4", "Player 5", "Player 6" ],
+              datasets: [
+                {
+                  label: "# of points",
+                  data: [0, 0, 0, 0, 0, 0],
+                  backgroundColor: [
+                    "rgba(255, 99, 132, 0.2)",
+                    "rgba(54, 162, 235, 0.2)",
+                    "rgba(255, 206, 86, 0.2)",
+                    "rgba(75, 192, 192, 0.2)",
+                    "rgba(153, 102, 255, 0.2)",
+                    "rgba(255, 159, 64, 0.2)",
+                  ],
+                  borderColor: [
+                    "rgba(255, 99, 132, 1)",
+                    "rgba(54, 162, 235, 1)",
+                    "rgba(255, 206, 86, 1)",
+                    "rgba(75, 192, 192, 1)",
+                    "rgba(153, 102, 255, 1)",
+                    "rgba(255, 159, 64, 1)",
+                  ],
+                  borderWidth: 1,
+                },
+              ],
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true,
+                },
+              },
+            },
+          });
+    
+          webSocket = new WebSocket("wss://crashserver.onrender.com");
+          function getCurrentDateTime() {
+    const now = new Date();
+    return Date.now(); 
+    //return now.toISOString().replace('T', ' ').substring(0, 23); // Format: YYYY-MM-DD HH:MM:SS.mmm
+  }
+
+  function getCurrentTimestamp(){
+    const now = new Date();
+    return Date.now(); 
+    
+
+  }
+
+          webSocket.onmessage = function (message) {
+            const data = message.data;
+            let datatimefirst;
+            let datatimesecond;
+            if (data.action === "CNT_MULTIPLY") {
+      console.log(`[${getCurrentTimestamp()}] Multiplier: ${data.multiplier}`+ "fuck this"); // Log the multiplier
+      // Update the chart with the new multiplier
+    //  myChart.data.datasets[0].data.push(data.multiplier); // Assuming you want to add the multiplier to the chart
+  //    myChart.update(); // Update the chart
+    }
+           // console.log(`[${getCurrentDateTime()}] ${data} is this working`)
+            
+           datatimesecond = 0; // Assign the current timestamp to the global variable
+
+
+
+           if (data.includes("ROUND_STARTED")){
+
+            datatimefirst = getCurrentTimestamp();
+          //  console.log(datatimefirst+ "it worked")
+
+            datatimesecond = parseInt(datatimefirst, 10);
+             dude1 = datatimesecond
+           
+           }
+          console.log(dude1);
+
+           if (data.includes("CNT_MULTIPLY")) {
+      const data1 = JSON.parse(data); // Parse the JSON string
+      let dataString = message.data; // Get the incoming message as a string
+   
+      const dataIndex = dataString.indexOf("data");
+      const dataString1 = data.substring(dataIndex);
+      const firstQuoteIndex = dataString1.indexOf('"');
+    const secondQuoteIndex = dataString1.indexOf('"', firstQuoteIndex + 1);
+    
+    if (secondQuoteIndex !== -1) {
+      dataString = dataString1.substring(secondQuoteIndex + 1); // Keep everything from the second quote onwards
+    }
+
+    const lastQuoteIndex = dataString.lastIndexOf('"');
+    
+    if (lastQuoteIndex !== -1) {
+      dataString = dataString.substring(0, lastQuoteIndex); // Keep everything up to the last quote
+    }
+    dataString = dataString.replace(/x/g, ''); // Use a regular expression to replace all "x" with an empty string
+    const dataInteger = parseInt(dataString, 10); // Convert to integer with base 10
+
+
+      console.log(`${getCurrentTimestamp()} Multiplier: ${dataString}`); // Log the multiplier
+      // Update the chart with the new multiplier
+      myChart.data.datasets[0].data.push(dataString); // Assuming you want to add the multiplier to the chart
+      myChart.update(); // Update the chart
+    }
+    // Handle other actions if necessary
+  ;
+
+
+
+
+           const dataObj = JSON.parse(data);
+            const dataArray = Object.values(dataObj);
+            console.log(dataArray);
+            index = dataArray[0] - 1;
+            myChart.data.datasets[0].data[index] = dataArray[1];
+            myChart.update();
+          };
+        </script>
+          <div id = "panel1" >
+            <div id = "panel1Head">
+              <div id = "infoHead" class = "InfoHead" style="text-align: center;">
+                <span id ="multLbl"  name = "multInfo" class = "InfoHead Label">
+   
+                </span>
+                <span style="text-align: center;"  id ="multCounter"  name = "multCounter" class = "InfoHead Counter" >
+                </span>	
+    
+              </div>	
+            </div>
+           <div id = "panel1Body" class="panel-body">
+           
+        
+            </div>	
+          </div>
+       <!--   <div class="row">
+            <div class="col-md-6">.col-md-6</div>
+            <div class="col-md-6">.col-md-6</div>
+          </div>-->
+        </div>
+        <div class="col-md-4">   
+          <div id = "balanceInfo" class = "BalanceInfo">
+          <span  id = "balanceLabel" name = "BalanceInfo" >
+            BALANCE:
+          </span>
+            <span id ="balanceCounter" name = "balanceCounter" class = "BalanceInfo Counter">
+          </span>	
+          
+        
+        </div>
+        <div id="formBet">
+          <input id="inputBet" name="formBet"  type="number" min = "0"  placeholder="BET VALUE" >
+        </div>
+        <div id="buttonBet">
+          <button id = "btnBet" name = "btnBet"  >
+          </button>
+        </div>	
+      
+      </div>
+      </div>
+
+      <hr>
+
+    </div> <!-- /container -->
+  </body>
+  <script type = "text/javascript" src = "js/script.js"></script>
+</html>

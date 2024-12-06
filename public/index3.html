@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Population in Kenya</title>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
+      crossorigin="anonymous"
+    />
+  </head>
+
+  <body>
+    <div class="container">
+        <canvas id="myChart"></canvas>
+        <button class="btn btn-primary mt-3" onclick="resetChart()">Reset Chart</button>
+      </div>
+
+    <script>
+      // Initialize WebSocket connection
+      const ws = new WebSocket('wss://crashgame2.onrender.com');
+      let popChart;
+
+      // WebSocket event handlers
+      ws.onopen = () => {
+        console.log('Connected to WebSocket server');
+      };
+
+      ws.onmessage = (event) => {
+        const newData = JSON.parse(event.data);
+        updateChart(newData);
+        console.log(newData)
+      };
+
+
+      ws.onmessage = function (message,chartContainer, testdata, testdata2) {
+    try {
+        const jsonMessage = JSON.parse(message.data);
+        switch (jsonMessage.action) {
+          case "SECOND_BEFORE_START":
+          console.log(jsonMessage.data);
+            break;
+          case "CNT_MULTIPLY":
+            multiplyStr.textContent = jsonMessage.data;
+            console.log(getCurrentTimestamp());
+            break;
+          case "CNT_BALANCE":
+          //  balanceStr.textContent = '$' 
+                                   +  (Math.trunc(jsonMessage.balance)== jsonMessage.balance ? Math.trunc(jsonMessage.balance) : parseFloat(jsonMessage.balance).toFixed(3));
+            break;
+          case "BETTED":
+            btnBet.style.opacity = "0.4";
+            btnBet.disabled = true;
+            break;
+          case "ROUND_PREPARING":
+            formBet.value = 0;
+            formBet.style.opacity = "1.0";
+            formBet.disabled = false;
+         //   chartContainer.style.opacity = "0.0";
+
+            btnBet.style.opacity = "1.0";
+            btnBet.textContent = "PLACE A BET";
+            btnBet.disabled = false;
+
+            multiplyLbl.style.color = "rgba(0, 0, 0, 0.4)";
+            multiplyLbl.style.textAlign = "center"
+            multiplyLbl.innerHTML = "<br /><br />BE READY FOR A ROUND:";
+
+            multiplyStr.style.color = "rgba(0, 0, 0, 0.4)";
+            multiplyStr.style.fontSize = "32px";
+            multiplyStr.style.textAlign = "centre"
+            multiplyStr.style.left = "-25%";
+            multiplyStr.style.position = "relative";
+            break;
+          case "ROUND_STARTED":
+            formBet.style.opacity = "0.4";
+          //  chartContainer.style.opacity = "1.0";
+            formBet.disabled = true;
+            
+            if(jsonMessage.isBetted){
+                btnBet.style.opacity = "1.0";
+                btnBet.disabled = false;
+            }else{
+                btnBet.style.opacity = "0.4";
+                btnBet.disabled = true; 
+            }
+
+            btnBet.style.background = "#882424";
+            btnBet.textContent = "     TAKE";
+
+            multiplyLbl.textContent = "";
+
+            multiplyStr.style.left = "10%";
+            multiplyStr.style.fontSize = "44px";
+            multiplyStr.style.color ="#C27500";
+            break;
+          case "ROUND_ENDS":
+            var testdata = [[23,23],[34,34]];
+            multiplyStr.style.position = "absolute";
+            multiplyStr.textContent =  'x' 
+                                    +  parseFloat(jsonMessage.totalMult).toFixed(3) 
+                                    + " - Crashed!";
+            btnBet.style.background = "#292C33";
+            btnBet.disabled = true;
+
+            multiplyStr.style.fontSize = "32px";
+            multiplyStr.style.left = "0%";
+            break;
+          case "ROUND_ENDED":
+            console.log(JSON.stringify(dataPoints));
+          resetDataPoints()
+       
+//chart.style.opacity = "0";   // Clear existing data
+            //  chartContainer.data.datasets[0].data = newData; // Assuming newData is an array of new values
+            //  chartContainer.update(); // Refresh the chart
+          
+            multiplyStr.textContent = "";
+            break;
+
+           case "WON":
+            btnBet.style.opacity = "0.4";
+            btnBet.disabled = true;
+            multiplyStr.style.left = "-30%";
+            multiplyLbl.style.color = "#00C208";
+            multiplyLbl.textContent = "YOU ARE WON: " 
+                                    + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3))   
+                                    + " x " 
+                                    + parseFloat(jsonMessage.mult).toFixed(3);
+            break;
+
+          case "LOST":
+            multiplyStr.style.position = "absolute";
+            multiplyStr.style.left = "-180px";
+            multiplyStr.style.top = "50px";
+            multiplyLbl.style.color = "#C20000";
+            multiplyLbl.textContent = "CRASHED ! YOU ARE LOST: " 
+                                    + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3)) 
+                                    + "$";
+            break;
+            
+          default:
+          //  console.log('Justin');
+            break;
+        }
+      } catch (error) {
+        console.log('Ошибка', error);
+      }
+
+};
+
+      ws.onerror = (error) => {
+        console.error('WebSocket error:', error);
+      };
+
+      ws.onclose = () => {
+        console.log('Disconnected from WebSocket server');
+      };
+
+      // Initial data for reset
+      const initialData = {
+        labels: [1, 2, 3, 4, 5],
+        data: [[4394073,3343], [1208333,23], [721082,56756], [570674,456456], [490120,4545]]
+      };
+
+      // Function to reset chart to initial values
+      function resetChart() {
+        console.log('shit')
+        if (popChart) {
+          popChart.data.labels = initialData.labels;
+          popChart.data.datasets[0].data = initialData.data;
+          popChart.update();
+        }
+      }
+
+      // Initialize the chart
+      function initChart() {
+        let myChart = document.getElementById("myChart").getContext("2d");
+
+        popChart = new Chart(myChart, {
+          type: "line",
+          data: {
+            labels: [1, 2, 3, 4,5, 6],
+            datasets: [
+               {
+                label: "Population",
+                data: [[4394073,3343], [1208333,23], [721082,56756], [570674,456456], [490120,4545],[4394073,3343], [1208333,23], [721082,56756], [570674,456456], [490120,4545]],
+                backgroundColor: ["green", "blue", "orange", "yellow", "brown"],
+                borderWidth: 1,
+                borderColor: "#777"
+              },
+            ]
+          },
+          options: {
+            plugins: {
+              title: {
+                display: true,
+                text: "Top 5 Largest Cities in Kenya",
+                fontSize: 25
+              }
+            }
+          }
+        });
+      }
+
+      // Function to update chart with new data
+      function updateChart(newData) {
+        if (popChart && newData.data) {
+          popChart.data.datasets[0].data = newData.data;
+          if (newData.labels) {
+            popChart.data.labels = newData.labels;
+          }
+          popChart.update();
+        }
+      }
+
+      // Initialize the chart when the page loads
+      initChart();
+    </script>
+  </body>
+</html>
