@@ -49,7 +49,7 @@ const sidebarItems: SidebarItems = {
     { label: 'Roadmap', href: '/roadmap', icon: Mail },
     { href: '/item/lists', icon: List, label: 'Stake', },
     { href: '/item/solana', icon: Bookmark, label: 'Solana Information',},
-    { href: '/game', icon: Users, label: 'Game',},
+    { href: '/hooked', icon: Users, label: 'Game',},
     { href: '/leaderboard', icon: User, label: 'Leaderboards', },
     /*{ href: '/map', icon: User, label: 'Maps', },*/
     { href: '/map3', icon: User, label: 'Maps', },
