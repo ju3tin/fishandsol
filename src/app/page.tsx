@@ -1,10 +1,12 @@
 // tester1/src/app/page.tsx
 "use client";
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback, } from 'react';
 import Image from 'next/image';
 import '../../styles/fonts.css';
 import '../../styles/globals.css';
 import io from 'socket.io-client';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
+
 import { useMemo } from "react";
 import {
   ConnectionProvider,
@@ -26,7 +28,37 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 const socket = io('wss://crashserver.onrender.com'); // Replace with your server URL
 
 
+
+
+
 export default function Home() {
+//Public API that will echo messages sent to it back to the client
+const [socketUrl, setSocketUrl] = useState('wss://echo.websocket.org');
+const [messageHistory, setMessageHistory] = useState<MessageEvent<any>[]>([]);
+
+const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+
+useEffect(() => {
+  if (lastMessage !== null) {
+    setMessageHistory((prev) => prev.concat(lastMessage));
+  }
+}, [lastMessage]);
+
+const handleClickChangeSocketUrl = useCallback(
+  () => setSocketUrl('wss://demos.kaazing.com/echo'),
+  []
+);
+
+const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
+
+const connectionStatus = {
+  [ReadyState.CONNECTING]: 'Connecting',
+  [ReadyState.OPEN]: 'Open',
+  [ReadyState.CLOSING]: 'Closing',
+  [ReadyState.CLOSED]: 'Closed',
+  [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+}[readyState];
+
   const [showFirstDiv, setShowFirstDiv] = useState(true);
   const videoRef = useRef<HTMLVideoElement | null>(null);
     // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
