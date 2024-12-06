@@ -4,21 +4,6 @@ myWs.onopen = function () {
 };
 
 
-var dataPoints = [];
-      
-var chart = new CanvasJS.Chart("chartContainer", {
-  theme: "light2",
-  title: {
-    text: "Hooked"
-  },
-  backgroundColor: "rgba(255, 255, 255, .0)",
-  data: [{
-    type: "line",
-    dataPoints: dataPoints
-  }]
-});
-updateData();
-
 // Initial Values
 var xValue = 0;
 var yValue = 1;
