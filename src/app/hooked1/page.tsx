@@ -121,7 +121,27 @@ export default function WebSocketExample() {
         </thead>
         <tbody>
           <tr>
-            <td>Data 1</td>
+            <td> {/* Chat Component */}
+      <div className="chat-container">
+        <div className="chat-messages">
+          {chatMessages.map((msg, index) => (
+            <div key={index} className="chat-message">
+              <span className="timestamp">{msg.timestamp}</span>
+              <span className="message">{msg.text}</span>
+            </div>
+          ))}
+        </div>
+        <div className="chat-input">
+          <input
+            type="text"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
+            placeholder="Type a message..."
+          />
+          <button onClick={handleSendMessage}>Send</button>
+        </div>
+      </div></td>
             <td> <Line data={chartData}  options={options}  /> {/* Render the Line chart */}
             
             
@@ -149,34 +169,14 @@ export default function WebSocketExample() {
         </tbody>
       </table>
 
-      {/* Chat Component */}
-      <div className="chat-container">
-        <div className="chat-messages">
-          {chatMessages.map((msg, index) => (
-            <div key={index} className="chat-message">
-              <span className="timestamp">{msg.timestamp}</span>
-              <span className="message">{msg.text}</span>
-            </div>
-          ))}
-        </div>
-        <div className="chat-input">
-          <input
-            type="text"
-            value={inputMessage}
-            onChange={(e) => setInputMessage(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-            placeholder="Type a message..."
-          />
-          <button onClick={handleSendMessage}>Send</button>
-        </div>
-      </div>
+     
 
-      {/* Add some basic styles */}
+      {/* margin: 20px;  Add some basic styles */}
       <style jsx>{`
         .chat-container {
           border: 1px solid #ccc;
           border-radius: 4px;
-          margin: 20px;
+         
           max-width: 500px;
         }
         .chat-messages {
