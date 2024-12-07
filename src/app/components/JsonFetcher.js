@@ -31,7 +31,7 @@ const JsonFetcher = ({ url }) => {
   return (
     <div>
       <h2>Fetched Data</h2>
-      <pre>{data.name}
+      <pre>{data.name}{data.data}
         {JSON.stringify(data, null, 2)}</pre>
     </div>
   );
