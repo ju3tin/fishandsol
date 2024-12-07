@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: 'Chippy',
   description: 'Play and Earn with Our New Game Hooked',
   openGraph: {
-    images: ["https://fishandsol.vercel.app/images/logo2.jpg"],
+    images: ["https://fishandsol.vercel.app/images/logo3.png"],
     url: "https://fishandsol.vercel.app",
   }
 };
