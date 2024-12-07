@@ -32,7 +32,7 @@ export default function WebSocketExample() {
     // Fetch messages from MongoDB
     const fetchMessages = async () => {
       try {
-        const response = await fetch('/api/messages');
+        const response = await fetch('/api');
         const data = await response.json();
         if (data.success) {
           setMongoMessages(data.data);
@@ -139,7 +139,7 @@ export default function WebSocketExample() {
         <h3>Stored Messages</h3>
         {mongoMessages.map((msg, index) => (
           <div key={index} className="mongo-message">
-            <span>{msg.text}</span>
+            <span>{msg.content}</span>
             <span className="timestamp">{new Date(msg.timestamp).toLocaleString()}</span>
           </div>
         ))}
