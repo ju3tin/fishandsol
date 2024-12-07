@@ -11,6 +11,7 @@ import {   Chart as ChartJS,
     Title,
     Tooltip,
     Legend,} from 'chart.js';
+import axios from 'axios';
 
 // Register the necessary components for line chart
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -27,6 +28,18 @@ export default function WebSocketExample() {
   const [isLineGraphVisible, setIsLineGraphVisible] = useState(true);
 
   useEffect(() => {
+    // Fetch messages from MongoDB
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.get('/api/messages');
+        console.log(response.data);
+      } catch (error) {
+        console.error('Error fetching messages:', error);
+      }
+    };
+
+    fetchMessages();
+
     // Only runs on the client
     const socket = new WebSocket('wss://crashserver.onrender.com');
     // ... existing code ...
