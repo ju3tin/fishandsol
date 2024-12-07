@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import '../../../styles/fonts.css';
 import '../../../styles/globals.css';
+import JsonFetcher from "../components/JsonFetcher";
 import { Line } from 'react-chartjs-2';
 import {   Chart as ChartJS,
     CategoryScale,
@@ -12,13 +13,25 @@ import {   Chart as ChartJS,
     Tooltip,
     Legend,} from 'chart.js';
 import axios from 'axios';
+// Axios Interceptor Instance
+const AxiosInstance = axios.create({
+  baseURL: process.env.BASE_URL
+});
 
 // Register the necessary components for line chart
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-
+const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) => (
+  <div className="chat-message">
+    <span className="timestamp">{timestamp}</span>
+    <span className="message">{text}</span>
+  </div>
+);
 
 export default function WebSocketExample() {
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
   const [message, setMessage] = useState('');
   const [ws, setWs] = useState<WebSocket | null>(null);
   const [betAmount, setBetAmount] = useState(100);
@@ -27,8 +40,10 @@ export default function WebSocketExample() {
   const [inputMessage, setInputMessage] = useState('');
   const [isLineGraphVisible, setIsLineGraphVisible] = useState(true);
   const [mongoMessages, setMongoMessages] = useState<Array<any>>([]);
+  const [apiData, setApiData] = useState<any[]>([]);
 
   useEffect(() => {
+    console.log('whats the coming to');
     // Fetch messages from MongoDB
     const fetchMessages = async () => {
       try {
@@ -36,24 +51,33 @@ export default function WebSocketExample() {
         const data = await response.json();
         if (data.success) {
           setMongoMessages(data.data);
+          setApiData(data.data);
+          setChatMessages(data.chatMessages || []);
           console.log(data);
+          console.log('what the fuck');
         }
       } catch (error) {
         console.error('Error fetching messages:', error);
       }
     };
 
-    fetchMessages();
+    
 
     // Only runs on the client
+
+   // const socket1 = new WebSocket('/api');
+   
+   fetchMessages();
     const socket = new WebSocket('wss://crashserver.onrender.com');
     // ... existing code ...
-    const socket1 = new WebSocket('ws://localhost:8080'); // Updated WebSocket URL
+ //   const socket1 = new WebSocket('ws://localhost:8080'); // Updated WebSocket URL
 // ... existing code ...
+
 
     socket.onopen = () => {
       console.log('Connected to WebSocket server');
       socket.send(JSON.stringify({ message: 'Hello Server!' }));
+     
     };
 
     socket.onmessage = (event) => {
@@ -138,10 +162,30 @@ export default function WebSocketExample() {
       {/* Add MongoDB Messages Display */}
       <div className="mongo-messages">
         <h3>Stored Messages</h3>
-        {mongoMessages.map((msg, index) => (
-          <div key={index} className="mongo-message">
-            <span>{msg.content}</span>
-            <span className="timestamp">{new Date(msg.timestamp).toLocaleString()}</span>
+        <div>
+    {/* Display API Data */}
+    <JsonFetcher url="/api" />
+
+    <div className="api-data">
+    
+    </div>
+
+    {/* Display Chat Messages */}
+   
+
+    {/* ... existing code ... */}
+  </div>
+
+       
+      </div>
+
+      {/* Display API Data */}
+      <div className="api-data">
+        <h3>API Data</h3>
+        {apiData.map((item, index) => (
+          <div key={index} className="api-item">
+            <h4>{item.title}</h4>
+            <p>{item.message}</p>
           </div>
         ))}
       </div>
@@ -161,10 +205,7 @@ export default function WebSocketExample() {
       <div className="chat-container">
         <div className="chat-messages">
           {chatMessages.map((msg, index) => (
-            <div key={index} className="chat-message">
-              <span className="timestamp">{msg.timestamp}</span>
-              <span className="message">{msg.text}</span>
-            </div>
+            <ChatMessage key={index} timestamp={msg.timestamp} text={msg.text} />
           ))}
         </div>
         <div className="chat-input">
