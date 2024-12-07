@@ -36,6 +36,7 @@ export default function WebSocketExample() {
         const data = await response.json();
         if (data.success) {
           setMongoMessages(data.data);
+          console.log(data);
         }
       } catch (error) {
         console.error('Error fetching messages:', error);
