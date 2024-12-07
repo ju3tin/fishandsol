@@ -42,7 +42,8 @@ export default function WebSocketExample() {
       const timestamp = new Date().toLocaleTimeString();
       setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
 
-      if (event.data === 'CNT_MULTIPLY') {
+      if (event.data.includes('CNT_MULTIPLY')) {
+     // if (event.data === 'CNT_MULTIPLY') {
         setIsButtonDisabled(true);
       } else {
         setIsButtonDisabled(false);
