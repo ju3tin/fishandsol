@@ -98,7 +98,7 @@ export default function WebSocketExample() {
     plugins: {
       tooltip: {
         callbacks: {
-          label: function (context) {
+          label: function (context: { raw: number }) {
             // Customize tooltip to only show the value
             return `Value: ${context.raw}`;
           },
