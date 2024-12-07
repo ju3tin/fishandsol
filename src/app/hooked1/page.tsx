@@ -111,7 +111,7 @@ export default function WebSocketExample() {
   return (
     <div>
       {/* Full Width Table */}
-      <table className="full-width-table">
+      <table style={{ padding: '0 !important' }} className="full-width-table">
         <thead>
           <tr>
             <th>Column 1</th>
