@@ -98,14 +98,13 @@ export default function WebSocketExample() {
     plugins: {
       tooltip: {
         callbacks: {
-          label: function (context: { raw: number }) {
-            // Customize tooltip to only show the value
-            return `Value: ${context.raw}`;
+          label: function(tooltipItem: { raw: unknown }) {
+            return `Value: ${tooltipItem.raw}`;
           },
         },
       },
       legend: {
-        display: false, // Disable legend
+        display: false,
       },
     },
   };
