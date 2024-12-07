@@ -27,7 +27,7 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 
 const socket = io('wss://crashserver.onrender.com'); // Replace with your server URL
 
-
+import Head from 'next/head';
 
 
 
@@ -92,7 +92,22 @@ const connectionStatus = {
   }, []);
 
   return (
+    
     <div>
+      <Head>
+                <title>My Awesome Website</title>
+                <meta name="description" content="Welcome to my awesome website!" />
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+                <meta name="robots" content="index, follow" />
+                <meta property="og:title" content="My Awesome Website" />
+                <meta property="og:description" content="Discover amazing content on my website." />
+                <meta property="og:image" content="https://example.com/image.jpg" />
+                <meta property="og:url" content="https://example.com" />
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content="My Awesome Website" />
+                <meta name="twitter:description" content="Explore the wonders of my site!" />
+                <meta name="twitter:image" content="https://example.com/image.jpg" />
+            </Head>
     <div style={{ position: 'relative',width:'120%', height: '100vh', top: '-40px', right: '10px', zIndex: '-20' }}>
       <video
         ref={videoRef}
