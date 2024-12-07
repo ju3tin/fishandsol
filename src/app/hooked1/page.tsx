@@ -26,13 +26,17 @@ export default function WebSocketExample() {
   const [chatMessages, setChatMessages] = useState<Array<{ text: string; timestamp: string }>>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLineGraphVisible, setIsLineGraphVisible] = useState(true);
+  const [mongoMessages, setMongoMessages] = useState<Array<any>>([]);
 
   useEffect(() => {
     // Fetch messages from MongoDB
     const fetchMessages = async () => {
       try {
-        const response = await axios.get('/api/messages');
-        console.log(response.data);
+        const response = await fetch('/api/messages');
+        const data = await response.json();
+        if (data.success) {
+          setMongoMessages(data.data);
+        }
       } catch (error) {
         console.error('Error fetching messages:', error);
       }
@@ -130,6 +134,17 @@ export default function WebSocketExample() {
   };
   return (
     <div>
+      {/* Add MongoDB Messages Display */}
+      <div className="mongo-messages">
+        <h3>Stored Messages</h3>
+        {mongoMessages.map((msg, index) => (
+          <div key={index} className="mongo-message">
+            <span>{msg.text}</span>
+            <span className="timestamp">{new Date(msg.timestamp).toLocaleString()}</span>
+          </div>
+        ))}
+      </div>
+
       {/* Full Width Table */}
       <table style={{ padding: '0 !important' }} className="full-width-table">
         <thead>
@@ -224,6 +239,16 @@ export default function WebSocketExample() {
         }
         .chat-input button {
           padding: 5px 15px;
+        }
+        .mongo-messages {
+          margin: 20px;
+          padding: 15px;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+        }
+        .mongo-message {
+          padding: 8px;
+          border-bottom: 1px solid #eee;
         }
       `}</style>
     </div>

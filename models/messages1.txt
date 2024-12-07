@@ -1,0 +1,18 @@
+import mongoose from 'mongoose';
+
+// Define the message schema
+const messageSchema = new mongoose.Schema({
+  text: {
+    type: String,
+    required: true
+  },
+  timestamp: {
+    type: Date,
+    default: Date.now
+  }
+});
+
+// Check if the model exists before creating it
+const Message = mongoose.models.Message || mongoose.model('Message', messageSchema);
+
+export default Message;
