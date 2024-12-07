@@ -16,7 +16,34 @@ import {   Chart as ChartJS,
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 
+import io, { Socket } from 'socket.io-client';
 
+let socket: Socket;
+const Home = () => {
+  const [message, setMessage] = useState<string>('');
+  const [messages, setMessages] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Connect to Socket.IO
+    socket = io();
+
+    // Listen for incoming messages
+    socket.on('chat message', (msg: string) => {
+      setMessages((prev) => [...prev, msg]);
+    });
+
+    return () => {
+      socket.disconnect(); // Cleanup on component unmount
+    };
+  }, []);
+
+  const sendMessage = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (message.trim()) {
+      socket.emit('chat message', message);
+      setMessage('');
+    }
+  };}
 export default function WebSocketExample() {
   const [message, setMessage] = useState('');
   const [ws, setWs] = useState<WebSocket | null>(null);
