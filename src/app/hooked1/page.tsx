@@ -24,6 +24,7 @@ export default function WebSocketExample() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{ text: string; timestamp: string }>>([]);
   const [inputMessage, setInputMessage] = useState('');
+  const [isLineGraphVisible, setIsLineGraphVisible] = useState(true);
 
   useEffect(() => {
     // Only runs on the client
@@ -43,13 +44,15 @@ export default function WebSocketExample() {
       setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
 
       if (event.data.includes('CNT_MULTIPLY')) {
-     // if (event.data === 'CNT_MULTIPLY') {
         setIsButtonDisabled(true);
+        setIsLineGraphVisible(true);
       } else {
         setIsButtonDisabled(false);
+        setIsLineGraphVisible(false);
       }
     };
 
+   
     socket.onclose = () => {
       console.log('Disconnected from WebSocket server');
     };
@@ -143,7 +146,7 @@ export default function WebSocketExample() {
           <button onClick={handleSendMessage}>Send</button>
         </div>
       </div></td>
-            <td> <Line data={chartData}  options={options}  /> {/* Render the Line chart */}
+            <td><span id="linegraph" style={{ display: isLineGraphVisible ? 'block' : 'none' }}> <Line data={chartData} options={options} /> </span>{/* Render the Line chart */}
             
             
       <h1>WebSocket Client</h1>
