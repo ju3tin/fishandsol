@@ -31,8 +31,15 @@ const JsonFetcher = ({ url }) => {
   return (
     <div>
       <h2>Fetched Data</h2>
-      <pre>{data.name}{data.data}
-        {JSON.stringify(data, null, 2)}</pre>
+      <pre>
+      
+
+      {data.data.map((item, index) => (
+        <div key={index}>
+          {JSON.stringify(item.message)}
+        </div>
+      ))}
+      </pre>
     </div>
   );
 };
