@@ -164,7 +164,7 @@ export default function WebSocketExample() {
         <h3>Stored Messages</h3>
         <div>
     {/* Display API Data */}
-    <JsonFetcher url="/api" />
+ 
 
     <div className="api-data">
     
@@ -204,6 +204,7 @@ export default function WebSocketExample() {
             <td> {/* Chat Component */}
       <div className="chat-container">
         <div className="chat-messages">
+        <JsonFetcher url="/api" />
           {chatMessages.map((msg, index) => (
             <ChatMessage key={index} timestamp={msg.timestamp} text={msg.text} />
           ))}
