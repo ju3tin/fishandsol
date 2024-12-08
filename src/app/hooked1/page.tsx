@@ -125,17 +125,18 @@ export default function WebSocketExample() {
   };
 
   const chartData = {
-    labels: ['1s', '2s', '3s', '4s', '5s'],
+   // labels: ['1s', '2s', '3s', '4s', '5s'],
     datasets: [{
       label: '', // Remove dataset label
-      data:  [{ x: 344423, y: 456456546456},
-      { x: 23, y: 34},
-      { x: 56, y: Math.random() * 0.5 + 23.5 },
-      { x: 200, y: Math.random() * 0.5 + 23.5 },
-      { x: 2450, y: Math.random() * 0.5 + 23.5 },
-      { x: new Date(2019, 0, 1, 14, 1, 23, 0), y: Math.random() * 0.5 + 23.5 },
-      { x: new Date(2019, 0, 1, 14, 1, 24, 0), y: Math.random() * 0.5 + 23.5 },
-      { x: new Date(2019, 0, 1, 14, 1, 25, 0), y: Math.random() * 0.5 + 23.5 }],
+      data:  [
+      { x: 56, y: 0 },
+      { x: 23, y: 15 },
+      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 }],
       borderColor: '#FF2D00',
       tension: 0.4,
       pointRadius: 0,
@@ -144,6 +145,15 @@ export default function WebSocketExample() {
   
   const options = {
     responsive: true,
+    scales: {
+      x: {
+        type: 'linear' as const,
+        position: 'bottom' as const,
+      },
+      y: {
+        beginAtZero: true,
+      },
+    },
     plugins: {
       tooltip: {
         callbacks: {
