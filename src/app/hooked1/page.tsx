@@ -34,7 +34,7 @@ export default function WebSocketExample() {
 
   const [message, setMessage] = useState('');
   const [ws, setWs] = useState<WebSocket | null>(null);
-  const [betAmount, setBetAmount] = useState(100);
+  const [betAmount, setBetAmount] = useState<number>(0);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [chatMessages, setChatMessages] = useState<Array<{ text: string; timestamp: string }>>([]);
   const [inputMessage, setInputMessage] = useState('');
@@ -178,8 +178,10 @@ export default function WebSocketExample() {
         <div className="chat-messages">
         <JsonFetcher url="/api" />
           {chatMessages.map((msg, index) => (
+            
             <ChatMessage key={index} timestamp={msg.timestamp} text={msg.text} />
-          ))}
+      
+      ))}
         </div>
         <div className="chat-input">
           <input
