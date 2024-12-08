@@ -187,11 +187,15 @@ export default function WebSocketExample() {
       <div className="chat-container">
         <div className="chat-messages">
         <JsonFetcher url="/api" />
-          {chatMessages.map((msg, index) => (
-            
-            <ChatMessage key={index} timestamp={msg.timestamp} text={msg.text} />
-      
-      ))}
+          {chatMessages.map((msg, index) => {
+            // Check if the message is an object and has the action CNT_MULTIPLY
+            const messageData = typeof msg.text === 'string' ? JSON.parse(msg.text) : msg.text;
+            const displayText = messageData.action === 'CNT_MULTIPLY' ? messageData.data : null;
+
+            return displayText ? (
+              <ChatMessage key={index} timestamp={msg.timestamp} text={displayText} />
+            ) : null; // Return null for messages that do not match
+          })}
         </div>
         <div className="chat-input">
           <input
