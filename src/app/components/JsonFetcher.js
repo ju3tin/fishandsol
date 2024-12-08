@@ -30,7 +30,7 @@ const JsonFetcher = ({ url }) => {
 
   return (
     <div>
-       {data.data.map((item, index) => (
+       {data.data.map((item, index) => ( 
         <div key={index}>
           {item.user} {item.message}
         </div>
