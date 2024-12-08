@@ -160,35 +160,7 @@ export default function WebSocketExample() {
   return (
     <div>
       {/* Add MongoDB Messages Display */}
-      <div className="mongo-messages">
-        <h3>Stored Messages</h3>
-        <div>
-    {/* Display API Data */}
- 
-
-    <div className="api-data">
-    
-    </div>
-
-    {/* Display Chat Messages */}
-   
-
-    {/* ... existing code ... */}
-  </div>
-
-       
-      </div>
-
-      {/* Display API Data */}
-      <div className="api-data">
-        <h3>API Data</h3>
-        {apiData.map((item, index) => (
-          <div key={index} className="api-item">
-            <h4>{item.title}</h4>
-            <p>{item.message}</p>
-          </div>
-        ))}
-      </div>
+      
 
       {/* Full Width Table */}
       <table style={{ padding: '0 !important' }} className="full-width-table">
