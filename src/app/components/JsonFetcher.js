@@ -30,7 +30,6 @@ const JsonFetcher = ({ url }) => {
 
   return (
     <div>
-      <h2>Fetched Data</h2>
       <pre>
       
 
