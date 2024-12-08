@@ -32,7 +32,7 @@ const JsonFetcher = ({ url }) => {
     <div>
        {data.data.map((item, index) => ( 
         <div key={index}>
-          {item.user} {item.message}
+         {new Date(item.timestamp).toLocaleTimeString()} {item.user} {item.message}
         </div>
       ))}
     </div>
