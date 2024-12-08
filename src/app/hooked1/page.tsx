@@ -164,7 +164,7 @@ export default function WebSocketExample() {
 
       {/* Full Width Table */}
       <table style={{ padding: '0 !important' }} className="full-width-table">
-        <thead>
+        <thead style={{display: 'none'}}>
           <tr>
             <th>Column 1</th>
             <th>Column 2</th>
