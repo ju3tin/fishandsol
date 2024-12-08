@@ -36,7 +36,7 @@ const JsonFetcher = ({ url }) => {
         </div>
       ))}
     </div>
-  );
+  ); 
 };
 
 export default JsonFetcher;
