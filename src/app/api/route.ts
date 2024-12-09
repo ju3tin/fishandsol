@@ -13,14 +13,14 @@ const cors = initMiddleware(
         methods: ["GET", "POST"], // Allow these methods
     })
 );
-
+/*
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    // Run the middleware
     await cors(req, res);
 
-    // Your API logic here
     res.status(200).json({ message: "Hello, this is working!" });
 }
+
+*/
 // GET /api/messages
 export async function GET(req: Request) {
 	try {
