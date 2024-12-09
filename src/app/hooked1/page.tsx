@@ -250,7 +250,7 @@ export default function WebSocketExample() {
             </td>
             <td> <input 
         type="number" 
-        value={betAmount} 
+        value={betAmount}  
         onChange={(e) => setBetAmount(Number(e.target.value))}
         min="0" 
         className="bet-input" 
