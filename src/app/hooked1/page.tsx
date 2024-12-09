@@ -213,8 +213,16 @@ export default function WebSocketExample() {
                 <Line data={chartData} options={options} />
               </span>{/* Render the Line chart */}
               
-              <h1>WebSocket Client</h1>
-              <p style={{color: 'black'}}>Message from server: {message}</p>
+           
+              {/* Check if message is not an array with action CNT_MULTIPLY */}
+              {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? null : (
+                <div>
+                  <h1>Web server</h1>
+                  {typeof message === 'string' && message.includes("SECOND_BEFORE_START") ? (
+                    <p style={{color: 'black'}}>Message from server: {message}</p>
+                  ) : null}
+                </div>
+              )}
             </td>
             <td> <input 
         type="number" 
