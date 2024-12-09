@@ -244,7 +244,6 @@ export default function WebSocketExample() {
                    <p style={{color: 'black'}}>
                    Round Crash At<br /> 
                    {dude34}
-                   {JSON.parse(message).data}
                  </p>
                    ) :null}
                 </div>
