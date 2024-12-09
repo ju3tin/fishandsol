@@ -41,6 +41,7 @@ export default function WebSocketExample() {
   const [isLineGraphVisible, setIsLineGraphVisible] = useState(true);
   const [mongoMessages, setMongoMessages] = useState<Array<any>>([]);
   const [apiData, setApiData] = useState<any[]>([]);
+  const [dude34, setDude34] = useState<any>(null);
 
   useEffect(() => {
     console.log('whats the coming to');
@@ -61,7 +62,7 @@ export default function WebSocketExample() {
       }
     };
 
-    
+    let dude34
 
     // Only runs on the client
 
@@ -95,6 +96,10 @@ export default function WebSocketExample() {
         setIsButtonDisabled(false);
         setIsLineGraphVisible(false);
       }
+
+      // Store the value of dude34 in state
+      const messageData = typeof event.data.text === 'string' ? JSON.parse(event.data.text) : event.data.text;
+      setDude34(messageData.data);
     };
 
    
@@ -188,10 +193,11 @@ export default function WebSocketExample() {
         <div className="chat-messages">
         <JsonFetcher url="/api" />
           {chatMessages.map((msg, index) => {
+            
             // Check if the message is an object and has the action CNT_MULTIPLY
             const messageData = typeof msg.text === 'string' ? JSON.parse(msg.text) : msg.text;
             const displayText = messageData.action === 'CNT_MULTIPLY' ? messageData.data : null;
-
+            let dude34 = messageData.data;
             return displayText ? (
               <ChatMessage key={index} timestamp={msg.timestamp} text={displayText} />
             ) : null; // Return null for messages that do not match
@@ -235,6 +241,7 @@ export default function WebSocketExample() {
 
                    <p style={{color: 'black'}}>
                    Round Crash At<br /> 
+                   {dude34}
                    {JSON.parse(message).data}
                  </p>
                    ) :null}
