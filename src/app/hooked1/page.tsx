@@ -219,7 +219,7 @@ export default function WebSocketExample() {
                 <div>
                   <h1>Web server</h1>
                   {typeof message === 'string' && message.includes("SECOND_BEFORE_START") ? (
-                    <p style={{color: 'black'}}>Message from server: {message}</p>
+                    <p style={{color: 'black'}}>BE READY FOR A ROUND:<br /> {message}</p>
                   ) : null}
                 </div>
               )}
