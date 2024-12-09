@@ -98,8 +98,10 @@ export default function WebSocketExample() {
       }
 
       // Store the value of dude34 in state
-      const messageData = typeof event.data.text === 'string' ? JSON.parse(event.data.text) : event.data.text;
-      setDude34(event.data.totalMult);
+      const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+      if (messageData.action === 'ROUND_ENDS') {
+        setDude34(messageData.totalMult); // Set only the totalMult value
+      }
     };
 
    
