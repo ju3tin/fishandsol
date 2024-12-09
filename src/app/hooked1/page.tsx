@@ -229,6 +229,15 @@ export default function WebSocketExample() {
                     </p>
                   ) : null}
                    
+
+                   {typeof message === 'string' && message.includes("totalMult") ? (
+
+
+                   <p style={{color: 'black'}}>
+                   Round Crash At<br /> 
+                   {JSON.parse(message).data}
+                 </p>
+                   ) :null}
                 </div>
               )}
             </td>
