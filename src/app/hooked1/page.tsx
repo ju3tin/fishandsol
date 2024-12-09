@@ -208,13 +208,13 @@ export default function WebSocketExample() {
           <button onClick={handleSendMessage}>Send</button>
         </div>
       </div></td>
-            <td><span id="linegraph" style={{ display: isLineGraphVisible ? 'block' : 'none' }}> <Line data={chartData} options={options} /> </span>{/* Render the Line chart */}
-            
-            
-      <h1>WebSocket Client</h1>
-      <p>Message from server: {message}</p>
-     
-
+            <td style={{ backgroundImage: 'url(/images/water.png)', textAlign: 'center' }}>
+              <span id="linegraph" style={{ display: isLineGraphVisible ? 'block' : 'none' }}>
+                <Line data={chartData} options={options} />
+              </span>{/* Render the Line chart */}
+              
+              <h1>WebSocket Client</h1>
+              <p style={{color: 'black'}}>Message from server: {message}</p>
             </td>
             <td> <input 
         type="number" 
