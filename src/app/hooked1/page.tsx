@@ -218,8 +218,12 @@ export default function WebSocketExample() {
               {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? null : (
                 <div>
                   <h1>Web server</h1>
+                  
                   {typeof message === 'string' && message.includes("SECOND_BEFORE_START") ? (
-                    <p style={{color: 'black'}}>BE READY FOR A ROUND:<br /> {message}</p>
+                    <p style={{color: 'black'}}>
+                      BE READY FOR A ROUND:<br /> 
+                      {JSON.parse(message).data}
+                    </p>
                   ) : null}
                 </div>
               )}
