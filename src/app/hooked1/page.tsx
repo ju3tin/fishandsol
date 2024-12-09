@@ -12,11 +12,11 @@ import {   Chart as ChartJS,
     Title,
     Tooltip,
     Legend,} from 'chart.js';
-import axios from 'axios';
+//import axios from 'axios';
 // Axios Interceptor Instance
-const AxiosInstance = axios.create({
-  baseURL: process.env.BASE_URL
-});
+//const AxiosInstance = axios.create({
+//  baseURL: process.env.BASE_URL
+//});
 
 // Register the necessary components for line chart
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
@@ -62,7 +62,7 @@ export default function WebSocketExample() {
       }
     };
 
-    let dude34
+   // let dude34
 
     // Only runs on the client
 
