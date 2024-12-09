@@ -217,11 +217,15 @@ export default function WebSocketExample() {
               {/* Check if message is not an array with action CNT_MULTIPLY */}
               {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? null : (
                 <div>
-                  <h1>Web server</h1>
-                  
                   {typeof message === 'string' && message.includes("SECOND_BEFORE_START") ? (
                     <p style={{color: 'black'}}>
                       BE READY FOR A ROUND:<br /> 
+                      {JSON.parse(message).data}
+                    </p>
+                  ) : null}
+                    {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? (
+                    <p style={{color: 'black'}}>
+                     
                       {JSON.parse(message).data}
                     </p>
                   ) : null}
