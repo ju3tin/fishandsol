@@ -213,7 +213,12 @@ export default function WebSocketExample() {
                 <Line data={chartData} options={options} />
               </span>{/* Render the Line chart */}
               
-           
+              {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? (
+                    <p style={{color: 'black'}}>
+                     
+                      {JSON.parse(message).data}
+                    </p>
+                  ) : null}
               {/* Check if message is not an array with action CNT_MULTIPLY */}
               {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? null : (
                 <div>
@@ -223,12 +228,7 @@ export default function WebSocketExample() {
                       {JSON.parse(message).data}
                     </p>
                   ) : null}
-                    {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? (
-                    <p style={{color: 'black'}}>
-                     
-                      {JSON.parse(message).data}
-                    </p>
-                  ) : null}
+                   
                 </div>
               )}
             </td>
