@@ -157,7 +157,7 @@ export default function WebSocketExample() {
           const numericValue = parseFloat(input.replace("x", ""));
           console.log(`CNT_MULTIPLY action received with data: ${numericValue}`);
           const currentTimestamp = new Date(); // Get the current timestamp for each CNT_MULTIPLY
-          const timeDiff = (currentTimestamp.getTime() - dude45) / 1000; // Calculate difference in seconds
+          const timeDiff = (currentTimestamp.getTime() - 0) / 1000; // Calculate difference in seconds
           console.log('Time since round started for CNT_MULTIPLY:', timeDiff, 'seconds');
 
           // Reset chart data with x as numericValue and y as timeDiff
