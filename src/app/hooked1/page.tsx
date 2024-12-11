@@ -199,7 +199,7 @@ export default function WebSocketExample() {
 
           case "LOST":
             if(MessageLost.current){
-              MessageLost.current.style.opacity = "0";
+              MessageLost.current.style.opacity = "1";
               MessageLost.current.style.color = "black";
               MessageLost.current.textContent = `CRASHED! YOU ARE LOST: ${message1.bet}$`; // Set the message content
             }
