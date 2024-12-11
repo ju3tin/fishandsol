@@ -32,9 +32,9 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 );
 
 // Define roundStartTimestamp as a global variable
-let roundStartTimestamp: Date | null = null; // Initialize as null
 
 export default function WebSocketExample() {
+  const roundStartTimestamp: Date | null = null; // Initialize as null
 
  // const balanceLbl = document.getElementById("balanceLabel"); 
 //const balanceStr = document.getElementById("balanceCounter");
@@ -113,37 +113,12 @@ export default function WebSocketExample() {
       setMessage(event.data);
 
       // Add message to chat
-      const roundStartTimestamp = new Date(); // Store the current timestamp globally
+      let roundStartTimestamp; // Store the current timestamp globally
       const timestamp = new Date().toLocaleTimeString();
       setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
       const message1 = JSON.parse(event.data);
       switch (message1.action) {
-        case 'CNT_MULTIPLY':
-          // Handle CNT_MULTIPLY action
-          setIsButtonDisabled(true);
-          setIsLineGraphVisible(true);
-          console.log("this is good" + roundStartTimestamp);
-          const numericData = (message1.data.slice(2), 10); // Remove first character and convert to integer
-          const input = message1.data;
-          const numericValue = parseFloat(input.replace("x", ""));
-          console.log(`CNT_MULTIPLY action received with data: ${numericValue}`);
-          const currentTimestamp = new Date(); // Get the current timestamp for each CNT_MULTIPLY
-          const timeDiff = (currentTimestamp.getTime() - roundStartTimestamp.getTime()) / 1000; // Calculate difference in seconds
-          console.log('Time since round started for CNT_MULTIPLY:', timeDiff, 'seconds');
 
-          // Reset chart data with x as numericValue and y as timeDiff
-          setChartData({
-            datasets: [{
-              label: '', // Remove dataset label
-              data: [
-               {x:0, y:0}, { x: numericValue, y: timeDiff }
-              ], // Set x to input and y to timeDiff
-              borderColor: '#FF2D00',
-              tension: 0.4,
-              pointRadius: 0,
-            }],
-          });
-          break;
         case 'ROUND_ENDS':
         //  setDude34(message.totalMult);
         setIsButtonDisabled(false);
@@ -169,6 +144,34 @@ export default function WebSocketExample() {
           // Store the round start timestamp in state if needed
          // setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
        
+          break;
+          
+        case 'CNT_MULTIPLY':
+          // Handle CNT_MULTIPLY action
+          setIsButtonDisabled(true);
+          setIsLineGraphVisible(true);
+          console.log("this is good" + roundStartTimestamp);
+          const dude45 = roundStartTimestamp;
+          const numericData = (message1.data.slice(2), 10); // Remove first character and convert to integer
+          const input = message1.data;
+          const numericValue = parseFloat(input.replace("x", ""));
+          console.log(`CNT_MULTIPLY action received with data: ${numericValue}`);
+          const currentTimestamp = new Date(); // Get the current timestamp for each CNT_MULTIPLY
+          const timeDiff = (currentTimestamp.getTime() - dude45) / 1000; // Calculate difference in seconds
+          console.log('Time since round started for CNT_MULTIPLY:', timeDiff, 'seconds');
+
+          // Reset chart data with x as numericValue and y as timeDiff
+          setChartData({
+            datasets: [{
+              label: '', // Remove dataset label
+              data: [
+               {x:0, y:0}, { x: numericValue, y: timeDiff }
+              ], // Set x to input and y to timeDiff
+              borderColor: '#FF2D00',
+              tension: 0.4,
+              pointRadius: 0,
+            }],
+          });
           break;
           case "WON":
             if (btnBetRef.current) {
