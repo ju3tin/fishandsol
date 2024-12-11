@@ -105,8 +105,12 @@ export default function WebSocketExample() {
       switch (message1.action) {
         case 'CNT_MULTIPLY':
           // Handle CNT_MULTIPLY action
-          
+          console.log("this is good"+roundStartTimestamp)
           console.log(`CNT_MULTIPLY action received with data: ${message1.data}`);
+          const currentTimestamp = new Date(); // Get the current timestamp for each CNT_MULTIPLY
+          const timeDiff = (currentTimestamp.getTime() - roundStartTimestamp.getTime()) / 1000; // Calculate difference in seconds
+          console.log('Time since round started for CNT_MULTIPLY:', timeDiff, 'seconds'); // Log the time difference
+      
           break;
         case 'ROUND_ENDS':
         //  setDude34(message.totalMult);
