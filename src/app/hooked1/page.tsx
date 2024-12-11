@@ -42,6 +42,7 @@ export default function WebSocketExample() {
   const [mongoMessages, setMongoMessages] = useState<Array<any>>([]);
   const [apiData, setApiData] = useState<any[]>([]);
   const [dude34, setDude34] = useState<any>(null);
+  const [roundStartTimestamp, setRoundStartTimestamp] = useState<Date | null>(null);
 
   useEffect(() => {
     console.log('whats the coming to');
@@ -89,6 +90,23 @@ export default function WebSocketExample() {
       // Add message to chat
       const timestamp = new Date().toLocaleTimeString();
       setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
+
+      if (messageData.action === 'ROUND_STARTED') {
+        const roundStartTimestamp = new Date(); // Store the current timestamp
+        console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
+
+        // Store the round start timestamp in state if needed
+        setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
+      }
+
+      // When you receive a new timestamp
+      const newTimestamp = new Date(); // Get the new timestamp
+      if (roundStartTimestamp) { // Check if roundStartTimestamp is not null
+        const timeDifference = (newTimestamp.getTime() - roundStartTimestamp.getTime()) / 1000; // Calculate difference in seconds
+        console.log('Time since round started:', timeDifference, 'seconds');
+      } else {
+        console.log('Round has not started yet.'); // Log if round has not started
+      }
 
       if (messageData.action === 'CNT_MULTIPLY') {
         setIsButtonDisabled(true);
