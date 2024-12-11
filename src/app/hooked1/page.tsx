@@ -190,9 +190,7 @@ export default function WebSocketExample() {
                 btnBetRef.current.style.opacity = "0.4";
                 btnBetRef.current.disabled = true;
             }
-            if(MessageLost.current){
-              MessageLost.current.style.opacity = "0"; // Set the message content
-            }
+          
          //   if (multiplyStr){
             //  multiplyStr.style.left = "-30%";
             //  multiplyLbl.style.color = "#00C208";
@@ -373,7 +371,7 @@ export default function WebSocketExample() {
                     </p>
                   ) : null}
               {/* Check if message is not an array with action CNT_MULTIPLY */}
-              {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? null : (
+             
                 <div>
                  
                     <p ref={secondBefore} style={{color: 'black'}}></p>
@@ -389,7 +387,7 @@ export default function WebSocketExample() {
                  </p>
                    ) :null}
                 </div>
-              )}
+             
             </td>
             <td> 
         <input
