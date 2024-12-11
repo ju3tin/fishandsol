@@ -46,15 +46,7 @@ export default function WebSocketExample() {
   const [chartData, setChartData] = useState({
     datasets: [{
       label: '', // Remove dataset label
-      data:  [
-        { x: 56, y: 0 },
-        { x: 23, y: 15 },
-        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 }],
+      data:  [{x:0 , y:0}],
       borderColor: '#FF2D00',
       tension: 0.4,
       pointRadius: 0,
@@ -107,14 +99,35 @@ export default function WebSocketExample() {
       // Add message to chat
       const timestamp = new Date().toLocaleTimeString();
       setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
+      const message1 = JSON.parse(event.data);
+      switch (message1.action) {
+        case 'CNT_MULTIPLY':
+          // Handle CNT_MULTIPLY action
+          console.log(`CNT_MULTIPLY action received with data: ${message1.data}`);
+          break;
+        case 'ROUND_ENDS':
+        //  setDude34(message.totalMult);
+        setDude34(messageData.totalMult); // Set only the totalMult value
+   
+          break
+        case 'ROUND_STARTED':
+          const roundStartTimestamp = new Date(); // Store the current timestamp
+          console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
+  
+          // Store the round start timestamp in state if needed
+          setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
+       
+          break;
+        case 'BTN_BET_CLICKED':
+          // Handle BTN_BET_CLICKED action
+          console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
+          break;
+        default:
+          console.log(`Unknown action received: ${message1.action}`);
+      }
 
       if (messageData.action === 'ROUND_STARTED') {
-        const roundStartTimestamp = new Date(); // Store the current timestamp
-        console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
-
-        // Store the round start timestamp in state if needed
-        setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
-      }
+        }
 
       // When you receive a new timestamp
       const newTimestamp = new Date(); // Get the new timestamp
@@ -135,8 +148,8 @@ export default function WebSocketExample() {
           datasets: [{
             ...prevChartData.datasets[0],
             data: [
-             
-              { x: Math.random() * 10, y: Math.random() * 10 } // Example of new data point
+              ...prevChartData.datasets[0].data,
+              { x: Math.random() * 10, y: Math.random() * 10 } // Use timeDifference as x
             ]
           }]
         }));
@@ -147,7 +160,6 @@ export default function WebSocketExample() {
 
       // Store the value of dude34 in state
      if (messageData.action === 'ROUND_ENDS') {
-        setDude34(messageData.totalMult); // Set only the totalMult value
       }
     };
 
@@ -160,6 +172,12 @@ export default function WebSocketExample() {
 
     // Cleanup on unmount
     return () => socket.close();
+  
+  
+  
+  
+  
+  
   }, []);
 
   const handleBetClick = () => {
@@ -202,6 +220,10 @@ export default function WebSocketExample() {
       },
     },
   };
+
+//
+
+//
   return (
     <div>
       {/* Add MongoDB Messages Display */}
