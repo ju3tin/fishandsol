@@ -222,7 +222,7 @@ export default function WebSocketExample() {
           if(secondBefore.current){
             secondBefore.current.style.opacity = "1";
             secondBefore.current.style.color = "black";
-            secondBefore.current.textContent = ` Ready To Start`;
+            secondBefore.current.textContent = ` Ready To Start <br /> ${message1.data}`;
 
           }
 
@@ -375,12 +375,11 @@ export default function WebSocketExample() {
               {/* Check if message is not an array with action CNT_MULTIPLY */}
               {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? null : (
                 <div>
-                  {typeof message === 'string' && message.includes("SECOND_BEFORE_START") ? (
+                 
                     <p ref={secondBefore} style={{color: 'black'}}>
-                      BE READY FOR A ROUND:<br /> 
-                      {JSON.parse(message).data}
+                    
                     </p>
-                  ) : null}
+                  
                    
 
                    {typeof message === 'string' && message.includes("totalMult") ? (
