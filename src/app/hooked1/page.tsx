@@ -294,10 +294,6 @@ export default function WebSocketExample() {
 //
   return (
     <div>
-      {/* Add MongoDB Messages Display */}
-      
-
-      {/* Full Width Table */}
       <table style={{ padding: '0 !important' }} className="full-width-table">
         <thead style={{display: 'none'}}>
           <tr>

@@ -68,8 +68,8 @@ const handleLoginClick = () => {
       { href: '/leaderboard', icon: User, label: 'Leaderboards', },
   
     ],
-    extras: (
-      <div className='flex flex-col gap-2'>
+     /* extras: (
+    <div className='flex flex-col gap-2'>
         <SidebarButton icon={MoreHorizontal} className='w-full'>
           More
         </SidebarButton>
@@ -80,7 +80,8 @@ const handleLoginClick = () => {
           Tweet
         </SidebarButton>
       </div>
-    ),
+      
+    ),*/
   };
   
 
