@@ -165,11 +165,11 @@ const formBet = document.getElementById("inputBet");
           break;
           case "WON":
             if (btnBet) {
-                btnBet.style.opacity = "0.4";
+           //     btnBet.style.opacity = "0.4";
                 //btnBet.disabled = true;
             }
             if (multiplyStr){
-              multiplyStr.style.left = "-30%";
+            //  multiplyStr.style.left = "-30%";
             //  multiplyLbl.style.color = "#00C208";
             }
             
