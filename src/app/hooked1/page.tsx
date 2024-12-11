@@ -47,6 +47,7 @@ export default function WebSocketExample() {
   const btnBetRef = useRef<HTMLButtonElement | null>(null); // Create a ref for the button
   const formBetRef = useRef<HTMLInputElement | null>(null);
   const roundCrash = useRef<HTMLParagraphElement | null>(null);
+  const MessageLost = useRef<HTMLSpanElement | null>(null);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -194,6 +195,9 @@ export default function WebSocketExample() {
             break;
 
           case "LOST":
+            if(MessageLost.current){
+              MessageLost.current.textContent = `CRASHED! YOU ARE LOST: ${message1.bet}$`; // Set the message content
+            }
             //multiplyStr.style.position = "absolute";
             //multiplyStr.style.left = "-180px";
             //multiplyStr.style.top = "50px";
@@ -336,7 +340,7 @@ export default function WebSocketExample() {
       </div></td>
             <td style={{ backgroundImage: 'url(/images/water.png)', textAlign: 'center', minWidth: '408px', }}>
             <span id="multLbl"></span>
-            
+            <span ref={MessageLost} id="lost"></span>
               <span id="linegraph" style={{ display: isLineGraphVisible ? 'block' : 'none' }}>
                 <Line data={chartData} options={options} />
               </span>{/* Render the Line chart */}
