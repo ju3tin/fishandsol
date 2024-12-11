@@ -48,6 +48,7 @@ export default function WebSocketExample() {
   const formBetRef = useRef<HTMLInputElement | null>(null);
   const roundCrash = useRef<HTMLParagraphElement | null>(null);
   const MessageLost = useRef<HTMLSpanElement | null>(null);
+  const secondBefore = useRef<HTMLParagraphElement | null>(null);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -217,6 +218,15 @@ export default function WebSocketExample() {
             //                        + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3)) 
             //                        + "$";
             break;
+        case "SECOND_BEFORE_START":
+          if(secondBefore.current){
+            secondBefore.current.style.opacity = "1";
+            secondBefore.current.style.color = "black";
+            secondBefore.current.textContent = ` Ready To Start`;
+
+          }
+
+            break;
         case 'BTN_BET_CLICKED':
           // Handle BTN_BET_CLICKED action
           console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
@@ -366,7 +376,7 @@ export default function WebSocketExample() {
               {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? null : (
                 <div>
                   {typeof message === 'string' && message.includes("SECOND_BEFORE_START") ? (
-                    <p style={{color: 'black'}}>
+                    <p ref={secondBefore} style={{color: 'black'}}>
                       BE READY FOR A ROUND:<br /> 
                       {JSON.parse(message).data}
                     </p>
