@@ -46,6 +46,7 @@ export default function WebSocketExample() {
 //btnBet.onclick = onBtnBetClick;
   const btnBetRef = useRef<HTMLButtonElement | null>(null); // Create a ref for the button
   const formBetRef = useRef<HTMLInputElement | null>(null);
+  const roundCrash = useRef<HTMLParagraphElement | null>(null);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -357,7 +358,7 @@ export default function WebSocketExample() {
                    {typeof message === 'string' && message.includes("totalMult") ? (
 
 
-                   <p style={{color: 'black'}}>
+                   <p ref={roundCrash} style={{color: 'black'}}>
                    Round Crash At<br /> 
                    {dude34}
                  </p>
