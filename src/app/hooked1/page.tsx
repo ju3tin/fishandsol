@@ -170,10 +170,10 @@ export default function WebSocketExample() {
            //     btnBet.style.opacity = "0.4";
                 //btnBet.disabled = true;
             }
-            if (multiplyStr){
+         //   if (multiplyStr){
             //  multiplyStr.style.left = "-30%";
             //  multiplyLbl.style.color = "#00C208";
-            }
+         //   }
             
            // multiplyLbl.textContent = "YOU ARE WON: " 
            //                         + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3))   
