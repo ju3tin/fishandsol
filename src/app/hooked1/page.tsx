@@ -219,6 +219,7 @@ export default function WebSocketExample() {
         case "SECOND_BEFORE_START":
           if(secondBefore.current){
             secondBefore.current.style.opacity = "1";
+            secondBefore.current.style.display = "block";
             secondBefore.current.style.color = "black";
             secondBefore.current.innerHTML = ` Ready To Start <br /> ${message1.data}`;
 
@@ -374,7 +375,7 @@ export default function WebSocketExample() {
              
                 <div>
                  
-                    <p ref={secondBefore} style={{color: 'black'}}></p>
+                    <p ref={secondBefore} style={{color: 'black',display: 'none'}}></p>
                   
                    
 
