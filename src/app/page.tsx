@@ -108,55 +108,64 @@ const connectionStatus = {
                 <meta name="twitter:description" content="Explore the wonders of my site!" />
                 <meta name="twitter:image" content="https://example.com/image.jpg" />
             </Head>
-    <div style={{ position: 'relative',width:'120%', height: '100vh', top: '-40px', right: '10px', zIndex: '-20' }}>
-      <video
-        ref={videoRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          marginTop: -40,
-          marginLeft: -20,
-          marginRight: 30,
-          width: '250%',
-          height: '150%',
-          objectFit: 'cover',
-          zIndex: -2,
-        }} 
-        className="shadow-lg w-full h-auto" 
-        src="/container07.mp4" // Path to the video file in the public folder
-        autoPlay 
-        loop 
-        muted
-        playsInline // Added for mobile compatibility
-      >
-        Your browser does not support the video tag.
-      </video>
-     {/*  <h1 className='text-3xl font-semibold' style={{ position: 'relative', zIndex: 1 }}>Home Page</h1>
-*/}
- </div>
-      <div className="wrapper" style={{top:'0', width: '100%', marginRight: 'auto', marginLeft: 'auto', position: 'absolute'}}>
-        <div className="inner" style={{width:'40%', marginRight:'auto', marginLeft:'auto'}}>
-          <div id="image05" className="image" style={{ opacity: '1', filter: 'none' }}>
-            <span className="frame deferred" style={{}}>
-              <Image src="/image05.png" width={100} height={100} data-src="done" alt="" style={{ width: '100%' }} />
+            <div className="relative">
+      
+      <div className="bg-hero-section w-full bg-no-repeat h-full screen bg-center bg-cover overflow -hidden">
+  
+    
+    
+    
+      <video autoPlay loop muted 
+      className="absolute inset-0 object-cover h-screen rounded-xl ">
+            <source
+        src="/container07.mp4" 
+        type="video/mp4"
+            />
+          </video>
+
+
+
+
+<div className="bg-black w-full h-full">
+
+
+
+          <div className="wrapper w-full sm:my-48 my-32 mx-auto " style={{top:'0', marginRight: 'auto', marginLeft: 'auto', position: 'absolute'}}>
+        <div className="inner " style={{width:'25%', marginRight:'auto', marginLeft:'auto'}}>
+          <div id="image05" className="image bg-black/30 p-2 rounded-xl " style={{ opacity: '1', filter: 'none' }}>
+            <span className="frame deferred drop-shadow-2xl shadow-2xl" style={{}}>
+              <Image src="/image15.png" width={80} height={80} data-src="done" alt="" style={{ width: '100% ' }} />
+            </span>
+            <span className="frame deferred w-10 drop-shadow-2xl shadow-2xl" style={{}}>
+              <Image src="/image07.png" width={80} height={80} data-src="done" alt="" style={{ width: '100% ' }} />
             </span>
           </div>
-          <div id="image07" className="image" style={{}}>
-            <span className="frame deferred" style={{}}>
-              <Image src="/image07.png" width={300} height={300} data-src="done" alt="" style={{}} />
-            </span>
-          </div>
+       
           <br />
 
-          <ul id="buttons04" className="buttons" style={{minWidth: '70px',display:'block',marginLeft:'auto',marginRight:'auto',width:'50%', zIndex: 30 }}>
-            <li>
-            <a className="btn btn-primary shadow" href="/hooked">ENTER SITE</a>
-          
-            </li>
-          </ul>
         </div>
       </div>
+
+
+
+
+
+
+
+
+
+
+      <div className="absolute inset-0">
+        <div className="xl:tex t-3xl text-2xl font-thin sm:my -56 xl:mt-20 -32 mx-10 text-center text-white bg-black/60 p-2 rounded-xl border border-white/30">
+<h2 >
+CHIPPY ON SOLANA IS THE FRIENDLY FISH AND CHIPS YOU ALWAYS NEEDED. IT IS THE BEST COMBO IN ALL THE SOL SEA. JOIN OUR COMMUNITY TO FIND OTHER FISHY FRIENDS!</h2>
+
+        </div>
+      </div>
+    </div>
+    </div>
+
+    </div>
    
     </div>
   );

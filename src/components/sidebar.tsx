@@ -9,6 +9,12 @@ import {
   MoreHorizontal,
   User,
   Users,
+  Fish,
+  Gamepad2,
+  WalletCards,
+  BookOpenCheck,
+  BadgeInfo,
+  Info,
 } from 'lucide-react';
 import { SidebarDesktop } from './sidebar-desktop';
 import LoginButton from './login-buton';
@@ -42,27 +48,41 @@ const handleLoginClick = () => {
 };
   const wallets = [new PhantomWalletAdapter()];
 
-const sidebarItems: SidebarItems = {
-  links: [
-    { label: 'Home', href: '/', icon: Home },
-    { label: 'Whitepaper', href: '/whitepaper', icon: Bell },
-    { label: 'Roadmap', href: '/roadmap', icon: Mail },
-    { href: '/item/lists', icon: List, label: 'Stake', },
-    { href: '/item/solana', icon: Bookmark, label: 'Solana Information',},
-    { href: '/hooked', icon: Users, label: 'Game',},
-    { href: '/leaderboard', icon: User, label: 'Leaderboards', },
-    /*{ href: '/map', icon: User, label: 'Maps', },*/
-    { href: '/map3', icon: User, label: 'Maps', },
-    { href: '/social', icon: User, label: 'Social Media', },
-    { href: '/item/gameinstruct', icon: User, label: 'Game Instructions', },
-  ],
-  extras: (
-    <div style={{backgroundColor:'black'}} className='flex flex-col gap-2'>
-    
-    <LoginButton />
-    </div>
-  ),
-};
+
+  const sidebarItems: SidebarItems = {
+    links: [
+      { label: 'Home', href: '/', icon: Home },
+      { label: 'Whitepaper', href: '/whitepaper', icon: BookOpenCheck },
+      { label: 'About', href: '/about', icon: BadgeInfo },
+      { label: 'Free Chippy Friday', href: '/chippyfriday', icon: Fish },
+      { href: '/hooked', icon: Gamepad2, label: 'Game',},
+  
+      {
+        href: '/item/lists',
+        icon: WalletCards,
+        label: 'Stake',
+      },
+      { href: '/item/solana', icon: Info, label: 'Solana Information',},
+  
+  
+      { href: '/leaderboard', icon: User, label: 'Leaderboards', },
+  
+    ],
+    extras: (
+      <div className='flex flex-col gap-2'>
+        <SidebarButton icon={MoreHorizontal} className='w-full'>
+          More
+        </SidebarButton>
+        <SidebarButton
+          className='w-full justify-center text-white'
+          variant='default'
+        >
+          Tweet
+        </SidebarButton>
+      </div>
+    ),
+  };
+  
 
 export function Sidebar() {
   const isDesktop = useMediaQuery('(min-width: 640px)', {
