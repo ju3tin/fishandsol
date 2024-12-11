@@ -211,25 +211,14 @@ const formBet = document.getElementById("inputBet");
         setIsButtonDisabled(true);
         setIsLineGraphVisible(true);
         
-        // Update chart data here
-        setChartData(prevChartData => ({
-          ...prevChartData,
-          datasets: [{
-            ...prevChartData.datasets[0],
-            data: [
-              ...prevChartData.datasets[0].data,
-              { x: Math.random() * 10, y: Math.random() * 10 } // Use timeDifference as x
-            ]
-          }]
-        }));
+      
+
+
       } else {
         setIsButtonDisabled(false);
         setIsLineGraphVisible(false);
       }
 
-      // Store the value of dude34 in state
-     if (messageData.action === 'ROUND_ENDS') {
-      }
     };
 
    
