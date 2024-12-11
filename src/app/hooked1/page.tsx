@@ -105,6 +105,7 @@ export default function WebSocketExample() {
       switch (message1.action) {
         case 'CNT_MULTIPLY':
           // Handle CNT_MULTIPLY action
+          roundStartTimestamp = new Date(); // Store the current timestamp globally
           console.log("this is good" + roundStartTimestamp);
           const numericData = (message1.data.slice(2), 10); // Remove first character and convert to integer
           const input = message1.data;
