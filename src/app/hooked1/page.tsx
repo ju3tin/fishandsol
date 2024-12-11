@@ -83,13 +83,14 @@ export default function WebSocketExample() {
 
     socket.onmessage = (event) => {
       console.log('Message from server: ', event.data);
+      const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
       setMessage(event.data);
 
       // Add message to chat
       const timestamp = new Date().toLocaleTimeString();
       setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
 
-      if (event.data.includes('CNT_MULTIPLY')) {
+      if (messageData.action === 'CNT_MULTIPLY') {
         setIsButtonDisabled(true);
         setIsLineGraphVisible(true);
       } else {
@@ -98,8 +99,7 @@ export default function WebSocketExample() {
       }
 
       // Store the value of dude34 in state
-      const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-      if (messageData.action === 'ROUND_ENDS') {
+     if (messageData.action === 'ROUND_ENDS') {
         setDude34(messageData.totalMult); // Set only the totalMult value
       }
     };
