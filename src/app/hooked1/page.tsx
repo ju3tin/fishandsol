@@ -19,6 +19,9 @@ import {   Chart as ChartJS,
 //});
 
 // Register the necessary components for line chart
+
+
+
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) => (
@@ -32,6 +35,14 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 let roundStartTimestamp: Date | null = null; // Initialize as null
 
 export default function WebSocketExample() {
+  const balanceLbl = document.getElementById("balanceLabel"); 
+const balanceStr = document.getElementById("balanceCounter");
+const multiplyLbl = document.getElementById("multLbl");
+const multiplyStr = document.getElementById("multCounter");
+const btnBet = document.getElementById("btnBet");
+const formBet = document.getElementById("inputBet");
+//const chartContainer = document.getElementById('chartContainer');
+//btnBet.onclick = onBtnBetClick;
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -152,6 +163,31 @@ export default function WebSocketExample() {
          // setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
        
           break;
+          case "WON":
+            if (btnBet) {
+                btnBet.style.opacity = "0.4";
+                //btnBet.disabled = true;
+            }
+            if (multiplyStr){
+              multiplyStr.style.left = "-30%";
+            //  multiplyLbl.style.color = "#00C208";
+            }
+            
+           // multiplyLbl.textContent = "YOU ARE WON: " 
+           //                         + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3))   
+           //                         + " x " 
+           //                         + parseFloat(jsonMessage.mult).toFixed(3);
+            break;
+
+          case "LOST":
+            //multiplyStr.style.position = "absolute";
+            //multiplyStr.style.left = "-180px";
+            //multiplyStr.style.top = "50px";
+            //multiplyLbl.style.color = "#C20000";
+            //multiplyLbl.textContent = "CRASHED ! YOU ARE LOST: " 
+            //                        + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3)) 
+            //                        + "$";
+            break;
         case 'BTN_BET_CLICKED':
           // Handle BTN_BET_CLICKED action
           console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
@@ -310,6 +346,8 @@ export default function WebSocketExample() {
         </div>
       </div></td>
             <td style={{ backgroundImage: 'url(/images/water.png)', textAlign: 'center', minWidth: '408px', }}>
+            <span id="multLbl"></span>
+            
               <span id="linegraph" style={{ display: isLineGraphVisible ? 'block' : 'none' }}>
                 <Line data={chartData} options={options} />
               </span>{/* Render the Line chart */}
@@ -342,7 +380,9 @@ export default function WebSocketExample() {
                 </div>
               )}
             </td>
-            <td> <input 
+            <td> 
+        <input
+        id="inputBet" 
         type="number" 
         value={betAmount}  
         onChange={(e) => setBetAmount(Number(e.target.value))}
@@ -350,6 +390,7 @@ export default function WebSocketExample() {
         className="bet-input" 
       />
       <button 
+      id="btnBet"
         onClick={handleBetClick} 
         disabled={isButtonDisabled} 
         className={isButtonDisabled ? 'button-disabled' : 'button-active'}
