@@ -43,6 +43,23 @@ export default function WebSocketExample() {
   const [apiData, setApiData] = useState<any[]>([]);
   const [dude34, setDude34] = useState<any>(null);
   const [roundStartTimestamp, setRoundStartTimestamp] = useState<Date | null>(null);
+  const [chartData, setChartData] = useState({
+    datasets: [{
+      label: '', // Remove dataset label
+      data:  [
+        { x: 56, y: 0 },
+        { x: 23, y: 15 },
+        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
+        { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 }],
+      borderColor: '#FF2D00',
+      tension: 0.4,
+      pointRadius: 0,
+    }],
+  });
 
   useEffect(() => {
     console.log('whats the coming to');
@@ -111,6 +128,18 @@ export default function WebSocketExample() {
       if (messageData.action === 'CNT_MULTIPLY') {
         setIsButtonDisabled(true);
         setIsLineGraphVisible(true);
+        
+        // Update chart data here
+        setChartData(prevChartData => ({
+          ...prevChartData,
+          datasets: [{
+            ...prevChartData.datasets[0],
+            data: [
+              ...prevChartData.datasets[0].data,
+              { x: Math.random() * 10, y: Math.random() * 10 } // Example of new data point
+            ]
+          }]
+        }));
       } else {
         setIsButtonDisabled(false);
         setIsLineGraphVisible(false);
@@ -149,25 +178,6 @@ export default function WebSocketExample() {
     }
   };
 
-  const chartData = {
-   // labels: ['1s', '2s', '3s', '4s', '5s'],
-    datasets: [{
-      label: '', // Remove dataset label
-      data:  [
-      { x: 56, y: 0 },
-      { x: 23, y: 15 },
-      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 },
-      { x: Math.random() * 0.5 + 23.5, y: Math.random() * 0.5 + 23.5 }],
-      borderColor: '#FF2D00',
-      tension: 0.4,
-      pointRadius: 0,
-    }],
-  };
-  
   const options = {
     responsive: true,
     scales: {
