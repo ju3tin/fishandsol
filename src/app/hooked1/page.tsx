@@ -125,7 +125,10 @@ export default function WebSocketExample() {
         setIsButtonDisabled(false);
         setIsLineGraphVisible(false);
         setDude34(messageData.totalMult); // Set only the totalMult value
-   
+        
+        if (roundCrash.current) {
+        roundCrash.current.style.opacity = "0";
+        }
           break
         case 'ROUND_STARTED':
           roundStartTimestamp = new Date(); // Store the current timestamp globally
