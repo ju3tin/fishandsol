@@ -48,10 +48,9 @@ const handleLoginClick = () => {
 };
   const wallets = [new PhantomWalletAdapter()];
 
-
-  const sidebarItems: SidebarItems = {
-    links: [
-      { label: 'Home', href: '/', icon: Home },
+const sidebarItems: SidebarItems = {
+  links: [
+    { label: 'Home', href: '/', icon: Home },
       { label: 'Whitepaper', href: '/whitepaper', icon: BookOpenCheck },
       { label: 'About', href: '/about', icon: BadgeInfo },
       { label: 'Free Chippy Friday', href: '/chippyfriday', icon: Fish },
@@ -66,24 +65,14 @@ const handleLoginClick = () => {
   
   
       { href: '/leaderboard', icon: User, label: 'Leaderboards', },
-  
-    ],
-     /* extras: (
-    <div className='flex flex-col gap-2'>
-        <SidebarButton icon={MoreHorizontal} className='w-full'>
-          More
-        </SidebarButton>
-        <SidebarButton
-          className='w-full justify-center text-white'
-          variant='default'
-        >
-          Tweet
-        </SidebarButton>
-      </div>
-      
-    ),*/
-  };
-  
+  ],
+  extras: (
+    <div style={{backgroundColor:'black'}} className='flex flex-col gap-2'>
+    
+    <LoginButton />
+    </div>
+  ),
+};
 
 export function Sidebar() {
   const isDesktop = useMediaQuery('(min-width: 640px)', {
