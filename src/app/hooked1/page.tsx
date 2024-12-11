@@ -1,5 +1,5 @@
 "use client"
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import '../../../styles/fonts.css';
 import '../../../styles/globals.css';
 import JsonFetcher from "../components/JsonFetcher";
@@ -35,14 +35,16 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 let roundStartTimestamp: Date | null = null; // Initialize as null
 
 export default function WebSocketExample() {
-  const balanceLbl = document.getElementById("balanceLabel"); 
-const balanceStr = document.getElementById("balanceCounter");
-const multiplyLbl = document.getElementById("multLbl");
-const multiplyStr = document.getElementById("multCounter");
-const btnBet = document.getElementById("btnBet");
-const formBet = document.getElementById("inputBet");
+
+ // const balanceLbl = document.getElementById("balanceLabel"); 
+//const balanceStr = document.getElementById("balanceCounter");
+//const multiplyLbl = document.getElementById("multLbl");
+//const multiplyStr = document.getElementById("multCounter");
+//const btnBet = document.getElementById("btnBet");
+// const formBet = document.getElementById("inputBet");
 //const chartContainer = document.getElementById('chartContainer');
 //btnBet.onclick = onBtnBetClick;
+  const btnBetRef = useRef<HTMLButtonElement | null>(null); // Create a ref for the button
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
