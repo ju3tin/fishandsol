@@ -166,7 +166,7 @@ export default function WebSocketExample() {
        
           break;
           case "WON":
-            if (btnBet) {
+            if (btnBetRef.current) {
            //     btnBet.style.opacity = "0.4";
                 //btnBet.disabled = true;
             }
@@ -380,8 +380,9 @@ export default function WebSocketExample() {
         min="0" 
         className="bet-input" 
       />
-      <button 
-      id="btnBet"
+      <button
+        id="btnBet"
+        ref={btnBetRef}
         onClick={handleBetClick} 
         disabled={isButtonDisabled} 
         className={isButtonDisabled ? 'button-disabled' : 'button-active'}
