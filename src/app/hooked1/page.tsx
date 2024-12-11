@@ -127,12 +127,12 @@ export default function WebSocketExample() {
         setDude34(messageData.totalMult); // Set only the totalMult value
         
         if (roundCrash.current) {
-        roundCrash.current.style.opacity = "0";
+        roundCrash.current.style.opacity = "1";
         }
           break
         case 'ROUND_STARTED':
           roundStartTimestamp = new Date(); // Store the current timestamp globally
-          console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
+         // console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
           
           // Reset chart data when the round starts
           setChartData({
