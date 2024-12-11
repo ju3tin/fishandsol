@@ -123,6 +123,9 @@ export default function WebSocketExample() {
 
         case 'ROUND_ENDS':
         //  setDude34(message.totalMult);
+        if(MessageLost.current){
+          MessageLost.current.style.opacity = "0"; // Set the message content
+        }
         setIsButtonDisabled(false);
         setIsLineGraphVisible(false);
         setDude34(messageData.totalMult); // Set only the totalMult value
@@ -153,6 +156,9 @@ export default function WebSocketExample() {
           
         case 'CNT_MULTIPLY':
           // Handle CNT_MULTIPLY action
+          if(MessageLost.current){
+            MessageLost.current.style.opacity = "0"; // Set the message content
+          }
           setIsButtonDisabled(true);
           setIsLineGraphVisible(true);
           console.log("this is good" + roundStartTimestamp);
