@@ -134,10 +134,10 @@ const connectionStatus = {
         <div className="inner " style={{width:'25%', marginRight:'auto', marginLeft:'auto'}}>
           <div id="image05" className="image bg-black/30 p-2 rounded-xl " style={{ opacity: '1', filter: 'none' }}>
             <span className="frame deferred drop-shadow-2xl shadow-2xl" style={{}}>
-              <Image src="/image15.png" width={80} height={80} data-src="done" alt="" style={{ width: '100% ' }} />
+              <Image src="/image/image15.png" width={80} height={80} data-src="done" alt="" style={{ width: '100% ' }} />
             </span>
             <span className="frame deferred w-10 drop-shadow-2xl shadow-2xl" style={{}}>
-              <Image src="/image07.png" width={80} height={80} data-src="done" alt="" style={{ width: '100% ' }} />
+              <Image src="/image/image07.png" width={80} height={80} data-src="done" alt="" style={{ width: '100% ' }} />
             </span>
           </div>
        
