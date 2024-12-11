@@ -183,6 +183,9 @@ export default function WebSocketExample() {
                 btnBetRef.current.style.opacity = "0.4";
                 btnBetRef.current.disabled = true;
             }
+            if(MessageLost.current){
+              MessageLost.current.style.opacity = "0"; // Set the message content
+            }
          //   if (multiplyStr){
             //  multiplyStr.style.left = "-30%";
             //  multiplyLbl.style.color = "#00C208";
@@ -196,6 +199,8 @@ export default function WebSocketExample() {
 
           case "LOST":
             if(MessageLost.current){
+              MessageLost.current.style.opacity = "0";
+              MessageLost.current.style.color = "black";
               MessageLost.current.textContent = `CRASHED! YOU ARE LOST: ${message1.bet}$`; // Set the message content
             }
             //multiplyStr.style.position = "absolute";
