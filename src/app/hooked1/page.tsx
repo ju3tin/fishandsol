@@ -222,7 +222,7 @@ export default function WebSocketExample() {
           if(secondBefore.current){
             secondBefore.current.style.opacity = "1";
             secondBefore.current.style.color = "black";
-            secondBefore.current.textContent = ` Ready To Start <br /> ${message1.data}`;
+            secondBefore.current.innerHTML = ` Ready To Start <br /> ${message1.data}`;
 
           }
 
@@ -376,9 +376,7 @@ export default function WebSocketExample() {
               {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? null : (
                 <div>
                  
-                    <p ref={secondBefore} style={{color: 'black'}}>
-                    
-                    </p>
+                    <p ref={secondBefore} style={{color: 'black'}}></p>
                   
                    
 
