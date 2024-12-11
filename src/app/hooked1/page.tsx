@@ -135,7 +135,7 @@ export default function WebSocketExample() {
           datasets: [{
             ...prevChartData.datasets[0],
             data: [
-              ...prevChartData.datasets[0].data,
+             
               { x: Math.random() * 10, y: Math.random() * 10 } // Example of new data point
             ]
           }]
@@ -244,7 +244,7 @@ export default function WebSocketExample() {
           <button onClick={handleSendMessage}>Send</button>
         </div>
       </div></td>
-            <td style={{ backgroundImage: 'url(/images/water.png)', textAlign: 'center', minWidth: '408px' }}>
+            <td style={{ backgroundImage: 'url(/images/water.png)', textAlign: 'center', minWidth: '408px', }}>
               <span id="linegraph" style={{ display: isLineGraphVisible ? 'block' : 'none' }}>
                 <Line data={chartData} options={options} />
               </span>{/* Render the Line chart */}
