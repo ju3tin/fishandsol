@@ -114,16 +114,19 @@ export default function WebSocketExample() {
           const timeDiff = (currentTimestamp.getTime() - roundStartTimestamp.getTime()) / 1000; // Calculate difference in seconds
           console.log('Time since round started for CNT_MULTIPLY:', timeDiff, 'seconds');
 
-          // Reset chart data with x as numericValue and y as timeDiff
-          setChartData({
+          // Update chart data by appending new data point
+          setChartData(prevChartData => ({
             datasets: [{
               label: '', // Remove dataset label
-              data: [{ x: numericValue, y: timeDiff }], // Set x to input and y to timeDiff
+              data: [
+                ...prevChartData.datasets[0].data, // Keep existing data
+                { x: numericValue, y: timeDiff } // Add new data point
+              ],
               borderColor: '#FF2D00',
               tension: 0.4,
               pointRadius: 0,
             }],
-          });
+          }));
           break;
         case 'ROUND_ENDS':
         //  setDude34(message.totalMult);
