@@ -45,6 +45,7 @@ export default function WebSocketExample() {
 //const chartContainer = document.getElementById('chartContainer');
 //btnBet.onclick = onBtnBetClick;
   const btnBetRef = useRef<HTMLButtonElement | null>(null); // Create a ref for the button
+  const formBetRef = useRef<HTMLInputElement | null>(null);
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
 
@@ -118,6 +119,8 @@ export default function WebSocketExample() {
       switch (message1.action) {
         case 'CNT_MULTIPLY':
           // Handle CNT_MULTIPLY action
+          setIsButtonDisabled(true);
+          setIsLineGraphVisible(true);
           roundStartTimestamp = new Date(); // Store the current timestamp globally
           console.log("this is good" + roundStartTimestamp);
           const numericData = (message1.data.slice(2), 10); // Remove first character and convert to integer
@@ -143,6 +146,8 @@ export default function WebSocketExample() {
           break;
         case 'ROUND_ENDS':
         //  setDude34(message.totalMult);
+        setIsButtonDisabled(false);
+        setIsLineGraphVisible(false);
         setDude34(messageData.totalMult); // Set only the totalMult value
    
           break
@@ -209,17 +214,7 @@ export default function WebSocketExample() {
         console.log('Round has not started yet.'); // Log if round has not started
       }
 
-      if (messageData.action === 'CNT_MULTIPLY') {
-        setIsButtonDisabled(true);
-        setIsLineGraphVisible(true);
-        
-      
-
-
-      } else {
-        setIsButtonDisabled(false);
-        setIsLineGraphVisible(false);
-      }
+   
 
     };
 
@@ -373,7 +368,8 @@ export default function WebSocketExample() {
             </td>
             <td> 
         <input
-        id="inputBet" 
+        id="inputBet"
+        ref={formBetRef} 
         type="number" 
         value={betAmount}  
         onChange={(e) => setBetAmount(Number(e.target.value))}
