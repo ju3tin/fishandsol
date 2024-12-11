@@ -106,8 +106,11 @@ export default function WebSocketExample() {
         case 'CNT_MULTIPLY':
           // Handle CNT_MULTIPLY action
           console.log("this is good"+roundStartTimestamp)
-          const numericData = parseInt(message1.data.slice(1), 10); // Remove first character and convert to integer
-          console.log(`CNT_MULTIPLY action received with data: ${numericData}`);
+          const numericData = (message1.data.slice(2), 10); // Remove first character and convert to integer
+          const input = message1.data;
+          const numericValue = parseFloat(input.replace("x", ""));
+          //console.log(numericValue); // Output: 1.562
+          console.log(`CNT_MULTIPLY action received with data: ${numericValue}`);
           const currentTimestamp = new Date(); // Get the current timestamp for each CNT_MULTIPLY
           const timeDiff = (currentTimestamp.getTime() - roundStartTimestamp.getTime()) / 1000; // Calculate difference in seconds
           console.log('Time since round started for CNT_MULTIPLY:', timeDiff, 'seconds'); // Log the time difference
