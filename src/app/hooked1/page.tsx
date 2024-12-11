@@ -113,7 +113,18 @@ export default function WebSocketExample() {
         case 'ROUND_STARTED':
           const roundStartTimestamp = new Date(); // Store the current timestamp
           console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
-  
+          
+          // Reset chart data when the round starts
+          setChartData({
+            datasets: [{
+              label: '', // Remove dataset label
+              data: [{ x: 0, y: 0 }],
+              borderColor: '#FF2D00',
+              tension: 0.4,
+              pointRadius: 0,
+            }],
+          });
+          
           // Store the round start timestamp in state if needed
           setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
        
