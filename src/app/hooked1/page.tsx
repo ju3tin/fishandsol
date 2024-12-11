@@ -113,6 +113,7 @@ export default function WebSocketExample() {
       setMessage(event.data);
 
       // Add message to chat
+      const roundStartTimestamp = new Date(); // Store the current timestamp globally
       const timestamp = new Date().toLocaleTimeString();
       setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
       const message1 = JSON.parse(event.data);
@@ -121,7 +122,6 @@ export default function WebSocketExample() {
           // Handle CNT_MULTIPLY action
           setIsButtonDisabled(true);
           setIsLineGraphVisible(true);
-          roundStartTimestamp = new Date(); // Store the current timestamp globally
           console.log("this is good" + roundStartTimestamp);
           const numericData = (message1.data.slice(2), 10); // Remove first character and convert to integer
           const input = message1.data;
