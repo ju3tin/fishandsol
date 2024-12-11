@@ -168,7 +168,7 @@ export default function WebSocketExample() {
           case "WON":
             if (btnBetRef.current) {
                 btnBetRef.current.style.opacity = "0.4";
-                //btnBet.disabled = true;
+                btnBetRef.current.disabled = true;
             }
          //   if (multiplyStr){
             //  multiplyStr.style.left = "-30%";
