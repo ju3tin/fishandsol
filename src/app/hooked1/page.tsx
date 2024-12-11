@@ -28,6 +28,9 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
   </div>
 );
 
+// Define roundStartTimestamp as a global variable
+let roundStartTimestamp: Date | null = null; // Initialize as null
+
 export default function WebSocketExample() {
   const [data, setData] = useState(null);
   const [error, setError] = useState(null);
@@ -42,7 +45,6 @@ export default function WebSocketExample() {
   const [mongoMessages, setMongoMessages] = useState<Array<any>>([]);
   const [apiData, setApiData] = useState<any[]>([]);
   const [dude34, setDude34] = useState<any>(null);
-  const [roundStartTimestamp, setRoundStartTimestamp] = useState<Date | null>(null);
   const [chartData, setChartData] = useState({
     datasets: [{
       label: '', // Remove dataset label
@@ -103,6 +105,7 @@ export default function WebSocketExample() {
       switch (message1.action) {
         case 'CNT_MULTIPLY':
           // Handle CNT_MULTIPLY action
+          
           console.log(`CNT_MULTIPLY action received with data: ${message1.data}`);
           break;
         case 'ROUND_ENDS':
@@ -111,7 +114,7 @@ export default function WebSocketExample() {
    
           break
         case 'ROUND_STARTED':
-          const roundStartTimestamp = new Date(); // Store the current timestamp
+          roundStartTimestamp = new Date(); // Store the current timestamp globally
           console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
           
           // Reset chart data when the round starts
@@ -126,7 +129,7 @@ export default function WebSocketExample() {
           });
           
           // Store the round start timestamp in state if needed
-          setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
+         // setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
        
           break;
         case 'BTN_BET_CLICKED':
