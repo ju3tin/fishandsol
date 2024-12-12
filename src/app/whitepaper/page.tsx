@@ -1,5 +1,5 @@
 "use client"
-import Image from 'next/image';
+import Image from "next/image";
 export default function whitepaper() {
     return (
         <div>
@@ -8,7 +8,7 @@ export default function whitepaper() {
         <div className="wrapper1">
             <div className="inner">
                 <div id="image17" className="image"></div>
-                <span className="p"><span style={{color: '#9EFF00'}}>FishNChips SOLANA Witepaper</span></span>
+                <span className="p"><span style={{color: "#9EFF00"}}>FishNChips SOLANA Witepaper</span></span>
                 <span className="p">
                 <p className="my-4 text-[#FAFF00]">Cover note:</p>
 
@@ -30,10 +30,10 @@ export default function whitepaper() {
         <div className="wrapper1">
             <div className="inner">
               
-            <span className="p"><span style={{color: '#9EFF00'}}>FishNChips SOLANA Litepaper</span></span>
+            <span className="p"><span style={{color: "#9EFF00"}}>FishNChips SOLANA Litepaper</span></span>
             <span className="p"><br />LITEPAPER<br />
             $CHIPPY FISHNCHIPS on SOLANA</span>
-            <span className="pt-3"><span style={{color: '#9EFF00'}}><br />Introduction<br /></span></span>
+            <span className="pt-3"><span style={{color: "#9EFF00"}}><br />Introduction<br /></span></span>
             <span className="p"><br />"It's so crazy, it just might work" - Michael Scott (The Office S06E02)
 $CHIPPY is the first ever Fish and Chips coin on earth. We set out to build an ecosystem that
 rewards holders with free Fish and Chips every Friday and to date have given away over 2,500
@@ -50,8 +50,8 @@ intended target market no longer able to afford this cuisine.</span>
         alt="Description of the image"
         width={500}  // Desired width in pixels
         height={300} // Desired height in pixels
-className='pt-2'
-        style={{ width: '100%', height: 'auto' }}
+className="pt-2"
+        style={{ width: "100%", height: "auto" }}
       />
 <span className="p"><br />
 Since 1971 the price of Wholesale White Fillet Fish is up from £0.53 to a staggering £19.53 per
