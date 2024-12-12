@@ -34,7 +34,7 @@ export default function whitepaper() {
             <span className="p"><br />LITEPAPER<br />
             $CHIPPY FISHNCHIPS on SOLANA</span>
             <span className="pt-3"><span style={{color: "#9EFF00"}}><br />Introduction<br /></span></span>
-            <span className="p"><br />"It&#39;s so crazy, it just might work" - Michael Scott (The Office S06E02)
+            <span className="p"><br />&#34;It&#39;s so crazy, it just might work&#34; - Michael Scott (The Office S06E02)
 $CHIPPY is the first ever Fish and Chips coin on earth. We set out to build an ecosystem that
 rewards holders with free Fish and Chips every Friday and to date have given away over 2,500
 portions of Fish and Chips.<br /></span>
