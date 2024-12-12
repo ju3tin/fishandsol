@@ -47,6 +47,7 @@ export default function WebSocketExample() {
   const btnBetRef = useRef<HTMLButtonElement | null>(null); // Create a ref for the button
   const formBetRef = useRef<HTMLInputElement | null>(null);
   const roundCrash = useRef<HTMLParagraphElement | null>(null);
+  const cntmultiply = useRef<HTMLParagraphElement | null>(null);
   const MessageLost = useRef<HTMLSpanElement | null>(null);
   const secondBefore = useRef<HTMLParagraphElement | null>(null);
   const [data, setData] = useState(null);
@@ -132,7 +133,10 @@ export default function WebSocketExample() {
         setDude34(messageData.totalMult); // Set only the totalMult value
         
         if (roundCrash.current) {
-        roundCrash.current.style.opacity = "1";
+          roundCrash.current.style.opacity = "1"
+          roundCrash.current.style.display = "block";
+          roundCrash.current.style.color = "black";
+          roundCrash.current.innerHTML = `Round Crash At <br /> ${message1.totalMult}`;
         }
           break
         case 'ROUND_STARTED':
@@ -157,12 +161,20 @@ export default function WebSocketExample() {
           
         case 'CNT_MULTIPLY':
           // Handle CNT_MULTIPLY action
+          if(secondBefore.current){
+            secondBefore.current.style.display = 'none';
+          }
+          if(cntmultiply.current){
+            cntmultiply.current.innerHTML = `${message1.data}`;
+            cntmultiply.current.style.display = 'block';
+            cntmultiply.current.style.opacity = '1';
+          }
           if(MessageLost.current){
             MessageLost.current.style.opacity = "0"; // Set the message content
           }
           setIsButtonDisabled(true);
           setIsLineGraphVisible(true);
-          console.log("this is good" + roundStartTimestamp);
+          //console.log("this is good" + roundStartTimestamp);
           const dude45 = roundStartTimestamp;
           const numericData = (message1.data.slice(2), 10); // Remove first character and convert to integer
           const input = message1.data;
@@ -223,6 +235,9 @@ export default function WebSocketExample() {
             secondBefore.current.style.color = "black";
             secondBefore.current.innerHTML = ` Ready To Start <br /> ${message1.data}`;
 
+          }
+          if (roundCrash.current) {
+            roundCrash.current.style.display = "none";
           }
 
             break;
@@ -341,8 +356,8 @@ export default function WebSocketExample() {
             // Check if the message is an object and has the action CNT_MULTIPLY
             const messageData = typeof msg.text === 'string' ? JSON.parse(msg.text) : msg.text;
             const displayText = messageData.action === 'CNT_MULTIPLY' ? messageData.data : null;
-            let dude34 = messageData.data;
-            return displayText ? (
+           
+             return displayText ? (
               <ChatMessage key={index} timestamp={msg.timestamp} text={displayText} />
             ) : null; // Return null for messages that do not match
           })}
@@ -364,29 +379,10 @@ export default function WebSocketExample() {
               <span id="linegraph" style={{ display: isLineGraphVisible ? 'block' : 'none' }}>
                 <Line data={chartData} options={options} />
               </span>{/* Render the Line chart */}
-              
-              {typeof message === 'string' && message.includes("CNT_MULTIPLY") ? (
-                    <p style={{color: 'black'}}>
-                     
-                      {JSON.parse(message).data}
-                    </p>
-                  ) : null}
-              {/* Check if message is not an array with action CNT_MULTIPLY */}
-             
-                <div>
-                 
-                    <p ref={secondBefore} style={{color: 'black',display: 'none'}}></p>
-                  
-                   
-
-                   {typeof message === 'string' && message.includes("totalMult") ? (
-
-
-                   <p ref={roundCrash} style={{color: 'black'}}>
-                   Round Crash At<br /> 
-                   {dude34}
-                 </p>
-                   ) :null}
+                    <p ref={cntmultiply} style={{color: 'black', display: "none"}}></p>
+                  <div>
+                    <p ref={secondBefore} style={{color: 'black',display: 'none'}} className=''></p>
+                   <p ref={roundCrash} style={{color: 'black'}}></p>
                 </div>
              
             </td>
