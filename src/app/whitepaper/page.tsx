@@ -14,7 +14,7 @@ export default function whitepaper() {
 
                <span>I am Jordan, Founder of That Martini Guy &amp; Crypto Saving Expert. I was an early $BORG  investor and many Swissborg users found out about the business through myself. I believe in utility being the key to success in Crypto and this is how I identified so many top quality assets such as $BORG and added them to my own portfolio.</span></span>
                 <p className="py-2">11 years of learning from other peoples mistakes have led me to create my own memecoin. Having witnessed hundreds of projects try and fail to have real world impact, real users and real utility I have devised a memecoin concept I believe will be successful.</p>
-                <span className="p">The concept is simple and based on the following lessons I have learnt over my time in the industry. Most people in crypto do not use their Altcoins for their intended purpose. Most Altcoins are a vehicle for speculation rather than a vehicle for utility. Most founders' first ever experience of running a big company is whatever coin they launch in Web3 and most coins fail due to poor leadership and a lack of market understanding and experience. Most Web3 businesses that launch a coin use an ICO as a way to fund their business and most of the VCs that invest in these coins from day one sell on all the new users the business acquires, virtually guaranteeing failure by lack of positive sentiment.</span>
+                <span className="p">The concept is simple and based on the following lessons I have learnt over my time in the industry. Most people in crypto do not use their Altcoins for their intended purpose. Most Altcoins are a vehicle for speculation rather than a vehicle for utility. Most founders&#39; first ever experience of running a big company is whatever coin they launch in Web3 and most coins fail due to poor leadership and a lack of market understanding and experience. Most Web3 businesses that launch a coin use an ICO as a way to fund their business and most of the VCs that invest in these coins from day one sell on all the new users the business acquires, virtually guaranteeing failure by lack of positive sentiment.</span>
                 <p className="pt-2">The industry has been infected by VC parasites and I am setting out to change this with a coin created for positive social impact with no VC investment.
                 I have decided a memecoin is the right way to go, but FishNChips is not a memecoin in the traditional sense of “here is another dog coin that does nothing”. The purpose of a memecoin is to be a purely speculative asset. To date nobody has tried to make a memecoin that creates social good. This is something I am trying to change.</p>
 
@@ -34,7 +34,7 @@ export default function whitepaper() {
             <span className="p"><br />LITEPAPER<br />
             $CHIPPY FISHNCHIPS on SOLANA</span>
             <span className="pt-3"><span style={{color: "#9EFF00"}}><br />Introduction<br /></span></span>
-            <span className="p"><br />"It's so crazy, it just might work" - Michael Scott (The Office S06E02)
+            <span className="p"><br />"It&#39;s so crazy, it just might work" - Michael Scott (The Office S06E02)
 $CHIPPY is the first ever Fish and Chips coin on earth. We set out to build an ecosystem that
 rewards holders with free Fish and Chips every Friday and to date have given away over 2,500
 portions of Fish and Chips.<br /></span>
@@ -238,7 +238,7 @@ to the holders of the NFTs again giving them value and passive income.
 
 Going forward, the plan for $CHIPPY is to continue on the path we are on. What started as a
 simple coin launched on PUMP.FUN with $0 in funding is turning into a mission to fix some of
-society's problems, help everyone in the community eat well and support the Fish N Chip
+society&#39;s problems, help everyone in the community eat well and support the Fish N Chip
 industry.
 
 Website & contract information
