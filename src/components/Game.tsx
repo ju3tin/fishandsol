@@ -175,7 +175,7 @@ export default function Game() {
 			const canvas = canvasRef.current;
 			const aspectRatio = canvas.clientWidth / canvas.clientHeight;
 			canvas.width = 800;
-			canvas.height = Math.round(4000 * aspectRatio);
+			canvas.height = Math.round(800 * aspectRatio);
 		}
 		setContext(ctx);
 	}, []);
