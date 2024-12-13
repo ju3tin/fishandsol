@@ -237,6 +237,24 @@ socket1.onopen = () => {
 		roundStartTimestamp = new Date(); // Store the current timestamp globally
 	   console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
 		
+
+
+	   set({
+		startTime: roundStartTimestamp.getTime(),
+		status: 'Running'
+	});
+
+	if (gameWaitTimer) {
+		clearInterval(gameWaitTimer);
+		gameWaitTimer = null;
+	}
+
+	if (gameRunTimer) {
+		clearInterval(gameRunTimer);
+		gameRunTimer = null;
+	}
+
+	gameRunTimer = setInterval(gameRunner, 5);
 		// Reset chart data when the round starts
 	/*	setChartData({
 		  datasets: [{
@@ -247,6 +265,7 @@ socket1.onopen = () => {
 			pointRadius: 0,
 		  }],
 		});
+		
 	*/	
 		// Store the round start timestamp in state if needed
 	   // setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
@@ -279,7 +298,7 @@ socket1.onopen = () => {
 	  set({
 		status: 'Waiting',
 		startTime: roundStartTimestamp,
-		timeElapsed: message1.data,
+		timeElapsed: 0,
 	});
 
 	if (gameWaitTimer) {
