@@ -243,7 +243,7 @@ socket1.onopen = () => {
 		startTime: roundStartTimestamp.getTime(),
 		status: 'Running'
 	});
-
+	
 	if (gameWaitTimer) {
 		clearInterval(gameWaitTimer);
 		gameWaitTimer = null;
