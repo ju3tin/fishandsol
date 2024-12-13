@@ -150,7 +150,7 @@ type NonceResponse = {
 
 export const useGameStore = create<GameState>((set, get) => {
 	const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
-		withCredentials: true
+		//withCredentials: true
 	});
 
 	let gameWaitTimer: ReturnType<typeof setInterval>|null = null;
