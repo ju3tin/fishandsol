@@ -243,7 +243,7 @@ socket1.onopen = () => {
 		startTime: roundStartTimestamp.getTime(),
 		status: 'Running'
 	});
-	
+
 	if (gameWaitTimer) {
 		clearInterval(gameWaitTimer);
 		gameWaitTimer = null;
@@ -294,12 +294,23 @@ socket1.onopen = () => {
 		case "LOST":
 		  break;
 	  case "SECOND_BEFORE_START":
-	
+
+	  const timeRemaining = message1.data;
+
+	  if (timeRemaining <= 0) {
+		set({ timeRemaining: 0 })
+	} else {
+		set({ timeRemaining });
+	}
+
 	  set({
 		status: 'Waiting',
 		startTime: roundStartTimestamp,
 		timeElapsed: 0,
-	});
+	},);
+	
+
+	
 
 	if (gameWaitTimer) {
 		clearInterval(gameWaitTimer);
