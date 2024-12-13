@@ -276,6 +276,21 @@ socket1.onopen = () => {
 		  break;
 	  case "SECOND_BEFORE_START":
 	
+	  set({
+		status: 'Waiting',
+		//startTime: 'params.startTime',
+		timeElapsed: 0,
+	});
+
+	if (gameWaitTimer) {
+		clearInterval(gameWaitTimer);
+		gameWaitTimer = null;
+	}
+
+	gameWaitTimer = setInterval(gameWaiter, 1000);
+
+
+
 		  break;
 	  case 'BTN_BET_CLICKED':
 		// Handle BTN_BET_CLICKED action
