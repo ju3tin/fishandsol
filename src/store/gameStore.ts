@@ -1,10 +1,12 @@
 "use client"
 
-import io  from "socket.io-client";
+import io  from 'socket.io-client';
 
 import { jwtDecode } from 'jwt-decode';
 
 import { create } from "zustand";
+
+//import Cors from "cors";
 
 import { elapsedToMultiplier } from '../../lib/utils';
 
@@ -150,7 +152,7 @@ type NonceResponse = {
 
 export const useGameStore = create<GameState>((set, get) => {
 	const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
-		//withCredentials: true
+		withCredentials: true // Include cookies/auth headers if needed
 	});
 
 	let gameWaitTimer: ReturnType<typeof setInterval>|null = null;
