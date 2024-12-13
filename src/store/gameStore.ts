@@ -279,7 +279,7 @@ socket1.onopen = () => {
 	  set({
 		status: 'Waiting',
 		startTime: roundStartTimestamp,
-		timeElapsed: 0,
+		timeElapsed: message1.data,
 	});
 
 	if (gameWaitTimer) {
