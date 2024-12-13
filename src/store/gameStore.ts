@@ -255,7 +255,7 @@ socket1.onopen = () => {
 		
 	  case 'CNT_MULTIPLY':
 		// Handle CNT_MULTIPLY action
-	//console.log(`CNT_MULTIPLY action received with data: ${numericValue}`);
+	console.log(`CNT_MULTIPLY action received with data: ${message1.data}`);
 	
 		// Reset chart data with x as numericValue and y as timeDiff
 		break;
