@@ -235,7 +235,7 @@ socket1.onopen = () => {
 		break
 	  case 'ROUND_STARTED':
 		roundStartTimestamp = new Date(); // Store the current timestamp globally
-	   // console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
+	   console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
 		
 		// Reset chart data when the round starts
 	/*	setChartData({
