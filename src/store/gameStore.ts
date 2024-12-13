@@ -204,10 +204,102 @@ socket1.onopen = () => {
 	console.log('Connected to WebSocket server');
   };
   
-  socket1.onmessage = (event) => {
-	console.log('Message from server:', event.data);
-  };
   
+  socket1.onmessage = (event) => {
+	console.log('Message from server: ', event.data);
+	const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+	//setMessage(event.data);
+
+	// Add message to chat
+	let roundStartTimestamp; // Store the current timestamp globally
+	const timestamp = new Date().toLocaleTimeString();
+	//setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
+	const message1 = JSON.parse(event.data);
+	switch (message1.action) {
+
+	  case 'ROUND_ENDS':
+	  //  setDude34(message.totalMult);
+	/*  if(MessageLost.current){
+		MessageLost.current.style.opacity = "0"; // Set the message content
+	  }
+	  setIsButtonDisabled(false);
+	  setIsLineGraphVisible(false);
+	  setDude34(messageData.totalMult); // Set only the totalMult value
+	  
+	  if (roundCrash.current) {
+		roundCrash.current.style.opacity = "1"
+		roundCrash.current.style.display = "block";
+		roundCrash.current.style.color = "black";
+		roundCrash.current.innerHTML = `Round Crash At <br /> ${message1.totalMult}`;
+	  }*/
+		break
+	  case 'ROUND_STARTED':
+		roundStartTimestamp = new Date(); // Store the current timestamp globally
+	   // console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
+		
+		// Reset chart data when the round starts
+	/*	setChartData({
+		  datasets: [{
+			label: '', // Remove dataset label
+			data: [{ x: 0, y: 0 }],
+			borderColor: '#FF2D00',
+			tension: 0.4,
+			pointRadius: 0,
+		  }],
+		});
+	*/	
+		// Store the round start timestamp in state if needed
+	   // setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
+	 
+		break;
+		
+	  case 'CNT_MULTIPLY':
+		// Handle CNT_MULTIPLY action
+	//console.log(`CNT_MULTIPLY action received with data: ${numericValue}`);
+	
+		// Reset chart data with x as numericValue and y as timeDiff
+		break;
+		case "WON":
+		
+	   //   if (multiplyStr){
+		  //  multiplyStr.style.left = "-30%";
+		  //  multiplyLbl.style.color = "#00C208";
+	   //   }
+		  
+		 // multiplyLbl.textContent = "YOU ARE WON: " 
+		 //                         + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3))   
+		 //                         + " x " 
+		 //                         + parseFloat(jsonMessage.mult).toFixed(3);
+		  break;
+
+		case "LOST":
+		  break;
+	  case "SECOND_BEFORE_START":
+	
+		  break;
+	  case 'BTN_BET_CLICKED':
+		// Handle BTN_BET_CLICKED action
+		console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
+		break;
+	  default:
+		console.log(`Unknown action received: ${message1.action}`);
+	}
+
+ 
+
+	// When you receive a new timestamp
+	const newTimestamp = new Date(); // Get the new timestamp
+	if (roundStartTimestamp) { // Check if roundStartTimestamp is not null
+	  const timeDifference = (newTimestamp.getTime() - roundStartTimestamp.getTime()) / 1000; // Calculate difference in seconds
+	  console.log('Time since round started:', timeDifference, 'seconds');
+	} else {
+	  console.log('Round has not started yet.'); // Log if round has not started
+	}
+
+ 
+
+  };
+
   socket1.onclose = () => {
 	console.log('Connection closed');
   };
