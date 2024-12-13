@@ -278,7 +278,7 @@ socket1.onopen = () => {
 	
 	  set({
 		status: 'Waiting',
-		//startTime: 'params.startTime',
+		startTime: roundStartTimestamp,
 		timeElapsed: 0,
 	});
 
