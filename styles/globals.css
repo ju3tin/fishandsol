@@ -33,7 +33,7 @@ body {
     cursor: not-allowed; /* Not-allowed cursor for disabled state */
   }
 
-  #myCanvas {
+  #gameCanvas {
     transform: scale(0.5); /* Scales the canvas down to 50% of its original size */
     transform-origin: top left; /* Ensures scaling starts from the top-left corner */
   }
