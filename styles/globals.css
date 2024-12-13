@@ -32,3 +32,8 @@ body {
     padding: 10px 20px; /* Padding for better appearance */
     cursor: not-allowed; /* Not-allowed cursor for disabled state */
   }
+
+  #myCanvas {
+    transform: scale(0.5); /* Scales the canvas down to 50% of its original size */
+    transform-origin: top left; /* Ensures scaling starts from the top-left corner */
+  }
