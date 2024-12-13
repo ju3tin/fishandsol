@@ -286,7 +286,7 @@ socket1.onopen = () => {
 		clearInterval(gameWaitTimer);
 		gameWaitTimer = null;
 	}
-
+console.log("theis is how many seconds left"+message1.data);
 	gameWaitTimer = setInterval(gameWaiter, 1000);
 
 
