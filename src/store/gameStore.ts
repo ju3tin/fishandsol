@@ -1,6 +1,7 @@
 "use client"
 
-import io  from 'socket.io-client';
+import { io, Socket } from "socket.io-client";
+
 
 import { jwtDecode } from 'jwt-decode';
 
@@ -9,6 +10,9 @@ import { create } from "zustand";
 //import Cors from "cors";
 
 import { elapsedToMultiplier } from '../../lib/utils';
+
+
+
 
 export type GameStatus =
 	'Unknown'
@@ -151,9 +155,13 @@ type NonceResponse = {
 }
 
 export const useGameStore = create<GameState>((set, get) => {
-	const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
+	const socket4 = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
 		withCredentials: true // Include cookies/auth headers if needed
 	});
+
+	const socket1 = new WebSocket('wss://crashserver.onrender.com');
+
+
 
 	let gameWaitTimer: ReturnType<typeof setInterval>|null = null;
 	let gameRunTimer: ReturnType<typeof setInterval>|null = null;
@@ -190,8 +198,25 @@ export const useGameStore = create<GameState>((set, get) => {
 			});
 		}
 	};
+//
 
-	socket.on('connect', () => {
+socket1.onopen = () => {
+	console.log('Connected to WebSocket server');
+  };
+  
+  socket1.onmessage = (event) => {
+	console.log('Message from server:', event.data);
+  };
+  
+  socket1.onclose = () => {
+	console.log('Connection closed');
+  };
+  
+  socket1.onerror = (error) => {
+	console.error('WebSocket error:', error);
+  };
+  //
+	socket4.on('connect', () => {
 		console.log('Socket connected');
 
 		const token = localStorage?.getItem('token') ?? null;
@@ -202,12 +227,12 @@ export const useGameStore = create<GameState>((set, get) => {
 		set({ isConnected: true });
 	});
 
-	socket.on('disconnect', () => {
+	socket4.on('disconnect', () => {
 		console.log('Socket disconnected');
 		set({ isConnected: false });
 	});
 
-	socket.on('GameWaiting', (params: GameWaitingEventParams) => {
+	socket4.on('GameWaiting', (params: GameWaitingEventParams) => {
 		console.log('Game in waiting state')
 		set({
 			status: 'Waiting',
@@ -223,7 +248,7 @@ export const useGameStore = create<GameState>((set, get) => {
 		gameWaitTimer = setInterval(gameWaiter, 1000);
 	});
 
-	socket.on('GameRunning', (params: GameRunningEventParams) => {
+	socket4.on('GameRunning', (params: GameRunningEventParams) => {
 		console.log('Game in running state')
 
 		console.log("StartTime latency:", new Date().getTime() - params.startTime);
@@ -246,7 +271,7 @@ export const useGameStore = create<GameState>((set, get) => {
 		gameRunTimer = setInterval(gameRunner, 5);
 	});
 
-	socket.on('GameCrashed', (params: GameCrashedEventParams) => {
+	socket4.on('GameCrashed', (params: GameCrashedEventParams) => {
 		console.log('Game in crashed state')
 
 		const { crashes } = get();
@@ -272,7 +297,7 @@ export const useGameStore = create<GameState>((set, get) => {
 		}
 	});
 
-	socket.on('BetList', (params: BetListEventParams) => {
+	socket4.on('BetList', (params: BetListEventParams) => {
 		console.log('Received bet list')
 
 		const { wallet } = get();
@@ -289,12 +314,12 @@ export const useGameStore = create<GameState>((set, get) => {
 		});
 	});
 
-	socket.on('RecentGameList', (params: RecentGameListEventParams) => {
+	socket4.on('RecentGameList', (params: RecentGameListEventParams) => {
 		console.log('Received recent game list')
 		set({ crashes: params.games ?? [] });
 	});
 
-	socket.on('PlayerWon', (params: PlayerWonEventParams) => {
+	socket4.on('PlayerWon', (params: PlayerWonEventParams) => {
 		console.log('Received player won event')
 
 		const { players, wallet } = get();
@@ -315,12 +340,12 @@ export const useGameStore = create<GameState>((set, get) => {
 		}
 	});
 
-	socket.on('InitBalances', (params: InitBalancesEventParams) => {
+	socket4.on('InitBalances', (params: InitBalancesEventParams) => {
 		console.log('Received balance list')
 		set({ balances: params?.balances ?? {} });
 	});
 
-	socket.on('UpdateBalance', (params: UpdateBalancesEventParams) => {
+	socket4.on('UpdateBalance', (params: UpdateBalancesEventParams) => {
 		console.log('Received balance update')
 		set({
 			balances: {
@@ -337,7 +362,7 @@ export const useGameStore = create<GameState>((set, get) => {
 		) => {
 			console.log('Authenticating...');
 
-			socket.emit('authenticate', {
+			socket4.emit('authenticate', {
 				message,
 				signature
 			}, (params: AuthenticateResponseParams) => {
@@ -375,7 +400,7 @@ export const useGameStore = create<GameState>((set, get) => {
 
 				set({ wallet: decoded.wallet });
 
-				socket.emit('login', { token }, (params: LoginResponseParams) => {
+				socket4.emit('login', { token }, (params: LoginResponseParams) => {
 					if (params?.success)
 						set({ isLoggedIn: true });
 					else
@@ -401,7 +426,7 @@ export const useGameStore = create<GameState>((set, get) => {
 		) => {
 			console.log(`Placing bet ${betAmount} with currency ${currency} and autoCashOut ${autoCashOut}...`);
 
-			socket.emit('placeBet', {
+			socket4.emit('placeBet', {
 				betAmount,
 				autoCashOut,
 				currency
@@ -422,12 +447,12 @@ export const useGameStore = create<GameState>((set, get) => {
 
 		cashOut: () => {
 			console.log(`Cashing out...`);
-			socket.emit('cashOut');
+			socket4.emit('cashOut');
 		},
 
 		cancelBet: () => {
 			console.log(`Cancelling bet...`);
-			socket.emit('cancelBet');
+			socket4.emit('cancelBet');
 		},
 	};
 
