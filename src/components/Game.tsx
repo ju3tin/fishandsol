@@ -193,6 +193,6 @@ export default function Game() {
 	}, [context, gameState]);
 
 	return (
-		<canvas className={styles.Game} ref={canvasRef}></canvas>
+		<canvas id="gameCanvas" className={styles.Game} ref={canvasRef}></canvas>
 	);
 }
