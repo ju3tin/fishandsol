@@ -113,7 +113,7 @@ function drawRocketPath(
 	gradient.addColorStop(1, 'yellow');
 
 	context.strokeStyle = gradient;
-	context.lineWidth = 20;
+	context.lineWidth = 10;
 	context.beginPath();
 
 	const originX = 0;
