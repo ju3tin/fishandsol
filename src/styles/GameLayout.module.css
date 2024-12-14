@@ -25,7 +25,7 @@
 	}
 }
 
-@media only screen and not(min-width: 64em) {
+@media only screen and not(min-width: 800px) {
 	.GameLayout {
 		display: flex;
 		flex-direction: column;
