@@ -6,7 +6,7 @@ import { useGameStore, GameState } from '../store/gameStore';
 
 import styles from '../styles/GameLayout.module.css';
 
-const height = 2000;
+const height = 800;
 const coeffB = 0.5;
 const coeffA = height*0.16;
 
@@ -174,8 +174,8 @@ export default function Game() {
 		if (canvasRef.current) {
 			const canvas = canvasRef.current;
 			const aspectRatio = canvas.clientWidth / canvas.clientHeight;
-			canvas.width = 4000;
-			canvas.height = Math.round(4000 * aspectRatio);
+			canvas.width = 800;
+			canvas.height = Math.round(800 * aspectRatio);
 		}
 		setContext(ctx);
 	}, []);
