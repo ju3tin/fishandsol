@@ -217,22 +217,6 @@ socket1.onopen = () => {
 	const message1 = JSON.parse(event.data);
 	switch (message1.action) {
 
-	  case 'ROUND_ENDS':
-	  //  setDude34(message.totalMult);
-	/*  if(MessageLost.current){
-		MessageLost.current.style.opacity = "0"; // Set the message content
-	  }
-	  setIsButtonDisabled(false);
-	  setIsLineGraphVisible(false);
-	  setDude34(messageData.totalMult); // Set only the totalMult value
-	  
-	  if (roundCrash.current) {
-		roundCrash.current.style.opacity = "1"
-		roundCrash.current.style.display = "block";
-		roundCrash.current.style.color = "black";
-		roundCrash.current.innerHTML = `Round Crash At <br /> ${message1.totalMult}`;
-	  }*/
-		break
 	  case 'ROUND_STARTED':
 		roundStartTimestamp = new Date(); // Store the current timestamp globally
 	   console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
@@ -272,6 +256,39 @@ socket1.onopen = () => {
 	 
 		break;
 		
+		case 'ROUND_ENDS':
+			//  setDude34(message.totalMult);
+		  /*  if(MessageLost.current){
+			  MessageLost.current.style.opacity = "0"; // Set the message content
+			}
+			setIsButtonDisabled(false);
+			setIsLineGraphVisible(false);
+			setDude34(messageData.totalMult); // Set only the totalMult value
+			
+			if (roundCrash.current) {
+			  roundCrash.current.style.opacity = "1"
+			  roundCrash.current.style.display = "block";
+			  roundCrash.current.style.color = "black";
+			  roundCrash.current.innerHTML = `Round Crash At <br /> ${message1.totalMult}`;
+			}*/
+			  console.log('Game in crashed state')
+	  
+			  const dude444 = roundStartTimestamp;
+			  const { crashes } = get();
+	  
+			  set({
+				  status: 'Crashed',
+				  /*crashes: [...(
+					  crashes.length <= 30
+						  ? crashes
+						  : crashes.slice(0, 30)
+				  ), params.game],
+				  */timeElapsed: dude444 ? dude444 - 34 : 0,
+			  });
+	  
+			  break
+			
+
 	  case 'CNT_MULTIPLY':
 		// Handle CNT_MULTIPLY action
 	console.log(`CNT_MULTIPLY action received with data: ${message1.data}`);
