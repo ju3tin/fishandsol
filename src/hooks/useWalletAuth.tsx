@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 
-import { useWeb3ModalProvider, useWeb3ModalAccount } from '@web3modal/ethers/react';
-import { BrowserProvider } from 'ethers';
-import { SiweMessage } from 'siwe';
+//import { useWeb3ModalProvider, useWeb3ModalAccount } from '@web3modal/ethers/react';
+//import { BrowserProvider } from 'ethers';
+//import { SiweMessage } from 'siwe';
 
 import { useGameStore, GameState } from '../store/gameStore';
 
@@ -18,9 +18,10 @@ export type UseWalletAuthResult = {
 	isWalletConnected: boolean;
 }
 
-export default function useWalletAuth() : UseWalletAuthResult {
-	const { chainId, isConnected, address } = useWeb3ModalAccount();
-	const { walletProvider } = useWeb3ModalProvider();
+export default function useWalletAuth() //: UseWalletAuthResult 
+{
+//	const { chainId, isConnected, address } = useWeb3ModalAccount();
+//	const { walletProvider } = useWeb3ModalProvider();
 
 	const {
 		authenticate,
@@ -30,17 +31,17 @@ export default function useWalletAuth() : UseWalletAuthResult {
 
 	const [isSigningIn, setIsSigningIn] = useState<boolean>(false);
 
-	async function acquireSignature(nonce: string) : Promise<LoginParams> {
-		if (!isConnected || !walletProvider)
-			throw new Error('Wallet not connected or no provider');
+//	async function acquireSignature(nonce: string) : Promise<LoginParams> {
+//		if (!isConnected || !walletProvider)
+//			throw new Error('Wallet not connected or no provider');
 
-		const provider = new BrowserProvider(walletProvider);
-		const signer = await provider.getSigner()
+//		const provider = new BrowserProvider(walletProvider);
+//		const signer = await provider.getSigner()
 
-		const domain = window.location.host;
-		const origin = window.location.origin;
+//		const domain = window.location.host;
+//		const origin = window.location.origin;
 
-		const siweMessage = new SiweMessage({
+/*		const siweMessage = new SiweMessage({
 			domain,
 			address: signer?.address,
 			statement: 'Sign in to Crash',
@@ -57,15 +58,15 @@ export default function useWalletAuth() : UseWalletAuthResult {
 			message,
 			signature
 		};
-	}
+*///	}
 
 	async function signIn() {
 		setIsSigningIn(true);
 
 		try {
 			const nonce = await getNonce();
-			const { message, signature } = await acquireSignature(nonce);
-			authenticate(message, signature);
+	//		const { message, signature } = await acquireSignature(nonce);
+	//		authenticate(message, signature);
 		} catch (e) {
 			console.error(e);
 		}
@@ -73,16 +74,19 @@ export default function useWalletAuth() : UseWalletAuthResult {
 		setIsSigningIn(false);
 	}
 
-	const canSignIn = isConnected && !!walletProvider;
+	//const canSignIn = isConnected && !!walletProvider;
 
 	useEffect(() => {
-		switchWallet(address ?? null);
-	}, [address]);
-
+	//	switchWallet(address ?? null);
+	}, 
+	//[address]
+);
+/*
 	return {
 		signIn,
 		isSigningIn,
 		isWalletConnected: isConnected,
 		canSignIn,
 	};
+	*/
 }
