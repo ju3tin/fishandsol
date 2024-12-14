@@ -59,6 +59,8 @@ export default function GameControls() {
 		setAutoCashOut(amount);
 	}
 
+
+	/*
 	const handleButtonClick = () => {
 		if (!isConnected || !walletAuth.isWalletConnected)
 			return;
@@ -82,13 +84,16 @@ export default function GameControls() {
 			placeBet(betAmount, autoCashOut, currency);
 		}
 	}
-
+*/
+	/*
 	const isButtonDisabled: boolean =
 		!isConnected
 		|| walletAuth.isSigningIn
 		|| (!isLoggedIn && !walletAuth.canSignIn)
 		|| (isLoggedIn && !haveValidBet);
+*/
 
+		/*
 	const getButtonText = () : string => {
 		if (!isConnected)
 			return 'Connecting...';
@@ -121,14 +126,18 @@ export default function GameControls() {
 		}
 	}
 
+
+*/
 	const showErrorToast = useEffectEvent(() => {
-		if (errors.length > 0)
-			toast("⚠️ " + errors[errors.length - 1]);
+	//	if (errors.length > 0)
+	//		toast("⚠️ " + errors[errors.length - 1]);
 	});
 
 	useEffect(() => {
-		showErrorToast();
-	}, [errorCount]);
+	//	showErrorToast();
+	}, 
+//	[errorCount]
+);
 
 	return (
 		<Card>
@@ -142,7 +151,7 @@ export default function GameControls() {
 					placeholder="Bet amount"
 					type="number"
 					min="0"
-					onChange={(e) => handleChangeBetAmount(e.target.value)}
+					//onChange={(e) => handleChangeBetAmount(e.target.value)}
 					value={betAmount}
 				/>
 				<Label>Auto Cashout</Label>
@@ -151,7 +160,7 @@ export default function GameControls() {
 					type="number"
 					min="0"
 					step="0.01"
-					onChange={(e) => handleChangeAutoCashOut(e.target.value)}
+					//onChange={(e) => handleChangeAutoCashOut(e.target.value)}
 					value={autoCashOut}
 				/>
 				<Label>Currency</Label>
@@ -160,11 +169,11 @@ export default function GameControls() {
 
 			<CardFooter>
 				<Button
-					onClick={handleButtonClick}
-					disabled={isButtonDisabled}
+				//	onClick={/*handleButtonClick*/}
+				//	disabled={/*isButtonDisabled*/}
 					className={styles.BetButton}
 				>
-					{getButtonText()}
+					{/*getButtonText()*/}
 				</Button>
 			</CardFooter>
 		</Card>
