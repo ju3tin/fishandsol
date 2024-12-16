@@ -6,7 +6,7 @@ import { useGameStore, GameState } from '../store/gameStore';
 
 import styles from '../styles/GameLayout.module.css';
 
-const height = 800;
+const height = 400;
 const coeffB = 0.5;
 const coeffA = height*0.16;
 
@@ -125,7 +125,7 @@ function drawRocketPath(
 
 	for (let t = 0; t <= timeElapsed/step; t += step) {
 		const x = step * t;
-		const y = canvas.height - curveFunction(x/800);
+		const y = canvas.height - curveFunction(x/400);
 
 		context.lineTo(x, y);
 	}
@@ -141,8 +141,8 @@ function drawRocket(
 ) {
 	// Obtain angle from the path derivative
 
-	const d1 = curveFunction(timeElapsed/800);
-	const d2 = curveFunction((timeElapsed + 10)/800);
+	const d1 = curveFunction(timeElapsed/400);
+	const d2 = curveFunction((timeElapsed + 10)/400);
 	const slope = (d2 - d1)/10;
 	const angle = -Math.atan(slope) + 2*Math.PI/4;
 
@@ -176,7 +176,7 @@ export default function Game() {
 			const aspectRatio = canvas.clientWidth / canvas.clientHeight;
 			canvas.width = 300;
 			canvas.height = 300;
-			//canvas.height = Math.round(800 * aspectRatio);
+			//canvas.height = Math.round(400 * aspectRatio);
 		}
 		setContext(ctx);
 	}, []);
