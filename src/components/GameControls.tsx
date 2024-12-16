@@ -129,14 +129,14 @@ export default function GameControls() {
 
 
 	const showErrorToast = useEffectEvent(() => {
-	//	if (errors.length > 0)
-	//		toast("⚠️ " + errors[errors.length - 1]);
+		if (errors.length > 0)
+			toast("⚠️ " + errors[errors.length - 1]);
 	});
 
 	useEffect(() => {
-	//	showErrorToast();
+		showErrorToast();
 	}, 
-//	[errorCount]
+	[errorCount]
 );
 
 	return (
