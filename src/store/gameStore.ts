@@ -202,6 +202,7 @@ export const useGameStore = create<GameState>((set, get) => {
 
 socket1.onopen = () => {
 	console.log('Connected to WebSocket server');
+	set({ isConnected: true });
   };
   
   
