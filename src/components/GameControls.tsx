@@ -173,7 +173,7 @@ export default function GameControls() {
 				//	disabled={/*isButtonDisabled*/}
 					className={styles.BetButton}
 				>
-					{/*getButtonText()*/}
+					{getButtonText()}
 				</Button>
 			</CardFooter>
 		</Card>
