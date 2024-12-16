@@ -2,8 +2,9 @@ import { StaticImageData } from 'next/image';
 
 import ChippyIcon from '../../images/currencies/31832.png';
 import SolanaIcon from '../../images/currencies/sol.svg';
+import DemoIcon from '../../images/currencies/demo.svg';
 
-export type CurrencyId = 'sol' | 'chp';
+export type CurrencyId = 'sol' | 'chp' | 'dmo';
 
 export type Currency = {
 	id: CurrencyId;
@@ -34,15 +35,15 @@ export const currencies: Currency[] = [
 		decimals: 8,
 		contractDecimals: 8,
 	},
-	/*{
-		id: 'usdc',
+	{
+		id: 'dmo',
 		coinId: 3,
-		name: 'USDC',
-		units: 'USDC',
-		icon:  UsdcIcon,
+		name: 'Demo',
+		units: 'Demo',
+		icon:  DemoIcon,
 		decimals: 2,
 		contractDecimals: 6,
-	},*/
+	},
 ] as const;
 
 export const coinContracts: Record<string, Record<string, string>> = {
