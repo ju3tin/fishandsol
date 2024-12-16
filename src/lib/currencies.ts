@@ -3,7 +3,7 @@ import { StaticImageData } from 'next/image';
 import EthereumIcon from '../images/currencies/eth.svg';
 import BitcoinIcon from '../images/currencies/btc.svg';
 
-export type CurrencyId = 'sol' | 'btc';
+export type CurrencyId = 'sol' | 'chp';
 
 export type Currency = {
 	id: CurrencyId;
@@ -26,10 +26,10 @@ export const currencies: Currency[] = [
 		contractDecimals: 18,
 	},
 	{
-		id: 'btc',
+		id: 'chp',
 		coinId: 2,
-		name: 'Bitcoin',
-		units: 'BTC',
+		name: 'Chippy',
+		units: 'CHP',
 		icon:  BitcoinIcon,
 		decimals: 8,
 		contractDecimals: 8,
