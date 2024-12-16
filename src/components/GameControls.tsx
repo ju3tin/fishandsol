@@ -93,11 +93,11 @@ export default function GameControls() {
 		|| (isLoggedIn && !haveValidBet);
 */
 
-		/*
+		
 	const getButtonText = () : string => {
 		if (!isConnected)
 			return 'Connecting...';
-
+/*
 		if (!walletAuth.isWalletConnected)
 			return 'Connect Wallet';
 
@@ -110,7 +110,7 @@ export default function GameControls() {
 			else
 				return 'Connect Wallet';
 		}
-
+*/
 		if (isWaiting) {
 			return 'Cancel bet';
 		}
@@ -127,7 +127,7 @@ export default function GameControls() {
 	}
 
 
-*/
+
 	const showErrorToast = useEffectEvent(() => {
 	//	if (errors.length > 0)
 	//		toast("⚠️ " + errors[errors.length - 1]);
