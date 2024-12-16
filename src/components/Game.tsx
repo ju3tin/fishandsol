@@ -84,7 +84,7 @@ function drawMultiplier(
 	else
 		context.fillStyle = 'white';
 
-	context.font = '100px Arial';
+	context.font = '60px Arial';
 	const text = `${multiplier}x`;
 	const textWidth = context.measureText(text).width;
 	context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
@@ -97,7 +97,7 @@ function drawCountdown(
 	const canvas = context.canvas;
 
 	context.fillStyle = 'rgba(255, 255, 255, 1.0)';
-	context.font = '100px Arial';
+	context.font = '60px Arial';
 	const text = `Launch in ${timeRemaining} secs`;
 	const textWidth = context.measureText(text).width;
 	context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
