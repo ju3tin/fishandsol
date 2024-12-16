@@ -85,13 +85,13 @@ export default function GameControls() {
 		}
 	}
 
-	/*
+	
 	const isButtonDisabled: boolean =
 		!isConnected
-		|| walletAuth.isSigningIn
-		|| (!isLoggedIn && !walletAuth.canSignIn)
-		|| (isLoggedIn && !haveValidBet);
-*/
+//		|| walletAuth.isSigningIn
+//		|| (!isLoggedIn && !walletAuth.canSignIn)
+//		|| (isLoggedIn && !haveValidBet);
+
 
 		
 	const getButtonText = () : string => {
@@ -170,7 +170,7 @@ export default function GameControls() {
 			<CardFooter>
 				<Button
 					onClick={handleButtonClick}
-				//	disabled={/*isButtonDisabled*/}
+					disabled={isButtonDisabled}
 					className={styles.BetButton}
 				>
 					{getButtonText()}
