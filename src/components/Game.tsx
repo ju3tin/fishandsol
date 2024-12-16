@@ -125,7 +125,7 @@ function drawRocketPath(
 
 	for (let t = 0; t <= timeElapsed/step; t += step) {
 		const x = step * t;
-		const y = canvas.height - curveFunction(x/1000);
+		const y = canvas.height - curveFunction(x/800);
 
 		context.lineTo(x, y);
 	}
@@ -141,8 +141,8 @@ function drawRocket(
 ) {
 	// Obtain angle from the path derivative
 
-	const d1 = curveFunction(timeElapsed/1000);
-	const d2 = curveFunction((timeElapsed + 10)/1000);
+	const d1 = curveFunction(timeElapsed/800);
+	const d2 = curveFunction((timeElapsed + 10)/800);
 	const slope = (d2 - d1)/10;
 	const angle = -Math.atan(slope) + 2*Math.PI/4;
 
