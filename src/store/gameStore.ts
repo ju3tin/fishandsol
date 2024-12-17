@@ -159,7 +159,7 @@ export const useGameStore = create<GameState>((set, get) => {
 		withCredentials: true // Include cookies/auth headers if needed
 	});
 
-	const socket1 = new WebSocket('wss://crashserver.onrender.com');
+	const socket1 = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER!);
 
 
 
