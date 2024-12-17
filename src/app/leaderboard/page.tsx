@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import styles from './global1.module.css';
 export default function leaderboard() {
   return (
@@ -16,7 +17,7 @@ export default function leaderboard() {
     <td className={styles.number}>1</td>
     <td className={styles.name}>Lee Taeyong</td>
     <td className={styles.points}>
-      258.244 <img className={styles.goldmedal} src="https://github.com/malunaridev/Challenges-iCodeThis/blob/master/4-leaderboard/assets/gold-medal.png?raw=true" alt="gold medal"/>
+      258.244 <Image className={styles.goldmedal} src="https://github.com/malunaridev/Challenges-iCodeThis/blob/master/4-leaderboard/assets/gold-medal.png?raw=true" alt="gold medal"/>
     </td>
   </tr>
   <tr>
