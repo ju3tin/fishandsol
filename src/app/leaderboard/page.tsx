@@ -31,7 +31,7 @@ export default function leaderboard() {
     <td className={styles.number}>3</td>
     <td className={styles.name}>Xiao Dejun</td>
     <td className={styles.points}>
-      258.223<Image className={styles.goldmedal} src="/bronze.png" alt="silver medal"/>
+      258.223<Image className={styles.goldmedal} src="/bronze.png" alt="bronze medal"/>
     </td>
   </tr>
   <tr>
