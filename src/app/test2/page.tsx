@@ -1,15 +1,15 @@
+import CustomPageLayout from '../components/CustomPageLayout';
 import styles from "./page.module.css";
 
-import Game from '../../components/Game1';
-import CrashList from '../../components/CrashList1';
-import GameControls from '../../components/GameControls1';
-import BetList from '../../components/BetList1';
-
-import GameLayout from '../../components/GameLayout1';
-
-export default function Home() {
+import Game from '../../components/Game';
+import CrashList from '../../components/CrashList';
+import GameControls from '../../components/GameControls';
+import BetList from '../../components/BetList';
+import GameLayout from '../../components/GameLayout';
+export default function CustomSectionHome() {
 	return (
-		<main className={styles.main}>
+		<CustomPageLayout>
+			<main className={styles.main}>
 			<GameLayout>
 			<CrashList />
 				<Game />
@@ -17,5 +17,6 @@ export default function Home() {
 				<BetList />
 			</GameLayout>
 		</main>
+		</CustomPageLayout>
 	);
 }
