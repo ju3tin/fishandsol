@@ -41,6 +41,9 @@ import {
 // Default styles that can be overridden by your app
 import "@solana/wallet-adapter-react-ui/styles.css";
 
+import WalletContextProvider from "@/providers/WalletContextProvider";
+import Header from "../components/Header"
+
 
 const handleLoginClick = () => {
   // Handle login logic here
@@ -69,7 +72,13 @@ const sidebarItems: SidebarItems = {
   extras: (
     <div style={{backgroundColor:'black'}} className='flex flex-col gap-2'>
     
+   
+    <WalletContextProvider>
+         
+
     <LoginButton />
+    <Header />
+         </WalletContextProvider>
     </div>
   ),
 };
