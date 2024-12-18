@@ -112,7 +112,7 @@ const WalletConnection = () => {
             className="max-w-[450px] bg-black "
             style={{
               borderRadius: "30px",
-              zIndex: '300'
+              zIndex: '3000'
             }}
           >
             <div className="flex w-full justify-center items-center ">
