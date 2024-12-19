@@ -57,7 +57,7 @@ const sidebarItems: SidebarItems = {
       { label: 'Whitepaper', href: '/whitepaper', icon: BookOpenCheck },
       { label: 'About', href: '/about', icon: BadgeInfo },
       { label: 'Free Chippy Friday', href: '/chippyfriday', icon: Fish },
-      { href: '/hooked', icon: Gamepad2, label: 'Game',},
+      { href: '/test1', icon: Gamepad2, label: 'Game',},
   
       {
         href: '/item/lists',
