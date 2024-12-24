@@ -13,6 +13,7 @@ import { create } from "zustand";
 //import Cors from "cors";
 
 import { elapsedToMultiplier } from '../../lib/utils';
+import { Wallet } from "lucide-react";
 
 
 
@@ -586,7 +587,7 @@ console.log("theis is how many seconds left"+message1.data);
 			autoCashOut: string,
 			currency: string
 		) => {
-			console.log(`Placing bet ${betAmount} with currency ${currency} and autoCashOut ${autoCashOut}...`);
+			console.log(`Placing bet ${betAmount} with currency ${currency} and autoCashOut ${autoCashOut}...${Wallet}`);
 
 			socket4.emit('placeBet', {
 				betAmount,
