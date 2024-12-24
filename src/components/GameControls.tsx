@@ -9,7 +9,7 @@ import {
 	CardTitle,
 } from "@/components/ui/card";
 import { toast } from "sonner";
-import { useWalletContext } from "../../src/providers/WalletContextProvider";
+//import { useWalletContext } from "../../src/providers/WalletContextProvider";
 import { Checkbox } from "@nextui-org/checkbox";
 import { useGameStore, GameState } from "../store/gameStore";
 import { useEffectEvent } from "../hooks/useEffectEvent";
@@ -98,7 +98,7 @@ export default function GameControls() {
 	useEffect(() => {
 		showErrorToast();
 	}, [errorCount]);
-	const { wallet1a } = useWalletContext();
+	//const { wallet1a } = useWalletContext();
 	return (
 		<Card>
 			<CardHeader>
