@@ -81,6 +81,7 @@ export type GameActions = {
 	placeBet: (betAmount: string, autoCashOut: string, currency: string) => void;
 	cashOut: () => void;
 	cancelBet: () => void;
+	setUserWalletAddress: (address: string) => void;
 }
 
 export type GameState = GameStateData & { actions: GameActions };
@@ -616,6 +617,10 @@ console.log("theis is how many seconds left"+message1.data);
 		cancelBet: () => {
 			console.log(`Cancelling bet...`);
 			socket4.emit('cancelBet');
+		},
+
+		setUserWalletAddress: (address: string) => {
+			set({ wallet: address });
 		},
 	};
 
