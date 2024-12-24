@@ -20,6 +20,9 @@ export function toFixed(num: number, fixed: number): string {
   return num.toString().match(re)![0];
 }
 
+// Declare a global variable
+export let address1a: string = '';
+
 const WalletConnection = () => {
   const { connection } = useConnection();
   const { select, wallets, publicKey, disconnect, connecting } = useWallet();
@@ -50,6 +53,7 @@ const WalletConnection = () => {
 
   useEffect(() => {
     const address = publicKey?.toBase58() || '';
+    address1a = address; // This will now update the exported variable
     setUserWalletAddress(address);
     console.log('Current wallet address:', address);
   }, [publicKey, setUserWalletAddress]);

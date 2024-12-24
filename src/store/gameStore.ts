@@ -7,7 +7,7 @@ import { jwtDecode } from 'jwt-decode';
 
 import { create } from "zustand";
 
-
+//import {address1a} from "../../src/components/WalletConnection"
 //import { useWalletContext } from "../../src/providers/WalletContextProvider";
 
 //import Cors from "cors";
@@ -15,8 +15,8 @@ import { create } from "zustand";
 import { elapsedToMultiplier } from '../../lib/utils';
 import { Wallet } from "lucide-react";
 
-
-
+import { address1a } from "../../src/components/WalletConnection";
+//export let address1a: string = '';
 //const { wallet1a } = useWalletContext();
 export type GameStatus =
 	'Unknown'
@@ -592,7 +592,7 @@ console.log("theis is how many seconds left"+message1.data);
 			autoCashOut: string,
 			currency: string
 		) => {
-			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${get().userWalletAddress}`);
+			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${address1a}`);
 
 			socket4.emit('placeBet', {
 				betAmount,
