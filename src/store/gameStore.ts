@@ -592,7 +592,7 @@ console.log("theis is how many seconds left"+message1.data);
 			autoCashOut: string,
 			currency: string
 		) => {
-			console.log(`Placing bet ${betAmount} with currency ${currency} and autoCashOut ${autoCashOut}...${Wallet}`);
+			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${get().userWalletAddress}`);
 
 			socket4.emit('placeBet', {
 				betAmount,
