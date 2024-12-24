@@ -257,7 +257,7 @@ socket1.onopen = () => {
 	 
 		break;
 		
-		case 'ROUND_ENDS':
+		case 'ROUND_CRASHED':
 			//  setDude34(message.totalMult);
 		  /*  if(MessageLost.current){
 			  MessageLost.current.style.opacity = "0"; // Set the message content
@@ -272,7 +272,8 @@ socket1.onopen = () => {
 			  roundCrash.current.style.color = "black";
 			  roundCrash.current.innerHTML = `Round Crash At <br /> ${message1.totalMult}`;
 			}*/
-			  console.log('Game in crashed state')
+			console.log(`The game crashed at ${message1.multiplier}`)
+			
 	  
 			  const dude444 = roundStartTimestamp;
 			  const { crashes } = get();
@@ -288,8 +289,9 @@ socket1.onopen = () => {
 			  });
 	  
 			  break
-			  case 'ROUND_CRASHED':
-			console.log(`The game crashed at ${message1.multiplier}`)	
+			  case 'ROUND_ENDS':
+			console.log(`The game crashed at ${message1.multiplier}`)
+				
 			  break;
 				
 	  case 'CNT_MULTIPLY':
