@@ -8,7 +8,7 @@ import { jwtDecode } from 'jwt-decode';
 import { create } from "zustand";
 
 
-import { useWalletContext } from "../../src/providers/WalletContextProvider";
+//import { useWalletContext } from "../../src/providers/WalletContextProvider";
 
 //import Cors from "cors";
 
@@ -16,7 +16,7 @@ import { elapsedToMultiplier } from '../../lib/utils';
 
 
 
-const { wallet1a } = useWalletContext();
+//const { wallet1a } = useWalletContext();
 export type GameStatus =
 	'Unknown'
 	| 'Waiting'
@@ -586,7 +586,7 @@ console.log("theis is how many seconds left"+message1.data);
 			autoCashOut: string,
 			currency: string
 		) => {
-			console.log(`Placing bet ${betAmount} with currency ${currency} and autoCashOut ${autoCashOut}... ${wallet1a}`);
+			console.log(`Placing bet ${betAmount} with currency ${currency} and autoCashOut ${autoCashOut}...`);
 
 			socket4.emit('placeBet', {
 				betAmount,
