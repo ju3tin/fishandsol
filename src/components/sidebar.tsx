@@ -44,6 +44,9 @@ import "@solana/wallet-adapter-react-ui/styles.css";
 import WalletContextProvider from "@/providers/WalletContextProvider";
 import Header from "../components/Header"
 
+declare global {
+  var wallet1a: string | undefined;
+}
 
 const handleLoginClick = () => {
   // Handle login logic here
@@ -71,14 +74,17 @@ const sidebarItems: SidebarItems = {
   ],
   extras: (
     <div style={{backgroundColor:'black'}} className='flex flex-col gap-2'>
-    
-   
-    <WalletContextProvider>
-         
-
-    <LoginButton />
-    <Header />
-         </WalletContextProvider>
+    <WalletContextProvider onWalletChange={(address) => {
+      // Set the global variable
+      globalThis.wallet1a = address;
+      // Console log the variable name
+      console.log('Variable name: wallet1a');
+      // Console log the actual wallet address
+      console.log('Wallet address:', wallet1a);
+    }}>
+      <LoginButton />
+      <Header />
+    </WalletContextProvider>
     </div>
   ),
 };

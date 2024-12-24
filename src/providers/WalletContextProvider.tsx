@@ -8,6 +8,7 @@
  * 
  * Props:
  * - children: ReactNode - The child components that will have access to the wallet context.
+ * - onWalletChange?: (address: string | undefined) => void - A callback function to handle wallet changes.
  * 
  * State:
  * - network: WalletAdapterNetwork - The network to connect to, in this case, it's set to Devnet.
@@ -23,48 +24,30 @@
  * The child components passed to this component will have access to these contexts and can use them to interact with the user's Solana wallet.
  */
 
-import { FC, ReactNode } from "react";
-import {
-  ConnectionProvider,
-  WalletProvider,
-} from "@solana/wallet-adapter-react";
-import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
-import "@solana/wallet-adapter-react-ui/styles.css";
-import { clusterApiUrl } from "@solana/web3.js";
-import {
-  PhantomWalletAdapter,
-  SolflareWalletAdapter,
-  MathWalletAdapter,
-  TrustWalletAdapter,
-  CoinbaseWalletAdapter,
-} from "@solana/wallet-adapter-wallets";
-import { useMemo } from "react";
-import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { FC, ReactNode, useMemo } from 'react';
+import { ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
+import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
+import { useWallet } from '@solana/wallet-adapter-react';
+import { useEffect } from 'react';
 
-const WalletContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const network = WalletAdapterNetwork.Devnet;
+interface Props {
+  children: ReactNode;
+  onWalletChange?: (address: string | undefined) => void;
+}
 
-  //initiate auto connect
-  const { autoConnect } = useWallet();
+const WalletContextProvider: FC<Props> = ({ children, onWalletChange }) => {
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
+  const { publicKey } = useWallet();
 
-  // You can also provide a custom RPC endpoint.
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
-
-  //wallets
-  const wallets = useMemo(
-    () => [
-      new PhantomWalletAdapter(),
-      new SolflareWalletAdapter(),
-      new MathWalletAdapter(),
-      new TrustWalletAdapter(),
-      new CoinbaseWalletAdapter(),
-    ],
-    [network]
-  );
+  useEffect(() => {
+    if (onWalletChange) {
+      onWalletChange(publicKey?.toBase58());
+    }
+  }, [publicKey, onWalletChange]);
 
   return (
-    <ConnectionProvider endpoint={endpoint}>
+    <ConnectionProvider endpoint={process.env.NEXT_PUBLIC_RPC_ENDPOINT || 'https://api.devnet.solana.com'}>
       <WalletProvider wallets={wallets} autoConnect>
         <WalletModalProvider>{children}</WalletModalProvider>
       </WalletProvider>
