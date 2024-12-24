@@ -1,13 +1,7 @@
 "use client"
 import { useEffect, useState } from 'react';
 
-interface MyPageProps {
-    params: {
-        item: string;
-    };
-}
-
-const MyPage = ({ params }: MyPageProps) => {
+const MyPage = ({ params }: { params: { item: string } }) => {
     const [itemData, setItemData] = useState<any>(null);
 
     useEffect(() => {
