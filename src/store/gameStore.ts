@@ -288,8 +288,10 @@ socket1.onopen = () => {
 			  });
 	  
 			  break
-			
-
+			  case 'ROUND_CRASHED':
+			console.log(`The game crashed at ${message1.multiplier}`)	
+			  break;
+				
 	  case 'CNT_MULTIPLY':
 		// Handle CNT_MULTIPLY action
 	console.log(`CNT_MULTIPLY action received with data: ${message1.data}`);
