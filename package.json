@@ -15,6 +15,7 @@
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
     "@next/font": "13.1.6",
+    "@nextui-org/checkbox": "^2.3.7",
     "@project-serum/anchor": "^0.26.0",
     "@radix-ui/react-avatar": "^1.0.4",
     "@radix-ui/react-dialog": "^1.0.5",

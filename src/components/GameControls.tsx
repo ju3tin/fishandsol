@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 
 import { toast } from "sonner"
-
+import {Checkbox} from "@nextui-org/checkbox";
 import { useGameStore, GameState } from '../store/gameStore';
 import { useEffectEvent } from '../hooks/useEffectEvent';
 import useWalletAuth from '../hooks/useWalletAuth';
@@ -154,7 +154,7 @@ export default function GameControls() {
 					onChange={(e) => handleChangeBetAmount(e.target.value)}
 					value={betAmount}
 				/>
-				<Label>Auto Cashout</Label>
+				<Label>Auto Cashout</Label><Checkbox>Option</Checkbox>
 				<Input
 					placeholder="Auto cashout"
 					type="number"
