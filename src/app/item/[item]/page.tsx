@@ -1,25 +1,28 @@
-"use client"
-import { useEffect, useState } from 'react';
+"use client";
+import { useEffect, useState, use } from "react";
 
-const MyPage = ({ params }: { params: { item: string } }) => {
+const MyPage = ({ params }: { params: Promise<{ item: string }> }) => {
+    // Use React.use() to unwrap the `params` Promise
+    const { item } = use(params);
+
     const [itemData, setItemData] = useState<any>(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await fetch(`/api/items/${params.item}`); // Adjust the API endpoint as needed
+            const response = await fetch(`/api/items/${item}`);
             const data = await response.json();
             setItemData(data);
         };
 
         fetchData();
-    }, [params.item]);
+    }, [item]);
 
     return (
         <div>
-            <h1>Item: {params.item}</h1>
+            <h1>Item: {item}</h1>
             {itemData ? (
                 <div>
-                    <p>{JSON.stringify(itemData)}</p> {/* Display your item data here */}
+                    <p>{JSON.stringify(itemData)}</p> {/* Display your item data */}
                 </div>
             ) : (
                 <p>Loading...</p>
