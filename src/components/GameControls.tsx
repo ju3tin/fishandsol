@@ -130,7 +130,10 @@ export default function GameControls() {
 					disabled={isAutoCashOutDisabled}
 				/>
 				<Label>Currency</Label>
-				<CurrencyList balances={balances} />
+				<CurrencyList 
+					balances={balances} 
+					onCurrencyChange={setCurrency}
+				/>
 			</CardContent>
 
 			<CardFooter>
