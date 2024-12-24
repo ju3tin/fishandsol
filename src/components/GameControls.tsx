@@ -134,11 +134,7 @@ export default function GameControls() {
 			</CardContent>
 
 			<CardFooter>
-				<Button
-					onClick={handleButtonClick}
-					disabled={isButtonDisabled}
-					className={styles.BetButton}
-				>
+				<Button onClick={handleButtonClick} disabled={isButtonDisabled} className={styles.BetButton}>
 					{getButtonText()}
 				</Button>
 			</CardFooter>
