@@ -112,8 +112,9 @@
   }
   
   .goldmedal {
-    height: 3rem;
+    height: 64px;
     margin-left: 1.5rem;
+    width: 64px;
   }
   
   .ribbon {

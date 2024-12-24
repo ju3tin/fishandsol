@@ -17,21 +17,21 @@ export default function leaderboard() {
     <td className={styles.number}>1</td>
     <td className={styles.name}>Lee Taeyong</td>
     <td className={styles.points}>
-      258.244<Image className={styles.goldmedal} src="/gold-medal.png" alt="gold medal"/>
+      258.244<Image className={styles.goldmedal} width={100} height={100} src="/gold-medal.png" alt="gold medal"/>
     </td>
   </tr>
   <tr>
     <td className={styles.number}>2</td>
     <td className={styles.name}>Mark Lee</td>
     <td className={styles.points}>
-      258.242<Image className={styles.goldmedal} src="/silver1.png" alt="silver medal"/>
+      258.242<Image className={styles.goldmedal} width={64} height={64}  src="/silver1.png" alt="silver medal"/>
     </td>
   </tr>
   <tr>
     <td className={styles.number}>3</td>
     <td className={styles.name}>Xiao Dejun</td>
     <td className={styles.points}>
-      258.223<Image className={styles.goldmedal} src="/bronze.png" alt="bronze medal"/>
+      258.223<Image className={styles.goldmedal} width={64} height={64} src="/bronze.png" alt="bronze medal"/>
     </td>
   </tr>
   <tr>
