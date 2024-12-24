@@ -12,6 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
+import { useGameStore } from "@/store/gameStore";
 
 //handle wallet balance fixed to 2 decimal numbers without rounding
 export function toFixed(num: number, fixed: number): string {
@@ -22,10 +23,10 @@ export function toFixed(num: number, fixed: number): string {
 const WalletConnection = () => {
   const { connection } = useConnection();
   const { select, wallets, publicKey, disconnect, connecting } = useWallet();
+  const setUserWalletAddress = useGameStore((state) => state.setUserWalletAddress);
 
   const [open, setOpen] = useState<boolean>(false);
   const [balance, setBalance] = useState<number | null>(null);
-  const [userWalletAddress, setUserWalletAddress] = useState<string>("");
 
   useEffect(() => {
     if (!connection || !publicKey) {
@@ -48,8 +49,10 @@ const WalletConnection = () => {
   }, [publicKey, connection]);
 
   useEffect(() => {
-    setUserWalletAddress(publicKey?.toBase58()!);
-  }, [publicKey]);
+    const address = publicKey?.toBase58() || '';
+    setUserWalletAddress(address);
+    console.log('Current wallet address:', address);
+  }, [publicKey, setUserWalletAddress]);
 
   const handleWalletSelect = async (walletName: any) => {
     if (walletName) {
