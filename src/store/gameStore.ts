@@ -71,6 +71,8 @@ export type GameStateData = {
 	wallet: string|null;
 	errors: string[];
 	errorCount: number;
+	userWalletAddress: string;
+	setUserWalletAddress: (address: string) => void;
 }
 
 export type GameActions = {
@@ -105,6 +107,8 @@ const initialState : GameStateData = {
 	wallet: null,
 	errors: [],
 	errorCount: 0,
+	userWalletAddress: '',
+	setUserWalletAddress: () => {},
 };
 
 type GameWaitingEventParams = {
@@ -620,7 +624,7 @@ console.log("theis is how many seconds left"+message1.data);
 		},
 
 		setUserWalletAddress: (address: string) => {
-			set({ wallet: address });
+			set({ userWalletAddress: address });
 		},
 	};
 
