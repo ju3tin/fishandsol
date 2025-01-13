@@ -2,7 +2,7 @@
 import { useEffect, useState, useRef } from 'react';
 import '../../../styles/fonts.css';
 import '../../../styles/globals.css';
-import JsonFetcher from "../components/JsonFetcher";
+import JsonFetcher from "../../components/JsonFetcher";
 import { Line } from 'react-chartjs-2';
 import {   Chart as ChartJS,
     CategoryScale,
