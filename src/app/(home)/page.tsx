@@ -2,8 +2,8 @@
 "use client";
 import { useEffect, useRef, useState, useCallback, } from 'react';
 import Image from 'next/image';
-import '../../styles/fonts.css';
-import '../../styles/globals.css';
+import '../../../styles/fonts.css';
+import '../../../styles/globals.css';
 import io from 'socket.io-client';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
 
