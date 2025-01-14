@@ -4,7 +4,7 @@ import { useRef, useEffect, useState } from 'react';
 
 import { useGameStore, GameState } from '../store/gameStore';
 
-import styles from '../styles/GameLayout.module.css';
+import styles from '../styles/GameLayout1.module.css';
 
 const height = 300;
 const coeffB = 0.5;
