@@ -4,9 +4,9 @@ import { useRef, useEffect, useState } from 'react';
 
 import { useGameStore, GameState } from '../store/gameStore';
 
-import styles from '../styles/GameLayout1.module.css';
+import styles from '../styles/components/Game1.module.css';
 
-const height = 300;
+const height = 2000;
 const coeffB = 0.5;
 const coeffA = height*0.16;
 
@@ -16,7 +16,7 @@ let parachuteImage: HTMLImageElement;
 
 if (typeof window !== 'undefined') {
 	rocketImage = new Image();
-	rocketImage.src = 'fish.svg';
+	rocketImage.src = 'rocket.svg';
 
 	explodeImage = new Image();
 	explodeImage.src = 'explode.svg';
@@ -25,8 +25,8 @@ if (typeof window !== 'undefined') {
 	parachuteImage.src = 'parachute.svg'
 }
 
-const rocketWidth = 50;
-const rocketHeight = 50;
+const rocketWidth = 220;
+const rocketHeight = 220;
 
 function curveFunction(t: number) {
 	return coeffA * (Math.exp(coeffB * t) - 1);
@@ -84,7 +84,7 @@ function drawMultiplier(
 	else
 		context.fillStyle = 'white';
 
-	context.font = '30px Arial';
+	context.font = '220px Arial';
 	const text = `${multiplier}x`;
 	const textWidth = context.measureText(text).width;
 	context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
@@ -97,7 +97,7 @@ function drawCountdown(
 	const canvas = context.canvas;
 
 	context.fillStyle = 'rgba(255, 255, 255, 1.0)';
-	context.font = '30px Arial';
+	context.font = '220px Arial';
 	const text = `Launch in ${timeRemaining} secs`;
 	const textWidth = context.measureText(text).width;
 	context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
@@ -113,7 +113,7 @@ function drawRocketPath(
 	gradient.addColorStop(1, 'yellow');
 
 	context.strokeStyle = gradient;
-	context.lineWidth = 10;
+	context.lineWidth = 20;
 	context.beginPath();
 
 	const originX = 0;
@@ -125,7 +125,7 @@ function drawRocketPath(
 
 	for (let t = 0; t <= timeElapsed/step; t += step) {
 		const x = step * t;
-		const y = canvas.height - curveFunction(x/300);
+		const y = canvas.height - curveFunction(x/1000);
 
 		context.lineTo(x, y);
 	}
@@ -141,8 +141,8 @@ function drawRocket(
 ) {
 	// Obtain angle from the path derivative
 
-	const d1 = curveFunction(timeElapsed/300);
-	const d2 = curveFunction((timeElapsed + 10)/300);
+	const d1 = curveFunction(timeElapsed/1000);
+	const d2 = curveFunction((timeElapsed + 10)/1000);
 	const slope = (d2 - d1)/10;
 	const angle = -Math.atan(slope) + 2*Math.PI/4;
 
@@ -174,9 +174,8 @@ export default function Game() {
 		if (canvasRef.current) {
 			const canvas = canvasRef.current;
 			const aspectRatio = canvas.clientWidth / canvas.clientHeight;
-			canvas.width = 300;
-			canvas.height = 300;
-			//canvas.height = Math.round(300 * aspectRatio);
+			canvas.width = 4000;
+			canvas.height = Math.round(4000 * aspectRatio);
 		}
 		setContext(ctx);
 	}, []);
@@ -194,6 +193,6 @@ export default function Game() {
 	}, [context, gameState]);
 
 	return (
-		<canvas id="gameCanvas" className={styles.Game} ref={canvasRef}></canvas>
+		<canvas className={styles.Game} ref={canvasRef}></canvas>
 	);
 }
