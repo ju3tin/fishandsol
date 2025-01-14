@@ -28,8 +28,8 @@ export default function RootLayout({
 				<body className={inter.className}>
         <Sidebar />
 				
-					{children}
-					<Toaster />
+        <main className='mx-5 mt-16 sm:ml-[300px] sm:mt-3'>{children}
+					<Toaster /></main>
 				
 				</body>
 			</html>
