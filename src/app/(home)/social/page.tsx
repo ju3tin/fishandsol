@@ -1,8 +1,8 @@
 "use client"
 import React from 'react';
-import InstagramEmbed from '../components/InstagramEmbed';
-import TikTokEmbed from '../components/TikTokEmbed';
-import TwitterEmbed from '../components/TwitterEmbed';
+import InstagramEmbed from '../../components/InstagramEmbed';
+import TikTokEmbed from '../../components/TikTokEmbed';
+import TwitterEmbed from '../../components/TwitterEmbed';
 
 
 export default function social() {
