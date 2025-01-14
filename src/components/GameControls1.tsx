@@ -14,7 +14,7 @@ import { useGameStore, GameState } from "../store/gameStore";
 import { useEffectEvent } from "../hooks/useEffectEvent";
 import useWalletAuth from "../hooks/useWalletAuth";
 import { Input } from "@/components/uis/input";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/uis/button";
 import { Label } from "@/components/uis/label";
 import { currencies } from "../lib/currencies";
 import CurrencyList from "./CurrencyList";

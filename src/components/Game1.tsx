@@ -2,9 +2,9 @@
 
 import { useRef, useEffect, useState } from 'react';
 
-import { useGameStore, GameState } from '../store/gameStore';
+import { useGameStore, GameState } from '../store/gameStore1';
 
-import styles from '../styles/components/Game1.module.css';
+import styles from '../styles/Game1.module.css';
 
 const height = 2000;
 const coeffB = 0.5;
