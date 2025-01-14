@@ -2,8 +2,8 @@ import styles from "./page.module.css";
 
 import Game from '../../../components/Game';
 import CrashList from '../../../components/CrashList';
-import GameControls from '../../../components/GameControls';
-import BetList from '../../../components/BetList';
+import GameControls from '../../../components/GameControls1';
+import BetList from '../../../components/BetList1';
 
 import GameLayout from '../../../components/GameLayout';
 

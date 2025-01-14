@@ -22,7 +22,7 @@ import {
 
 import { currencyById } from '../../lib/currencies';
 
-import { Bet, useGameStore } from '../store/gameStore';
+import { Bet, useGameStore } from '../store/gameStore1';
 
 import { shortenWallet } from '../../lib/utils';
 
