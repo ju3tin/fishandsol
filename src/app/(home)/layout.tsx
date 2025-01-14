@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
+import { Analytics } from "@vercel/analytics/react";
 import { Sidebar } from '@/components/sidebar';
 import { Suspense } from 'react';
 import WalletContextProvider from "@/providers/WalletContextProvider";
@@ -25,6 +26,7 @@ export default function RootLayout({
   return (
     <html lang='en' className='dark'>
       <body className={inter.className}>
+      <Analytics/>
         <Sidebar />
         <main className='mx-5 mt-16 sm:ml-[300px] sm:mt-3'>{children}</main>
       </body>
