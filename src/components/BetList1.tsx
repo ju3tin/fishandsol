@@ -2,7 +2,7 @@
 
 import Decimal from 'decimal.js';
 
-import { Label } from '@/components/ui/label';
+import { Label } from '@/components/uis/label';
 
 import {
 	Table,
@@ -11,14 +11,14 @@ import {
 	TableHead,
 	TableHeader,
 	TableRow,
-} from "@/components/ui/table"
+} from "@/components/uis/table"
  
 import {
 	Card,
 	CardContent,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
+} from "@/components/uis/card";
 
 import { currencyById } from '../../lib/currencies';
 
