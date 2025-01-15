@@ -51,13 +51,15 @@ function App() {
         const { solana } = window as any;
         const sender = new PublicKey(yourWalletAddress); // Ensure that `yourWalletAddress` is a valid string
         const receiver = new PublicKey(inputValue.walletAddress);
-        const lamports = parseEther(inputValue.transferAmount); // Convert from SOL to lamports (1 SOL = 1 billion lamports)
+        
+        // Convert transfer amount from SOL to lamports (1 SOL = 1 billion lamports)
+        const lamports = BigInt(parseEther(inputValue.transferAmount).toString()); 
 
         const transaction = new Transaction().add(
           SystemProgram.transfer({
             fromPubkey: sender,
             toPubkey: receiver,
-            lamports: lamports.toString(), // Transfer amount in lamports
+            lamports: lamports, // Pass as BigInt
           })
         );
 
