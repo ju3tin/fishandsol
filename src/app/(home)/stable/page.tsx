@@ -1,3 +1,4 @@
+"use client"
 import { useState, useEffect } from "react";
 import CoinMarketCapWidget from '../../../components/Coinmaket';
 import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js"; // Import Solana's SDK
