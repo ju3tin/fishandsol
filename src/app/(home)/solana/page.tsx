@@ -33,10 +33,10 @@ export default function solana() {
         />
         <p>
           Solana utilizes a unique consensus mechanism called Proof of History (PoH), which creates a historical record proving that an event has occurred at a specific time.
-          This method helps optimize the blockchain's speed and scalability by reducing the time required for transaction validation.
+          This method helps optimize the blockchain&apos;s speed and scalability by reducing the time required for transaction validation.
         </p>
 
-        <h2>Solana's Native Token - SOL</h2>
+        <h2>Solana&apos;s Native Token - SOL</h2>
         <img 
           src="https://cryptologos.cc/logos/solana-sol-logo.png" 
           alt="Solana SOL Logo" 
@@ -54,7 +54,7 @@ export default function solana() {
         <h2>Smart Contracts and dApps on Solana</h2>
         <p>
           Solana enables developers to create decentralized applications (dApps) using smart contracts built in languages like <strong>Rust</strong> and <strong>C</strong>.
-          The blockchain's speed and low transaction costs make it an attractive platform for DeFi projects, NFTs, and various dApp ecosystems.
+          The blockchain&apos;s speed and low transaction costs make it an attractive platform for DeFi projects, NFTs, and various dApp ecosystems.
         </p>
 
         <h2>Solana Ecosystem</h2>
