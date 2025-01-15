@@ -51,7 +51,7 @@ export default function GameControls() {
 	
 	const walletAuth = useWalletAuth();
 	const [overlayVisible, setOverlayVisible] = useState(false);
-
+	const [demoAmount, setDemoAmount] = useState<string>("0");
 	const [betAmount, setBetAmount] = useState<string>("0");
 	const [autoCashOut, setAutoCashOut] = useState<string>("0");
 	const [currency, setCurrency] = useState<string>(currencies[0].id);
@@ -77,6 +77,10 @@ export default function GameControls() {
 	const handleChangeBetAmount = (amount: string) => {
 		setBetAmount(amount);
 	};
+	
+	const handleChangeDemoAmount = (amount: string) => {
+		setDemoAmount(amount);
+	}
 
 	const handleChangeAutoCashOut = (amount: string) => {
 		setAutoCashOut(amount);
@@ -235,7 +239,9 @@ export default function GameControls() {
         <Tab key="Demo" title="Demo">
           <Card>
 		  Use demo currency to play our games without any risk. If you run out of demo credits, you can reset your demo balance anytime by clicking the button below. Have fun and enjoy your experience!
-		  <Button>
+		  <Button
+		  onClick={() => handleChangeDemoAmount('100')}
+		  >
 		  <FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
 			Reset Demo Balance		
 		  </Button>
@@ -261,10 +267,10 @@ export default function GameControls() {
 			<CardContent>
 				<Label>Demo Amount</Label>
 				<Input
-					placeholder="Bet amount"
+					placeholder="Demo amount"
 					type="number"
 					min="0"
-					value={betAmount}
+					value={demoAmount}
 					disabled
 				/>
 				<Label>Bet Amount</Label>
