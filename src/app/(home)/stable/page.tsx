@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ethers, BrowserProvider } from "ethers";
+import { ethers } from "ethers"; // Use ethers properly for imports
 import abi from "./contracts/MemeCoin.json";
-import { formatEther, Web3Provider, parseEther } from "ethers/lib/utils";
+import { formatEther, parseEther } from "ethers/lib/utils";
 
 function App() {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
@@ -44,7 +44,7 @@ function App() {
   const getTokenInfo = async () => {
     try {
       if (window.ethereum) {
-        const provider = new Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum); // Correct provider class
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
 
@@ -73,7 +73,7 @@ function App() {
     event.preventDefault();
     try {
       if (window.ethereum) {
-        const provider = new Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum); // Correct provider class
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
 
@@ -93,7 +93,7 @@ function App() {
     event.preventDefault();
     try {
       if (window.ethereum) {
-        const provider = new Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum); // Correct provider class
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
 
@@ -117,7 +117,7 @@ function App() {
     event.preventDefault();
     try {
       if (window.ethereum) {
-        const provider = new Web3Provider(window.ethereum);
+        const provider = new ethers.providers.Web3Provider(window.ethereum); // Correct provider class
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
 
