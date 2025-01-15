@@ -82,7 +82,7 @@ function App() {
       <h2 className="headline">
         <span className="headline-gradient">Chippy Ⓜ</span> (Solana)
       </h2>
-      <iframe src="https://widget.coinmarketcap.com/v2/ticker/coin-id/?lang=en" width="500" height="500"></iframe>
+      <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script><div className="coinmarketcap-currency-widget" data-currencyid="31832" data-base="USD" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-statsticker="true" data-stats="USD"></div>
       <section className="customer-section px-10 pt-5 pb-10">
         {error && <p className="text-2xl text-red-700">{error}</p>}
         <div className="mt-5">
