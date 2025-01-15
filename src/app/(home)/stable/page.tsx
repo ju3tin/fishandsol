@@ -1,8 +1,5 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import CoinMarketCapWidget from '../../../components/Coinmaket';
-
 import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js"; // Import Solana's SDK
 import { parseEther } from "ethers/lib/utils"; // You might still use ethers utils for formatting if needed
 
@@ -44,9 +41,14 @@ function App() {
     event.preventDefault();
     try {
       if (window.solana && isWalletConnected) {
+        if (!yourWalletAddress) {
+          setError("Wallet address is not available.");
+          return;
+        }
+
         const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
         const { solana } = window as any;
-        const sender = new PublicKey(yourWalletAddress);
+        const sender = new PublicKey(yourWalletAddress); // Ensure that `yourWalletAddress` is a valid string
         const receiver = new PublicKey(inputValue.walletAddress);
         const lamports = parseEther(inputValue.transferAmount); // Convert from SOL to lamports (1 SOL = 1 billion lamports)
 
@@ -66,6 +68,7 @@ function App() {
       }
     } catch (err) {
       console.error("Error transferring tokens:", err);
+      setError("Failed to transfer tokens. Try again.");
     }
   };
 
@@ -85,7 +88,7 @@ function App() {
         <span className="headline-gradient">Chippy Ⓜ</span> (Solana)
       </h2>
       <CoinMarketCapWidget />
-     <section className="customer-section px-10 pt-5 pb-10">
+      <section className="customer-section px-10 pt-5 pb-10">
         {error && <p className="text-2xl text-red-700">{error}</p>}
         <div className="mt-5">
           <span className="mr-5"><strong>Connected Wallet:</strong> {yourWalletAddress}</span>
