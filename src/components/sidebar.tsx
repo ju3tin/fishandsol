@@ -64,7 +64,7 @@ const sidebarItems: SidebarItems = {
         icon: WalletCards,
         label: 'Stake',
       },
-      { href: '/item/solana', icon: Info, label: 'Solana Information',},
+      { href: '/solana', icon: Info, label: 'Solana Information',},
   
   
       { href: '/leaderboard', icon: User, label: 'Leaderboards', },
