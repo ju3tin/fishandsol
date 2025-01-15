@@ -159,7 +159,76 @@ function App() {
           <span className="mr-5"><strong>Ticker:</strong>  {tokenSymbol} </span>
           <span className="mr-5"><strong>Total Supply:</strong>  {tokenTotalSupply}</span>
         </div>
-        {/* Add forms and functionality here */}
+
+        {/* Transfer Token Form */}
+        <div className="mt-7 mb-9">
+          <form className="form-style">
+            <input
+              type="text"
+              className="input-double"
+              onChange={handleInputChange}
+              name="walletAddress"
+              placeholder="Wallet Address"
+              value={inputValue.walletAddress}
+            />
+            <input
+              type="number"
+              className="input-double"
+              onChange={handleInputChange}
+              name="transferAmount"
+              placeholder={`0.0000 ${tokenSymbol}`}
+              value={inputValue.transferAmount}
+            />
+            <button
+              className="btn-purple"
+              onClick={transferToken}
+            >
+              Transfer Tokens
+            </button>
+          </form>
+        </div>
+
+        {/* Burn Token Form */}
+        <div className="mt-7 mb-9">
+          <form className="form-style">
+            <input
+              type="number"
+              className="input-double"
+              onChange={handleInputChange}
+              name="burnAmount"
+              placeholder={`0.0000 ${tokenSymbol}`}
+              value={inputValue.burnAmount}
+            />
+            <button
+              className="btn-purple"
+              onClick={burnTokens}
+            >
+              Burn Tokens
+            </button>
+          </form>
+        </div>
+
+        {/* Mint Token Form */}
+        {isTokenOwner && (
+          <div className="mt-7 mb-9">
+            <form className="form-style">
+              <input
+                type="number"
+                className="input-double"
+                onChange={handleInputChange}
+                name="mintAmount"
+                placeholder={`0.0000 ${tokenSymbol}`}
+                value={inputValue.mintAmount}
+              />
+              <button
+                className="btn-purple"
+                onClick={mintTokens}
+              >
+                Mint Tokens
+              </button>
+            </form>
+          </div>
+        )}
       </section>
     </main>
   );
