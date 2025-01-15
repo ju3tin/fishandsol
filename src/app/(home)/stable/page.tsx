@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ethers, JsonRpcProvider, Web3Provider, parseEther, formatEther } from "ethers";
+import { ethers, JsonRpcProvider, BrowserProvider } from "ethers";
 import abi from "./contracts/MemeCoin.json";
+import { formatEther, Web3Provider, parseEther } from "ethers/lib/utils";
 
 function App() {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
