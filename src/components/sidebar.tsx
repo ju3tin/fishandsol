@@ -60,7 +60,7 @@ const sidebarItems: SidebarItems = {
       { href: '/game', icon: Gamepad2, label: 'Game',},
   
       {
-        href: '/item/lists',
+        href: '/stable',
         icon: WalletCards,
         label: 'Stake',
       },
