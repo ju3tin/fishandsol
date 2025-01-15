@@ -25,6 +25,7 @@ import styles from "../styles/components/GameControls1.module.css";
 
 export default function GameControls() {
 	const walletAuth = useWalletAuth();
+	const [overlayVisible, setOverlayVisible] = useState(false);
 
 	const [betAmount, setBetAmount] = useState<string>("0");
 	const [autoCashOut, setAutoCashOut] = useState<string>("0");
@@ -103,6 +104,11 @@ export default function GameControls() {
 	const showErrorToast = useEffectEvent(() => {
 		if (errors.length > 0) toast("⚠️ " + errors[errors.length - 1]);
 	});
+	const toggleOverlay = () => {
+		setOverlayVisible(!overlayVisible);
+	  };
+	  
+	
 
 	useEffect(() => {
 		showErrorToast();
@@ -110,6 +116,45 @@ export default function GameControls() {
 
 	return (
 		<Card>
+		 {/* Button to trigger overlay
+		 <Button onClick={toggleOverlay} className="show-overlay-btn">
+		 Show Message Board
+	   </Button> */}
+ 
+	   {/* Overlay */}
+	   {overlayVisible && (
+		 <div className="overlay">
+		   <div className="message-board-container">
+			 <div className="message-form">
+			   <input
+				 type="text"
+				 placeholder="Your Name"
+				// value={sender}
+			//	 onChange={(e) => setSender(e.target.value)}
+			   />
+			   <textarea
+				 placeholder="Type a message..."
+			//	 value={messageContent}
+			//	 onChange={(e) => setMessageContent(e.target.value)}
+			   />
+			   <button 
+			  // onClick={/*handleSendMessage*/}
+			   >Send</button>
+			 </div>
+ 
+			 <div className="messages">
+			   {/*messages.map((msg, index) => (
+				 <Message key={index} message={msg} />
+			   ))*/}
+			 </div>
+ 
+			 <button onClick={toggleOverlay} className="close-overlay-btn">
+			   Close
+			 </button>
+		   </div>
+		 </div>
+	   )}
+	
 			<CardHeader>
 				<CardTitle>Place your bets!</CardTitle>
 			</CardHeader>
@@ -159,7 +204,7 @@ export default function GameControls() {
 					{getButtonText()}
 				</Button>
 				<div>
-				<Button  className={styles.BetButton}>
+				<Button  onClick={toggleOverlay} className={styles.BetButton}>
 				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
 					Deposit Chippy</Button></div>
 			</CardFooter>
