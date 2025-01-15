@@ -1,6 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
-import { ethers, utils } from "ethers";
+//import { ethers, utils } from "ethers";
+import { ethers, parseEther, formatEther, keccak256, toUtf8Bytes } from 'ethers';
 import abi from "./contracts/MemeCoin.json";
 
 function App() {
@@ -46,7 +47,7 @@ function App() {
         let tokenSymbol = await tokenContract.symbol();
         let tokenOwner = await tokenContract.owner();
         let tokenSupply = await tokenContract.totalSupply();
-        tokenSupply = utils.formatEther(tokenSupply)
+        tokenSupply = formatEther(tokenSupply)
 
         setTokenName(`${tokenName}`);
         setTokenSymbol(`${tokenSymbol}`);
@@ -70,7 +71,7 @@ function App() {
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
         
-        const txn = await tokenContract.transfer(inputValue.walletAddress, utils.parseEther(inputValue.transferAmount));
+        const txn = await tokenContract.transfer(inputValue.walletAddress, parseEther(inputValue.transferAmount));
         console.log("Transfering tokens...");
         await txn.wait();
         console.log("Tokens Transfered", txn.hash);
@@ -92,13 +93,13 @@ function App() {
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        const txn = await tokenContract.burn(utils.parseEther(inputValue.burnAmount));
+        const txn = await tokenContract.burn(parseEther(inputValue.burnAmount));
         console.log("Burning tokens...");
         await txn.wait();
         console.log("Tokens burned...", txn.hash);
 
         let tokenSupply = await tokenContract.totalSupply();
-        tokenSupply = utils.formatEther(tokenSupply);
+        tokenSupply = formatEther(tokenSupply);
         setTokenTotalSupply(tokenSupply);
 
       } else {
@@ -119,13 +120,13 @@ function App() {
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
 
         let tokenOwner = await tokenContract.owner();
-        const txn = await tokenContract.mint(tokenOwner, utils.parseEther(inputValue.mintAmount));
+        const txn = await tokenContract.mint(tokenOwner, parseEther(inputValue.mintAmount));
         console.log("Minting tokens...");
         await txn.wait();
         console.log("Tokens minted...", txn.hash);
 
         let tokenSupply = await tokenContract.totalSupply();
-        tokenSupply = utils.formatEther(tokenSupply);
+        tokenSupply = formatEther(tokenSupply);
         setTokenTotalSupply(tokenSupply);
 
       } else {
