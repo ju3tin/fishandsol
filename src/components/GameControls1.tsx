@@ -113,6 +113,14 @@ export default function GameControls() {
 			</CardHeader>
 
 			<CardContent>
+				<Label>Demo Amount</Label>
+				<Input
+					placeholder="Bet amount"
+					type="number"
+					min="0"
+					value={betAmount}
+					disabled
+				/>
 				<Label>Bet Amount</Label>
 				<Input
 					placeholder="Bet amount"
