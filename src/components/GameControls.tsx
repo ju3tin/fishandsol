@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import JSConfetti from 'js-confetti';
 import {
 	Card,
 	CardContent,
@@ -23,6 +24,7 @@ import styles from "../styles/components/GameControls.module.css";
 
 export default function GameControls() {
 	const walletAuth = useWalletAuth();
+	const jsConfetti = new JSConfetti();
 
 	const [betAmount, setBetAmount] = useState<string>("0");
 	const [autoCashOut, setAutoCashOut] = useState<string>("0");
@@ -71,6 +73,7 @@ export default function GameControls() {
 			cashOut();
 		} else {
 			placeBet(betAmount, autoCashOut, currency);
+			jsConfetti.addConfetti();
 		}
 	};
 
