@@ -237,8 +237,11 @@ export default function GameControls() {
 		  </Tabs>
         </Tab>
         <Tab key="Demo" title="Demo">
-          <Card>
-		  Use demo currency to play our games without any risk. If you run out of demo credits, you can reset your demo balance anytime by clicking the button below. Have fun and enjoy your experience!
+<Card>
+	<Label>Demo Amount {demoAmount}</Label>
+	</Card>          
+		  <Card>
+Use demo currency to play our games without any risk. If you run out of demo credits, you can reset your demo balance anytime by clicking the button below. Have fun and enjoy your experience!
 		  <Button
 		  onClick={() => handleChangeDemoAmount('100')}
 		  >
