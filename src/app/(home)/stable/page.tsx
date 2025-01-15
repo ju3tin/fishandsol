@@ -19,7 +19,7 @@ function App() {
   const [isTokenOwner, setIsTokenOwner] = useState(false);
   const [tokenOwnerAddress, setTokenOwnerAddress] = useState(null);
   const [yourWalletAddress, setYourWalletAddress] = useState(null);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null); // Specify the type here
 
   const contractAddress = "0xEbaAFC08E349776aa63c024196ce3385BC4aB48A";
   const contractABI = abi.abi;
