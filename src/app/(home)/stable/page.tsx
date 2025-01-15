@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import CoinMarketCapWidget from '../../../components/Coinmaket';
+
 import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js"; // Import Solana's SDK
 import { parseEther } from "ethers/lib/utils"; // You might still use ethers utils for formatting if needed
 
@@ -82,8 +84,8 @@ function App() {
       <h2 className="headline">
         <span className="headline-gradient">Chippy Ⓜ</span> (Solana)
       </h2>
-      <script type="text/javascript" src="https://files.coinmarketcap.com/static/widget/currency.js"></script><div className="coinmarketcap-currency-widget" data-currencyid="31832" data-base="USD" data-secondary="" data-ticker="true" data-rank="true" data-marketcap="true" data-volume="true" data-statsticker="true" data-stats="USD"></div>
-      <section className="customer-section px-10 pt-5 pb-10">
+      <CoinMarketCapWidget />
+     <section className="customer-section px-10 pt-5 pb-10">
         {error && <p className="text-2xl text-red-700">{error}</p>}
         <div className="mt-5">
           <span className="mr-5"><strong>Connected Wallet:</strong> {yourWalletAddress}</span>
