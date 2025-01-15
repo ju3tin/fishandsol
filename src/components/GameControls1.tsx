@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import JSConfetti from 'js-confetti';
 import { FaWallet } from 'react-icons/fa'; // Using FontAwesome for example
-
+import {Tabs, Tab, CardBody} from "@nextui-org/react";
 import {
 	Card,
 	CardContent,
@@ -124,34 +124,36 @@ export default function GameControls() {
 	   {/* Overlay */}
 	   {overlayVisible && (
 		 <div className="overlay">
-		   <div className="message-board-container">
-			 <div className="message-form">
-			   <input
-				 type="text"
-				 placeholder="Your Name"
-				// value={sender}
-			//	 onChange={(e) => setSender(e.target.value)}
-			   />
-			   <textarea
-				 placeholder="Type a message..."
-			//	 value={messageContent}
-			//	 onChange={(e) => setMessageContent(e.target.value)}
-			   />
-			   <button 
-			  // onClick={/*handleSendMessage*/}
-			   >Send</button>
-			 </div>
- 
-			 <div className="messages">
-			   {/*messages.map((msg, index) => (
-				 <Message key={index} message={msg} />
-			   ))*/}
-			 </div>
- 
-			 <button onClick={toggleOverlay} className="close-overlay-btn">
-			   Close
-			 </button>
-		   </div>
+		   <div className="flex w-full flex-col">
+      <Tabs aria-label="Options">
+        <Tab key="photos" title="Photos">
+          <Card>
+            <CardBody>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+              incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+              exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+            </CardBody>
+          </Card>
+        </Tab>
+        <Tab key="music" title="Music">
+          <Card>
+            <CardBody>
+              Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
+              ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur.
+            </CardBody>
+          </Card>
+        </Tab>
+        <Tab key="videos" title="Videos">
+          <Card>
+            <CardBody>
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+              mollit anim id est laborum.
+            </CardBody>
+          </Card>
+        </Tab>
+      </Tabs>
+    </div>
 		 </div>
 	   )}
 	
