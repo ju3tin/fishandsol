@@ -69,7 +69,7 @@ function App() {
     }
   };
 
-  const transferToken = async (event) => {
+  const transferToken = async (event: React.FormEvent) => { // Specify the event type here
     event.preventDefault();
     try {
       if (window.ethereum) {
@@ -89,7 +89,7 @@ function App() {
     }
   };
 
-  const burnTokens = async (event) => {
+  const burnTokens = async (event: React.FormEvent) => { // Specify the event type here
     event.preventDefault();
     try {
       if (window.ethereum) {
@@ -113,7 +113,7 @@ function App() {
     }
   };
 
-  const mintTokens = async (event) => {
+  const mintTokens = async (event: React.FormEvent) => { // Specify the event type here
     event.preventDefault();
     try {
       if (window.ethereum) {
@@ -138,7 +138,7 @@ function App() {
     }
   };
 
-  const handleInputChange = (event) => {
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => { // Specify the event type here
     setInputValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   };
 
