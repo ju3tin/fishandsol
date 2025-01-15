@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import CoinMarketCapWidget from '../../../components/Coinmaket';
 import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js"; // Import Solana's SDK
-import { parseEther } from "ethers/lib/utils"; // You might still use ethers utils for formatting if needed
+//import { parseEther } from "ethers/lib/utils"; // You might still use ethers utils for formatting if needed
 
 function App() {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
@@ -53,7 +53,7 @@ function App() {
         const receiver = new PublicKey(inputValue.walletAddress);
         
         // Convert transfer amount from SOL to lamports (1 SOL = 1 billion lamports)
-        const lamports = BigInt(parseEther(inputValue.transferAmount).toString()); 
+        const lamports = BigInt((inputValue.transferAmount).toString()); 
 
         const transaction = new Transaction().add(
           SystemProgram.transfer({
