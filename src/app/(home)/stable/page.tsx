@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { ethers, JsonRpcProvider, BrowserProvider } from "ethers";
+import { ethers, BrowserProvider } from "ethers";
 import abi from "./contracts/MemeCoin.json";
 import { formatEther, Web3Provider, parseEther } from "ethers/lib/utils";
 
