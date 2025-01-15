@@ -1,8 +1,9 @@
 "use client"
 import { useState, useEffect } from 'react';
 //import { ethers, utils } from "ethers";
-import { ethers, parseEther, formatEther, keccak256, toUtf8Bytes } from 'ethers';
+import { ethers, Provider, parseEther, formatEther, keccak256, toUtf8Bytes } from 'ethers';
 import abi from "./contracts/MemeCoin.json";
+import { JsonRpcProvider, WebSocketProvider } from "ethers";
 
 function App() {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
@@ -17,6 +18,7 @@ function App() {
 
   const contractAddress = '0xEbaAFC08E349776aa63c024196ce3385BC4aB48A';
   const contractABI = abi.abi;
+  const providers = new JsonRpcProvider("https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID");
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -27,7 +29,7 @@ function App() {
         setYourWalletAddress(account);
         console.log("Account Connected: ", account);
       } else {
-        setError("Install a MetaMask wallet to get our token.");
+        setError('300');
         console.log("No Metamask detected");
       }
     } catch (error) {
