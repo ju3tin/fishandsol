@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import JSConfetti from 'js-confetti';
+import { FaWallet } from 'react-icons/fa'; // Using FontAwesome for example
+
 import {
 	Card,
 	CardContent,
@@ -156,6 +158,10 @@ export default function GameControls() {
 				<Button onClick={handleButtonClick} disabled={isButtonDisabled} className={styles.BetButton}>
 					{getButtonText()}
 				</Button>
+				<div>
+				<Button  className={styles.BetButton}>
+				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
+					Deposit Chippy</Button></div>
 			</CardFooter>
 		</Card>
 	);
