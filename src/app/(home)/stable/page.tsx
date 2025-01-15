@@ -1,13 +1,17 @@
-"use client"
-import { useState, useEffect } from 'react';
-//import { ethers, utils } from "ethers";
-import { ethers, Provider, parseEther, formatEther, keccak256, toUtf8Bytes } from 'ethers';
+"use client";
+
+import { useState, useEffect } from "react";
+import { ethers, JsonRpcProvider, Web3Provider, parseEther, formatEther } from "ethers";
 import abi from "./contracts/MemeCoin.json";
-import { JsonRpcProvider, WebSocketProvider } from "ethers";
 
 function App() {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [inputValue, setInputValue] = useState({ walletAddress: "", transferAmount: "", burnAmount: "", mintAmount: "" });
+  const [inputValue, setInputValue] = useState({
+    walletAddress: "",
+    transferAmount: "",
+    burnAmount: "",
+    mintAmount: "",
+  });
   const [tokenName, setTokenName] = useState("");
   const [tokenSymbol, setTokenSymbol] = useState("");
   const [tokenTotalSupply, setTokenTotalSupply] = useState(0);
@@ -16,82 +20,79 @@ function App() {
   const [yourWalletAddress, setYourWalletAddress] = useState(null);
   const [error, setError] = useState(null);
 
-  const contractAddress = '0xEbaAFC08E349776aa63c024196ce3385BC4aB48A';
+  const contractAddress = "0xEbaAFC08E349776aa63c024196ce3385BC4aB48A";
   const contractABI = abi.abi;
-  const providers = new JsonRpcProvider("https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID");
 
   const checkIfWalletIsConnected = async () => {
     try {
       if (window.ethereum) {
-        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+        const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
         const account = accounts[0];
         setIsWalletConnected(true);
         setYourWalletAddress(account);
         console.log("Account Connected: ", account);
       } else {
-        setError('300');
-        console.log("No Metamask detected");
+        setError("No Metamask detected. Please install it to use this application.");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error("Error connecting wallet:", err);
+      setError("Failed to connect wallet. Try again.");
     }
-  }
+  };
 
   const getTokenInfo = async () => {
     try {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
-        const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
-        let tokenName = await tokenContract.name();
-        let tokenSymbol = await tokenContract.symbol();
-        let tokenOwner = await tokenContract.owner();
+        const [account] = await window.ethereum.request({ method: "eth_requestAccounts" });
+        const tokenName = await tokenContract.name();
+        const tokenSymbol = await tokenContract.symbol();
+        const tokenOwner = await tokenContract.owner();
         let tokenSupply = await tokenContract.totalSupply();
-        tokenSupply = formatEther(tokenSupply)
+        tokenSupply = formatEther(tokenSupply);
 
-        setTokenName(`${tokenName}`);
-        setTokenSymbol(`${tokenSymbol}`);
+        setTokenName(tokenName);
+        setTokenSymbol(tokenSymbol);
         setTokenTotalSupply(tokenSupply);
         setTokenOwnerAddress(tokenOwner);
 
         if (account.toLowerCase() === tokenOwner.toLowerCase()) {
-          setIsTokenOwner(true)
+          setIsTokenOwner(true);
         }
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error("Error fetching token info:", err);
     }
-  }
+  };
 
   const transferToken = async (event) => {
     event.preventDefault();
     try {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
-        
+
         const txn = await tokenContract.transfer(inputValue.walletAddress, parseEther(inputValue.transferAmount));
-        console.log("Transfering tokens...");
+        console.log("Transferring tokens...");
         await txn.wait();
-        console.log("Tokens Transfered", txn.hash);
-  
+        console.log("Tokens Transferred", txn.hash);
       } else {
-        console.log("Ethereum object not found, install Metamask.");
-        setError("Install a MetaMask wallet to get our token.");
+        setError("Ethereum object not found. Install Metamask.");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error("Error transferring tokens:", err);
     }
-  }
+  };
 
   const burnTokens = async (event) => {
     event.preventDefault();
     try {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
 
@@ -103,25 +104,23 @@ function App() {
         let tokenSupply = await tokenContract.totalSupply();
         tokenSupply = formatEther(tokenSupply);
         setTokenTotalSupply(tokenSupply);
-
       } else {
-        console.log("Ethereum object not found, install Metamask.");
-        setError("Install a MetaMask wallet to get our token.");
+        setError("Ethereum object not found. Install Metamask.");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error("Error burning tokens:", err);
     }
-  }
+  };
 
   const mintTokens = async (event) => {
     event.preventDefault();
     try {
       if (window.ethereum) {
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const provider = new Web3Provider(window.ethereum);
         const signer = provider.getSigner();
         const tokenContract = new ethers.Contract(contractAddress, contractABI, signer);
 
-        let tokenOwner = await tokenContract.owner();
+        const tokenOwner = await tokenContract.owner();
         const txn = await tokenContract.mint(tokenOwner, parseEther(inputValue.mintAmount));
         console.log("Minting tokens...");
         await txn.wait();
@@ -130,24 +129,22 @@ function App() {
         let tokenSupply = await tokenContract.totalSupply();
         tokenSupply = formatEther(tokenSupply);
         setTokenTotalSupply(tokenSupply);
-
       } else {
-        console.log("Ethereum object not found, install Metamask.");
-        setError("Install a MetaMask wallet to get our token.");
+        setError("Ethereum object not found. Install Metamask.");
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error("Error minting tokens:", err);
     }
-  }
+  };
 
   const handleInputChange = (event) => {
-    setInputValue(prevFormData => ({ ...prevFormData, [event.target.name]: event.target.value }));
-  }
+    setInputValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+  };
 
   useEffect(() => {
     checkIfWalletIsConnected();
     getTokenInfo();
-  }, [])
+  }, []);
 
   return (
     <main className="main-container">
@@ -161,83 +158,10 @@ function App() {
           <span className="mr-5"><strong>Ticker:</strong>  {tokenSymbol} </span>
           <span className="mr-5"><strong>Total Supply:</strong>  {tokenTotalSupply}</span>
         </div>
-        <div className="mt-7 mb-9">
-          <form className="form-style">
-            <input
-              type="text"
-              className="input-double"
-              onChange={handleInputChange}
-              name="walletAddress"
-              placeholder="Wallet Address"
-              value={inputValue.walletAddress}
-            />
-            <input
-              type="number"
-              className="input-double"
-              onChange={handleInputChange}
-              name="transferAmount"
-              placeholder={`0.0000 ${tokenSymbol}`}
-              value={inputValue.transferAmount}
-              min="0"
-            />
-            <button
-              className="btn-purple"
-              onClick={transferToken}>Transfer Tokens</button>
-          </form>
-        </div>
-        {isTokenOwner && (
-          <section>
-            <div className="mt-10 mb-10">
-              <form className="form-style">
-                <input
-                  type="text"
-                  className="input-style"
-                  onChange={handleInputChange}
-                  name="burnAmount"
-                  placeholder={`0.0000 ${tokenSymbol}`}
-                  value={inputValue.burnAmount}
-                />
-                <button
-                  className="btn-purple"
-                  onClick={burnTokens}>
-                  Burn tokens
-                </button>
-              </form>
-            </div>
-            <div className="mt-10 mb-10">
-              <form className="form-style">
-                <input
-                  type="text"
-                  className="input-style"
-                  onChange={handleInputChange}
-                  name="mintAmount"
-                  placeholder={`0.0000 ${tokenSymbol}`}
-                  value={inputValue.mintAmount}
-                />
-                <button
-                  className="btn-purple"
-                  onClick={mintTokens}>
-                  Mint Tokens
-                </button>
-              </form>
-            </div>
-          </section>
-        )}
-        <div className="mt-5">
-          <p><span className="font-bold">Contract Address: </span>{contractAddress}</p>
-        </div>
-        <div className="mt-5">
-          <p><span className="font-bold">Token Owner Address: </span>{tokenOwnerAddress}</p>
-        </div>
-        <div className="mt-5">
-          {isWalletConnected && <p><span className="font-bold">Your Wallet Address: </span>{yourWalletAddress}</p>}
-          <button className="btn-connect" onClick={checkIfWalletIsConnected}>
-            {isWalletConnected ? "Wallet Connected 🔒" : "Connect Wallet 🔑"}
-          </button>
-        </div>
-
+        {/* Add forms and functionality here */}
       </section>
     </main>
   );
 }
+
 export default App;
