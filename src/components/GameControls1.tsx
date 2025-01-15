@@ -1,9 +1,15 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
+import React from "react";
+import ReactDOM from "react-dom";
+import QRCode from "react-qr-code";
 import JSConfetti from 'js-confetti';
 import { FaWallet } from 'react-icons/fa'; // Using FontAwesome for example
 import {Tabs, Tab, CardBody} from "@nextui-org/react";
+import copy from "copy-to-clipboard";
+//import { toast } from "react-toastify";
+
 
 import {
 	Card,
@@ -25,6 +31,24 @@ import CurrencyList from "./CurrencyList";
 import styles from "../styles/components/GameControls1.module.css";
 
 export default function GameControls() {
+	const textRef = useRef();
+	
+	const [copied, setCopied] = useState(false);
+	const textToCopy = "This is the text to copy!";
+  
+	const handleCopy = () => {
+		navigator.clipboard
+		  .writeText(textToCopy)
+		  .then(() => {
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+		  })
+		  .catch((err) => {
+			console.error("Failed to copy text: ", err);
+		  });
+	  };
+	
+	
 	const walletAuth = useWalletAuth();
 	const [overlayVisible, setOverlayVisible] = useState(false);
 
@@ -115,6 +139,10 @@ export default function GameControls() {
 		showErrorToast();
 	}, [errorCount]);
 
+
+
+	
+	
 	return (
 		<Card>
 		 {/* Button to trigger overlay
@@ -130,14 +158,79 @@ export default function GameControls() {
 			   
 			 <Tabs aria-label="Options">
         <Tab key="Sol" title="Sol">
-          <Card>
-          
+		<Tabs aria-label="Options">
+        <Tab key="Chippydeposit" title="Deposit">
+		  <Card>
+	  
+<div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+  <QRCode
+    size={256}
+    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+    value='fuck you'
+    viewBox={`0 0 256 256`}
+  />
+        <p>{textToCopy}</p>
+      <a href="#" onClick={(e) => { e.preventDefault(); handleCopy(); }}>
+        {copied ? "Copied!" : "Copy to Clipboard"}
+      </a>
+</div>
+
           </Card>
+		  </Tab>
+		  <Tab key="ChippyWithdraw" title="Withdraw">
+		  <Card>
+		  Enter a wallet address on the Solana network. Your withdrawal will be processed INSANTLY.
+<div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+ <Label>Amount</Label>
+ <input type="text" id="username" 
+        placeholder="Enter your username" />
+ <Label>Wallet Address for Withdrawal</Label>
+ <input type="text" id="username" 
+        placeholder="Enter your username" />
+
+<Button>Withdrawal</Button>
+ 
+</div>
+          </Card>
+		  </Tab>
+		  </Tabs>
         </Tab>
         <Tab key="Chippy" title="Chippy">
-          <Card>
-           
+		<Tabs aria-label="Options">
+        <Tab key="Chippydeposit" title="Deposit">
+		  <Card>
+		  
+		  <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+  <QRCode
+    size={256}
+    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+    value='fuck you'
+    viewBox={`0 0 256 256`}
+  />
+        <p>{textToCopy}</p>
+      <a href="#" onClick={(e) => { e.preventDefault(); handleCopy(); }}>
+        {copied ? "Copied!" : "Copy to Clipboard"}
+      </a>
+</div>
           </Card>
+		  </Tab>
+		  <Tab key="ChippyWithdraw" title="Withdraw">
+		  <Card>
+		  Enter a wallet address on the Solana network. Your withdrawal will be processed INSANTLY.
+<div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+ <Label>Amount</Label>
+ <input type="text" id="username" 
+        placeholder="Enter your username" />
+ <Label>Wallet Address for Withdrawal</Label>
+ <input type="text" id="username" 
+        placeholder="Enter your username" />
+
+<Button>Withdrawal</Button>
+ 
+</div>
+          </Card>
+		  </Tab>
+		  </Tabs>
         </Tab>
         <Tab key="Demo" title="Demo">
           <Card>
