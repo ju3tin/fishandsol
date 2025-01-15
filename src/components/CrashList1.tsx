@@ -8,7 +8,7 @@ import {
 	HoverCardTrigger,
 } from "@/components/ui/hover-card";
 
-import { useGameStore, CrashedGame } from '../store/gameStore';
+import { useGameStore, CrashedGame } from '../store/gameStore1';
 
 export type CrashListProps = {}
 

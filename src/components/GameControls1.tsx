@@ -11,7 +11,7 @@ import {
 } from "@/components/uis/card";
 import { toast } from "sonner";
 import { Checkbox } from "@nextui-org/checkbox";
-import { useGameStore, GameState } from "../store/gameStore";
+import { useGameStore, GameState } from "../store/gameStore1";
 import { useEffectEvent } from "../hooks/useEffectEvent";
 import useWalletAuth from "../hooks/useWalletAuth";
 import { Input } from "@/components/uis/input";
