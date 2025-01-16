@@ -4,23 +4,58 @@ import { Link } from 'react-router-dom'; // Or 'next/link' if you're using Next.
 export default function NotFoundPage() {
     return (
 <div id="container12" className="container default pt-4">
-    <div className="wrapper1">
-        <div className="inner">
-      <h1 className='text-3xl font-semibold capitalize'>About</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe sapiente
-        tenetur animi excepturi tempora aperiam, fugit in architecto, iusto
-        magni placeat obcaecati voluptatem soluta labore similique reiciendis
-        non a harum autem id provident omnis corrupti consequuntur velit?
-        Architecto repellat maiores quam ducimus nobis veritatis delectus
-        molestias, inventore corrupti modi minima commodi quos fugit odit
-        ratione tempore iure ipsam soluta harum sequi quas excepturi! Tenetur
-        laboriosam laborum quibusdam enim dicta adipisci, nostrum ipsa provident
-        odio nemo dolore optio, ad doloremque ducimus praesentium iure neque
-        voluptas. Aliquid eveniet incidunt facere qui itaque reiciendis labore
-        est, facilis, iusto ex iste. Eos, ducimus iure!
-      </p>
-        </div>
+   
+<div style={styles.container}>
+      <div style={styles.content}>
+        <h1 style={styles.errorCode}>404</h1>
+        <h2 style={styles.message}>Page Not Found</h2>
+        <p style={styles.description}>
+          Oops! The page you are looking for does not exist or has been moved.
+        </p>
+        <Link to="/" style={styles.homeLink}>
+          Go back to Home
+        </Link>
+      </div>
     </div>
 </div>
 )}
+
+const styles = {
+    container: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: '100vh',
+      backgroundColor: '#f8f9fa',
+      color: '#333',
+      textAlign: 'center',
+    },
+    content: {
+      maxWidth: '500px',
+      padding: '20px',
+      boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+      backgroundColor: '#fff',
+      borderRadius: '8px',
+    },
+    errorCode: {
+      fontSize: '72px',
+      margin: '0',
+    },
+    message: {
+      fontSize: '24px',
+      margin: '10px 0',
+    },
+    description: {
+      fontSize: '16px',
+      margin: '10px 0 20px',
+    },
+    homeLink: {
+      display: 'inline-block',
+      padding: '10px 20px',
+      fontSize: '16px',
+      color: '#fff',
+      backgroundColor: '#007bff',
+      textDecoration: 'none',
+      borderRadius: '4px',
+    },
+  } as const;
