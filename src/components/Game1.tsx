@@ -25,8 +25,8 @@ if (typeof window !== 'undefined') {
 	parachuteImage.src = 'parachute.svg'
 }
 
-const rocketWidth = 220;
-const rocketHeight = 220;
+const rocketWidth = 440;
+const rocketHeight = 440;
 
 function curveFunction(t: number) {
 	return coeffA * (Math.exp(coeffB * t) - 1);
