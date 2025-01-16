@@ -7,6 +7,10 @@ export default function NotFoundPage() {
     <div className="wrapper1">
         <div className="inner">
      Error 404
+
+     <Link to="/">
+                        Go back to Home
+                    </Link>
      </div>
     </div>
 </div>
