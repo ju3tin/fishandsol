@@ -44,7 +44,7 @@ export default function NotFoundPage() {
 
     return (
         <div id="container12" className="container default pt-4">
-            <div style={styles.container}>
+            <div>
                 <div style={styles.content}>
                     <h1 style={styles.errorCode}>404</h1>
                     <h2 style={styles.message}>Page Not Found</h2>
