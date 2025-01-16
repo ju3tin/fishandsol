@@ -187,10 +187,10 @@ export default function GameControls() {
 <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
  <Label>Amount</Label>
  <input type="text" id="username" 
-        placeholder="Enter your username" />
+        placeholder="SOL" />
  <Label>Wallet Address for Withdrawal</Label>
  <input type="text" id="username" 
-        placeholder="Enter your username" />
+        placeholder="Wallet Address" />
 
 <Button>Withdrawal</Button>
  
@@ -222,15 +222,14 @@ export default function GameControls() {
 		  <Card>
 		  Enter a wallet address on the Solana network. Your withdrawal will be processed INSANTLY.
 <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
- <Label>Amount</Label>
+<Label>Amount</Label>
  <input type="text" id="username" 
-        placeholder="Enter your username" />
+        placeholder="SOL" />
  <Label>Wallet Address for Withdrawal</Label>
  <input type="text" id="username" 
-        placeholder="Enter your username" />
+        placeholder="Wallet Address" />
 
 <Button>Withdrawal</Button>
- 
 </div>
           </Card>
 		  </Tab>
