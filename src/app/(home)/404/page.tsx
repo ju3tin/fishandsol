@@ -3,10 +3,8 @@ import { Link } from 'react-router-dom'; // Or 'next/link' if you're using Next.
 
 export default function NotFoundPage() {
     const styles = {
-        container: {
+        container1: {
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
             height: '100vh',
             backgroundColor: '#f8f9fa',
             color: '#333',
