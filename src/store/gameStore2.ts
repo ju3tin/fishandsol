@@ -201,7 +201,7 @@ export const useGameStore = create<GameState>((set, get) => {
 	};
 
 	socket.on('connect', () => {
-		console.log('Socket connected');
+		console.log('Socket connected bitches');
 
 		//const token = localStorage?.getItem('token') ?? null;
 
