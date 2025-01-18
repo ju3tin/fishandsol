@@ -149,7 +149,7 @@ type NonceResponse = {
 }
 
 interface ServerMessage {
-	action: 
+	action:
 	'COUNTDOWN' 
 	| 'CNT_MULTIPLY' 
 	| 'SECOND_BEFORE_START'
@@ -264,6 +264,16 @@ export const useGameStore = create<GameState>((set, get) => {
 	
 			case 'CNT_MULTIPLY':
 				//  setDude34(message.totalMult);
+				const multiplier = message2.multiplier;
+                const data = message2.data;
+
+                console.log(`what the fuck Multiplier: ${multiplier}, Data: ${data}`);
+
+                // Update the state with the new multiplier
+                set({
+                  //  currentMultiplier: multiplier,
+                  //  additionalData: data, // Example: storing extra data if needed
+                });
 				console.log(`i spoke to the server Multiplier: ${message1.multiplier}, Data: ${message1.data}`);
 			break;
 			
@@ -525,11 +535,7 @@ export const useGameStore = create<GameState>((set, get) => {
 				case 'COUNTDOWN':
 					console.log('Countdown time:', data.time);
 					break;
-				case 'CNT_MULTIPLY':
-					console.log('Multiplier:', data.multiplier);
-					console.log('Data:', data.data);
-					break;
-				default:
+				
 					console.warn('Unknown action:', data.action);
 			}
 		} catch (error) {
@@ -542,18 +548,6 @@ export const useGameStore = create<GameState>((set, get) => {
         try {
             const parsedMessage = JSON.parse(message);
 
-            if (parsedMessage.action === 'CNT_MULTIPLY') {
-                const multiplier = parseFloat(parsedMessage.multiplier);
-                const data = parseFloat(parsedMessage.data);
-
-                console.log(`what the fuck Multiplier: ${multiplier}, Data: ${data}`);
-
-                // Update the state with the new multiplier
-                set({
-                  //  currentMultiplier: multiplier,
-                  //  additionalData: data, // Example: storing extra data if needed
-                });
-            }
         } catch (error) {
             console.error('Error processing WebSocket message:', error);
         }
