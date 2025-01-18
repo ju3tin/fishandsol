@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 
-import { useGameStore, GameState } from '../store/gameStore1';
+import { useGameStore, GameState,  } from '../store/gameStore1';
 
 import styles from '../styles/Game1.module.css';
 

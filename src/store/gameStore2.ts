@@ -271,8 +271,8 @@ export const useGameStore = create<GameState>((set, get) => {
 
                 // Update the state with the new multiplier
                 set({
-                  //  currentMultiplier: multiplier,
-                  //  additionalData: data, // Example: storing extra data if needed
+                    multiplier: multiplier,
+                    //data: data, // Example: storing extra data if needed
                 });
 				console.log(`i spoke to the server Multiplier: ${message1.multiplier}, Data: ${message1.data}`);
 			break;
