@@ -1,23 +1,13 @@
 "use client"
 
-import { io, Socket } from "socket.io-client";
-
+import { io } from "socket.io-client";
 
 import { jwtDecode } from 'jwt-decode';
 
 import { create } from "zustand";
 
-//import {address1a} from "../../src/components/WalletConnection"
-//import { useWalletContext } from "../../src/providers/WalletContextProvider";
+import { elapsedToMultiplier } from '../../lib/utils1';
 
-//import Cors from "cors";
-
-import { elapsedToMultiplier } from '../../lib/utils';
-import { Wallet } from "lucide-react";
-
-import { address1a } from "../../src/components/WalletConnection";
-//export let address1a: string = '';
-//const { wallet1a } = useWalletContext();
 export type GameStatus =
 	'Unknown'
 	| 'Waiting'
@@ -71,8 +61,6 @@ export type GameStateData = {
 	wallet: string|null;
 	errors: string[];
 	errorCount: number;
-	userWalletAddress: string;
-	setUserWalletAddress: (address: string) => void;
 }
 
 export type GameActions = {
@@ -83,7 +71,6 @@ export type GameActions = {
 	placeBet: (betAmount: string, autoCashOut: string, currency: string) => void;
 	cashOut: () => void;
 	cancelBet: () => void;
-	setUserWalletAddress: (address: string) => void;
 }
 
 export type GameState = GameStateData & { actions: GameActions };
@@ -107,8 +94,6 @@ const initialState : GameStateData = {
 	wallet: null,
 	errors: [],
 	errorCount: 0,
-	userWalletAddress: '',
-	setUserWalletAddress: () => {},
 };
 
 type GameWaitingEventParams = {
@@ -163,14 +148,21 @@ type NonceResponse = {
 	nonce: string;
 }
 
+interface ServerMessage {
+	action: 
+	'COUNTDOWN' 
+	| 'CNT_MULTIPLY' 
+	| 'SECOND_BEFORE_START'
+	| 'ROUND_CRASHED';
+	time?: number;
+	multiplier?: string;
+	data?: string;
+}
+
 export const useGameStore = create<GameState>((set, get) => {
-	const socket4 = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
-		withCredentials: true // Include cookies/auth headers if needed
+	const socket = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
+		withCredentials: true
 	});
-
-	const socket1 = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER!);
-
-
 
 	let gameWaitTimer: ReturnType<typeof setInterval>|null = null;
 	let gameRunTimer: ReturnType<typeof setInterval>|null = null;
@@ -207,202 +199,24 @@ export const useGameStore = create<GameState>((set, get) => {
 			});
 		}
 	};
-//
 
-socket1.onopen = () => {
-	console.log('Connected to WebSocket server');
-	set({ isConnected: true });
-  };
-  
-  
-  socket1.onmessage = (event) => {
-	console.log('Message from server: ', event.data);
-	const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-	//setMessage(event.data);
-
-	// Add message to chat
-	let roundStartTimestamp; // Store the current timestamp globally
-	const timestamp = new Date().toLocaleTimeString();
-	//setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
-	const message1 = JSON.parse(event.data);
-	switch (message1.action) {
-
-	  case 'ROUND_STARTED':
-		roundStartTimestamp = new Date(); // Store the current timestamp globally
-	   console.log('Round started at:', roundStartTimestamp.toLocaleTimeString()); // Log the timestamp
-		
-
-
-	   set({
-		startTime: roundStartTimestamp.getTime(),
-		status: 'Running'
-	});
-
-	if (gameWaitTimer) {
-		clearInterval(gameWaitTimer);
-		gameWaitTimer = null;
-	}
-
-	if (gameRunTimer) {
-		clearInterval(gameRunTimer);
-		gameRunTimer = null;
-	}
-
-	gameRunTimer = setInterval(gameRunner, 5);
-		// Reset chart data when the round starts
-	/*	setChartData({
-		  datasets: [{
-			label: '', // Remove dataset label
-			data: [{ x: 0, y: 0 }],
-			borderColor: '#FF2D00',
-			tension: 0.4,
-			pointRadius: 0,
-		  }],
-		});
-		
-	*/	
-		// Store the round start timestamp in state if needed
-	   // setRoundStartTimestamp(roundStartTimestamp); // Assuming you have a state for this
-	 
-		break;
-
-		case 'CNT_MULTIPLY':
-			//  setDude34(message.totalMult);
-			console.log(`i spoke to the server Multiplier: ${message1.multiplier}, Data: ${message1.data}`);
-		break;
-		
-		case 'ROUND_CRASHED':
-			//  setDude34(message.totalMult);
-		  /*  if(MessageLost.current){
-			  MessageLost.current.style.opacity = "0"; // Set the message content
-			}
-			setIsButtonDisabled(false);
-			setIsLineGraphVisible(false);
-			setDude34(messageData.totalMult); // Set only the totalMult value
-			
-			if (roundCrash.current) {
-			  roundCrash.current.style.opacity = "1"
-			  roundCrash.current.style.display = "block";
-			  roundCrash.current.style.color = "black";
-			  roundCrash.current.innerHTML = `Round Crash At <br /> ${message1.totalMult}`;
-			}*/
-			console.log(`The game crashed at ${message1.multiplier}`)
-			
-	  
-			  const dude444 = roundStartTimestamp;
-			  const { crashes } = get();
-	  
-			  set({
-				  status: 'Crashed',
-				  crashes: [...(
-					  crashes.length <= 30
-						  ? crashes
-						  : crashes.slice(0, 30)
-				  ), 
-				//  params.game
-				],
-				  timeElapsed: dude444 ? dude444 - 34 : 0,
-			  });
-	  
-			  break
-			  case 'ROUND_ENDS':
-			console.log(`The game crashed at ${message1.multiplier}`)
-				
-			  break;
-				
-	 
-		case "WON":
-		
-	   //   if (multiplyStr){
-		  //  multiplyStr.style.left = "-30%";
-		  //  multiplyLbl.style.color = "#00C208";
-	   //   }
-		  
-		 // multiplyLbl.textContent = "YOU ARE WON: " 
-		 //                         + (Math.trunc(jsonMessage.bet) == jsonMessage.bet ? Math.trunc(jsonMessage.bet) : parseFloat(jsonMessage.bet).toFixed(3))   
-		 //                         + " x " 
-		 //                         + parseFloat(jsonMessage.mult).toFixed(3);
-		  break;
-
-		case "LOST":
-		  break;
-	  case "SECOND_BEFORE_START":
-
-	  const timeRemaining = message1.data;
-
-	  if (timeRemaining <= 0) {
-		set({ timeRemaining: 0 })
-	} else {
-		set({ timeRemaining });
-	}
-
-	  set({
-		status: 'Waiting',
-		startTime: roundStartTimestamp,
-		timeElapsed: 0,
-	},);
-	
-
-	
-
-	if (gameWaitTimer) {
-		clearInterval(gameWaitTimer);
-		gameWaitTimer = null;
-	}
-console.log("theis is how many seconds left"+message1.data);
-	gameWaitTimer = setInterval(gameWaiter, 1000);
-
-
-
-		  break;
-	  case 'BTN_BET_CLICKED':
-		// Handle BTN_BET_CLICKED action
-		console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
-		break;
-	  default:
-		console.log(`Unknown action received: ${message1.action}`);
-	}
-
- 
-
-	// When you receive a new timestamp
-	const newTimestamp = new Date(); // Get the new timestamp
-	if (roundStartTimestamp) { // Check if roundStartTimestamp is not null
-	  const timeDifference = (newTimestamp.getTime() - roundStartTimestamp.getTime()) / 1000; // Calculate difference in seconds
-	  console.log('Time since round started:', timeDifference, 'seconds');
-	} else {
-	  console.log('Round has not started yet.'); // Log if round has not started
-	}
-
- 
-
-  };
-
-  socket1.onclose = () => {
-	console.log('Connection closed');
-  };
-  
-  socket1.onerror = (error) => {
-	console.error('WebSocket error:', error);
-  };
-  //
-	socket4.on('connect', () => {
+	socket.on('connect', () => {
 		console.log('Socket connected');
 
-	//	const token = localStorage?.getItem('token') ?? null;
+		//const token = localStorage?.getItem('token') ?? null;
 
-	//	if (token !== null)
-	//		actions.login();
+		//if (token !== null)
+		//	actions.login();
 
 		set({ isConnected: true });
 	});
 
-	socket4.on('disconnect', () => {
+	socket.on('disconnect', () => {
 		console.log('Socket disconnected');
 		set({ isConnected: false });
 	});
 
-	socket4.on('GameWaiting', (params: GameWaitingEventParams) => {
+	socket.on('GameWaiting', (params: GameWaitingEventParams) => {
 		console.log('Game in waiting state')
 		set({
 			status: 'Waiting',
@@ -418,7 +232,7 @@ console.log("theis is how many seconds left"+message1.data);
 		gameWaitTimer = setInterval(gameWaiter, 1000);
 	});
 
-	socket4.on('GameRunning', (params: GameRunningEventParams) => {
+	socket.on('GameRunning', (params: GameRunningEventParams) => {
 		console.log('Game in running state')
 
 		console.log("StartTime latency:", new Date().getTime() - params.startTime);
@@ -441,7 +255,7 @@ console.log("theis is how many seconds left"+message1.data);
 		gameRunTimer = setInterval(gameRunner, 5);
 	});
 
-	socket4.on('GameCrashed', (params: GameCrashedEventParams) => {
+	socket.on('GameCrashed', (params: GameCrashedEventParams) => {
 		console.log('Game in crashed state')
 
 		const { crashes } = get();
@@ -467,7 +281,7 @@ console.log("theis is how many seconds left"+message1.data);
 		}
 	});
 
-	socket4.on('BetList', (params: BetListEventParams) => {
+	socket.on('BetList', (params: BetListEventParams) => {
 		console.log('Received bet list')
 
 		const { wallet } = get();
@@ -484,12 +298,12 @@ console.log("theis is how many seconds left"+message1.data);
 		});
 	});
 
-	socket4.on('RecentGameList', (params: RecentGameListEventParams) => {
+	socket.on('RecentGameList', (params: RecentGameListEventParams) => {
 		console.log('Received recent game list')
 		set({ crashes: params.games ?? [] });
 	});
 
-	socket4.on('PlayerWon', (params: PlayerWonEventParams) => {
+	socket.on('PlayerWon', (params: PlayerWonEventParams) => {
 		console.log('Received player won event')
 
 		const { players, wallet } = get();
@@ -510,12 +324,12 @@ console.log("theis is how many seconds left"+message1.data);
 		}
 	});
 
-	socket4.on('InitBalances', (params: InitBalancesEventParams) => {
+	socket.on('InitBalances', (params: InitBalancesEventParams) => {
 		console.log('Received balance list')
 		set({ balances: params?.balances ?? {} });
 	});
 
-	socket4.on('UpdateBalance', (params: UpdateBalancesEventParams) => {
+	socket.on('UpdateBalance', (params: UpdateBalancesEventParams) => {
 		console.log('Received balance update')
 		set({
 			balances: {
@@ -525,8 +339,27 @@ console.log("theis is how many seconds left"+message1.data);
 		});
 	});
 
+	socket.on('message', (data: ServerMessage) => {
+		try {
+			console.log('Message from server:', data);
+			switch (data.action) {
+				case 'COUNTDOWN':
+					console.log('Countdown time:', data.time);
+					break;
+				case 'CNT_MULTIPLY':
+					console.log('Multiplier:', data.multiplier);
+					console.log('Data:', data.data);
+					break;
+				default:
+					console.warn('Unknown action:', data.action);
+			}
+		} catch (error) {
+			console.error('Error processing message:', error);
+		}
+	});
 
-    socket4.on('message', (message: string) => {
+	
+    socket.on('message', (message: string) => {
         try {
             const parsedMessage = JSON.parse(message);
 
@@ -534,7 +367,7 @@ console.log("theis is how many seconds left"+message1.data);
                 const multiplier = parseFloat(parsedMessage.multiplier);
                 const data = parseFloat(parsedMessage.data);
 
-                console.log(`Multiplier: ${multiplier}, Data: ${data}`);
+                console.log(`what the fuck Multiplier: ${multiplier}, Data: ${data}`);
 
                 // Update the state with the new multiplier
                 set({
@@ -547,7 +380,7 @@ console.log("theis is how many seconds left"+message1.data);
         }
     });
 
-
+	
 	const actions = {
 		authenticate: (
 			message: string,
@@ -555,13 +388,13 @@ console.log("theis is how many seconds left"+message1.data);
 		) => {
 			console.log('Authenticating...');
 
-			socket4.emit('authenticate', {
+			socket.emit('authenticate', {
 				message,
 				signature
 			}, (params: AuthenticateResponseParams) => {
 				if (params?.success && params?.token) {
 					console.log(`Token: ${params.token}`);
-					localStorage.setItem('token', params.token);
+				//	localStorage.setItem('token', params.token);
 					actions.login();
 				}
 			});
@@ -583,23 +416,23 @@ console.log("theis is how many seconds left"+message1.data);
 		login: () => {
 			console.log('Logging in with token...');
 
-			const token = localStorage.getItem('token');
+			//const token = localStorage.getItem('token');
 
-			if (token !== null) {
-				const decoded: JwtToken = jwtDecode(token);
+			//if (token !== null) {
+			//	const decoded: JwtToken = jwtDecode(token);
 
-				if (!decoded.wallet)
-					return;
+			//	if (!decoded.wallet)
+			//		return;
 
-				set({ wallet: decoded.wallet });
+			//	set({ wallet: decoded.wallet });
 
-				socket4.emit('login', { token }, (params: LoginResponseParams) => {
-					if (params?.success)
-						set({ isLoggedIn: true });
-					else
-						set({ isLoggedIn: false });
-				});
-			}
+			//	socket.emit('login', { token }, (params: LoginResponseParams) => {
+			//		if (params?.success)
+			//			set({ isLoggedIn: true });
+			//		else
+			//			set({ isLoggedIn: false });
+			//	});
+			//}
 		},
 
 		getNonce: async (): Promise<string> => {
@@ -617,9 +450,9 @@ console.log("theis is how many seconds left"+message1.data);
 			autoCashOut: string,
 			currency: string
 		) => {
-			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${address1a}`);
+			console.log(`Placing bet ${betAmount} with currency ${currency} and autoCashOut ${autoCashOut}...`);
 
-			socket4.emit('placeBet', {
+			socket.emit('placeBet', {
 				betAmount,
 				autoCashOut,
 				currency
@@ -640,16 +473,12 @@ console.log("theis is how many seconds left"+message1.data);
 
 		cashOut: () => {
 			console.log(`Cashing out...`);
-			socket4.emit('cashOut');
+			socket.emit('cashOut');
 		},
 
 		cancelBet: () => {
 			console.log(`Cancelling bet...`);
-			socket4.emit('cancelBet');
-		},
-
-		setUserWalletAddress: (address: string) => {
-			set({ userWalletAddress: address });
+			socket.emit('cancelBet');
 		},
 	};
 
