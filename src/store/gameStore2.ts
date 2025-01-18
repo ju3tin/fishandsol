@@ -164,6 +164,10 @@ export const useGameStore = create<GameState>((set, get) => {
 		withCredentials: true
 	});
 
+	const socket1 = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER!);
+
+
+
 	let gameWaitTimer: ReturnType<typeof setInterval>|null = null;
 	let gameRunTimer: ReturnType<typeof setInterval>|null = null;
 
@@ -199,6 +203,12 @@ export const useGameStore = create<GameState>((set, get) => {
 			});
 		}
 	};
+
+	socket1.onopen = () => {
+		console.log('Connected to WebSocket server');
+		set({ isConnected: true });
+	  };
+	  
 
 	socket.on('connect', () => {
 		console.log('Socket connected bitches');
