@@ -108,7 +108,7 @@ export default function GameControls() {
 		if (isPlaying && !isCashedOut) {
 			cashOut();
 		} else {
-			placeBet(betAmount, autoCashOut, currency);
+			placeBet(betAmount, autoCashOut, currency, "");
 			jsConfetti.current?.addConfetti();
 		}
 	};
