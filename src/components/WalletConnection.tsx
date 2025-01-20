@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { Button } from "./ui/button";
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { WalletProvider } from '@solana/wallet-adapter-react';
+import { PhantomWalletAdapter } from '@solana/wallet-adapter-phantom';
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import Image from "next/image";
@@ -13,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "../components/ui/dropdown-menu";
 import { useGameStore } from "@/store/gameStore2";
+import { WalletAdapter } from "@solana/wallet-adapter-base";
 
 //handle wallet balance fixed to 2 decimal numbers without rounding
 export function toFixed(num: number, fixed: number): string {
@@ -26,7 +29,8 @@ export let address1a: string = '';
 const WalletConnection = () => {
   const { connection } = useConnection();
   const { select, wallets, publicKey, disconnect, connecting } = useWallet();
- // const setUserWalletAddress = useGameStore((state) => state.setUserWalletAddress);
+        const setUserWalletAddress = useGameStore((state) => state.setUserWalletAddress);
+       const [wallet, setWallet] = useState<WalletAdapter | null>(null);
 
   const [open, setOpen] = useState<boolean>(false);
   const [balance, setBalance] = useState<number | null>(null);

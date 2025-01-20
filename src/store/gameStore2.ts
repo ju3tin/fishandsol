@@ -89,7 +89,10 @@ export type GameActions = {
 	setUserWalletAddress: (address: string) => void;
 }
 
-export type GameState = GameStateData & { actions: GameActions };
+export type GameState = GameStateData & { actions: GameActions } & {
+	setUserWalletAddress: (address: string) => void;
+	userWalletAddress: string;
+}
 
 const initialState : GameStateData = {
 	gameId: null,
@@ -657,6 +660,8 @@ export const useGameStore = create<GameState>((set, get) => {
 
 	return {
 		...initialState,
-		actions
+		actions,
+		userWalletAddress: '',
+		setUserWalletAddress: (address: string) => set({ userWalletAddress: address }),
 	};
 });
