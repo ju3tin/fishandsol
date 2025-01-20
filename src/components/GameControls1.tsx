@@ -29,6 +29,7 @@ import { Label } from "@/components/uis/label";
 import { currencies } from "../lib/currencies";
 import CurrencyList from "./CurrencyList";
 import styles from "../styles/components/GameControls1.module.css";
+import { address1a } from "./WalletConnection";
 
 export default function GameControls() {
 	const textRef = useRef();
@@ -108,7 +109,7 @@ export default function GameControls() {
 		if (isPlaying && !isCashedOut) {
 			cashOut();
 		} else {
-			placeBet(betAmount, autoCashOut, currency, "");
+			placeBet(betAmount, autoCashOut, currency, address1a);
 			jsConfetti.current?.addConfetti();
 		}
 	};
