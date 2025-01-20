@@ -368,7 +368,7 @@ export const useGameStore = create<GameState>((set, get) => {
 			break;
 		case 'BET_MADE':
 			//roundStartTimestamp = new Date(); // Store the current timestamp globally
-			console.log(`Bet made by, ${message1.userWalletAddress}, ${message1.bet}`); // Log the timestamp
+			console.log(`Bet made by, ${message1.player}, ${message1.bet}`); // Log the timestamp
 		break;
 		  default:
 			console.log(`Unknown action received: ${message1.action}`);
