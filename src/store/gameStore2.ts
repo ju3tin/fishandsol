@@ -222,16 +222,14 @@ export const useGameStore = create<GameState>((set, get) => {
 	  
 	
 	  socket1.onmessage = (event) => {
-		let message2;
 		console.log('Message from server: ', event.data);
 		const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
-		message2 = event.data;
+		const message1 = messageData;
 	
 		// Add message to chat
 		let roundStartTimestamp; // Store the current timestamp globally
 		const timestamp = new Date().toLocaleTimeString();
 		//setChatMessages(prev => [...prev, { text: event.data, timestamp }]);
-		const message1 = JSON.parse(event.data);
 		switch (message1.action) {
 	
 		  case 'ROUND_STARTED':
@@ -274,36 +272,14 @@ export const useGameStore = create<GameState>((set, get) => {
 			break;
 	
 			case 'CNT_MULTIPLY':
-				//  setDude34(message.totalMult);
-				//const multiplier = message2.multiplier;
-                const data = message2.data;
-
-                console.log(`what the fuck Multiplier: ${message2.multiplier}, Data: ${data}`);
-
-                // Update the state with the new multiplier
-                set({
-                    multiplier: message2.data,
-                    //data: data, // Example: storing extra data if needed
-                });
-				console.log(`i spoke to the server Multiplier: ${message1.multiplier}, Data: ${message1.data}`);
-			break;
+				console.log(`Multiplier: ${message1.multiplier}, Data: ${message1.data}`);
+				
+				set({
+					multiplier: message1.multiplier,
+				});
+				break;
 			
 			case 'ROUND_CRASHED':
-				let data2
-				//  setDude34(message.totalMult);
-			  /*  if(MessageLost.current){
-				  MessageLost.current.style.opacity = "0"; // Set the message content
-				}
-				setIsButtonDisabled(false);
-				setIsLineGraphVisible(false);
-				setDude34(messageData.totalMult); // Set only the totalMult value
-				
-				if (roundCrash.current) {
-				  roundCrash.current.style.opacity = "1"
-				  roundCrash.current.style.display = "block";
-				  roundCrash.current.style.color = "black";
-				  roundCrash.current.innerHTML = `Round Crash At <br /> ${message1.totalMult}`;
-				}*/
 				console.log(`The game crashed at ${message1.multiplier}`)
 				
 		  
@@ -311,7 +287,7 @@ export const useGameStore = create<GameState>((set, get) => {
 				  const { crashes } = get();
 		  
 				  set({
-					multiplier: message2.data,
+					multiplier: Number(messageData.multiplier).toFixed(2),
 					  status: 'Crashed',
 					  crashes: [...(
 						  crashes.length <= 30
@@ -321,7 +297,7 @@ export const useGameStore = create<GameState>((set, get) => {
 					//  params.game
 				
 					],
-					data2: message2.data,
+					data2: messageData.data,
 					  timeElapsed: dude444 ? dude444 - 34 : 0,
 				  });
 		  
