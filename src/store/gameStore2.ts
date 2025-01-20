@@ -623,6 +623,15 @@ export const useGameStore = create<GameState>((set, get) => {
 		) => {
 			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${address1a} and walletAddress ${walletAddress}`);
 
+			
+			const betMessage = JSON.stringify({
+				action: "BTN_BET_CLICKED",
+				bet: 50 // Replace 50 with the desired bet amount
+			});
+			socket1.send(betMessage);
+			console.log("Bet sent:", betMessage);
+		
+
 			socket.emit('placeBet', {
 				betAmount,
 				autoCashOut,
