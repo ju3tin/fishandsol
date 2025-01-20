@@ -77,9 +77,16 @@ export type GameActions = {
 	switchWallet: (newWallet: string|null) => void;
 	login: () => void;
 	getNonce: () => Promise<string>;
-	placeBet: (betAmount: string, autoCashOut: string, currency: string, address1a: string) => void;
+	placeBet: (
+		betAmount: string,
+		autoCashOut: string,
+		currency: string,
+		address1a: string,
+		walletAddress: string
+	) => void;
 	cashOut: () => void;
 	cancelBet: () => void;
+	setUserWalletAddress: (address: string) => void;
 }
 
 export type GameState = GameStateData & { actions: GameActions };
@@ -609,8 +616,9 @@ export const useGameStore = create<GameState>((set, get) => {
 			autoCashOut: string,
 			currency: string,
 			address1a: string,
+			walletAddress: string
 		) => {
-			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${address1a}`);
+			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${address1a} and walletAddress ${walletAddress}`);
 
 			socket.emit('placeBet', {
 				betAmount,
@@ -639,6 +647,11 @@ export const useGameStore = create<GameState>((set, get) => {
 		cancelBet: () => {
 			console.log(`Cancelling bet...`);
 			socket.emit('cancelBet');
+		},
+
+		setUserWalletAddress: (address: string) => {
+			console.log(`Setting user wallet address to: ${address}`);
+			set({ address1a: address });
 		},
 	};
 

@@ -22,7 +22,7 @@ import { toast } from "sonner";
 import { Checkbox } from "@nextui-org/checkbox";
 import { useGameStore, GameState } from "../store/gameStore2";
 import { useEffectEvent } from "../hooks/useEffectEvent";
-import useWalletAuth from "../hooks/useWalletAuth";
+import { useWallet } from '@solana/wallet-adapter-react';
 import { Input } from "@/components/uis/input";	
 import { Button } from "@/components/uis/button";
 import { Label } from "@/components/uis/label";
@@ -49,7 +49,8 @@ export default function GameControls() {
 	  };
 	
 	
-	const walletAuth = useWalletAuth();
+	const { publicKey } = useWallet();
+	const walletAddress = publicKey?.toBase58() || '';
 	const [overlayVisible, setOverlayVisible] = useState(false);
 	const [demoAmount, setDemoAmount] = useState<string>("0");
 	const [betAmount, setBetAmount] = useState<string>("0");
@@ -68,7 +69,7 @@ export default function GameControls() {
 	const errors = useGameStore((game: GameState) => game.errors);
 	const errorCount = useGameStore((game: GameState) => game.errorCount);
 
-	const { placeBet, cancelBet, cashOut } = useGameStore(
+	const { placeBet, cancelBet, cashOut, setUserWalletAddress } = useGameStore(
 		(game: GameState) => game.actions
 	);
 
@@ -101,11 +102,6 @@ export default function GameControls() {
 	}, []);
 
 	const handleButtonClick = () => {
-		if (!isConnected) {
-			toast("Please connect your wallet first");
-			return;
-		}
-
 		if (isWaiting) {
 			cancelBet();
 			return;
@@ -114,7 +110,9 @@ export default function GameControls() {
 		if (isPlaying && !isCashedOut) {
 			cashOut();
 		} else {
-			placeBet(betAmount, autoCashOut, currency, address1a || '');
+			console.log("Using wallet address:", walletAddress); // Debug log
+			setUserWalletAddress(walletAddress);
+			placeBet(betAmount, autoCashOut, currency, walletAddress, walletAddress);
 			jsConfetti.current?.addConfetti();
 		}
 	};

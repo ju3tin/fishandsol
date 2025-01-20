@@ -57,6 +57,7 @@ export default function GameControls() {
 	const [autoCashOut, setAutoCashOut] = useState<string>("0");
 	const [currency, setCurrency] = useState<string>(currencies[0].id);
 	const [isAutoCashOutDisabled, setIsAutoCashOutDisabled] = useState(false);
+	const [address1a, setAddress1a] = useState<string>('');
 
 	const isWaiting = useGameStore((game: GameState) => game.isWaiting);
 	const isPlaying = useGameStore((game: GameState) => game.isPlaying);
@@ -68,7 +69,7 @@ export default function GameControls() {
 	const errors = useGameStore((game: GameState) => game.errors);
 	const errorCount = useGameStore((game: GameState) => game.errorCount);
 
-	const { placeBet, cancelBet, cashOut } = useGameStore(
+	const { placeBet, cancelBet, cashOut, setUserWalletAddress } = useGameStore(
 		(game: GameState) => game.actions
 	);
 
@@ -109,7 +110,9 @@ export default function GameControls() {
 		if (isPlaying && !isCashedOut) {
 			cashOut();
 		} else {
-			placeBet(betAmount, autoCashOut, currency, address1a);
+			console.log("address1a dude2", address1a);
+			setUserWalletAddress(address1a);
+			placeBet(betAmount, autoCashOut, currency, address1a || '');
 			jsConfetti.current?.addConfetti();
 		}
 	};
