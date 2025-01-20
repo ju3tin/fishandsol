@@ -210,7 +210,7 @@ export const useGameStore = create<GameState>((set, get) => {
 		} else {
 			set({
 				timeElapsed,
-				multiplier: elapsedToMultiplier(timeElapsed)
+		//		multiplier: elapsedToMultiplier(timeElapsed)
 			});
 		}
 	};
