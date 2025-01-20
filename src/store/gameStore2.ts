@@ -367,9 +367,25 @@ export const useGameStore = create<GameState>((set, get) => {
 			console.log(`BTN_BET_CLICKED action received with bet: ${message1.bet}`);
 			break;
 		case 'BET_MADE':
-			//roundStartTimestamp = new Date(); // Store the current timestamp globally
-			console.log(`Bet made by, ${message1.player}, ${message1.bet} ${message1.currency}`); // Log the timestamp
-		break;
+			console.log(`Bet made by, ${message1.player}, ${message1.bet} ${message1.currency}`);
+			
+			// Create new bet object
+			const newBet: Bet = {
+				wallet: message1.player,
+				betAmount: message1.bet,
+				currency: message1.currency,
+				autoCashOut: '0', // Default values since they're not in the message
+				cashOut: '0',
+				cashOutTime: new Date(),
+				isCashedOut: false,
+				winnings: '0'
+			};
+
+			// Add to players list
+			set(state => ({
+				players: [...state.players, newBet]
+			}));
+			break;
 		  default:
 			console.log(`Unknown action received: ${message1.action}`);
 		}
