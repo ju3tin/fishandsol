@@ -1,11 +1,11 @@
 import styles from "./page.module.css";
 
-import Game from '../../../components/Game1';
-import CrashList from '../../../components/CrashList1';
-import GameControls from '../../../components/GameControls1';
-import BetList from '../../../components/BetList1';
+import Game from '../../../components/Game2';
+import CrashList from '../../../components/CrashList2';
+import GameControls from '../../../components/GameControls2';
+import BetList from '../../../components/BetList2';
 
-import GameLayout from '../../../components/GameLayout1';
+import GameLayout from '../../../components/GameLayout2';
 
 export default function Home() {
 	return (
