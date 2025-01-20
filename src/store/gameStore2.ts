@@ -47,6 +47,7 @@ export type GameStateData = {
 	status: GameStatus;
 	players: Bet[];
 	waiting: Bet[];
+	address1a: string;
 	startTime: number;
 	isConnected: boolean;
 	isLoggedIn: boolean;
@@ -61,6 +62,14 @@ export type GameStateData = {
 	wallet: string|null;
 	errors: string[];
 	errorCount: number;
+	data2?: string | number;
+	crashPoint?: number;
+	isCrashed: boolean;
+
+	crashData?: {
+		multiplier: string;
+		time: number;
+	};
 }
 
 export type GameActions = {
@@ -68,7 +77,7 @@ export type GameActions = {
 	switchWallet: (newWallet: string|null) => void;
 	login: () => void;
 	getNonce: () => Promise<string>;
-	placeBet: (betAmount: string, autoCashOut: string, currency: string) => void;
+	placeBet: (betAmount: string, autoCashOut: string, currency: string, address1a: string) => void;
 	cashOut: () => void;
 	cancelBet: () => void;
 }
@@ -80,6 +89,7 @@ const initialState : GameStateData = {
 	status: 'Unknown',
 	players: [],
 	waiting: [],
+	address1a: '',
 	startTime: 0,
 	isConnected: false,
 	isLoggedIn: false,
@@ -94,6 +104,7 @@ const initialState : GameStateData = {
 	wallet: null,
 	errors: [],
 	errorCount: 0,
+	isCrashed: false
 };
 
 type GameWaitingEventParams = {
@@ -264,20 +275,21 @@ export const useGameStore = create<GameState>((set, get) => {
 	
 			case 'CNT_MULTIPLY':
 				//  setDude34(message.totalMult);
-				const multiplier = message2.multiplier;
+				//const multiplier = message2.multiplier;
                 const data = message2.data;
 
-                console.log(`what the fuck Multiplier: ${multiplier}, Data: ${data}`);
+                console.log(`what the fuck Multiplier: ${message2.multiplier}, Data: ${data}`);
 
                 // Update the state with the new multiplier
                 set({
-                    multiplier: multiplier,
+                    multiplier: message2.data,
                     //data: data, // Example: storing extra data if needed
                 });
 				console.log(`i spoke to the server Multiplier: ${message1.multiplier}, Data: ${message1.data}`);
 			break;
 			
 			case 'ROUND_CRASHED':
+				let data2
 				//  setDude34(message.totalMult);
 			  /*  if(MessageLost.current){
 				  MessageLost.current.style.opacity = "0"; // Set the message content
@@ -299,6 +311,7 @@ export const useGameStore = create<GameState>((set, get) => {
 				  const { crashes } = get();
 		  
 				  set({
+					multiplier: message2.data,
 					  status: 'Crashed',
 					  crashes: [...(
 						  crashes.length <= 30
@@ -306,7 +319,9 @@ export const useGameStore = create<GameState>((set, get) => {
 							  : crashes.slice(0, 30)
 					  ), 
 					//  params.game
+				
 					],
+					data2: message2.data,
 					  timeElapsed: dude444 ? dude444 - 34 : 0,
 				  });
 		  
@@ -528,30 +543,25 @@ export const useGameStore = create<GameState>((set, get) => {
 		});
 	});
 
-	socket.on('message', (data: ServerMessage) => {
+	socket.on('COUNTDOWN', (data) => {
 		try {
-			console.log('Message from server:', data);
-			switch (data.action) {
-				case 'COUNTDOWN':
-					console.log('Countdown time:', data.time);
-					break;
-				
-					console.warn('Unknown action:', data.action);
+			console.log('Countdown data:', data);
+			// Handle countdown data here
+		} catch (error) {
+			console.error('Error processing countdown:', error);
+		}
+	});
+
+	socket.on('message', (message) => {
+		try {
+			console.log('Message received:', message);
+			if (message.data) {  // If using data property
+				console.log('Data:', message.data);
 			}
 		} catch (error) {
 			console.error('Error processing message:', error);
 		}
 	});
-
-	
-    socket.on('message', (message: string) => {
-        try {
-            const parsedMessage = JSON.parse(message);
-
-        } catch (error) {
-            console.error('Error processing WebSocket message:', error);
-        }
-    });
 
 	
 	const actions = {
@@ -621,9 +631,10 @@ export const useGameStore = create<GameState>((set, get) => {
 		placeBet: (
 			betAmount: string,
 			autoCashOut: string,
-			currency: string
+			currency: string,
+			address1a: string,
 		) => {
-			console.log(`Placing bet ${betAmount} with currency ${currency} and autoCashOut ${autoCashOut}...`);
+			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${address1a}`);
 
 			socket.emit('placeBet', {
 				betAmount,

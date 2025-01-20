@@ -23,7 +23,7 @@ import { Checkbox } from "@nextui-org/checkbox";
 import { useGameStore, GameState } from "../store/gameStore2";
 import { useEffectEvent } from "../hooks/useEffectEvent";
 import useWalletAuth from "../hooks/useWalletAuth";
-import { Input } from "@/components/uis/input";
+import { Input } from "@/components/uis/input";	
 import { Button } from "@/components/uis/button";
 import { Label } from "@/components/uis/label";
 import { currencies } from "../lib/currencies";
@@ -56,6 +56,7 @@ export default function GameControls() {
 	const [autoCashOut, setAutoCashOut] = useState<string>("0");
 	const [currency, setCurrency] = useState<string>(currencies[0].id);
 	const [isAutoCashOutDisabled, setIsAutoCashOutDisabled] = useState(false);
+	const [address1a, setAddress1a] = useState<string>('');
 
 	const isWaiting = useGameStore((game: GameState) => game.isWaiting);
 	const isPlaying = useGameStore((game: GameState) => game.isPlaying);
@@ -100,6 +101,11 @@ export default function GameControls() {
 	}, []);
 
 	const handleButtonClick = () => {
+		if (!isConnected) {
+			toast("Please connect your wallet first");
+			return;
+		}
+
 		if (isWaiting) {
 			cancelBet();
 			return;
@@ -108,7 +114,7 @@ export default function GameControls() {
 		if (isPlaying && !isCashedOut) {
 			cashOut();
 		} else {
-			placeBet(betAmount, autoCashOut, currency);
+			placeBet(betAmount, autoCashOut, currency, address1a || '');
 			jsConfetti.current?.addConfetti();
 		}
 	};

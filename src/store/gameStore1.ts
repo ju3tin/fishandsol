@@ -615,7 +615,8 @@ console.log("theis is how many seconds left"+message1.data);
 		placeBet: (
 			betAmount: string,
 			autoCashOut: string,
-			currency: string
+			currency: string,
+			address1a: string,
 		) => {
 			console.log(`Placing bet ${betAmount} with currency ${currency}, autoCashOut ${autoCashOut}, and userWalletAddress ${address1a}`);
 
