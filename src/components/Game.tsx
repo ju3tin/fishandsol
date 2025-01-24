@@ -13,6 +13,7 @@ const coeffA = height*0.16;
 let rocketImage: HTMLImageElement;
 let explodeImage: HTMLImageElement;
 let parachuteImage: HTMLImageElement;
+let backgroundImage: HTMLImageElement;
 
 if (typeof window !== 'undefined') {
 	rocketImage = new Image();
@@ -23,6 +24,9 @@ if (typeof window !== 'undefined') {
 
 	parachuteImage = new Image();
 	parachuteImage.src = 'parachute.svg'
+
+	backgroundImage = new Image();
+	backgroundImage.src = 'path_to_your_svg.svg';
 }
 
 const rocketWidth = 50;
@@ -40,6 +44,11 @@ function render(
 		return;
 
 	const canvas = context.canvas;
+
+	// Draw the background image
+	if (backgroundImage) {
+		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+	}
 
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
