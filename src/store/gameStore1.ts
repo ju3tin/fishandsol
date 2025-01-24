@@ -1,6 +1,7 @@
 "use client"
 
 import { io, Socket } from "socket.io-client";
+let reconnectInterval = 5000; // Interval to attempt reconnection in milliseconds
 
 
 import { jwtDecode } from 'jwt-decode';
@@ -86,7 +87,7 @@ export type GameActions = {
 	setUserWalletAddress: (address: string) => void;
 }
 
-export type GameState = GameStateData & { actions: GameActions };
+export type GameState = GameStateData & { actions: GameActions, set: (state: Partial<GameStateData>) => void, get: () => GameStateData };
 
 const initialState : GameStateData = {
 	gameId: null,
@@ -164,11 +165,15 @@ type NonceResponse = {
 }
 
 export const useGameStore = create<GameState>((set, get) => {
+	let socket1: WebSocket | null = null;
+    let reconnectInterval = 5000; // Reconnect interval in milliseconds
+    let isReconnecting = false;
+
 	const socket4 = io(process.env.NEXT_PUBLIC_SOCKET_URL!, {
 		withCredentials: true // Include cookies/auth headers if needed
 	});
 
-	const socket1 = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER!);
+	 socket1 = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER!);
 
 
 
@@ -208,6 +213,109 @@ export const useGameStore = create<GameState>((set, get) => {
 		}
 	};
 //
+
+
+const connectWebSocket = () => {
+	if (isReconnecting) return; // Prevent multiple reconnection attempts
+	isReconnecting = true;
+
+	socket1 = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER!);
+
+	socket1.onopen = () => {
+		console.log('Connected to WebSocket server');
+		set({ isConnected: true });
+		isReconnecting = false; // Reset the reconnection flag
+	};
+
+	socket1.onmessage = (event) => {
+		console.log('Message from server: ', event.data);
+		const messageData = typeof event.data === 'string' ? JSON.parse(event.data) : event.data;
+
+		// Process the message (same as in your existing code)
+		handleMessage(messageData);
+	};
+
+	socket1.onclose = (event) => {
+		console.warn('WebSocket connection closed:', event);
+		set({ isConnected: false });
+
+		// Reconnect after a delay
+		console.log(`Attempting to reconnect in ${reconnectInterval / 1000} seconds...`);
+		setTimeout(() => {
+			connectWebSocket();
+		}, reconnectInterval);
+	};
+
+	socket1.onerror = (error) => {
+		console.error('WebSocket error:', error);
+
+		// Close the socket to trigger the `onclose` event and reconnect
+		if (socket1) {
+			socket1.close();
+		}
+	};
+};
+
+// Function to handle incoming messages
+const handleMessage = (message: any) => {
+	const roundStartTimestamp = new Date();
+	const { set, get } = useGameStore.getState(); // Ensure this is within the correct context
+
+
+	switch (message.action) {
+		case 'ROUND_STARTED':
+			console.log('Round started at:', roundStartTimestamp.toLocaleTimeString());
+
+			set({
+				startTime: roundStartTimestamp.getTime(),
+				status: 'Running'
+			});
+
+			// Clear and restart game timers
+			clearTimers();
+			gameRunTimer = setInterval(gameRunner, 5);
+			break;
+
+		case 'ROUND_CRASHED':
+			console.log(`The game crashed at ${message.multiplier}`);
+
+			const { crashes } = get();
+
+			set({
+				status: 'Crashed',
+				crashes: [...(
+					crashes.length <= 30
+						? crashes
+						: crashes.slice(0, 30)
+				), message.game],
+				timeElapsed: roundStartTimestamp ? roundStartTimestamp.getTime() - 34 : 0,
+			});
+
+			clearTimers();
+			break;
+
+		// Other cases...
+		default:
+			console.log(`Unknown action received: ${message.action}`);
+	}
+};
+
+const clearTimers = () => {
+	if (gameWaitTimer) {
+		clearInterval(gameWaitTimer);
+		gameWaitTimer = null;
+	}
+
+	if (gameRunTimer) {
+		clearInterval(gameRunTimer);
+		gameRunTimer = null;
+	}
+};
+
+// Call `connectWebSocket` to establish the initial connection
+connectWebSocket();
+
+
 
 socket1.onopen = () => {
 	console.log('Connected to WebSocket server');
@@ -379,7 +487,11 @@ console.log("theis is how many seconds left"+message1.data);
   };
 
   socket1.onclose = () => {
-	console.log('Connection closed');
+	console.log('WebSocket connection closed:', event);
+    console.log(`Attempting to reconnect in ${reconnectInterval / 1000} seconds...`);
+    setTimeout(() => {
+   //   connectWebSocket(); // Attempt to reconnect
+    }, reconnectInterval);
   };
   
   socket1.onerror = (error) => {
@@ -656,6 +768,8 @@ console.log("theis is how many seconds left"+message1.data);
 
 	return {
 		...initialState,
-		actions
+		actions,
+		set,
+		get
 	};
 });
