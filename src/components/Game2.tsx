@@ -41,6 +41,16 @@ function curveFunction(t: number) {
 	return coeffA * (Math.exp(coeffB * t) - 1);
 }
 
+ // Dynamic SVG paths
+ const imagePaths = {
+	rocket: 'fish.svg',
+	explode: 'explode.svg',
+	parachute: 'parachute.svg',
+	background: 'under.png',
+	additional1: '1.svg',
+	additional2: '2.svg', // Add more SVG paths here
+  };
+
 // Function to preload multiple images
 function preloadImages(imagePaths: string[]) {
 	const images1: Record<string, HTMLImageElement> = {};
@@ -52,15 +62,7 @@ function preloadImages(imagePaths: string[]) {
 	return images1;
   }
 
- // Dynamic SVG paths
- const imagePaths = {
-	rocket: 'fish.svg',
-	explode: 'explode.svg',
-	parachute: 'parachute.svg',
-	background: 'under.png',
-	additional1: '1.svg',
-	additional2: '2.svg', // Add more SVG paths here
-  };
+
 // Preload the specific image
 const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
 
