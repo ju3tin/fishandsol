@@ -62,7 +62,7 @@ function preloadImages(imagePaths: string[]) {
 	additional2: '2.svg', // Add more SVG paths here
   };
 // Preload the specific image
-// const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
+const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
 
 
 function render(
