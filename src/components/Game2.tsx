@@ -15,7 +15,6 @@ let explodeImage: HTMLImageElement;
 let parachuteImage: HTMLImageElement;
 let backgroundImage: HTMLImageElement;
 let svgImage: HTMLImageElement;
-let additionalImage: HTMLImageElement;
 
 if (typeof window !== 'undefined') {
 	rocketImage = new Image();
@@ -33,12 +32,6 @@ if (typeof window !== 'undefined') {
 	svgImage = new Image();
 	svgImage.src = '1.svg'; // Update with your SVG path
 	
-	// Create the image only in the browser environment
-	additionalImage = new Image();
-	additionalImage.src = '1.svg'; // Use the path from imagePaths
-	additionalImage.onload = () => {
-	//	doRender(); // Call doRender after the image is loaded
-	};
 }
 
 const rocketWidth = 440;
@@ -131,9 +124,9 @@ function render(
 	else
 		drawMultiplier(context, gameState.multiplier);
 		
-	if (additionalImage && additionalImage.complete) {
-		context.drawImage(additionalImage, 0, 0, 200, 200); // Adjust size as needed
-	}
+		if (additionalImages.complete) {
+		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
+		}
 }
 
 function drawMultiplier(
@@ -235,7 +228,6 @@ function drawCrashedRocket(
 export default function Game() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
-	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
 
 	const gameState = useGameStore((gameState: GameState) => gameState);
 
