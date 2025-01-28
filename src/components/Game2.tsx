@@ -78,6 +78,7 @@ function render(
 
 
 	context.clearRect(0, 0, canvas.width, canvas.height);
+	const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
 
 	const maxX = canvas.width - rocketWidth;
 	const minY = rocketHeight;
