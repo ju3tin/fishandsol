@@ -8,6 +8,9 @@ import BetList from '../../../components/BetList2';
 import axiosInstance from '../../../../lib/axiosInstance';
 
 import GameLayout from '../../../components/GameLayout2';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+
 
 export default function Home() {
 	return (

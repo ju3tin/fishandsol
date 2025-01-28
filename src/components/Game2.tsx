@@ -77,7 +77,7 @@ function render(
 
 
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
+	const additionalImages = preloadImages([imagePaths.rocket]); // Preload only the additional1 image
 
 	const maxX = canvas.width - rocketWidth;
 	const minY = rocketHeight;
@@ -89,9 +89,12 @@ function render(
 	const rocketY = Math.max(expectedY, minY);
 
 	context.save();
+
+
 	if (additionalImages && additionalImages.complete) {
-		context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
+		context.drawImage(additionalImages.rocket, 34, 0, 200, 200); // Adjust size as needed
 	}
+	
 	if (backgroundImage) {
 		const aspectRatio = backgroundImage.width / backgroundImage.height;
 		const canvasAspectRatio = canvas.width / canvas.height;
@@ -113,7 +116,6 @@ function render(
 		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 		
 	}
-
 
 	drawRocketPath(context, gameState.timeElapsed);
 

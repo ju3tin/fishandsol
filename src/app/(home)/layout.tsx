@@ -5,6 +5,9 @@ import { Analytics } from "@vercel/analytics/react";
 import { Sidebar } from '@/components/sidebar';
 import { Suspense } from 'react';
 import WalletContextProvider from "@/providers/WalletContextProvider";
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+
 
 
 const inter = Inter({ subsets: ['latin'] });
