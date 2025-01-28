@@ -43,13 +43,13 @@ function curveFunction(t: number) {
 
 // Function to preload multiple images
 function preloadImages(imagePaths: string[]) {
-	const images: Record<string, HTMLImageElement> = {};
+	const images1: Record<string, HTMLImageElement> = {};
 	imagePaths.forEach((path) => {
 	  const img = new Image();
 	  img.src = path;
-	  images[path] = img;
+	  images1[path] = img;
 	});
-	return images;
+	return images1;
   }
 
  // Dynamic SVG paths
