@@ -31,11 +31,7 @@ if (typeof window !== 'undefined') {
 
 	svgImage = new Image();
 	svgImage.src = '1.svg'; // Update with your SVG path
-	svgImage.onload = () => {
-		console.log('shit loaded');
-		// Trigger a re-render or call a function to draw the SVG
-	//	doRender();
-	};
+	
 }
 
 const rocketWidth = 440;
@@ -107,6 +103,7 @@ function render(
 
 		const xOffset = (canvas.width - drawWidth) / 2;
 		const yOffset = (canvas.height - drawHeight) / 2;
+	
 
 		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
 		
