@@ -64,7 +64,7 @@ function preloadImages(imagePaths: string[]) {
 
 
 // Preload the specific image
-const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
+//const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
 
 
 function render(
