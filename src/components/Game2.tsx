@@ -64,7 +64,6 @@ function preloadImages(imagePaths: string[]) {
 
 
 // Preload the specific image
-//const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
 
 
 function render(
@@ -90,6 +89,9 @@ function render(
 	const rocketY = Math.max(expectedY, minY);
 
 	context.save();
+	if (additionalImages && additionalImages.complete) {
+		context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
+	}
 	if (backgroundImage) {
 		const aspectRatio = backgroundImage.width / backgroundImage.height;
 		const canvasAspectRatio = canvas.width / canvas.height;
