@@ -228,6 +228,7 @@ function drawCrashedRocket(
 export default function Game() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
+	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
 
 	const gameState = useGameStore((gameState: GameState) => gameState);
 
