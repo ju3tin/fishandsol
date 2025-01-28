@@ -16,6 +16,7 @@ let parachuteImage: HTMLImageElement;
 let backgroundImage: HTMLImageElement;
 let svgImage: HTMLImageElement;
 
+
 if (typeof window !== 'undefined') {
 	rocketImage = new Image();
 	rocketImage.src = 'fish.svg';
@@ -29,6 +30,7 @@ if (typeof window !== 'undefined') {
 	backgroundImage = new Image();
 	backgroundImage.src = 'under.png';
 
+
 	svgImage = new Image();
 	svgImage.src = '1.svg'; // Update with your SVG path
 	svgImage.onload = () => {
@@ -37,6 +39,8 @@ if (typeof window !== 'undefined') {
 	//	doRender();
 	};
 }
+
+
 
 const rocketWidth = 440;
 const rocketHeight = 440;
@@ -55,9 +59,9 @@ function preloadImages(imagePaths: string[]) {
 	});
 	return images;
   }
-
- // Dynamic SVG paths
- const imagePaths = {
+  
+  // Dynamic SVG paths
+  const imagePaths = {
 	rocket: 'fish.svg',
 	explode: 'explode.svg',
 	parachute: 'parachute.svg',
@@ -68,7 +72,6 @@ function preloadImages(imagePaths: string[]) {
 // Preload the specific image
 const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
 
-
 function render(
 	gameState: GameState,
 	context: CanvasRenderingContext2D,
@@ -78,19 +81,7 @@ function render(
 
 	const canvas = context.canvas;
 
-
-	context.clearRect(0, 0, canvas.width, canvas.height);
-
-	const maxX = canvas.width - rocketWidth;
-	const minY = rocketHeight;
-
-	const expectedX = gameState.timeElapsed;
-	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
-
-	const rocketX = Math.min(expectedX, maxX);
-	const rocketY = Math.max(expectedY, minY);
-
-	context.save();
+	// Draw the background image first
 	if (backgroundImage) {
 		const aspectRatio = backgroundImage.width / backgroundImage.height;
 		const canvasAspectRatio = canvas.width / canvas.height;
@@ -108,10 +99,30 @@ function render(
 		const xOffset = (canvas.width - drawWidth) / 2;
 		const yOffset = (canvas.height - drawHeight) / 2;
 
-		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-		
+	//	context.drawImage(backgroundImage, xOffset, yOffset, drawWidth, drawHeight);
+	if (svgImage.complete) {
+		context.drawImage(svgImage, 100, 100, 200, 200); // Adjust position and size as needed
 	}
 
+	}
+	
+	// Draw the additional image in the left corner
+	if (additionalImages.complete) {
+		context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
+	}
+
+	context.clearRect(0, 0, canvas.width, canvas.height);
+
+	const maxX = canvas.width - rocketWidth;
+	const minY = rocketHeight;
+
+	const expectedX = gameState.timeElapsed;
+	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
+
+	const rocketX = Math.min(expectedX, maxX);
+	const rocketY = Math.max(expectedY, minY);
+
+	context.save();
 
 	drawRocketPath(context, gameState.timeElapsed);
 
@@ -126,10 +137,6 @@ function render(
 		drawCountdown(context, gameState.timeRemaining);
 	else
 		drawMultiplier(context, gameState.multiplier);
-		
-		if (additionalImages.complete) {
-		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
-		}
 }
 
 function drawMultiplier(
