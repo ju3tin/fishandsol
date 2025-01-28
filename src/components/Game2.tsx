@@ -62,7 +62,7 @@ function preloadImages(imagePaths: string[]) {
 	additional2: '2.svg', // Add more SVG paths here
   };
 // Preload the specific image
-const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
+// const additionalImages = preloadImages([imagePaths.additional1]); // Preload only the additional1 image
 
 
 function render(
@@ -124,9 +124,9 @@ function render(
 	else
 		drawMultiplier(context, gameState.multiplier);
 		
-		if (additionalImages.complete) {
+	//	if (additionalImages.complete) {
 		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
-		}
+		//	}
 }
 
 function drawMultiplier(
