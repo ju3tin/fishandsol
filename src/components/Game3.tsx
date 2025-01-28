@@ -107,9 +107,9 @@ function render(
 	}
 	
 	// Draw the additional image in the left corner
-	if (additionalImages.complete) {
-		context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
-	}
+	//if (additionalImages.complete) {
+	//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
+	//}
 
 	context.clearRect(0, 0, canvas.width, canvas.height);
 
