@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from 'react';
 import { useGameStore, GameState } from '../store/gameStore2';
 
 import styles from '../styles/Game1.module.css';
-let context: CanvasRenderingContext2D | null = null;
+
 const height = 2000;
 const coeffB = 0.5;
 const coeffA = height*0.16;
@@ -62,8 +62,9 @@ function preloadImages(imagePaths: string[]) {
 	return images1;
   }
 
-// Preload the specific images and store the result
-const additionalImages = preloadImages(Object.values(imagePaths)); // Preload all images
+
+// Preload the specific image
+
 
 function render(
 	gameState: GameState,
@@ -74,11 +75,26 @@ function render(
 
 	const canvas = context.canvas;
 
+
 	context.clearRect(0, 0, canvas.width, canvas.height);
+	const additionalImages = preloadImages([imagePaths.rocket]); // Preload only the additional1 image
+
+	const maxX = canvas.width - rocketWidth;
+	const minY = rocketHeight;
+
+	const expectedX = gameState.timeElapsed;
+	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
+
+	const rocketX = Math.min(expectedX, maxX);
+	const rocketY = Math.max(expectedY, minY);
+
+	context.save();
 
 
-
-	// Draw the background image
+	if (additionalImages && additionalImages.complete) {
+		context.drawImage(additionalImages.rocket, 34, 0, 200, 200); // Adjust size as needed
+	}
+	
 	if (backgroundImage) {
 		const aspectRatio = backgroundImage.width / backgroundImage.height;
 		const canvasAspectRatio = canvas.width / canvas.height;
@@ -96,22 +112,10 @@ function render(
 		const xOffset = (canvas.width - drawWidth) / 2;
 		const yOffset = (canvas.height - drawHeight) / 2;
 	
+
 		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+		
 	}
-	// Draw the additional image first
-	if (additionalImages[imagePaths.additional1].complete) {
-	//	context.drawImage(additionalImages[imagePaths.additional1], 0, 1000, 1000, 1000);
-	}
-	const maxX = canvas.width - rocketWidth;
-	const minY = rocketHeight;
-
-	const expectedX = gameState.timeElapsed;
-	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
-
-	const rocketX = Math.min(expectedX, maxX);
-	const rocketY = Math.max(expectedY, minY);
-
-	context.save();
 
 	drawRocketPath(context, gameState.timeElapsed);
 
@@ -126,6 +130,10 @@ function render(
 		drawCountdown(context, gameState.timeRemaining);
 	else
 		drawMultiplier(context, gameState.multiplier);
+		
+	//	if (additionalImages.complete) {
+		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
+		//	}
 }
 
 function drawMultiplier(
@@ -219,42 +227,17 @@ function drawCrashedRocket(
 	y: number,
 ) {
 	context.translate(x - rocketWidth/2, y - rocketWidth/2);
-	context.drawImage(explodeImage, 2000, -1100, 600, 600);
+	context.drawImage(explodeImage, 0, 0, rocketWidth, rocketHeight);
 	const text = `Launch in  secs`;
 	
 }
 
-let lastTime = 0;
-
-function update(deltaTime: number) {
-	// Update game state logic here
-	// For example, update positions, check for collisions, etc.
-}
-
-function gameLoop(timestamp: number) {
-	const deltaTime = timestamp - lastTime;
-	lastTime = timestamp;
-
-	// Update game state
-	update(deltaTime);
-
-	// Render the game
-	if (context) {
-		render(gameState, context);
-	}
-
-	// Request the next frame
-	requestAnimationFrame(gameLoop);
-}
-
-// Start the game loop
-requestAnimationFrame(gameLoop);
-
 export default function Game() {
-	const gameState = useGameStore((state) => state);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
+	const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
+
+	const gameState = useGameStore((gameState: GameState) => gameState);
 
 	useEffect(() => {
 		const ctx = canvasRef.current?.getContext('2d');
@@ -264,15 +247,14 @@ export default function Game() {
 			canvas.width = 4000;
 			canvas.height = 1995;
 		}
-		
-		// Check if ctx is defined before setting it
-		setContext(ctx || null); // Set to null if ctx is undefined
+		setContext(ctx);
 	}, []);
 
 	const doRender = () => {
-		if (context) {
-			render(gameState, context);
-		}
+		render(
+			gameState,
+			context
+		);
 	}
 
 	useEffect(() => {
