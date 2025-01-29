@@ -36,7 +36,7 @@ export default function Home() {
 const [socketUrl, setSocketUrl] = useState('wss://echo.websocket.org');
 const [messageHistory, setMessageHistory] = useState<MessageEvent<any>[]>([]);
 
-const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl);
+const {lastMessage, readyState } = useWebSocket(socketUrl);
 
 useEffect(() => {
   if (lastMessage !== null) {
@@ -49,7 +49,6 @@ const handleClickChangeSocketUrl = useCallback(
   []
 );
 
-const handleClickSendMessage = useCallback(() => sendMessage('Hello'), []);
 
 const connectionStatus = {
   [ReadyState.CONNECTING]: 'Connecting',
