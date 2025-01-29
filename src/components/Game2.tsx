@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from 'react';
 import { useGameStore, GameState } from '../store/gameStore2';
 
 import styles from '../styles/Game1.module.css';
-
+let context: CanvasRenderingContext2D | null = null;
 const height = 2000;
 const coeffB = 0.5;
 const coeffA = height*0.16;
@@ -240,7 +240,7 @@ function gameLoop(timestamp: number) {
 
 	// Render the game
 	if (context) {
-		render(gameState, context);
+		render(GameState, context);
 	}
 
 	// Request the next frame
