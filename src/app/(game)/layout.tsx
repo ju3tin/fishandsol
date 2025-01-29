@@ -18,7 +18,7 @@ import { WalletModalProvider } from '@solana/wallet-adapter-react-ui';
 require('@solana/wallet-adapter-react-ui/styles.css');
 
 const inter = Inter({ subsets: ["latin"] });
-
+import Head1 from '../../components/Head1';
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
 import Head from "next/head";
@@ -42,15 +42,7 @@ export default function RootLayout({
 }>) {
 	return (
     <html lang='en' className='dark'>
-      <Head>
-				<title>Chippy</title>
-				<meta name="description" content="Play and Earn with Our New Game Hooked" />
-				<meta property="og:title" content="Chippy" />
-				<meta property="og:description" content="Play and Earn with Our New Game Hooked" />
-				<meta property="og:image" content="https://fishandsol.vercel.app/images/logo3.png" />
-				<meta property="og:url" content="https://fishandsol.vercel.app" />
-				{/* Add more meta tags as needed */}
-			</Head>
+      <Head1 />
 				<body className={inter.className}>
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>

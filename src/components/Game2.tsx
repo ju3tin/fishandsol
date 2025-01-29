@@ -62,9 +62,8 @@ function preloadImages(imagePaths: string[]) {
 	return images1;
   }
 
-
-// Preload the specific image
-
+// Preload the specific images and store the result
+const additionalImages = preloadImages(Object.values(imagePaths)); // Preload all images
 
 function render(
 	gameState: GameState,
@@ -75,26 +74,11 @@ function render(
 
 	const canvas = context.canvas;
 
-
 	context.clearRect(0, 0, canvas.width, canvas.height);
-	const additionalImages = preloadImages([imagePaths.rocket]); // Preload only the additional1 image
-
-	const maxX = canvas.width - rocketWidth;
-	const minY = rocketHeight;
-
-	const expectedX = gameState.timeElapsed;
-	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
-
-	const rocketX = Math.min(expectedX, maxX);
-	const rocketY = Math.max(expectedY, minY);
-
-	context.save();
 
 
-	if (additionalImages && additionalImages.complete) {
-		context.drawImage(additionalImages.rocket, 34, 0, 200, 200); // Adjust size as needed
-	}
-	
+
+	// Draw the background image
 	if (backgroundImage) {
 		const aspectRatio = backgroundImage.width / backgroundImage.height;
 		const canvasAspectRatio = canvas.width / canvas.height;
@@ -112,10 +96,22 @@ function render(
 		const xOffset = (canvas.width - drawWidth) / 2;
 		const yOffset = (canvas.height - drawHeight) / 2;
 	
-
 		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-		
 	}
+	// Draw the additional image first
+	if (additionalImages[imagePaths.additional1].complete) {
+	//	context.drawImage(additionalImages[imagePaths.additional1], 0, 1000, 1000, 1000);
+	}
+	const maxX = canvas.width - rocketWidth;
+	const minY = rocketHeight;
+
+	const expectedX = gameState.timeElapsed;
+	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
+
+	const rocketX = Math.min(expectedX, maxX);
+	const rocketY = Math.max(expectedY, minY);
+
+	context.save();
 
 	drawRocketPath(context, gameState.timeElapsed);
 
@@ -130,10 +126,6 @@ function render(
 		drawCountdown(context, gameState.timeRemaining);
 	else
 		drawMultiplier(context, gameState.multiplier);
-		
-	//	if (additionalImages.complete) {
-		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
-		//	}
 }
 
 function drawMultiplier(
@@ -227,7 +219,7 @@ function drawCrashedRocket(
 	y: number,
 ) {
 	context.translate(x - rocketWidth/2, y - rocketWidth/2);
-	context.drawImage(explodeImage, 0, 0, rocketWidth, rocketHeight);
+	context.drawImage(explodeImage, 2000, -1100, 600, 600);
 	const text = `Launch in  secs`;
 	
 }
