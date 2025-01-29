@@ -118,6 +118,9 @@ export default function GameControls() {
 				console.log("Bet amount must be greater than 0.");
 				return; // Exit the function if the bet amount is invalid
 			}
+			if (currency === currencies[2].id) { // Assuming currencies[1] corresponds to ID 2
+				setDemoAmount((prevAmount) => (parseFloat(prevAmount) - parseFloat(betAmount)).toString());
+			}
 			placeBet(betAmount, autoCashOut, currency, walletAddress, walletAddress);
 			jsConfetti.current?.addConfetti();
 		}
