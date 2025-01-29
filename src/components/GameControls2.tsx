@@ -117,7 +117,7 @@ export default function GameControls() {
 		}
 	};
 
-	const isButtonDisabled: boolean = !isConnected || (gameStatus == "Running" && !isPlaying);// || (gameStatus == "Running" && isPlaying && !isCashedOut);
+	const isButtonDisabled: boolean = !isConnected || (gameStatus == "Running" && !isPlaying)/* || (gameStatus == "Running" && isPlaying && !isCashedOut)*/;
 	//const isButtonDisabled: boolean = !isConnected;
 
 	const getButtonText = (): string => {
