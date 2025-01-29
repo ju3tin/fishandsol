@@ -224,12 +224,37 @@ function drawCrashedRocket(
 	
 }
 
-export default function Game() {
-	const canvasRef = useRef<HTMLCanvasElement>(null);
-	const [context, setContext] = useState<any>(null);
-	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
+let lastTime = 0;
 
-	const gameState = useGameStore((gameState: GameState) => gameState);
+function update(deltaTime: number) {
+	// Update game state logic here
+	// For example, update positions, check for collisions, etc.
+}
+
+function gameLoop(timestamp: number) {
+	const deltaTime = timestamp - lastTime;
+	lastTime = timestamp;
+
+	// Update game state
+	update(deltaTime);
+
+	// Render the game
+	if (context) {
+		render(gameState, context);
+	}
+
+	// Request the next frame
+	requestAnimationFrame(gameLoop);
+}
+
+// Start the game loop
+requestAnimationFrame(gameLoop);
+
+export default function Game() {
+	const gameState = useGameStore((state: GameState) => state);
+	const canvasRef = useRef<HTMLCanvasElement>(null);
+	const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
+	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
 
 	useEffect(() => {
 		const ctx = canvasRef.current?.getContext('2d');
@@ -239,14 +264,18 @@ export default function Game() {
 			canvas.width = 4000;
 			canvas.height = 1995;
 		}
-		setContext(ctx);
+		
+		// Check if ctx is defined before setting it
+		setContext(ctx || null); // Set to null if ctx is undefined
 	}, []);
 
 	const doRender = () => {
-		render(
-			gameState,
-			context
-		);
+		if (context) {
+			render(
+				gameState,
+				context
+			);
+		}
 	}
 
 	useEffect(() => {
