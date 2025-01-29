@@ -227,7 +227,7 @@ function drawCrashedRocket(
 	y: number,
 ) {
 	context.translate(x - rocketWidth/2, y - rocketWidth/2);
-	context.drawImage(explodeImage, 2000, -1100, 600, 600);
+	context.drawImage(explodeImage, 2000, -1100, 800, 800);
 	const text = `Launch in  secs`;
 	
 }
