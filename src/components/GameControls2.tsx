@@ -112,6 +112,10 @@ export default function GameControls() {
 		} else {
 			console.log("Using wallet address:", walletAddress); // Debug log
 			setUserWalletAddress(walletAddress);
+			if (parseFloat(betAmount) <= 0) {
+				console.log("Bet amount must be greater than 0.");
+				return; // Exit the function if the bet amount is invalid
+			}
 			placeBet(betAmount, autoCashOut, currency, walletAddress, walletAddress);
 			jsConfetti.current?.addConfetti();
 		}
@@ -286,6 +290,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 					placeholder="Bet amount"
 					type="number"
 					min="0"
+					step="0.01"
 					onChange={(e) => handleChangeBetAmount(e.target.value)}
 					value={betAmount}
 				/>
