@@ -9,7 +9,7 @@ export default function App({ children }: { children: React.ReactNode }) {
   const network = WalletAdapterNetwork.Devnet;
 
   // Configure the network connection
-  const endpoint = useMemo(() => clusterApiUrl(network), [network]);
+  const endpoint = useMemo(() => clusterApiUrl(network), []);
 
   // Configure wallets
   const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);

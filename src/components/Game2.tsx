@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
@@ -229,7 +229,7 @@ function drawCrashedRocket(
 	y: number,
 ) {
 	context.translate(x - rocketWidth/2, y - rocketWidth/2);
-	context.drawImage(explodeImage, 2000, -1100, 800, 800);
+	context.drawImage(explodeImage, 2000, -1200, 900, 900);
 	const text = `Launch in  secs`;
 	
 }
