@@ -1,8 +1,10 @@
 "use client";
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 
 import { useGameStore, GameState } from '../store/gameStore2';
+import { toast } from 'react-toastify'; // Ensure you have the toast library
+
 
 import styles from '../styles/Game1.module.css';
 
@@ -236,8 +238,16 @@ export default function Game() {
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
+	const [errorCount, setErrorCount] = useState(0);
+	const errors: string[] = []; // Explicitly define the type of errors
 
 	const gameState = useGameStore((gameState: GameState) => gameState);
+
+	const showErrorToast = useCallback(() => {
+		if (errors.length > 0) {
+			toast("⚠️ " + errors[errors.length - 1]);
+		}
+	}, [errors]);
 
 	useEffect(() => {
 		const ctx = canvasRef.current?.getContext('2d');
@@ -260,7 +270,11 @@ export default function Game() {
 	useEffect(() => {
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [context, gameState]);
+	}, [context, gameState, doRender]);
+
+	useEffect(() => {
+		showErrorToast();
+	}, [errorCount, showErrorToast]);
 
 	return (
 		<canvas className={styles.Game} ref={canvasRef}></canvas>

@@ -215,7 +215,7 @@ export default function Game() {
 	useEffect(() => {
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [context, gameState]);
+	}, [context, gameState, doRender]);
 
 	return (
 		<canvas className={styles.Game} ref={canvasRef}></canvas>
