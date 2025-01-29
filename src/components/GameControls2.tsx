@@ -117,7 +117,8 @@ export default function GameControls() {
 		}
 	};
 
-	const isButtonDisabled: boolean = !isConnected;
+	const isButtonDisabled: boolean = !isConnected || (gameStatus == "Running" && !isPlaying) || (gameStatus == "Running" && isPlaying && !isCashedOut);
+	//const isButtonDisabled: boolean = !isConnected;
 
 	const getButtonText = (): string => {
 		if (!isConnected) return "Connecting...";
@@ -128,6 +129,7 @@ export default function GameControls() {
 				return "Cash out";
 			} else {
 				return "Place bet (next round)";
+
 			}
 		} else {
 			return "Place bet";
