@@ -21,13 +21,18 @@ const inter = Inter({ subsets: ["latin"] });
 
 import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
+import Head from "next/head";
 
 const wallets = [new PhantomWalletAdapter()];
 const endpoint = clusterApiUrl('devnet');
 
 const metadata: Metadata = {
-	title: "Crash",
-	description: "Crash",
+  title: 'Chippy',
+  description: 'Play and Earn with Our New Game Hooked',
+  openGraph: {
+    images: ["https://fishandsol.vercel.app/images/logo3.png"],
+    url: "https://fishandsol.vercel.app",
+  }
 };
 
 export default function RootLayout({
@@ -37,6 +42,15 @@ export default function RootLayout({
 }>) {
 	return (
     <html lang='en' className='dark'>
+      <Head>
+				<title>Chippy</title>
+				<meta name="description" content="Play and Earn with Our New Game Hooked" />
+				<meta property="og:title" content="Chippy" />
+				<meta property="og:description" content="Play and Earn with Our New Game Hooked" />
+				<meta property="og:image" content="https://fishandsol.vercel.app/images/logo3.png" />
+				<meta property="og:url" content="https://fishandsol.vercel.app" />
+				{/* Add more meta tags as needed */}
+			</Head>
 				<body className={inter.className}>
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
