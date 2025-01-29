@@ -240,7 +240,7 @@ function gameLoop(timestamp: number) {
 
 	// Render the game
 	if (context) {
-		render(GameState, context);
+		render(gameState, context);
 	}
 
 	// Request the next frame
@@ -251,7 +251,7 @@ function gameLoop(timestamp: number) {
 requestAnimationFrame(gameLoop);
 
 export default function Game() {
-	const gameState = useGameStore((state: GameState) => state);
+	const gameState = useGameStore((state) => state);
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<CanvasRenderingContext2D | null>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
@@ -271,10 +271,7 @@ export default function Game() {
 
 	const doRender = () => {
 		if (context) {
-			render(
-				gameState,
-				context
-			);
+			render(gameState, context);
 		}
 	}
 
