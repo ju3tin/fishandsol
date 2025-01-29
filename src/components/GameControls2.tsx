@@ -53,6 +53,7 @@ export default function GameControls() {
 	const walletAddress = publicKey?.toBase58() || '';
 	const [overlayVisible, setOverlayVisible] = useState(false);
 	const [betgreaterthan0, setBetgreaterthan0] = useState(false);
+	const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
 	const [demoAmount, setDemoAmount] = useState<string>("0");
 	const [betAmount, setBetAmount] = useState<string>("0");
 	const [autoCashOut, setAutoCashOut] = useState<string>("0");
@@ -113,6 +114,13 @@ export default function GameControls() {
 		} else {
 			console.log("Using wallet address:", walletAddress); // Debug log
 			setUserWalletAddress(walletAddress);
+			if (currency === currencies[2].id && parseFloat(demoAmount) <= 0) { // Assuming currencies[1] corresponds to ID 2
+				red2();
+				console.log("bitch 123.");
+				return; // Exit the function if the bet amount is invalid
+			//	setDemoAmount((prevAmount) => (parseFloat(prevAmount) - parseFloat(betAmount)).toString());
+
+			}
 			if (parseFloat(betAmount) <= 0) {
 				red1();
 				console.log("Bet amount must be greater than 0.");
@@ -121,6 +129,7 @@ export default function GameControls() {
 			if (currency === currencies[2].id) { // Assuming currencies[1] corresponds to ID 2
 				setDemoAmount((prevAmount) => (parseFloat(prevAmount) - parseFloat(betAmount)).toString());
 			}
+		
 			placeBet(betAmount, autoCashOut, currency, walletAddress, walletAddress);
 			jsConfetti.current?.addConfetti();
 		}
@@ -156,7 +165,10 @@ export default function GameControls() {
 		setBetgreaterthan0(!betgreaterthan0);
 	//	console.log("red1");
 	};
-
+	const red2 = () => {
+	setDemoamountgreaterthan0(!demoamountgreaterthan0);
+	//	console.log("red1");
+	};
 	useEffect(() => {
 		showErrorToast();
 	}, [errorCount]);
@@ -279,6 +291,20 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 		   </div>
 		 </div>
 	   )}
+
+{demoamountgreaterthan0 && (
+		<div className="overlay">
+		<div className="message-board-container">
+		<div className="message-form">
+		<p>Demo amount must be greater than 0.</p>
+		</div>
+		<button onClick={red2} className="close-overlay-btn">
+			   Close
+			 </button>
+		</div>
+		</div>
+	)}
+
 
 	   {betgreaterthan0 && (
 		<div className="overlay">
