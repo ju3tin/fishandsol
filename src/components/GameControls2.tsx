@@ -172,7 +172,7 @@ export default function GameControls() {
 	};
 	useEffect(() => {
 		showErrorToast();
-	}, [errorCount]);
+	}, [errorCount, showErrorToast]);
 
 
 

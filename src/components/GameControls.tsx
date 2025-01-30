@@ -97,7 +97,7 @@ export default function GameControls() {
 
 	useEffect(() => {
 		showErrorToast();
-	}, [errorCount]);
+	}, [errorCount, showErrorToast]);
 	//const { wallet1a } = useWalletContext();
 	return (
 		<Card>

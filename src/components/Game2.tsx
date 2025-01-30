@@ -261,17 +261,17 @@ export default function Game() {
 		setContext(ctx);
 	}, []);
 
-	const doRender = useCallback(() => { // Wrap doRender in useCallback
-		render(
-			gameState,
-			context
-		);
-	}, [gameState, context]); // Add dependencies
-
 	useEffect(() => {
+		const doRender = () => { // Move doRender inside useEffect
+			render(
+				gameState,
+				context
+			);
+		}; // Wrap doRender in useCallback if needed
+
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [doRender]); // Use doRender as dependency
+	}, [gameState, context]); // Add dependencies
 
 	useEffect(() => {
 		showErrorToast();

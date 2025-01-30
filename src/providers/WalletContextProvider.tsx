@@ -12,7 +12,7 @@ export default function App({ children }: { children: React.ReactNode }) {
   const endpoint = useMemo(() => clusterApiUrl(network), []);
 
   // Configure wallets
-  const wallets = useMemo(() => [new PhantomWalletAdapter()], [network]);
+  const wallets = useMemo(() => [new PhantomWalletAdapter()], []);
 
   return (
     <ConnectionProvider endpoint={endpoint}>

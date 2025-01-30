@@ -20,7 +20,7 @@ function LoginButton() {
 
     const network = "https://rpc.test.honeycombprotocol.com";
     // You can also provide a custom RPC endpoint.
-    const endpoint = useMemo(() => network, [network]);
+    const endpoint = useMemo(() => network, []);
   
     // Define wallet adapters you want to support
     const wallets = useMemo(
@@ -29,7 +29,7 @@ function LoginButton() {
             new SolflareWalletAdapter(),
        //     new SolletWalletAdapter(),
         ],
-        [network]
+        []
     );
 
     return (
