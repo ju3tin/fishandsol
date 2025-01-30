@@ -1,4 +1,4 @@
-
+"use client"; // Ensure this is a client component
 export default function NotFound() {
     return (
     <div className="container default pt-4">
