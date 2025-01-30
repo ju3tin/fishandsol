@@ -248,7 +248,7 @@ export default function Game() {
 		if (currentErrors.length > 0) {
 			toast("⚠️ " + currentErrors[currentErrors.length - 1]);
 		}
-	}, []); // Removed errors from dependencies
+	}, [errors]); // Added errors to dependencies
 
 	useEffect(() => {
 		const ctx = canvasRef.current?.getContext('2d');
