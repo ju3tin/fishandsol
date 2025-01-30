@@ -14,7 +14,7 @@ import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 
 export default function Home() {
 	return (
-		<main className={styles.main}>
+		<main className={styles.main1}>
 			<GameLayout>
 			<CrashList />
 				<Game />
