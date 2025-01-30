@@ -49,9 +49,9 @@ export function SidebarDesktop(props: SidebarDesktopProps) {
                     <div className='flex gap-2'>
                       <Avatar className='h-5 w-5'>
                         {session?.user ? (
-        <AvatarImage src={session.user.image || 'https://github.com/max-programming.png'} />
+        <AvatarImage src={session.user.image || '/twitter.png'} />
         ) : (
-          <AvatarImage src='https://github.com/max-programming.png' />
+          <AvatarImage src='/twitter.png' />
         )}
                         <AvatarFallback> {session?.user ? (
         <>{session.user.name} </> ) : (
