@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import "../../app/App.css";
+import "./App.css";
 import {
   VerticalTimeline,
   VerticalTimelineElement,
@@ -16,7 +16,7 @@ import MuiAccordion from "@mui/material/Accordion";
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
-import "@fontsource/roboto/300.css";
+//import "@fontsource/roboto/300.css";
 import data from "./data_mother_mary.json";
 import { metadata } from "./metadata";
 
@@ -67,7 +67,7 @@ const Home = () => {
   return (
     <Box
       sx={{
-        background: "rgb(217, 207, 173)",
+        background: "rgb(0, 0, 0)",
       }}
     >
 
@@ -91,7 +91,7 @@ const Home = () => {
                 <>
                   <span
                     style={{ marginTop: "1.3" + "em" }}
-                    class={item.country_flag}
+                    className={item.country_flag}
                   ></span>
                 </>
               }
