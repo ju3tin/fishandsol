@@ -244,10 +244,11 @@ export default function Game() {
 	const gameState = useGameStore((gameState: GameState) => gameState);
 
 	const showErrorToast = useCallback(() => {
-		if (errors.length > 0) {
-			toast("⚠️ " + errors[errors.length - 1]);
+		const currentErrors = errors; // Move errors inside the callback
+		if (currentErrors.length > 0) {
+			toast("⚠️ " + currentErrors[currentErrors.length - 1]);
 		}
-	}, [errors]);
+	}, []); // Removed errors from dependencies
 
 	useEffect(() => {
 		const ctx = canvasRef.current?.getContext('2d');
@@ -260,17 +261,17 @@ export default function Game() {
 		setContext(ctx);
 	}, []);
 
-	const doRender = () => {
+	const doRender = useCallback(() => { // Wrap doRender in useCallback
 		render(
 			gameState,
 			context
 		);
-	}
+	}, [gameState, context]); // Add dependencies
 
 	useEffect(() => {
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [context, gameState, doRender]);
+	}, [doRender]); // Use doRender as dependency
 
 	useEffect(() => {
 		showErrorToast();
