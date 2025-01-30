@@ -13,7 +13,7 @@ import "@aws-amplify/ui-react/styles.css";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import { Accordion as MuiAccordion, AccordionProps } from '@mui/material';
-import MuiAccordionSummary from "@mui/material/AccordionSummary";
+import { AccordionSummary as MuiAccordionSummary } from '@mui/material';
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 //import "@fontsource/roboto/300.css";
@@ -33,12 +33,7 @@ const Accordion = styled(({ children, ...props }: StyledAccordionProps) => (
   borderRadius: theme.shape.borderRadius, // Use theme to set rounded corners
 }));
 
-const AccordionSummary = styled((props) => (
-  <MuiAccordionSummary
-    expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
-    {...props}
-  />
-))(({ theme }) => ({
+const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
   backgroundColor:
     theme.palette.mode === "dark"
       ? "rgba(255, 255, 255, .05)"
