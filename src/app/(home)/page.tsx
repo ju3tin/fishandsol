@@ -63,7 +63,7 @@ const connectionStatus = {
     // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'.
     const network = "https://rpc.test.honeycombprotocol.com";
     // You can also provide a custom RPC endpoint.
-    const endpoint = useMemo(() => network, [network]);
+    const endpoint = useMemo(() => network, []);
   
     const wallets = useMemo(
       () => [
@@ -71,21 +71,22 @@ const connectionStatus = {
         new PhantomWalletAdapter(),
         new SolflareWalletAdapter(),
       ],
-      [network]
+      []
     );
   
   useEffect(() => {
+    const currentVideoRef = videoRef.current; // Store the current ref in a variable
     // Play the video when the component mounts
-    if (videoRef.current) {
-      videoRef.current.play().catch((error) => {
+    if (currentVideoRef) {
+      currentVideoRef.play().catch((error) => {
         console.error('Error playing video:', error);
       });
     }
 
     // Optional: Pause the video when the component unmounts
     return () => {
-      if (videoRef.current) {
-        videoRef.current.pause();
+      if (currentVideoRef) {
+        currentVideoRef.pause();
       }
     };
   }, []);
