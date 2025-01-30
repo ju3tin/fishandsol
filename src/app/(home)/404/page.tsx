@@ -1,13 +1,14 @@
-import React from 'react';
-import { Link } from 'react-router-dom'; // Or 'next/link' if you're using Next.js
+"use client"; // Ensure this is a client component
+
+import { useSession } from 'next-auth/react';
 
 export default function NotFoundPage() {
-    return (
-<div className="container default pt-4">
-  
-    Error 404
+  const { data: session } = useSession();
 
+  return (
+    <div className="container default pt-4">
+      <h1>Error 404</h1>
      
-   
-</div>
-)}
+    </div>
+  );
+}
