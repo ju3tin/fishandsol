@@ -23,6 +23,13 @@ import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
 import Head from "next/head";
 
+import { SessionProvider } from "next-auth/react";
+import type { ReactNode } from "react";
+
+interface RootLayoutProps {
+  children: ReactNode;
+}
+
 const wallets = [new PhantomWalletAdapter()];
 const endpoint = clusterApiUrl('devnet');
 
@@ -41,6 +48,7 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
+    <SessionProvider>
     <html lang='en' className='dark'>
       <Head1 />
 				<body className={inter.className}>
@@ -57,5 +65,6 @@ export default function RootLayout({
         </ConnectionProvider>
 				</body>
 			</html>
+      </SessionProvider>
 	);
 }
