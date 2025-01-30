@@ -28,7 +28,7 @@ import { Button } from "@/components/uis/button";
 import { Label } from "@/components/uis/label";
 import { currencies } from "../lib/currencies";
 import CurrencyList from "./CurrencyList";
-import styles from "../styles/components/GameControls1.module.css";
+import styles from "../styles/components/GameControls2.module.css";
 
 export default function GameControls() {
 	const textRef = useRef();
@@ -324,23 +324,27 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 			</CardHeader>
 
 			<CardContent>
-				<Label>Demo Amount</Label>
-				<Input
-					placeholder="Demo amount"
-					type="number"
-					min="0"
-					value={demoAmount}
-					disabled
-				/>
-				<Label>Bet Amount</Label>
-				<Input
-					placeholder="Bet amount"
-					type="number"
-					min="0"
-					step="0.01"
-					onChange={(e) => handleChangeBetAmount(e.target.value)}
-					value={betAmount}
-				/>
+				<div className={styles.inputGroup}>
+					<Label>Demo Amount</Label>
+					<Input
+						placeholder="Demo amount"
+						type="number"
+						min="0"
+						value={demoAmount}
+						disabled
+					/>
+				</div>
+				<div className={styles.inputGroup}>
+					<Label>Bet Amount</Label>
+					<Input
+						placeholder="Bet amount"
+						type="number"
+						min="0"
+						step="0.01"
+						onChange={(e) => handleChangeBetAmount(e.target.value)}
+						value={betAmount}
+					/>
+				</div>
 				<Label>Auto Cashout</Label>
 				<Checkbox
 					isSelected={isAutoCashOutDisabled}
