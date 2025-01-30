@@ -147,8 +147,8 @@ const Home = () => {
                     </Link>
                   </CardActions>
                   <Accordion
-                    expanded={expanded === item.content_collapsible1}
-                    onChange={handleChange(item.content_collapsible1)}
+                    expanded={Array.isArray(item.content_collapsible1) ? expanded === item.content_collapsible1[0] : expanded === item.content_collapsible1}
+                    onChange={handleChange(Array.isArray(item.content_collapsible1) ? item.content_collapsible1[0] : item.content_collapsible1)}
                   >
                     <AccordionSummary
                       aria-controls="panel1d-content"
@@ -198,8 +198,8 @@ const Home = () => {
                     </AccordionDetails>
                   </Accordion>
                   <Accordion
-                    expanded={expanded === item.content_collapsible2}
-                    onChange={handleChange(item.content_collapsible2)}
+                    expanded={Array.isArray(item.content_collapsible2) ? expanded === item.content_collapsible2[0] : expanded === item.content_collapsible2}
+                    onChange={handleChange(Array.isArray(item.content_collapsible2) ? item.content_collapsible2[0] : item.content_collapsible2)}
                   >
                     <AccordionSummary
                       aria-controls="panel2d-content"
@@ -250,8 +250,8 @@ const Home = () => {
                   </Accordion>
 
                   <Accordion
-                    expanded={expanded === item.content_collapsible3 + index}
-                    onChange={handleChange(item.content_collapsible3 + index)}
+                    expanded={expanded === item.content_collapsible3[index]}
+                    onChange={handleChange(item.content_collapsible3[index])}
                   >
                     <AccordionSummary
                       aria-controls="panel3d-content"
