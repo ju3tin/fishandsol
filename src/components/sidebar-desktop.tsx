@@ -9,6 +9,7 @@ import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { LogOut, MoreHorizontal, Settings } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 interface SidebarDesktopProps {
   sidebarItems: SidebarItems;
@@ -16,6 +17,7 @@ interface SidebarDesktopProps {
 
 export function SidebarDesktop(props: SidebarDesktopProps) {
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   return (
     <aside style={{backgroundColor:'black'}} className='w-[270px] max-w-xs h-screen fixed left-0 top-0 z-40 border-r'>
@@ -46,10 +48,20 @@ export function SidebarDesktop(props: SidebarDesktopProps) {
                   <div className='flex justify-between items-center w-full'>
                     <div className='flex gap-2'>
                       <Avatar className='h-5 w-5'>
-                        <AvatarImage src='https://github.com/max-programming.png' />
-                        <AvatarFallback>Max Programming</AvatarFallback>
+                        {session?.user ? (
+        <AvatarImage src={session.user.image || 'https://github.com/max-programming.png'} />
+        ) : (
+          <AvatarImage src='https://github.com/max-programming.png' />
+        )}
+                        <AvatarFallback> {session?.user ? (
+        <>{session.user.name} </> ) : (
+          <span onClick={() => signIn('twitter')}>Sign in with Twitter</span>
+        )}</AvatarFallback>
                       </Avatar>
-                      <span>Max Programming</span>
+                      <span>{session?.user ? (
+        <>{session.user.name} </> ) : (
+          <span onClick={() => signIn('twitter')}>Sign in with Twitter</span>
+        )}</span>
                     </div>
                     <MoreHorizontal size={20} />
                   </div>
@@ -63,7 +75,7 @@ export function SidebarDesktop(props: SidebarDesktopProps) {
                     </SidebarButton>
                   </Link>
                   <SidebarButton size='sm' icon={LogOut} className='w-full'>
-                    Log Out
+                   <span onClick={() => signOut()}> Log Out</span>
                   </SidebarButton>
                 </div>
               </PopoverContent>

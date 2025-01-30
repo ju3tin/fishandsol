@@ -13,6 +13,7 @@ export default function Home() {
       {session?.user ? (
         <>
           <p>Signed in as {session.user.name}</p>
+          {session.user.image && <img src={session.user.image} alt="Profile" width={50} height={50} />}
           <button onClick={() => signOut()}>Sign out</button>
         </>
       ) : (
