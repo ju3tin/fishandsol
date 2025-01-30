@@ -9,7 +9,6 @@ import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { LogOut, MoreHorizontal, Settings } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { signIn, signOut, useSession } from 'next-auth/react';
 
 interface SidebarDesktopProps {
   sidebarItems: SidebarItems;
@@ -17,7 +16,6 @@ interface SidebarDesktopProps {
 
 export function SidebarDesktop(props: SidebarDesktopProps) {
   const pathname = usePathname();
-  const { data: session } = useSession();
 
   return (
     <aside style={{backgroundColor:'black'}} className='w-[270px] max-w-xs h-screen fixed left-0 top-0 z-40 border-r'>
@@ -49,10 +47,7 @@ export function SidebarDesktop(props: SidebarDesktopProps) {
                     <div className='flex gap-2'>
                       <Avatar className='h-5 w-5'>
                         <AvatarImage src='https://github.com/max-programming.png' />
-                        <AvatarFallback> {session?.user ? (
-        <>{session.user.name} </> ) : (
-          <span>Max Programming</span>
-        )}</AvatarFallback>
+                        <AvatarFallback>Max Programming</AvatarFallback>
                       </Avatar>
                       <span>Max Programming</span>
                     </div>
