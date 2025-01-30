@@ -59,7 +59,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 const Home = () => {
-    const pageTitle = (metadata.title as { default: string }).default; // Type assertion
+   // const pageTitle = (metadata.title as { default: string }).default; // Type assertion
     const [expanded, setExpanded] = React.useState("");
   
 
