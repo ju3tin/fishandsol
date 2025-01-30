@@ -1,4 +1,5 @@
 import React from "react";
+import Image from 'next/image'; // Import the Image component
 
 
 export default function solana() {
@@ -8,7 +9,7 @@ export default function solana() {
 
       <section className="info-section">
         <h2>What is Solana?</h2>
-        <img 
+        <Image 
           src="https://solana.com/static/solana_logo_white_1f84f0d85c.svg" 
           alt="Solana Logo" 
           className="section-image"
@@ -26,7 +27,7 @@ export default function solana() {
         </ul>
 
         <h2>Consensus Mechanism - Proof of History (PoH)</h2>
-        <img
+        <Image
           src="https://solana.com/_next/image?url=%2Fimages%2Fhome%2FProofOfHistory.svg&w=2560&q=75"
           alt="Proof of History"
           className="section-image"
@@ -37,7 +38,7 @@ export default function solana() {
         </p>
 
         <h2>Solana&apos;s Native Token - SOL</h2>
-        <img 
+        <Image 
           src="https://cryptologos.cc/logos/solana-sol-logo.png" 
           alt="Solana SOL Logo" 
           className="section-image"
@@ -58,7 +59,7 @@ export default function solana() {
         </p>
 
         <h2>Solana Ecosystem</h2>
-        <img 
+        <Image 
           src="https://solana.com/static/ecosystem_overview.0b84c8dcb62d.svg" 
           alt="Solana Ecosystem"
           className="section-image"
