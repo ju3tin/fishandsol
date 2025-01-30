@@ -146,7 +146,8 @@ export default function GameControls() {
 			if (isPlaying && !isCashedOut) {
 				return "Cash out";
 			} else {
-				return "Place bet (next round)";
+				//return "Place bet (next round)";
+				return "Bet (next round)";
 
 			}
 		} else {
