@@ -12,7 +12,7 @@ import Image from "next/image";
 import "@aws-amplify/ui-react/styles.css";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import { Accordion as MuiAccordion } from '@mui/material';
+import { Accordion as MuiAccordion, AccordionProps } from '@mui/material';
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
@@ -20,19 +20,17 @@ import "/node_modules/flag-icons/css/flag-icons.min.css";
 import data from "./data_mother_mary.json";
 import { metadata } from "./metadata";
 
-const Accordion = styled(({ children, ...props }) => (
+interface StyledAccordionProps extends AccordionProps {
+  children: NonNullable<React.ReactNode>; // Define children prop as NonNullable
+}
+
+const Accordion = styled(({ children, ...props }: StyledAccordionProps) => (
   <MuiAccordion disableGutters elevation={0} {...props}>
     {children}
   </MuiAccordion>
 ))(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
-  borderRadius: theme.shape.borderRadius,
-  "&:not(:last-child)": {
-    borderBottom: 2,
-  },
-  "&:before": {
-    display: "none",
-  },
+  borderRadius: theme.shape.borderRadius, // Use theme to set rounded corners
 }));
 
 const AccordionSummary = styled((props) => (
