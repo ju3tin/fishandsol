@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 
 import { useGameStore, GameState,  } from '../store/gameStore1';
 
@@ -205,17 +205,17 @@ export default function Game() {
 		setContext(ctx);
 	}, []);
 
-	const doRender = () => {
+	const doRender = useCallback(() => {
 		render(
 			gameState,
 			context
 		);
-	}
+	}, [gameState, context]);
 
 	useEffect(() => {
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [context, gameState, doRender]);
+	}, [doRender]);
 
 	return (
 		<canvas className={styles.Game} ref={canvasRef}></canvas>

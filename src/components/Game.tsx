@@ -190,17 +190,17 @@ export default function Game() {
 		setContext(ctx);
 	}, []);
 
-	const doRender = () => {
-		render(
-			gameState,
-			context
-		);
-	}
-
 	useEffect(() => {
+		const doRender = () => {
+			render(
+				gameState,
+				context
+			);
+		};
+
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [context, gameState, doRender]);
+	}, [context, gameState]);
 
 	return (
 		<canvas id="gameCanvas" className={styles.Game} ref={canvasRef}></canvas>
