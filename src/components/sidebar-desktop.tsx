@@ -48,20 +48,13 @@ export function SidebarDesktop(props: SidebarDesktopProps) {
                   <div className='flex justify-between items-center w-full'>
                     <div className='flex gap-2'>
                       <Avatar className='h-5 w-5'>
-                        {session?.user ? (
-        <AvatarImage src={session.user.image || 'https://github.com/max-programming.png'} />
-        ) : (
-          <AvatarImage src='https://github.com/max-programming.png' />
-        )}
+                        <AvatarImage src='https://github.com/max-programming.png' />
                         <AvatarFallback> {session?.user ? (
         <>{session.user.name} </> ) : (
-          <span onClick={() => signIn('twitter')}>Sign in with Twitter</span>
+          <span>Max Programming</span>
         )}</AvatarFallback>
                       </Avatar>
-                      <span>{session?.user ? (
-        <>{session.user.name} </> ) : (
-          <span onClick={() => signIn('twitter')}>Sign in with Twitter</span>
-        )}</span>
+                      <span>Max Programming</span>
                     </div>
                     <MoreHorizontal size={20} />
                   </div>
@@ -75,7 +68,7 @@ export function SidebarDesktop(props: SidebarDesktopProps) {
                     </SidebarButton>
                   </Link>
                   <SidebarButton size='sm' icon={LogOut} className='w-full'>
-                   <span onClick={() => signOut()}> Log Out</span>
+                    Log Out
                   </SidebarButton>
                 </div>
               </PopoverContent>
