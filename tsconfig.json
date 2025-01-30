@@ -32,7 +32,9 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src",
+    "src/@types" // Add this line if you created a @types directory
   ],
   "exclude": [
     "node_modules"
