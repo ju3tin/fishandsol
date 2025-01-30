@@ -16,6 +16,8 @@ import { usePathname } from 'next/navigation';
 import { Separator } from './ui/separator';
 import { Drawer, DrawerContent, DrawerTrigger } from './ui/drawer';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
+//import { signIn } from 'next-auth/react';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 interface SidebarMobileProps {
   sidebarItems: SidebarItems;
@@ -23,7 +25,7 @@ interface SidebarMobileProps {
 
 export function SidebarMobile(props: SidebarMobileProps) {
   const pathname = usePathname();
-
+  const { data: session } = useSession();
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -64,11 +66,21 @@ export function SidebarMobile(props: SidebarMobileProps) {
                 <Button variant='ghost' className='w-full justify-start'>
                   <div className='flex justify-between items-center w-full'>
                     <div className='flex gap-2'>
-                      <Avatar className='h-5 w-5'>
-                        <AvatarImage src='https://github.com/max-programming.png' />
-                        <AvatarFallback>Max Programming</AvatarFallback>
+                     <Avatar className='h-5 w-5'>
+                        {session?.user ? (
+        <AvatarImage src={session.user.image || '/twitter.png'} />
+        ) : (
+          <AvatarImage src='/twitter.png' />
+        )}
+                        <AvatarFallback> {session?.user ? (
+        <>{session.user.name} </> ) : (
+          <span onClick={() => signIn('twitter')}>Sign in with Twitter</span>
+        )}</AvatarFallback>
                       </Avatar>
-                      <span>Max Programming</span>
+                      <span>{session?.user ? (
+        <>{session.user.name} </> ) : (
+          <span onClick={() => signIn('twitter')}>Sign in with Twitter</span>
+        )}</span>
                     </div>
                     <MoreHorizontal size={20} />
                   </div>
