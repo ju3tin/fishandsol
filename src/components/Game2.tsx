@@ -151,7 +151,7 @@ export default function Game() {
   }, [errors]);
 
   useEffect(() => {
-    const ctx = canvasRef.current?.getContext('2d');
+    const ctx = canvasRef.current?.getContext('2d') || null;
     if (canvasRef.current) {
       const canvas = canvasRef.current;
       canvas.width = 4000;
