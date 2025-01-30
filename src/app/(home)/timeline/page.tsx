@@ -59,11 +59,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 const Home = () => {
-  const pageTitle = metadata.title.default;
-  const [expanded, setExpanded] = React.useState("");
+    const pageTitle = (metadata.title as { default: string }).default; // Type assertion
+    const [expanded, setExpanded] = React.useState("");
+  
 
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
+  const handleChange = (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
+    setExpanded(newExpanded ? panel : "");
   };
   return (
     <Box
