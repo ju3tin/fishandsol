@@ -12,7 +12,7 @@ import Image from "next/image";
 import "@aws-amplify/ui-react/styles.css";
 import { styled } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
-import MuiAccordion from "@mui/material/Accordion";
+import { Accordion as MuiAccordion } from '@mui/material';
 import MuiAccordionSummary from "@mui/material/AccordionSummary";
 import MuiAccordionDetails from "@mui/material/AccordionDetails";
 import "/node_modules/flag-icons/css/flag-icons.min.css";
@@ -21,9 +21,10 @@ import data from "./data_mother_mary.json";
 import { metadata } from "./metadata";
 
 const Accordion = styled((props) => (
-  <MuiAccordion disableGutters elevation={0} rounded {...props} />
+  <MuiAccordion disableGutters elevation={0} {...props} />
 ))(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
+  borderRadius: theme.shape.borderRadius,
   "&:not(:last-child)": {
     borderBottom: 2,
   },
@@ -427,7 +428,5 @@ const Home = () => {
     </Box>
   );
 };
-
-
 
 export default Home;
