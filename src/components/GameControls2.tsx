@@ -28,7 +28,7 @@ import { Button } from "@/components/uis/button";
 import { Label } from "@/components/uis/label";
 import { currencies } from "../lib/currencies";
 import CurrencyList from "./CurrencyList";
-import styles from "../styles/components/GameControls1.module.css";
+import styles from "../styles/components/GameControls2.module.css";
 
 export default function GameControls() {
 	const textRef = useRef();
