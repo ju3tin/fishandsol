@@ -98,7 +98,7 @@ const Home = () => {
                 <Card>
                   <CardMedia />
                   <CardContent>
-                    <img
+                    <Image
                       src={item.imageSrc}
                       width={100}
                       alt="mother mary"
@@ -271,7 +271,7 @@ const Home = () => {
                       >
                         {item.date === "Chile-1983" && (
                           <>
-                            <img
+                            <Image
                               src="http://t1.gstatic.com/images?q=tbn:ANd9GcQtYlifFtAflGLmPFCJtk_rkzTpGl5eAzoVqR1B7xU97LgJP5i1"
                               alt="Imagen de Chile-1983"
                               style={{
@@ -287,7 +287,7 @@ const Home = () => {
                           <>
                             <strong>Cruz de Amor</strong>
                             <br />
-                            <img
+                            <Image
                               src="https://bottegadivina.files.wordpress.com/2022/11/santa-cruz-gloriosa-de-la-victoria731.jpg?w=2000&h="
                               alt="cruz_de_dozule"
                               style={{
@@ -298,7 +298,7 @@ const Home = () => {
                               }}
                             />
                             <br />
-                            <img
+                            <Image
                               src="https://bottegadivina.files.wordpress.com/2022/11/91f255ca-0c3e-4c18-9bd7-91829f684890.jpg?w=2000&h="
                               alt="cruz_de_dozule"
                               style={{
@@ -341,7 +341,7 @@ const Home = () => {
                           <br />
                           <>Medalla</>
                           <br />
-                          <img
+                          <Image
                             src="https://i.etsystatic.com/13312237/r/il/b7d787/4665010038/il_794xN.4665010038_3qmf.jpg"
                             alt="Medalla"
                             style={{
@@ -352,7 +352,7 @@ const Home = () => {
                             }}
                           />
                           <br />
-                          <img
+                          <Image
                             src="https://i.etsystatic.com/13312237/r/il/46c456/4664974038/il_794xN.4664974038_1yma.jpg"
                             alt="Medalla2"
                             style={{
@@ -376,7 +376,7 @@ const Home = () => {
                           <br />
                           <>Fuente de agua</>
                           <br />
-                          <img
+                          <Image
                             src="https://carifilii.es/wp-content/uploads/2016/11/FUENTE-ACTUAL.jpgtn_.jpg"
                             alt="Fuente"
                             style={{
@@ -395,7 +395,7 @@ const Home = () => {
                           <br />
                           <>Medalla</>
                           <br />
-                          <img
+                          <Image
                             src="https://rdcwp.s3.amazonaws.com/wp-content/uploads/2004/06/Medalla-de-la-Rosa-M%C3%ADstica.jpg"
                             alt="Medalla"
                             style={{
