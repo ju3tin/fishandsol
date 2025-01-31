@@ -243,12 +243,20 @@ export default function Game() {
 
 	const gameState = useGameStore((gameState: GameState) => gameState);
 
+	const [errorMessages, setErrorMessages] = useState<string[]>([]);
+
 	const showErrorToast = useCallback(() => {
-		const currentErrors = errors; // Move errors inside the callback
-		if (currentErrors.length > 0) {
-			toast("⚠️ " + currentErrors[currentErrors.length - 1]);
+		if (errorMessages.length > 0) {
+			toast("⚠️ " + errorMessages[errorMessages.length - 1]);
 		}
-	}, []); // Removed errors from dependencies
+	}, [errorMessages]); // ✅ Now errorMessages is a stable state
+
+	//const showErrorToast = useCallback(() => {
+	//	const currentErrors = errors; // Move errors inside the callback
+	//	if (currentErrors.length > 0) {
+	//		toast("⚠️ " + currentErrors[currentErrors.length - 1]);
+	//	}
+//	}, []); // Removed errors from dependencies
 
 	useEffect(() => {
 		const ctx = canvasRef.current?.getContext('2d');
