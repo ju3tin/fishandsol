@@ -50,7 +50,9 @@ export default function RootLayout({
 	return (
     <SessionProvider>
     <html lang='en' className='dark'>
+      <head>
       <Head1 />
+      </head>
 				<body className={inter.className}>
         <ConnectionProvider endpoint={endpoint}>
           <WalletProvider wallets={wallets} autoConnect>
