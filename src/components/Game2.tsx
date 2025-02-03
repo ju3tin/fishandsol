@@ -195,7 +195,7 @@ function drawRocketPath(
 	for (let t = 0; t <= timeElapsed/step; t += step) {
 		const x = step * t;
 		const y = canvas.height - curveFunction(x/1000);
-
+//after 2.0x immulate curve
 		context.lineTo(x, y);
 	}
 
