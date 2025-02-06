@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet to Twitter</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #previewImage { max-width: 100%; max-height: 300px; display: none; margin-top: 10px; }
+    </style>
+</head>
+<body>
+
+    <h2>Post a Tweet with Image</h2>
+    <textarea id="tweetInput" placeholder="What's happening?" rows="3" cols="50"></textarea><br>
+    <input type="file" id="imageInput" accept="image/*" onchange="previewImage()"><br><br>
+    <img id="previewImage"><br>
+    <button onclick="tweetNow()">Tweet to Twitter</button>
+
+    <script>
+        function previewImage() {
+            const imageInput = document.getElementById("imageInput");
+            const preview = document.getElementById("previewImage");
+
+            if (imageInput.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    preview.src = event.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(imageInput.files[0]);
+            } else {
+                preview.style.display = "none";
+            }
+        }
+
+        function tweetNow() {
+            const tweetText = document.getElementById("tweetInput").value.trim();
+            if (tweetText === "") {
+                alert("Please enter text for your tweet!");
+                return;
+            }
+
+            // Encode the tweet text for URL
+            const encodedText = encodeURIComponent(tweetText);
+
+            // Twitter Web Intent URL
+            const twitterUrl = `https://twitter.com/intent/tweet?text=${encodedText}`;
+
+            // Open Twitter in a new tab
+            window.open(twitterUrl, "_blank");
+        }
+    </script>
+
+</body>
+</html>

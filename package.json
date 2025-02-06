@@ -73,6 +73,7 @@
     "react-qr-code": "^2.0.15",
     "react-router-dom": "^7.1.1",
     "react-toastify": "^11.0.3",
+    "react-tweet": "^3.2.1",
     "react-use-websocket": "^3.0.0",
     "react-vertical-timeline-component": "^3.5.3",
     "socket.io": "^4.8.1",

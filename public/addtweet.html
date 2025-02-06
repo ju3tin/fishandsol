@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet Poster</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #tweetContainer { margin-top: 20px; }
+        .tweet { 
+            background-color: #f0f0f0; 
+            padding: 10px; 
+            border-radius: 10px; 
+            margin: 10px auto; 
+            width: 50%;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Post a Tweet</h2>
+    <textarea id="tweetInput" placeholder="What's happening?" rows="3" cols="50"></textarea><br>
+    <button onclick="postTweet()">Tweet</button>
+
+    <div id="tweetContainer"></div>
+
+    <script>
+        function postTweet() {
+            const inputField = document.getElementById("tweetInput");
+            const tweetText = inputField.value.trim();
+
+            if (tweetText === "") {
+                alert("Please enter a tweet!");
+                return;
+            }
+
+            // Create tweet div
+            const tweetDiv = document.createElement("div");
+            tweetDiv.classList.add("tweet");
+            tweetDiv.innerText = tweetText;
+
+            // Add tweet to container
+            document.getElementById("tweetContainer").prepend(tweetDiv);
+
+            // Clear input field
+            inputField.value = "";
+        }
+    </script>
+
+</body>
+</html>

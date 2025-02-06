@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import "./App.css";
+import { Tweet } from "react-tweet"; // first import
 import {
   VerticalTimeline,
   VerticalTimelineElement,

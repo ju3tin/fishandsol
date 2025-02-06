@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tweet Poster</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        #tweetContainer { margin-top: 20px; }
+        .tweet { 
+            background-color: #f0f0f0; 
+            padding: 10px; 
+            border-radius: 10px; 
+            margin: 10px auto; 
+            width: 50%;
+            text-align: left;
+            position: relative;
+        }
+        .tweet img {
+            width: 100%; 
+            max-height: 300px;
+            object-fit: cover; 
+            border-radius: 10px; 
+            margin-top: 10px;
+        }
+        .delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            background: red;
+            color: white;
+            border: none;
+            cursor: pointer;
+            padding: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Post a Tweet with Image</h2>
+    <textarea id="tweetInput" placeholder="What's happening?" rows="3" cols="50"></textarea><br>
+    <input type="file" id="imageInput" accept="image/*"><br><br>
+    <button onclick="postTweet()">Tweet</button>
+
+    <div id="tweetContainer"></div>
+
+    <script>
+        function postTweet() {
+            const inputField = document.getElementById("tweetInput");
+            const imageInput = document.getElementById("imageInput");
+            const tweetText = inputField.value.trim();
+
+            if (tweetText === "" && imageInput.files.length === 0) {
+                alert("Please enter text or upload an image!");
+                return;
+            }
+
+            // Create tweet div
+            const tweetDiv = document.createElement("div");
+            tweetDiv.classList.add("tweet");
+
+            // Add text to tweet
+            if (tweetText) {
+                const textElement = document.createElement("p");
+                textElement.innerText = tweetText;
+                tweetDiv.appendChild(textElement);
+            }
+
+            // Add image if uploaded
+            if (imageInput.files.length > 0) {
+                const file = imageInput.files[0];
+                const reader = new FileReader();
+                
+                reader.onload = function(event) {
+                    const imgElement = document.createElement("img");
+                    imgElement.src = event.target.result;
+                    tweetDiv.appendChild(imgElement);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+
+            // Add delete button
+            const deleteBtn = document.createElement("button");
+            deleteBtn.innerText = "X";
+            deleteBtn.classList.add("delete-btn");
+            deleteBtn.onclick = function() {
+                tweetDiv.remove();
+            };
+            tweetDiv.appendChild(deleteBtn);
+
+            // Add tweet to container
+            document.getElementById("tweetContainer").prepend(tweetDiv);
+
+            // Clear input fields
+            inputField.value = "";
+            imageInput.value = "";
+        }
+    </script>
+
+</body>
+</html>
