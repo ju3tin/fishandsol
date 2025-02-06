@@ -77,7 +77,7 @@ const sidebarItems: SidebarItems = {
          
 
     <LoginButton />
-    <Header />
+   {/* <Header /> */} 
          </WalletContextProvider>
     </div>
   ),
