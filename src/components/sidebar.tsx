@@ -42,7 +42,7 @@ import {
 import "@solana/wallet-adapter-react-ui/styles.css";
 
 import WalletContextProvider from "@/providers/WalletContextProvider";
-import Header from "../components/Header"
+{/*import Header from "../components/Header" */}
 
 
 const handleLoginClick = () => {
