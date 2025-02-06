@@ -28,9 +28,9 @@ export default function Page() {
  
   return (
     <form onSubmit={onSubmit}>
-      <input type="text" name="user" /><br />
-      <input type="text" name="Walletaddress" /><br />
-      <input type="text" name="url" /><br />
+      <input type="text" name="user" /><br /><br />
+      <input type="text" name="Walletaddress" /><br /><br />
+      <input type="text" name="url" /><br /><br />
       <button type="submit" disabled={isLoading}>
         {isLoading ? 'Loading...' : 'Submit'}
       </button>
