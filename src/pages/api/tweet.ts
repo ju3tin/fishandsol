@@ -1,18 +1,30 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { TwitterApi } from "twitter-api-v2";
 import multer from "multer";
-import fs from "fs";
-import path from "path";
 import { promisify } from "util";
 import * as dotenv from "dotenv";
-import { Request, Response } from "express";
-import os from 'os';
+import { Request as ExpressRequest, Response as ExpressResponse } from "express";
 
 dotenv.config();
 
-// Configure Multer for file uploads
-const upload = multer({ dest: "public/uploads/" });
+// Configure Multer for in-memory file uploads (no disk storage)
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
 const uploadMiddleware = promisify(upload.single("image"));
+
+// Extend ExpressRequest to include the file property
+interface ExtendedRequest extends ExpressRequest {
+  file?: Express.Multer.File;
+}
+
+// Ensure this interface is defined at the top of your file
+interface ExtendedNextApiRequest extends NextApiRequest {
+  file?: Express.Multer.File; // Define the file property
+}
+
+export const config = {
+  api: { bodyParser: false }, // Required for handling file uploads
+};
 
 // Initialize Twitter Client
 const twitterClient = new TwitterApi({
@@ -22,32 +34,18 @@ const twitterClient = new TwitterApi({
   accessSecret: process.env.TWITTER_API_ACCESS_SECRET!,
 });
 
-// Extend NextApiRequest to include the file property
-interface ExtendedNextApiRequest extends NextApiRequest {
-  file?: Express.Multer.File; // Define the file property
-}
-
-export const config = {
-  api: { bodyParser: false }, // Required for handling file uploads
-};
-
 export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
 
   try {
-    await uploadMiddleware(req as unknown as Request, res as unknown as Response);
+    await uploadMiddleware(req as unknown as ExtendedRequest, res as unknown as ExpressResponse);
 
     const { tweetText } = req.body;
     if (!tweetText) return res.status(400).json({ error: "Tweet text is required" });
 
     let mediaId;
     if (req.file) {
-      const tempDir = os.tmpdir();
-      const imagePath = path.join(tempDir, req.file.filename);
-      fs.writeFileSync(imagePath, req.file.buffer);
-
-      const imageData = fs.readFileSync(imagePath);
-      mediaId = await twitterClient.v1.uploadMedia(imageData);
+      mediaId = await twitterClient.v1.uploadMedia(req.file.buffer, { mimeType: req.file.mimetype });
     }
 
     // Post the tweet
@@ -60,8 +58,7 @@ export default async function handler(req: ExtendedNextApiRequest, res: NextApiR
       return res.status(500).json({ error: "Tweet failed to post." });
     }
 
-    const tweetId = tweet.data.id;
-    const tweetUrl = `https://twitter.com/user/status/${tweetId}`; // Replace "user" with your Twitter username
+    const tweetUrl = `https://twitter.com/user/status/${tweet.data.id}`;
 
     res.status(200).json({ success: true, tweetUrl });
   } catch (error) {
