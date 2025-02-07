@@ -15,10 +15,10 @@ const uploadMiddleware = promisify(upload.single("image"));
 
 // Initialize Twitter Client
 const twitterClient = new TwitterApi({
-  appKey: process.env.API_KEY!,
-  appSecret: process.env.API_SECRET!,
-  accessToken: process.env.ACCESS_TOKEN!,
-  accessSecret: process.env.ACCESS_SECRET!,
+  appKey: process.env.TWITTER_API_KEY!,
+  appSecret: process.env.TWITTER_API_SECRET!,
+  accessToken: process.env.TWITTER_API_ACCESS_TOKEN!,
+  accessSecret: process.env.TWITTER_API_ACCESS_SECRET!,
 });
 
 // Extend NextApiRequest to include the file property
