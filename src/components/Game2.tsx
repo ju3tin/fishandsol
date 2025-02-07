@@ -29,7 +29,7 @@ if (typeof window !== 'undefined') {
 	parachuteImage.src = 'parachute.svg';
 
 	backgroundImage = new Image();
-	backgroundImage.src = 'under.png';
+	backgroundImage.src = 'under3.png';
 
 	svgImage = new Image();
 	svgImage.src = '1.svg'; // Update with your SVG path
@@ -48,7 +48,7 @@ function curveFunction(t: number) {
 	rocket: 'fish.svg',
 	explode: 'explode.svg',
 	parachute: 'parachute.svg',
-	background: 'under.png',
+	background: 'under3.png',
 	additional1: '1.svg',
 	additional2: '2.svg', // Add more SVG paths here
   };
