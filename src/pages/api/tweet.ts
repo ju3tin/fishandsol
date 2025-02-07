@@ -5,6 +5,7 @@ import fs from "fs";
 import path from "path";
 import { promisify } from "util";
 import * as dotenv from "dotenv";
+import { Request } from "express";
 
 dotenv.config();
 
@@ -28,7 +29,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
 
   try {
-    await uploadMiddleware(req, res);
+    await uploadMiddleware(req as Request, res);
 
     const { tweetText } = req.body;
     if (!tweetText) return res.status(400).json({ error: "Tweet text is required" });
