@@ -21,11 +21,16 @@ const twitterClient = new TwitterApi({
   accessSecret: process.env.ACCESS_SECRET!,
 });
 
+// Extend NextApiRequest to include the file property
+interface ExtendedNextApiRequest extends NextApiRequest {
+  file?: Express.Multer.File; // Define the file property
+}
+
 export const config = {
   api: { bodyParser: false }, // Required for handling file uploads
 };
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: ExtendedNextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method Not Allowed" });
 
   try {
