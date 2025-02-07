@@ -6,6 +6,7 @@ import path from "path";
 import { promisify } from "util";
 import * as dotenv from "dotenv";
 import { Request, Response } from "express";
+import os from 'os';
 
 dotenv.config();
 
@@ -41,10 +42,12 @@ export default async function handler(req: ExtendedNextApiRequest, res: NextApiR
 
     let mediaId;
     if (req.file) {
-      const imagePath = path.join(process.cwd(), "public/uploads", req.file.filename);
+      const tempDir = os.tmpdir();
+      const imagePath = path.join(tempDir, req.file.filename);
+      fs.writeFileSync(imagePath, req.file.buffer);
+
       const imageData = fs.readFileSync(imagePath);
       mediaId = await twitterClient.v1.uploadMedia(imageData);
-      fs.unlinkSync(imagePath); // Delete file after upload
     }
 
     // Post the tweet
