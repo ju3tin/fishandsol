@@ -15,10 +15,10 @@ export default function GamePage(): JSX.Element {
 
     const light = new THREE.PointLight(0xffffff, 10)
     light.position.set(0.8, 1.4, 1.0)
-  //  scene.add(light)
+    scene.add(light)
 
     const ambientLight = new THREE.AmbientLight()
-    scene.add(ambientLight)
+    //scene.add(ambientLight)
 
     const camera = new THREE.PerspectiveCamera(
       75,
