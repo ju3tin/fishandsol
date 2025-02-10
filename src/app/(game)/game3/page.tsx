@@ -43,7 +43,7 @@ export default function GamePage(): JSX.Element {
     fbxLoader.load(
       '/fish.fbx', // Ensure this path is correct for your project
       (object) => {
-        // object.scale.set(.01, .01, .01)
+         object.scale.set(.01, .01, .01)
         scene.add(object)
       },
       (xhr) => {
@@ -89,6 +89,6 @@ export default function GamePage(): JSX.Element {
   }, [])
 
   return (
-    <div ref={mountRef} style={{ height: '10vh' }} />
+    <div ref={mountRef} style={{ height: '100vh' }} />
   )
 }
