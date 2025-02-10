@@ -1,11 +1,11 @@
 "use client"
 import Head from "next/head";
 import { Suspense, useEffect, useState } from "react";
-import dynamic from "next/dynamic"; // Dynamically import
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import dynamic from "next/dynamic"; // Dynamically import components
 import { useLoader } from "@react-three/fiber"; // Import useLoader
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-// Dynamically import the Canvas and OrbitControls components to avoid SSR issues
+// Dynamically import the Canvas, OrbitControls, and Environment components
 const CanvasWithClientSide = dynamic(() => import("@react-three/fiber").then(mod => mod.Canvas), {
   ssr: false, // Disable SSR for Canvas
 });
@@ -19,7 +19,7 @@ const Environment = dynamic(() => import("@react-three/drei").then(mod => mod.En
 });
 
 const Model = () => {
-  // Load the 3D model
+  // Load the 3D model using useLoader
   const gltf = useLoader(GLTFLoader, "/earth/scene.gltf");
 
   return (
@@ -33,6 +33,7 @@ const Model = () => {
 export default function Home() {
   const [isClient, setIsClient] = useState(false);
 
+  // UseEffect to detect client-side rendering
   useEffect(() => {
     setIsClient(true); // Check if window is available (client-side)
   }, []);
