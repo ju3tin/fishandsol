@@ -13,7 +13,7 @@ export default function GamePage(): JSX.Element {
     const scene = new THREE.Scene()
     scene.add(new THREE.AxesHelper(5))
 
-    const light = new THREE.PointLight(0xffffff, 50)
+    const light = new THREE.PointLight(0xffffff, 10)
     light.position.set(0.8, 1.4, 1.0)
     scene.add(light)
 
