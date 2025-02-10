@@ -6,6 +6,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { useGameStore, GameState } from '../store/gameStore2';
+import { Canvas, useFrame, useLoader } from "@react-three/fiber";
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 
 import styles from '../styles/Game1.module.css';
@@ -110,6 +111,8 @@ export default function ThreeScene() {
     fbxLoader.load(
       '/fish.fbx', // Ensure this path is correct
       (object) => {
+        object.scale.set(.005, .005, .005)
+      
         scene.add(object)
       },
       (xhr) => {
