@@ -8,8 +8,8 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 
 export default function ThreeScene() {
   const mountRef = useRef<HTMLDivElement | null>(null)
-  const canvasWidth = 800  // Change width here
-  const canvasHeight = 600 // Change height here
+  const canvasWidth = 4000  // Change width here
+  const canvasHeight = 1995 // Change height here
 
   useEffect(() => {
     // ✅ Scene Setup
