@@ -5,6 +5,20 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
+import styles from "./page.module.css";
+import axios from "axios";
+
+import Game from '../../../components/Game2';
+import CrashList from '../../../components/CrashList2';
+import GameControls from '../../../components/GameControls2';
+import BetList from '../../../components/BetList2';
+import axiosInstance from '../../../../lib/axiosInstance';
+
+import GameLayout from '../../../components/GameLayout2';
+import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+
+
 
 export default function GamePage(): JSX.Element {
   const mountRef = useRef<HTMLDivElement | null>(null)
