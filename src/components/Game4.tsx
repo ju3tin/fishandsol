@@ -4,6 +4,10 @@ import { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { useGameStore, GameState } from "../store/gameStore2";
 import styles from "../styles/Game1.module.css";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { Group } from "three"; // Import Group, as FBX models are a type of Group
+
+
 
 const height = 2000;
 const coeffB = 0.5;
@@ -38,21 +42,21 @@ export default function Game() {
             scene.add(light);
 
             const loader = new FBXLoader();
-            loader.load("/rocket.fbx", (fbx) => {
-                fbx.scale.set(0.01, 0.01, 0.01);
-                scene.add(fbx);
+loader.load("/rocket.fbx", (fbx: Group) => {
+    fbx.scale.set(0.01, 0.01, 0.01);
+    scene.add(fbx);
 
-                const animate = () => {
-                    requestAnimationFrame(animate);
-                    const expectedX = gameState.timeElapsed / 100;
-                    const expectedY = -curveFunction(gameState.timeElapsed / 1000) / 100;
-                    fbx.position.set(expectedX, expectedY, 0);
-                    fbx.rotation.y += 0.01;
-                    renderer.render(scene, camera);
-                };
+    const animate = () => {
+        requestAnimationFrame(animate);
+        const expectedX = gameState.timeElapsed / 100;
+        const expectedY = -curveFunction(gameState.timeElapsed / 1000) / 100;
+        fbx.position.set(expectedX, expectedY, 0);
+        fbx.rotation.y += 0.01;
+        renderer.render(scene, camera);
+    };
 
-                animate();
-            });
+    animate();
+});
         };
 
         loadFBXModel();
