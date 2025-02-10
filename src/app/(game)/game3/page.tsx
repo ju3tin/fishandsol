@@ -1,7 +1,9 @@
+"use client"
 import Head from "next/head";
 import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic"; // Dynamically import
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import { useLoader } from "@react-three/fiber"; // Import useLoader
 
 // Dynamically import the Canvas and OrbitControls components to avoid SSR issues
 const CanvasWithClientSide = dynamic(() => import("@react-three/fiber").then(mod => mod.Canvas), {
