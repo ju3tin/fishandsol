@@ -1,82 +1,94 @@
+'use client' // Ensure this page only runs on the client-side
+
+import { useEffect, useRef } from 'react'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 
-const scene = new THREE.Scene()
-scene.add(new THREE.AxesHelper(5))
+export default function GamePage(): JSX.Element {
+  const mountRef = useRef<HTMLDivElement | null>(null)
 
-const light = new THREE.PointLight(0xffffff, 50)
-light.position.set(0.8, 1.4, 1.0)
-scene.add(light)
+  useEffect(() => {
+    const scene = new THREE.Scene()
+    scene.add(new THREE.AxesHelper(5))
 
-const ambientLight = new THREE.AmbientLight()
-scene.add(ambientLight)
+    const light = new THREE.PointLight(0xffffff, 50)
+    light.position.set(0.8, 1.4, 1.0)
+    scene.add(light)
 
-const camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-)
-camera.position.set(0.8, 1.4, 1.0)
+    const ambientLight = new THREE.AmbientLight()
+    scene.add(ambientLight)
 
-const renderer = new THREE.WebGLRenderer()
-renderer.setSize(window.innerWidth, window.innerHeight)
-document.body.appendChild(renderer.domElement)
+    const camera = new THREE.PerspectiveCamera(
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    )
+    camera.position.set(0.8, 1.4, 1.0)
 
-const controls = new OrbitControls(camera, renderer.domElement)
-controls.enableDamping = true
-controls.target.set(0, 1, 0)
+    const renderer = new THREE.WebGLRenderer()
+    renderer.setSize(window.innerWidth, window.innerHeight)
 
-//const material = new THREE.MeshNormalMaterial()
+    if (mountRef.current) {
+      mountRef.current.appendChild(renderer.domElement)
+    }
 
-const fbxLoader = new FBXLoader()
-fbxLoader.load(
-    'fish.fbx',
-    (object) => {
-        // object.traverse(function (child) {
-        //     if ((child as THREE.Mesh).isMesh) {
-        //         // (child as THREE.Mesh).material = material
-        //         if ((child as THREE.Mesh).material) {
-        //             ((child as THREE.Mesh).material as THREE.MeshBasicMaterial).transparent = false
-        //         }
-        //     }
-        // })
+    const controls = new OrbitControls(camera, renderer.domElement)
+    controls.enableDamping = true
+    controls.target.set(0, 1, 0)
+
+    const fbxLoader = new FBXLoader()
+    fbxLoader.load(
+      '/fish.fbx', // Ensure this path is correct for your project
+      (object) => {
         // object.scale.set(.01, .01, .01)
         scene.add(object)
-    },
-    (xhr) => {
+      },
+      (xhr) => {
         console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-    },
-    (error) => {
+      },
+      (error) => {
         console.log(error)
+      }
+    )
+
+    window.addEventListener('resize', onWindowResize, false)
+
+    function onWindowResize() {
+      camera.aspect = window.innerWidth / window.innerHeight
+      camera.updateProjectionMatrix()
+      renderer.setSize(window.innerWidth, window.innerHeight)
+      render()
     }
-)
 
-window.addEventListener('resize', onWindowResize, false)
-function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight
-    camera.updateProjectionMatrix()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-    render()
+    const stats = new Stats()
+    document.body.appendChild(stats.dom)
+
+    function animate() {
+      requestAnimationFrame(animate)
+
+      controls.update()
+
+      render()
+
+      stats.update()
+    }
+
+    function render() {
+      renderer.render(scene, camera)
+    }
+
+    animate()
+
+    return () => {
+      // Cleanup event listener when the component is unmounted
+      window.removeEventListener('resize', onWindowResize)
+    }
+  }, [])
+
+  return (
+    <div ref={mountRef} style={{ height: '100vh' }} />
+  )
 }
-
-const stats = new Stats()
-document.body.appendChild(stats.dom)
-
-function animate() {
-    requestAnimationFrame(animate)
-
-    controls.update()
-
-    render()
-
-    stats.update()
-}
-
-function render() {
-    renderer.render(scene, camera)
-}
-
-animate()
