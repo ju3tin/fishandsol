@@ -17,6 +17,11 @@ import axiosInstance from '../../../../lib/axiosInstance';
 import GameLayout from '../../../components/GameLayout2';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
+//import BetList from '../../../components/BetList2'
+//import CrashList from '../../../components/CrashList2'
+//import Game from '../../../components/Game2'
+//import GameControls from '../../../components/GameControls2'
+//import GameLayout from '../../../components/GameLayout2'
 
 
 
@@ -115,6 +120,15 @@ export default function GamePage(): JSX.Element {
   }, [])
 
   return (
-    <div ref={mountRef} style={{ height: '100vh' }} />
+    <main className={styles.main1}>
+   
+    <GameLayout>
+			<CrashList />
+      <div ref={mountRef} style={{ height: '100vh' }} />
+				<Game />
+			<GameControls />
+				<BetList />
+			</GameLayout>
+    </main>
   )
 }
