@@ -125,8 +125,7 @@ export default function GamePage(): JSX.Element {
    
     <GameLayout>
 			<CrashList />
-      <div ref={mountRef} style={{ height: '10vh' }} />
-				<Game />
+     <Game />
         <Game5 />
 			<GameControls />
 				<BetList />
