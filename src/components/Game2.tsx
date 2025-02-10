@@ -1,5 +1,6 @@
 "use client";
 
+import * as THREE from 'three';
 import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 
 import { useGameStore, GameState } from '../store/gameStore2';
