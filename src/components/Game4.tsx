@@ -38,7 +38,7 @@ export default function Game() {
             scene.add(light);
 
             const loader = new FBXLoader();
-            loader.load("/rocket.fbx", (fbx: THREE.Group) => {
+            loader.load("/fish.fbx", (fbx: THREE.Group) => {
                 fbx.scale.set(0.01, 0.01, 0.01);
                 scene.add(fbx);
 
