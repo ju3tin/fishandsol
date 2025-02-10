@@ -3,6 +3,7 @@
 import * as THREE from 'three';
 import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 
+import { OrbitControls, useFBX } from "@react-three/drei";
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 
@@ -18,6 +19,14 @@ let explodeImage: HTMLImageElement;
 let parachuteImage: HTMLImageElement;
 let backgroundImage: HTMLImageElement;
 let svgImage: HTMLImageElement;
+
+const FBXModel = ({ url }: { url: string }) => {
+	const fbx = useFBX(url);
+	fbx.scale.set(0.01, 0.01, 0.01); // Adjust scale if needed
+  
+	return <primitive object={fbx} />;
+  };
+  
 
 if (typeof window !== 'undefined') {
 	rocketImage = new Image();
@@ -287,6 +296,8 @@ export default function Game() {
 	}, [errorCount, showErrorToast]);
 
 	return (
-		<canvas className={styles.Game} ref={canvasRef}></canvas>
+		<canvas className={styles.Game} ref={canvasRef}>
+			
+		</canvas>
 	);
 }
