@@ -43,7 +43,7 @@ export default function GamePage(): JSX.Element {
     fbxLoader.load(
       '/fish.fbx', // Ensure this path is correct for your project
       (object) => {
-         object.scale.set(.01, .01, .01)
+         object.scale.set(.001, .001, .001)
         scene.add(object)
       },
       (xhr) => {
