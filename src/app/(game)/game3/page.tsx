@@ -1,11 +1,10 @@
-"use client"
 import Head from "next/head";
 import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic"; // Dynamically import components
-import { useLoader } from "@react-three/fiber"; // Import useLoader
+import { useLoader } from "@react-three/fiber"; // Import useLoader from @react-three/fiber
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
-// Dynamically import the Canvas, OrbitControls, and Environment components
+// Dynamically import the Canvas and OrbitControls components to avoid SSR issues
 const CanvasWithClientSide = dynamic(() => import("@react-three/fiber").then(mod => mod.Canvas), {
   ssr: false, // Disable SSR for Canvas
 });
@@ -19,7 +18,7 @@ const Environment = dynamic(() => import("@react-three/drei").then(mod => mod.En
 });
 
 const Model = () => {
-  // Load the 3D model using useLoader
+  // Load the 3D model using useLoader hook
   const gltf = useLoader(GLTFLoader, "/earth/scene.gltf");
 
   return (
