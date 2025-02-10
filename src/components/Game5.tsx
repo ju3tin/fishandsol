@@ -14,7 +14,7 @@ export default function ThreeScene() {
   useEffect(() => {
     // ✅ Scene Setup
     const scene = new THREE.Scene()
-    scene.add(new THREE.AxesHelper(5))
+    scene.add()
 
     const light = new THREE.PointLight(0xffffff, 50)
     light.position.set(0.8, 1.4, 1.0)
@@ -62,15 +62,15 @@ export default function ThreeScene() {
     window.addEventListener('resize', onWindowResize)
 
     // ✅ Stats (Performance Monitoring)
-    const stats = new Stats()
-    document.body.appendChild(stats.dom)
+   // const stats = new Stats()
+   // document.body.appendChild(stats.dom)
 
     // ✅ Animation Loop
     function animate() {
       requestAnimationFrame(animate)
       controls.update()
       render()
-      stats.update()
+     // stats.update()
     }
 
     function render() {
