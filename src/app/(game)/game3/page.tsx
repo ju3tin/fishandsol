@@ -9,6 +9,7 @@ import styles from "./page.module.css";
 import axios from "axios";
 
 import Game from '../../../components/Game2';
+import Game5 from '../../../components/Game5';
 import CrashList from '../../../components/CrashList2';
 import GameControls from '../../../components/GameControls2';
 import BetList from '../../../components/BetList2';
@@ -126,6 +127,7 @@ export default function GamePage(): JSX.Element {
 			<CrashList />
       <div ref={mountRef} style={{ height: '10vh' }} />
 				<Game />
+        <Game5 />
 			<GameControls />
 				<BetList />
 			</GameLayout>
