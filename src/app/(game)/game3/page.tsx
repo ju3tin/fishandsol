@@ -28,8 +28,8 @@ export default function GamePage(): JSX.Element {
       0.1,
       1000
     )
-    camera.position.set(0, 0, 1);
-    camera.rotation.set(-3.14, -0.44, -3.14);
+    camera.position.set(-0.14, 0.14, 1.005);
+    camera.rotation.set(-0.015, -0.47, -0.006);
 
     const renderer = new THREE.WebGLRenderer()
     renderer.setSize(window.innerWidth, window.innerHeight)
