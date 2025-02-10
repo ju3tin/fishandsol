@@ -125,7 +125,7 @@ export default function ThreeScene() {
       camera.aspect = canvasWidth / canvasHeight
       camera.updateProjectionMatrix()
       renderer.setSize(canvasWidth, canvasHeight)
-      render()
+      render(gameState,context)
     }
     window.addEventListener('resize', onWindowResize)
 
@@ -137,11 +137,15 @@ export default function ThreeScene() {
     function animate() {
       requestAnimationFrame(animate)
       controls.update()
-      render()
+      render(	gameState,
+        context)
      // stats.update()
     }
 
-    function render() {
+    function render(
+        gameState: GameState,
+	context: CanvasRenderingContext2D,
+    ) {
       renderer.render(scene, camera)
     }
 
