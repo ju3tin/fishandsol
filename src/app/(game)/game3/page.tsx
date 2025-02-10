@@ -1,3 +1,4 @@
+"use client"
 import Head from "next/head";
 import { Suspense, useEffect, useState } from "react";
 import dynamic from "next/dynamic"; // Dynamically import components
