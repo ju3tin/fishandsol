@@ -4,7 +4,7 @@ import { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { useGameStore, GameState } from "../store/gameStore2";
 import styles from "../styles/Game1.module.css";
-//import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader";
+import { FBXLoader } from "three/examples/jsm/loaders/FBXLoader.js";
 
 const height = 2000;
 const coeffB = 0.5;
@@ -21,7 +21,7 @@ export default function Game() {
     useEffect(() => {
         const loadFBXModel = async () => {
             // ✅ Dynamic import to prevent build errors
-            let FBXLoader = require('three-fbxloader-offical');
+            // let FBXLoader = require('three-fbxloader-offical');
             const threeCanvas = threeCanvasRef.current;
             if (!threeCanvas) return;
 
