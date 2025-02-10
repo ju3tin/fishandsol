@@ -63,8 +63,8 @@ export default function GamePage(): JSX.Element {
       render()
     }
 
-    const stats = new Stats()
-    document.body.appendChild(stats.dom)
+  //  const stats = new Stats()
+  //  document.body.appendChild(stats.dom)
 
     function animate() {
       requestAnimationFrame(animate)
@@ -73,7 +73,7 @@ export default function GamePage(): JSX.Element {
 
       render()
 
-      stats.update()
+  //    stats.update()
     }
 
     function render() {
