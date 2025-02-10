@@ -3,7 +3,6 @@
 import { useRef, useEffect } from "react";
 import * as THREE from "three";
 import { useGameStore, GameState } from "../store/gameStore2";
-
 import styles from "../styles/Game1.module.css";
 
 const height = 2000;
@@ -20,7 +19,9 @@ export default function Game() {
 
     useEffect(() => {
         const loadFBXModel = async () => {
-            const { FBXLoader } = await import("three/examples/jsm/loaders/FBXLoader"); // ✅ Dynamically import
+            // ✅ Dynamic import for FBXLoader
+            const { FBXLoader } = await import("three/examples/jsm/loaders/FBXLoader");
+
             const threeCanvas = threeCanvasRef.current;
             if (!threeCanvas) return;
 
@@ -29,7 +30,6 @@ export default function Game() {
             renderer.setPixelRatio(window.devicePixelRatio);
 
             const scene = new THREE.Scene();
-
             const camera = new THREE.PerspectiveCamera(50, 4000 / 1995, 0.1, 1000);
             camera.position.set(0, 0, 10);
 
@@ -56,8 +56,6 @@ export default function Game() {
         };
 
         loadFBXModel();
-
-        return () => {};
     }, [gameState]);
 
     return (
