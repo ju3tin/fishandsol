@@ -89,5 +89,5 @@ export default function ThreeScene() {
     }
   }, [])
 
-  return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />
+  return <div ref={mountRef} style={{ width: '4000px', height: '1995px' }} />
 }
