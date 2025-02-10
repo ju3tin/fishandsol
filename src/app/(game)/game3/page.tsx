@@ -1,12 +1,25 @@
-import Head from 'next/head'
-import { Suspense } from "react"
-import { Canvas, useLoader } from "@react-three/fiber"
-import { Environment, OrbitControls } from "@react-three/drei"
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js"
+import Head from "next/head";
+import { Suspense, useEffect, useState } from "react";
+import dynamic from "next/dynamic"; // Dynamically import
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+
+// Dynamically import the Canvas and OrbitControls components to avoid SSR issues
+const CanvasWithClientSide = dynamic(() => import("@react-three/fiber").then(mod => mod.Canvas), {
+  ssr: false, // Disable SSR for Canvas
+});
+
+const OrbitControls = dynamic(() => import("@react-three/drei").then(mod => mod.OrbitControls), {
+  ssr: false, // Disable SSR for OrbitControls
+});
+
+const Environment = dynamic(() => import("@react-three/drei").then(mod => mod.Environment), {
+  ssr: false, // Disable SSR for Environment
+});
 
 const Model = () => {
-  // location of the 3D model
+  // Load the 3D model
   const gltf = useLoader(GLTFLoader, "/earth/scene.gltf");
+
   return (
     <>
       {/* Use scale to control the size of the 3D model */}
@@ -16,6 +29,14 @@ const Model = () => {
 };
 
 export default function Home() {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true); // Check if window is available (client-side)
+  }, []);
+
+  if (!isClient) return null; // Prevent rendering on SSR
+
   return (
     <div>
       <Head>
@@ -25,7 +46,7 @@ export default function Home() {
       </Head>
 
       <div className="globe">
-        <Canvas shadows dpr={[1, 2]} camera={{ position: [0, 0, 4], fov: 50 }}>
+        <CanvasWithClientSide shadows dpr={[1, 2]} camera={{ position: [0, 0, 4], fov: 50 }}>
           <ambientLight intensity={0.7} />
           <spotLight intensity={0.5} angle={0.1} penumbra={1} position={[10, 15, 10]} castShadow />
           <Suspense fallback={null}>
@@ -34,9 +55,8 @@ export default function Home() {
             <Environment preset="city" />
           </Suspense>
           <OrbitControls autoRotate />
-        </Canvas>
+        </CanvasWithClientSide>
       </div>
-
     </div>
-  )
+  );
 }
