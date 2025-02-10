@@ -86,6 +86,7 @@
     "tailwind-merge": "^2.2.1",
     "tailwindcss-animate": "^1.0.7",
     "three": "^0.173.0",
+    "three-fbxloader-offical": "^1.0.0",
     "three-mesh-bvh": "^0.8.0",
     "twitter-api-v2": "^1.19.1",
     "usehooks-ts": "^3.1.0",

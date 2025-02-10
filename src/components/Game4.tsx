@@ -21,7 +21,7 @@ export default function Game() {
     useEffect(() => {
         const loadFBXModel = async () => {
             // ✅ Dynamic import to prevent build errors
-            const { FBXLoader } = await import("js/loaders/FBXLoader");
+            let FBXLoader = require('three-fbxloader-offical');
             const threeCanvas = threeCanvasRef.current;
             if (!threeCanvas) return;
 
