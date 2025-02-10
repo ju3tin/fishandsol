@@ -8,6 +8,8 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 
 export default function ThreeScene() {
   const mountRef = useRef<HTMLDivElement | null>(null)
+  const canvasWidth = 800  // Change width here
+  const canvasHeight = 600 // Change height here
 
   useEffect(() => {
     // ✅ Scene Setup
@@ -21,16 +23,11 @@ export default function ThreeScene() {
     const ambientLight = new THREE.AmbientLight()
     scene.add(ambientLight)
 
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    )
+    const camera = new THREE.PerspectiveCamera(75, canvasWidth / canvasHeight, 0.1, 1000)
     camera.position.set(0.8, 1.4, 1.0)
 
     const renderer = new THREE.WebGLRenderer()
-    renderer.setSize(window.innerWidth, window.innerHeight)
+    renderer.setSize(canvasWidth, canvasHeight)
 
     if (mountRef.current) {
       mountRef.current.appendChild(renderer.domElement)
@@ -57,9 +54,9 @@ export default function ThreeScene() {
 
     // ✅ Handle Window Resize
     function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight
+      camera.aspect = canvasWidth / canvasHeight
       camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
+      renderer.setSize(canvasWidth, canvasHeight)
       render()
     }
     window.addEventListener('resize', onWindowResize)
@@ -89,5 +86,14 @@ export default function ThreeScene() {
     }
   }, [])
 
-  return <div ref={mountRef} style={{ width: '4000px', height: '1995px' }} />
+  return (
+    <div
+      ref={mountRef}
+      style={{
+        width: `${canvasWidth}px`,
+        height: `${canvasHeight}px`,
+        border: '2px solid #000' // Optional: Adds border for visualization
+      }}
+    />
+  )
 }
