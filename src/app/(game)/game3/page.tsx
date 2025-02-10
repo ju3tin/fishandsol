@@ -42,6 +42,14 @@ export default function GamePage(): JSX.Element {
     controls.enableDamping = true
     controls.target.set(0, 1, 0)
 
+
+      // ✅ Log camera movement on change
+      controls.addEventListener('change', () => {
+        console.log('Camera Position:', camera.position)
+        console.log('Camera Rotation:', camera.rotation)
+      })
+  
+
     const fbxLoader = new FBXLoader()
     fbxLoader.load(
       '/fish.fbx', // Ensure this path is correct for your project
@@ -88,6 +96,7 @@ export default function GamePage(): JSX.Element {
     return () => {
       // Cleanup event listener when the component is unmounted
       window.removeEventListener('resize', onWindowResize)
+      controls.removeEventListener('change', () => {})
     }
   }, [])
 
