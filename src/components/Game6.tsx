@@ -5,6 +5,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import styles from '../styles/Game1.module.css';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
+import { GameState } from '@/store/gameStore2';
+import { preloadImages, imagePaths, rocketWidth, rocketHeight, curveFunction, backgroundImage, drawRocketPath, drawCrashedRocket, drawRocket, drawCountdown, drawMultiplier } from './Game2';
 
 
 const height = 2000;
@@ -149,6 +151,78 @@ function drawRocket(
 
 	context.rotate(-angle);
 }
+
+
+function render(
+	gameState: GameState,
+	context: CanvasRenderingContext2D,
+) {
+	if (!context)
+		return;
+
+	const canvas = context.canvas;
+
+
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	const additionalImages = preloadImages([imagePaths.rocket]); // Preload only the additional1 image
+
+	const maxX = canvas.width - rocketWidth;
+	const minY = rocketHeight;
+
+	const expectedX = gameState.timeElapsed;
+	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
+
+	const rocketX = Math.min(expectedX, maxX);
+	const rocketY = Math.max(expectedY, minY);
+
+	context.save();
+
+
+	if (additionalImages && additionalImages.complete) {
+		context.drawImage(additionalImages.rocket, 34, 0, 200, 200); // Adjust size as needed
+	}
+	
+	if (backgroundImage) {
+		const aspectRatio = backgroundImage.width / backgroundImage.height;
+		const canvasAspectRatio = canvas.width / canvas.height;
+
+		let drawWidth, drawHeight;
+
+		if (aspectRatio > canvasAspectRatio) {
+			drawWidth = canvas.width;
+			drawHeight = canvas.width / aspectRatio;
+		} else {
+			drawHeight = canvas.height;
+			drawWidth = canvas.height * aspectRatio;
+		}
+
+		const xOffset = (canvas.width - drawWidth) / 2;
+		const yOffset = (canvas.height - drawHeight) / 2;
+	
+
+		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+		
+	}
+
+	drawRocketPath(context, gameState.timeElapsed);
+
+	if (gameState.status == 'Crashed')
+		drawCrashedRocket(context, rocketX, rocketY);
+	else
+		drawRocket(context, gameState.timeElapsed, rocketX, rocketY);
+
+	context.restore();
+
+	if (gameState.status == 'Waiting')
+		drawCountdown(context, gameState.timeRemaining);
+	else
+		drawMultiplier(context, gameState.multiplier);
+		
+	//	if (additionalImages.complete) {
+		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
+		//	}
+}
+
 
 function drawCrashedRocket(
 	context: CanvasRenderingContext2D,
