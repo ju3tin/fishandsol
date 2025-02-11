@@ -1,7 +1,6 @@
 'use client';
 
 //import RootProvider from '../providers/RootProvider';
-import { SessionProvider } from "next-auth/react";
 
 import { Toaster } from "@/components/ui/sonner"
 
