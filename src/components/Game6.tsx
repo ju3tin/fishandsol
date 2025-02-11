@@ -1,16 +1,16 @@
 'use client';
-import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
+
+import { useRef, useEffect, useState, useCallback } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import styles from '../styles/Game1.module.css';
-import { toast } from 'react-toastify'; // Ensure you have the toast library
+import { toast } from 'react-toastify';
 import { GameState, useGameStore } from '@/store/gameStore2';
-
 
 const height = 2000;
 const coeffB = 0.5;
-const coeffA = height*0.16;
+const coeffA = height * 0.16;
 
 let rocketImage: HTMLImageElement;
 let explodeImage: HTMLImageElement;
@@ -18,312 +18,233 @@ let parachuteImage: HTMLImageElement;
 let backgroundImage: HTMLImageElement;
 let svgImage: HTMLImageElement;
 
-
-  
-
 if (typeof window !== 'undefined') {
-	rocketImage = new Image();
-	rocketImage.src = 'fish.svg';
+  rocketImage = new Image();
+  rocketImage.src = 'fish.svg';
 
-	explodeImage = new Image();
-	explodeImage.src = 'explode.svg';
+  explodeImage = new Image();
+  explodeImage.src = 'explode.svg';
 
-	parachuteImage = new Image();
-	parachuteImage.src = 'parachute.svg';
+  parachuteImage = new Image();
+  parachuteImage.src = 'parachute.svg';
 
-	backgroundImage = new Image();
-	backgroundImage.src = 'under3.png';
+  backgroundImage = new Image();
+  backgroundImage.src = 'under3.png';
 
-	svgImage = new Image();
-	svgImage.src = '1.svg'; // Update with your SVG path
-	
+  svgImage = new Image();
+  svgImage.src = '1.svg'; // Update with your SVG path
 }
 
 const rocketWidth = 440;
 const rocketHeight = 440;
 
 function curveFunction(t: number) {
-	return coeffA * (Math.exp(coeffB * t) - 1);
+  return coeffA * (Math.exp(coeffB * t) - 1);
 }
 
- // Dynamic SVG paths
- const imagePaths = {
-	rocket: 'fish.svg',
-	explode: 'explode.svg',
-	parachute: 'parachute.svg',
-	background: 'under3.png',
-	additional1: '1.svg',
-	additional2: '2.svg', // Add more SVG paths here
-  };
+const imagePaths = {
+  rocket: 'fish.svg',
+  explode: 'explode.svg',
+  parachute: 'parachute.svg',
+  background: 'under3.png',
+  additional1: '1.svg',
+  additional2: '2.svg', // Add more SVG paths here
+};
 
-// Function to preload multiple images
 function preloadImages(imagePaths: string[]) {
-	const images1: Record<string, HTMLImageElement> = {};
-	imagePaths.forEach((path) => {
-	  const img = new Image();
-	  img.src = path;
-	  images1[path] = img;
-	});
-	return images1;
+  const images1: Record<string, HTMLImageElement> = {};
+  imagePaths.forEach((path) => {
+    const img = new Image();
+    img.src = path;
+    images1[path] = img;
+  });
+  return images1;
+}
+
+function render(gameState: GameState, context: CanvasRenderingContext2D) {
+  if (!context) return;
+
+  const canvas = context.canvas;
+
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  const additionalImages = preloadImages([imagePaths.rocket]);
+
+  const maxX = canvas.width - rocketWidth;
+  const minY = rocketHeight;
+
+  const expectedX = gameState.timeElapsed;
+  const expectedY = canvas.height - curveFunction(gameState.timeElapsed / 1000);
+
+  const rocketX = Math.min(expectedX, maxX);
+  const rocketY = Math.max(expectedY, minY);
+
+  context.save();
+
+  if (additionalImages && additionalImages.complete) {
+    context.drawImage(additionalImages.rocket, 34, 0, 200, 200); // Adjust size as needed
   }
 
+  if (backgroundImage) {
+    const aspectRatio = backgroundImage.width / backgroundImage.height;
+    const canvasAspectRatio = canvas.width / canvas.height;
 
-// Preload the specific image
+    let drawWidth, drawHeight;
 
+    if (aspectRatio > canvasAspectRatio) {
+      drawWidth = canvas.width;
+      drawHeight = canvas.width / aspectRatio;
+    } else {
+      drawHeight = canvas.height;
+      drawWidth = canvas.height * aspectRatio;
+    }
 
-function render(
-	gameState: GameState,
-	context: CanvasRenderingContext2D,
-) {
-	if (!context)
-		return;
+    const xOffset = (canvas.width - drawWidth) / 2;
+    const yOffset = (canvas.height - drawHeight) / 2;
 
-	const canvas = context.canvas;
+    context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+  }
 
+  drawRocketPath(context, gameState.timeElapsed);
 
-	context.clearRect(0, 0, canvas.width, canvas.height);
-	const additionalImages = preloadImages([imagePaths.rocket]); // Preload only the additional1 image
+  if (gameState.status == 'Crashed')
+    drawCrashedRocket(context, rocketX, rocketY);
+  else drawRocket(context, gameState.timeElapsed, rocketX, rocketY);
 
-	const maxX = canvas.width - rocketWidth;
-	const minY = rocketHeight;
+  context.restore();
 
-	const expectedX = gameState.timeElapsed;
-	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
-
-	const rocketX = Math.min(expectedX, maxX);
-	const rocketY = Math.max(expectedY, minY);
-
-	context.save();
-
-
-	if (additionalImages && additionalImages.complete) {
-		context.drawImage(additionalImages.rocket, 34, 0, 200, 200); // Adjust size as needed
-	}
-	
-	if (backgroundImage) {
-		const aspectRatio = backgroundImage.width / backgroundImage.height;
-		const canvasAspectRatio = canvas.width / canvas.height;
-
-		let drawWidth, drawHeight;
-
-		if (aspectRatio > canvasAspectRatio) {
-			drawWidth = canvas.width;
-			drawHeight = canvas.width / aspectRatio;
-		} else {
-			drawHeight = canvas.height;
-			drawWidth = canvas.height * aspectRatio;
-		}
-
-		const xOffset = (canvas.width - drawWidth) / 2;
-		const yOffset = (canvas.height - drawHeight) / 2;
-	
-
-		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-		
-	}
-
-	drawRocketPath(context, gameState.timeElapsed);
-
-	if (gameState.status == 'Crashed')
-		drawCrashedRocket(context, rocketX, rocketY);
-	else
-		drawRocket(context, gameState.timeElapsed, rocketX, rocketY);
-
-	context.restore();
-
-	if (gameState.status == 'Waiting')
-		drawCountdown(context, gameState.timeRemaining);
-	else
-		drawMultiplier(context, gameState.multiplier);
-		
-	//	if (additionalImages.complete) {
-		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
-		//	}
+  if (gameState.status == 'Waiting') drawCountdown(context, gameState.timeRemaining);
+  else drawMultiplier(context, gameState.multiplier);
 }
 
-function drawMultiplier(
-	context: CanvasRenderingContext2D,
-	multiplier: string,
-) {
-	const canvas = context.canvas;
+function drawMultiplier(context: CanvasRenderingContext2D, multiplier: string) {
+  const canvas = context.canvas;
 
-	const multiplierNumeric = Number.parseFloat(multiplier);
+  const multiplierNumeric = Number.parseFloat(multiplier);
 
-	if (multiplierNumeric > 5)
-		context.fillStyle = 'red';
-	else if (multiplierNumeric > 2)
-		context.fillStyle = 'yellow';
-	else
-		context.fillStyle = 'white';
+  if (multiplierNumeric > 5) context.fillStyle = 'red';
+  else if (multiplierNumeric > 2) context.fillStyle = 'yellow';
+  else context.fillStyle = 'white';
 
-	context.font = '220px Arial';
-	const text = `${multiplier}x`;
-	const textWidth = context.measureText(text).width;
-	context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
+  context.font = '220px Arial';
+  const text = `${multiplier}x`;
+  const textWidth = context.measureText(text).width;
+  context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
 }
 
-function drawCountdown(
-	context: CanvasRenderingContext2D,
-	timeRemaining: number,
-) {
-	const canvas = context.canvas;
+function drawCountdown(context: CanvasRenderingContext2D, timeRemaining: number) {
+  const canvas = context.canvas;
 
-	context.fillStyle = 'rgba(255, 255, 255, 1.0)';
-	context.font = '220px Arial';
-	const text = `Launch in ${timeRemaining} secs`;
-	const textWidth = context.measureText(text).width;
-	context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
+  context.fillStyle = 'rgba(255, 255, 255, 1.0)';
+  context.font = '220px Arial';
+  const text = `Launch in ${timeRemaining} secs`;
+  const textWidth = context.measureText(text).width;
+  context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
 }
 
-function drawRocketPath(
-	context: CanvasRenderingContext2D,
-	timeElapsed: number,
-) {
-	const canvas = context.canvas;
-	const gradient: CanvasGradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-	gradient.addColorStop(0, 'red');
-	gradient.addColorStop(1, 'yellow');
+function drawRocketPath(context: CanvasRenderingContext2D, timeElapsed: number) {
+  const canvas = context.canvas;
+  const gradient: CanvasGradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
+  gradient.addColorStop(0, 'red');
+  gradient.addColorStop(1, 'yellow');
 
-	context.strokeStyle = gradient;
-	context.lineWidth = 20;
-	context.beginPath();
+  context.strokeStyle = gradient;
+  context.lineWidth = 20;
+  context.beginPath();
 
-	const originX = 0;
-	const originY = context.canvas.height;
+  const originX = 0;
+  const originY = context.canvas.height;
 
-	context.moveTo(originX, originY);
+  context.moveTo(originX, originY);
 
-	const step = 10;
+  const step = 10;
 
-	for (let t = 0; t <= timeElapsed/step; t += step) {
-		const x = step * t;
-		const y = canvas.height - curveFunction(x/1000);
-//after 2.0x immulate curve
-		context.lineTo(x, y);
-	}
+  for (let t = 0; t <= timeElapsed / step; t += step) {
+    const x = step * t;
+    const y = canvas.height - curveFunction(x / 1000);
+    context.lineTo(x, y);
+  }
 
-	context.stroke();
+  context.stroke();
 }
 
-function drawRocket(
-	context: CanvasRenderingContext2D,
-	timeElapsed: number,
-	x: number,
-	y: number,
-) {
-	// Obtain angle from the path derivative
+function drawRocket(context: CanvasRenderingContext2D, timeElapsed: number, x: number, y: number) {
+  const d1 = curveFunction(timeElapsed / 1000);
+  const d2 = curveFunction((timeElapsed + 10) / 1000);
+  const slope = (d2 - d1) / 10;
+  const angle = -Math.atan(slope) + 2 * Math.PI / 4;
 
-	const d1 = curveFunction(timeElapsed/1000);
-	const d2 = curveFunction((timeElapsed + 10)/1000);
-	const slope = (d2 - d1)/10;
-	const angle = -Math.atan(slope) + 2*Math.PI/4;
+  context.translate(x - rocketWidth / 2, y - rocketHeight / 2);
+  context.rotate(angle);
 
-	context.translate(x - rocketWidth/2, y - rocketHeight/2);
-	context.rotate(angle);
+  context.drawImage(rocketImage, 0, 0, rocketWidth, rocketHeight);
 
-	context.drawImage(rocketImage, 0, 0, rocketWidth, rocketHeight);
-
-	context.rotate(-angle);
+  context.rotate(-angle);
 }
 
-function drawCrashedRocket(
-	context: CanvasRenderingContext2D,
-	x: number,
-	y: number,
-) {
-	context.translate(x - rocketWidth/2, y - rocketWidth/2);
-	context.drawImage(explodeImage, 2000, -1200, 900, 900);
-	const text = `Launch in  secs`;
-	
+function drawCrashedRocket(context: CanvasRenderingContext2D, x: number, y: number) {
+  context.translate(x - rocketWidth / 2, y - rocketWidth / 2);
+  context.drawImage(explodeImage, 2000, -1200, 900, 900);
 }
 
 export default function ThreeScene() {
-    const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const aspectRatio = 4000 / 19995;
-	const [context, setContext] = useState<any>(null);
-	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
-	const [errorCount, setErrorCount] = useState(0);
-	const errors: string[] = []; // Explicitly define the type of errors
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const aspectRatio = 4000 / 1995;
+  const [context, setContext] = useState<any>(null);
+  const gameState = useGameStore((gameState: GameState) => gameState);
 
-	const gameState = useGameStore((gameState: GameState) => gameState);
-
-	const [errorMessages, setErrorMessages] = useState<string[]>([]);
-
-	const showErrorToast = useCallback(() => {
-		if (errorMessages.length > 0) {
-			toast("⚠️ " + errorMessages[errorMessages.length - 1]);
-		}
-	}, [errorMessages]); // ✅ Now errorMessages is a stable state
-
-	//const showErrorToast = useCallback(() => {
-	//	const currentErrors = errors; // Move errors inside the callback
-	//	if (currentErrors.length > 0) {
-	//		toast("⚠️ " + currentErrors[currentErrors.length - 1]);
-	//	}
-//	}, []); // Removed errors from dependencies
+  const resizeCanvas = () => {
+    if (!canvasRef.current) return;
+    const canvasWidth = window.innerWidth;
+    const canvasHeight = canvasWidth / aspectRatio;
+    if (context) {
+      context.canvas.width = canvasWidth;
+      context.canvas.height = canvasHeight;
+    }
+  };
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    // ✅ Create Three.js Scene
     const scene = new THREE.Scene();
     const light = new THREE.PointLight(0xffffff, 50);
     light.position.set(0.8, 1.4, 1.0);
     scene.add(light, new THREE.AmbientLight());
 
-    // ✅ Create Camera
     const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
     camera.position.set(0.8, 1.4, 1.0);
 
-    // ✅ WebGL Renderer (Attach to Canvas)
-    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current! });
+    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current });
+    renderer.setSize(window.innerWidth, window.innerWidth / aspectRatio);
 
-    // ✅ Function to Resize Canvas
-    function resizeCanvas() {
-      const canvasWidth = 4000;
-      const canvasHeight = canvasWidth / aspectRatio;
-      camera.aspect = aspectRatio;
-      camera.updateProjectionMatrix();
-      renderer.setSize(canvasWidth, canvasHeight);
-    }
-
-    // ✅ Initialize Canvas Size & Listen for Resizing
-    resizeCanvas();
-    window.addEventListener('resize', resizeCanvas);
-
-    // ✅ Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.target.set(0, 1, 0);
 
-    // ✅ Load FBX Model
     const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      '/fish.fbx',
-      (object) => {
-        object.scale.set(0.005, 0.005, 0.005);
-        scene.add(object);
-      },
-      (xhr) => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
-      (error) => console.log(error)
-    );
+    fbxLoader.load('/fish.fbx', (object) => {
+      object.scale.set(0.005, 0.005, 0.005);
+      scene.add(object);
+    });
 
-    // ✅ Animation Loop
     function animate() {
       requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
     }
+
     animate();
 
-    // ✅ Cleanup Function
+    window.addEventListener('resize', resizeCanvas);
+
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       controls.dispose();
     };
+  }, [context]);
+
+  useEffect(() => {
+    setContext(canvasRef.current?.getContext('2d') || null);
   }, []);
 
-  return (
-    <canvas className={styles.Game} ref={canvasRef} />
-  );
+  return <canvas className={styles.Game} ref={canvasRef} />;
 }
