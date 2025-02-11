@@ -18,7 +18,8 @@ export default function Home() {
 		<main className={styles.main1}>
 			<GameLayout>
 			<CrashList />
-			<Game5 />
+				<Game />
+        <Game5 />
 			<GameControls />
 				<BetList />
 			</GameLayout>
