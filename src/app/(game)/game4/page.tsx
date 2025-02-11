@@ -1,3 +1,4 @@
+'use client';
 import styles from "./page.module.css";
 import axios from "axios";
 import { useState, useEffect } from 'react';
