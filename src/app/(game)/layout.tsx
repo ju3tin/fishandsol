@@ -28,7 +28,6 @@ import type { ReactNode } from "react";
 
 interface RootLayoutProps {
   children: ReactNode;
-   width: number; // Accept width prop
 }
 
 const wallets = [new PhantomWalletAdapter()];
