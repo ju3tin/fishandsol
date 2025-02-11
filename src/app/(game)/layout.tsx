@@ -28,6 +28,7 @@ import type { ReactNode } from "react";
 
 interface RootLayoutProps {
   children: ReactNode;
+  width: number; // Accept width prop
 }
 
 const wallets = [new PhantomWalletAdapter()];
@@ -43,9 +44,10 @@ const metadata: Metadata = {
 };
 
 export default function RootLayout({
-	children,
+	 children, width 
 }: Readonly<{
 	children: React.ReactNode;
+  width: number; // Accept width prop
 }>) {
 	return (
     <SessionProvider>
