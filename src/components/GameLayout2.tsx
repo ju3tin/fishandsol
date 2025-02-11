@@ -1,11 +1,14 @@
-import { PropsWithChildren }from 'react';
+import { PropsWithChildren } from 'react';
 
 import styles from '../styles/GameLayout1.module.css';
 
-export type GameLayoutProps = PropsWithChildren;
-
-export default function GameLayout({
-	children
-}: GameLayoutProps) {
-	return <div className={styles.GameLayout}>{children}</div>;
+interface GameLayoutProps {
+	children: React.ReactNode;
+	width: number;
 }
+
+const GameLayout: React.FC<GameLayoutProps> = ({ children, width }) => {
+	return <div style={{ width: `${width}px` }} className={styles.GameLayout}>{children}</div>;
+};
+
+export default GameLayout;
