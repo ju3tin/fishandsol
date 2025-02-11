@@ -42,13 +42,14 @@ const metadata: Metadata = {
     url: "https://fishandsol.vercel.app",
   }
 };
-interface LayoutProps {
-  children: ReactNode;
-  width: number;
-}
 
-const Layout = ({ children, width }: LayoutProps) => {
-  return (
+export default function RootLayout({
+	children, width
+}: Readonly<{
+	children: React.ReactNode;
+  width: number; // Accept width prop
+}>) {
+	return (
     <SessionProvider>
     <html lang='en' className='dark'>
       <head>
@@ -71,4 +72,3 @@ const Layout = ({ children, width }: LayoutProps) => {
       </SessionProvider>
 	);
 }
-export default Layout;
