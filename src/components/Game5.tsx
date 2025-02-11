@@ -4,11 +4,12 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+import styles from '../styles/Game1.module.css';
 
 export default function ThreeScene() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const canvasWidth = 800; // Change width here
-  const canvasHeight = 600; // Change height here
+  const canvasWidth = 4000; // Change width here
+  const canvasHeight = 1995; // Change height here
 
   useEffect(() => {
     // ✅ Create a Three.js scene
@@ -67,5 +68,5 @@ export default function ThreeScene() {
     };
   }, []);
 
-  return <canvas ref={canvasRef} width={canvasWidth} height={canvasHeight} />;
+  return <canvas className={styles.Game} ref={canvasRef} width={canvasWidth} height={canvasHeight} />;
 }
