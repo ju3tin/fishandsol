@@ -14,7 +14,7 @@
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "jsx": ["preserve", "react-jsx"],
+    "jsx": "preserve",
     "incremental": true,
     "plugins": [
       {
@@ -38,5 +38,6 @@
   ],
   "exclude": [
     "node_modules"
-  ]
+  ],
+  "types": ["react", "react-dom"]
 }
