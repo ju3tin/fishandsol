@@ -1,4 +1,4 @@
-import styles from "./page.module.css";
+import styles from "./page.module.css"; 
 
 import Game from '../../../components/Game4';
 import CrashList from '../../../components/CrashList2';
