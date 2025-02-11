@@ -20,12 +20,7 @@ let parachuteImage: HTMLImageElement;
 let backgroundImage: HTMLImageElement;
 let svgImage: HTMLImageElement;
 
-const FBXModel = ({ url }: { url: string }) => {
-	const fbx = useFBX(url);
-	fbx.scale.set(0.01, 0.01, 0.01); // Adjust scale if needed
-  
-	return <primitive object={fbx} />;
-  };
+
   
 
 if (typeof window !== 'undefined') {

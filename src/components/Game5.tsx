@@ -47,7 +47,7 @@ function curveFunction(t: number) {
 }
 
  // Dynamic SVG paths
- export const imagePaths = {
+ const imagePaths = {
 	rocket: 'fish.svg',
 	explode: 'explode.svg',
 	parachute: 'parachute.svg',
@@ -336,5 +336,9 @@ export default function ThreeScene() {
 	}, [errorCount, showErrorToast]);
 
 
-  return <canvas className={styles.Game} ref={canvasRef} width={canvasWidth} height={canvasHeight} />;
+  return (
+        <canvas className={styles.Game} ref={canvasRef} width={canvasWidth} height={canvasHeight}>
+
+        </canvas>
+    );
 }
