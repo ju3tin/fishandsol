@@ -239,8 +239,8 @@ function drawCrashedRocket(
 
 export default function ThreeScene() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const aspectRatio = 4000 / 1995; // Fixed aspect ratio
-    const [context, setContext] = useState<any>(null);
+    const aspectRatio = 4000 / 19995;
+	const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
 	const [errorCount, setErrorCount] = useState(0);
 	const errors: string[] = []; // Explicitly define the type of errors
@@ -280,7 +280,7 @@ export default function ThreeScene() {
 
     // ✅ Function to Resize Canvas
     function resizeCanvas() {
-      const canvasWidth = window.innerWidth;
+      const canvasWidth = 4000;
       const canvasHeight = canvasWidth / aspectRatio;
       camera.aspect = aspectRatio;
       camera.updateProjectionMatrix();
