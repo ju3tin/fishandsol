@@ -14,7 +14,7 @@ export default function ThreeScene() {
   useEffect(() => {
     // ✅ Create a Three.js scene
     const scene = new THREE.Scene();
-    scene.add(new THREE.AxesHelper(5));
+    scene.add(/*new THREE.AxesHelper(5)*/);
 
     const light = new THREE.PointLight(0xffffff, 50);
     light.position.set(0.8, 1.4, 1.0);
