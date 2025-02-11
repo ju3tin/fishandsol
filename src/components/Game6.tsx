@@ -6,7 +6,6 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import styles from '../styles/Game1.module.css';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 import { GameState } from '@/store/gameStore2';
-import { preloadImages, imagePaths, rocketWidth, rocketHeight, curveFunction, backgroundImage, drawRocketPath, drawCrashedRocket, drawRocket, drawCountdown, drawMultiplier } from './Game2';
 
 
 const height = 2000;
