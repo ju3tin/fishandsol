@@ -2,7 +2,7 @@ import styles from "./page.module.css";
 import axios from "axios";
 
 import Game from '../../../components/Game2';
-import Game5 from '../../../components/Game5';
+import Game5 from '../../../components/Game6';
 import CrashList from '../../../components/CrashList2';
 import GameControls from '../../../components/GameControls2';
 import BetList from '../../../components/BetList2';
