@@ -1,7 +1,7 @@
 'use client';
 import styles from "./page.module.css";
 import axios from "axios";
-import { useState, useEffect } from 'react';
+import { useRef, useEffect, useState, useCallback } from 'react';
 
 import Game from '../../../components/Game2';
 import Game5 from '../../../components/Game6';
