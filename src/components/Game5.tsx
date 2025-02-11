@@ -5,6 +5,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import styles from '../styles/Game1.module.css';
+import { useGameStore, GameState } from '../store/gameStore2';
+import { toast } from 'react-toastify'; // Ensure you have the toast library
 
 export default function ThreeScene() {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
