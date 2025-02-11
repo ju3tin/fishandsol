@@ -125,7 +125,7 @@ export default function GamePage(): JSX.Element {
    
     <GameLayout>
 			<CrashList />
-     <Game />
+     <Game /><br />
         <Game5 />
 			<GameControls />
 				<BetList />
