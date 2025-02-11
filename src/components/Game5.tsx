@@ -337,8 +337,8 @@ export default function ThreeScene() {
 
 
   return (
-        <canvas className={styles.Game} ref={canvasRef} width={canvasWidth} height={canvasHeight}>
-
-        </canvas>
+    <div>
+        <canvas className={styles.Game} ref={canvasRef} width={canvasWidth} height={canvasHeight}></canvas>
+    </div>
     );
 }
