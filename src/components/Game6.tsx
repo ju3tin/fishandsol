@@ -5,7 +5,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import styles from '../styles/Game1.module.css';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
-import { GameState } from '@/store/gameStore2';
+import { GameState, useGameStore } from '@/store/gameStore2';
 
 
 const height = 2000;
@@ -66,7 +66,82 @@ function preloadImages(imagePaths: string[]) {
 	});
 	return images1;
   }
-  function drawMultiplier(
+
+
+// Preload the specific image
+
+
+function render(
+	gameState: GameState,
+	context: CanvasRenderingContext2D,
+) {
+	if (!context)
+		return;
+
+	const canvas = context.canvas;
+
+
+	context.clearRect(0, 0, canvas.width, canvas.height);
+	const additionalImages = preloadImages([imagePaths.rocket]); // Preload only the additional1 image
+
+	const maxX = canvas.width - rocketWidth;
+	const minY = rocketHeight;
+
+	const expectedX = gameState.timeElapsed;
+	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
+
+	const rocketX = Math.min(expectedX, maxX);
+	const rocketY = Math.max(expectedY, minY);
+
+	context.save();
+
+
+	if (additionalImages && additionalImages.complete) {
+		context.drawImage(additionalImages.rocket, 34, 0, 200, 200); // Adjust size as needed
+	}
+	
+	if (backgroundImage) {
+		const aspectRatio = backgroundImage.width / backgroundImage.height;
+		const canvasAspectRatio = canvas.width / canvas.height;
+
+		let drawWidth, drawHeight;
+
+		if (aspectRatio > canvasAspectRatio) {
+			drawWidth = canvas.width;
+			drawHeight = canvas.width / aspectRatio;
+		} else {
+			drawHeight = canvas.height;
+			drawWidth = canvas.height * aspectRatio;
+		}
+
+		const xOffset = (canvas.width - drawWidth) / 2;
+		const yOffset = (canvas.height - drawHeight) / 2;
+	
+
+		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+		
+	}
+
+	drawRocketPath(context, gameState.timeElapsed);
+
+	if (gameState.status == 'Crashed')
+		drawCrashedRocket(context, rocketX, rocketY);
+	else
+		drawRocket(context, gameState.timeElapsed, rocketX, rocketY);
+
+	context.restore();
+
+	if (gameState.status == 'Waiting')
+		drawCountdown(context, gameState.timeRemaining);
+	else
+		drawMultiplier(context, gameState.multiplier);
+		
+	//	if (additionalImages.complete) {
+		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
+		//	}
+}
+
+function drawMultiplier(
 	context: CanvasRenderingContext2D,
 	multiplier: string,
 ) {
@@ -151,78 +226,6 @@ function drawRocket(
 	context.rotate(-angle);
 }
 
-
-function render(
-	gameState: GameState,
-	context: CanvasRenderingContext2D,
-) {
-	if (!context)
-		return;
-
-	const canvas = context.canvas;
-
-
-	context.clearRect(0, 0, canvas.width, canvas.height);
-	const additionalImages = preloadImages([imagePaths.rocket]); // Preload only the additional1 image
-
-	const maxX = canvas.width - rocketWidth;
-	const minY = rocketHeight;
-
-	const expectedX = gameState.timeElapsed;
-	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
-
-	const rocketX = Math.min(expectedX, maxX);
-	const rocketY = Math.max(expectedY, minY);
-
-	context.save();
-
-
-	if (additionalImages && additionalImages.complete) {
-		context.drawImage(additionalImages.rocket, 34, 0, 200, 200); // Adjust size as needed
-	}
-	
-	if (backgroundImage) {
-		const aspectRatio = backgroundImage.width / backgroundImage.height;
-		const canvasAspectRatio = canvas.width / canvas.height;
-
-		let drawWidth, drawHeight;
-
-		if (aspectRatio > canvasAspectRatio) {
-			drawWidth = canvas.width;
-			drawHeight = canvas.width / aspectRatio;
-		} else {
-			drawHeight = canvas.height;
-			drawWidth = canvas.height * aspectRatio;
-		}
-
-		const xOffset = (canvas.width - drawWidth) / 2;
-		const yOffset = (canvas.height - drawHeight) / 2;
-	
-
-		context.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
-		
-	}
-
-	drawRocketPath(context, gameState.timeElapsed);
-
-	if (gameState.status == 'Crashed')
-		drawCrashedRocket(context, rocketX, rocketY);
-	else
-		drawRocket(context, gameState.timeElapsed, rocketX, rocketY);
-
-	context.restore();
-
-	if (gameState.status == 'Waiting')
-		drawCountdown(context, gameState.timeRemaining);
-	else
-		drawMultiplier(context, gameState.multiplier);
-		
-	//	if (additionalImages.complete) {
-		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
-		//	}
-}
-
-
 function drawCrashedRocket(
 	context: CanvasRenderingContext2D,
 	x: number,
@@ -234,27 +237,59 @@ function drawCrashedRocket(
 	
 }
 
-
 export default function ThreeScene() {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const aspectRatio = 4000 / 1995; // Maintain this aspect ratio
+    const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const aspectRatio = 4000 / 1995; // Fixed aspect ratio
+    const [context, setContext] = useState<any>(null);
+	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
+	const [errorCount, setErrorCount] = useState(0);
+	const errors: string[] = []; // Explicitly define the type of errors
+
+	const gameState = useGameStore((gameState: GameState) => gameState);
+
+	const [errorMessages, setErrorMessages] = useState<string[]>([]);
+
+	const showErrorToast = useCallback(() => {
+		if (errorMessages.length > 0) {
+			toast("⚠️ " + errorMessages[errorMessages.length - 1]);
+		}
+	}, [errorMessages]); // ✅ Now errorMessages is a stable state
+
+	//const showErrorToast = useCallback(() => {
+	//	const currentErrors = errors; // Move errors inside the callback
+	//	if (currentErrors.length > 0) {
+	//		toast("⚠️ " + currentErrors[currentErrors.length - 1]);
+	//	}
+//	}, []); // Removed errors from dependencies
 
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    // ✅ Create a Three.js scene
+    // ✅ Create Three.js Scene
     const scene = new THREE.Scene();
     const light = new THREE.PointLight(0xffffff, 50);
     light.position.set(0.8, 1.4, 1.0);
     scene.add(light, new THREE.AmbientLight());
 
-    // ✅ Setup Camera with Fixed Aspect Ratio
+    // ✅ Create Camera
     const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
     camera.position.set(0.8, 1.4, 1.0);
 
-    // ✅ WebGL Renderer
+    // ✅ WebGL Renderer (Attach to Canvas)
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current! });
-    renderer.setSize(window.innerWidth, window.innerWidth / aspectRatio);
+
+    // ✅ Function to Resize Canvas
+    function resizeCanvas() {
+      const canvasWidth = window.innerWidth;
+      const canvasHeight = canvasWidth / aspectRatio;
+      camera.aspect = aspectRatio;
+      camera.updateProjectionMatrix();
+      renderer.setSize(canvasWidth, canvasHeight);
+    }
+
+    // ✅ Initialize Canvas Size & Listen for Resizing
+    resizeCanvas();
+    window.addEventListener('resize', resizeCanvas);
 
     // ✅ Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -273,17 +308,6 @@ export default function ThreeScene() {
       (error) => console.log(error)
     );
 
-    // ✅ Handle Window Resize
-    function onWindowResize() {
-      const newWidth = window.innerWidth;
-      const newHeight = newWidth / aspectRatio;
-      camera.aspect = aspectRatio;
-      camera.updateProjectionMatrix();
-      renderer.setSize(newWidth, newHeight);
-    }
-    window.addEventListener('resize', onWindowResize);
-    onWindowResize(); // Set initial size
-
     // ✅ Animation Loop
     function animate() {
       requestAnimationFrame(animate);
@@ -292,9 +316,9 @@ export default function ThreeScene() {
     }
     animate();
 
-    // ✅ Cleanup
+    // ✅ Cleanup Function
     return () => {
-      window.removeEventListener('resize', onWindowResize);
+      window.removeEventListener('resize', resizeCanvas);
       controls.dispose();
     };
   }, []);
