@@ -44,7 +44,7 @@ const metadata: Metadata = {
 };
 
 export default function RootLayout({
-	 children, width 
+	children, width
 }: Readonly<{
 	children: React.ReactNode;
   width: number; // Accept width prop
