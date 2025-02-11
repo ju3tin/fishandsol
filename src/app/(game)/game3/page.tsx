@@ -1,10 +1,3 @@
-'use client' // Ensure this page only runs on the client-side
-
-import { useEffect, useRef } from 'react'
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
-import Stats from 'three/examples/jsm/libs/stats.module.js'
 import styles from "./page.module.css";
 import axios from "axios";
 
@@ -18,118 +11,18 @@ import axiosInstance from '../../../../lib/axiosInstance';
 import GameLayout from '../../../components/GameLayout2';
 import { Dialog, DialogTrigger, DialogContent, DialogTitle, DialogClose } from '@radix-ui/react-dialog';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-//import BetList from '../../../components/BetList2'
-//import CrashList from '../../../components/CrashList2'
-//import Game from '../../../components/Game2'
-//import GameControls from '../../../components/GameControls2'
-//import GameLayout from '../../../components/GameLayout2'
 
 
-
-export default function GamePage(): JSX.Element {
-  const mountRef = useRef<HTMLDivElement | null>(null)
-
-  useEffect(() => {
-    const scene = new THREE.Scene()
-    scene.add(
-      /*new THREE.AxesHelper(5)*/
-      )
-
-    const light = new THREE.PointLight(0xffffff, 10)
-    light.position.set(0.8, 1.4, 1.0)
-    scene.add(light)
-
-    const ambientLight = new THREE.AmbientLight()
-    scene.add(ambientLight)
-
-    const camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    )
-    camera.position.set(0.00032889888781240106, 0.06268437462444243, 0.8741330932843774);
-    camera.rotation.set(0.07881241951856675, -0.27672590316010715, 0.021573495878798258);
-
-    const renderer = new THREE.WebGLRenderer()
-    renderer.setSize(window.innerWidth, window.innerHeight)
-
-    if (mountRef.current) {
-      mountRef.current.appendChild(renderer.domElement)
-    }
-
-    const controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
-    controls.target.set(0, 1, 0)
-
-
-      // ✅ Log camera movement on change
-      controls.addEventListener('change', () => {
-        console.log('Camera Position:', camera.position)
-        console.log('Camera Rotation:', camera.rotation)
-      })
-  
-
-    const fbxLoader = new FBXLoader()
-    fbxLoader.load(
-      '/fish.fbx', // Ensure this path is correct for your project
-      (object) => {
-         object.scale.set(.005, .005, .005)
-        scene.add(object)
-      },
-      (xhr) => {
-        console.log((xhr.loaded / xhr.total) * 100 + '% loaded')
-      },
-      (error) => {
-        console.log(error)
-      }
-    )
-
-    window.addEventListener('resize', onWindowResize, false)
-
-    function onWindowResize() {
-      camera.aspect = window.innerWidth / window.innerHeight
-      camera.updateProjectionMatrix()
-      renderer.setSize(window.innerWidth, window.innerHeight)
-      render()
-    }
-
-  //  const stats = new Stats()
-  //  document.body.appendChild(stats.dom)
-
-    function animate() {
-      requestAnimationFrame(animate)
-
-      controls.update()
-
-      render()
-
-  //    stats.update()
-    }
-
-    function render() {
-      renderer.render(scene, camera)
-    }
-
-    animate()
-
-    return () => {
-      // Cleanup event listener when the component is unmounted
-      window.removeEventListener('resize', onWindowResize)
-      controls.removeEventListener('change', () => {})
-    }
-  }, [])
-
-  return (
-    <main className={styles.main1}>
-   
-    <GameLayout>
+export default function Home() {
+	return (
+		<main className={styles.main1}>
+			<GameLayout>
 			<CrashList />
-     <Game />
+				<Game />
         <Game5 />
 			<GameControls />
 				<BetList />
 			</GameLayout>
-    </main>
-  )
+		</main>
+	);
 }
