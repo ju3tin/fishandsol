@@ -42,7 +42,7 @@ export default function Game() {
                 fbx.scale.set(0.01, 0.01, 0.01);
                 scene.add(fbx);
 
-                const animate = () => {
+                const animate = () => { 
                     requestAnimationFrame(animate);
                     const expectedX = gameState.timeElapsed / 100;
                     const expectedY = -curveFunction(gameState.timeElapsed / 1000) / 100;
