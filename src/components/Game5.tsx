@@ -164,6 +164,13 @@ function drawCrashedRocket(
 	
 }
 
+function drawGameStatus(context: CanvasRenderingContext2D, status: string) {
+	context.fillStyle = 'white'; // Set text color
+	context.font = '40px Arial'; // Set font size and family
+	const text = `Status: ${status}`; // Create the status text
+	const textWidth = context.measureText(text).width; // Measure text width
+	context.fillText(text, (context.canvas.width - textWidth) / 2, 50); // Center the text horizontally
+}
 
 function render(
 	gameState: GameState,
@@ -222,6 +229,9 @@ function render(
 		drawCrashedRocket(context, rocketX, rocketY);
 	else
 		drawRocket(context, gameState.timeElapsed, rocketX, rocketY);
+
+	// Draw the game status
+	drawGameStatus(context, gameState.status);
 
 	context.restore();
 
