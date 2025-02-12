@@ -18,6 +18,8 @@ const Game5 = () => {
   const fontRef = useRef<THREE.Font | null>(null);
   const gameState = useGameStore((state: GameState) => state);
 
+  const fontLoader = new FontLoader();
+
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -53,12 +55,11 @@ const Game5 = () => {
     );
 
     // ✅ Load Font for Status Text
-    const fontLoader = new FontLoader();
     fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
       fontRef.current = font;
 
       const textGeometry = new TextGeometry('Status: Waiting', {
-        font: font,
+        font: fontRef.current,
         size: 1,
         depth: 0.1,
         curveSegments: 12,
