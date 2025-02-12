@@ -12,10 +12,17 @@ import { toast } from 'react-toastify';
 
 const canvasAspectRatio = 4000 / 1995;
 
+// Define a custom type for Font if necessary
+type Font = {
+    // Define the properties you need from the font object
+    // This is a simplified version; adjust as needed based on your usage
+    data: any; // Replace with actual type if known
+};
+
 const Game5 = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const statusTextRef = useRef<THREE.Mesh | null>(null);
-  const fontRef = useRef<THREE.Font | null>(null);
+  const fontRef = useRef<Font | null>(null);
   const gameState = useGameStore((state: GameState) => state);
 
   const fontLoader = new FontLoader();
