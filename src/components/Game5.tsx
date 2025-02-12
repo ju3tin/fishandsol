@@ -7,7 +7,7 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import styles from '../styles/Game1.module.css';
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 //import { preloadImages, rocketWidth, rocketHeight, curveFunction, backgroundImage, drawRocketPath, drawCrashedRocket, drawRocket, drawCountdown, drawMultiplier } from './Game2';
 //import { render } from './Game2';
@@ -318,9 +318,11 @@ const Game5 = () => {
 
     // Load font and create status text
     const fontLoader = new FontLoader();
-    fontLoader.load('/path/to/font.json', (font) => {
+    const fontRef = useRef<Font | null>(null);
+    fontLoader.load('/path/to/font.json', (font: Font) => {
+        fontRef.current = font; // Store the loaded font in the ref
         const textGeometry = new TextGeometry('Status: Waiting', {
-            font: font,
+            font: fontRef.current, // Use the loaded font
             size: 1,
             depth: 0.1,
             curveSegments: 12,
@@ -343,14 +345,16 @@ const Game5 = () => {
       // Update status text based on game state
       if (statusTextRef.current) {
         statusTextRef.current.geometry.dispose(); // Dispose of old geometry
-        const newTextGeometry = new TextGeometry(`Status: ${gameState.status}`, {
-            font: fontLoader.loader.paths[0].generator.parameters.font,
-            size: 1,
-            depth: 0.1,
-            curveSegments: 12,
-            bevelEnabled: false,
-        });
-        statusTextRef.current.geometry = newTextGeometry; // Update geometry
+        if (fontRef.current) {
+            const newTextGeometry = new TextGeometry(`Status: ${gameState.status}`, {
+                font: fontRef.current, // Use the font from the ref
+                size: 1,
+                depth: 0.1,
+                curveSegments: 12,
+                bevelEnabled: false,
+            });
+            statusTextRef.current.geometry = newTextGeometry; // Update geometry
+        }
       }
     }
     animate();
