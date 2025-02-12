@@ -43,7 +43,8 @@ const fbxLoader = new FBXLoader();
     fbxLoader.load(
       '/fish.fbx',
       (object) => {
-        object.scale.set(0.005, 0.005, 0.005);
+        object.scale.set(1, 1, 1);
+        object.position.set(0, 1, -5);
         scene.add(object);
       },
       undefined,
