@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
-import { undefined } from './Game5';
 
 const Game7 = () => {
     const fontRef = useRef<Font | null>(null);
