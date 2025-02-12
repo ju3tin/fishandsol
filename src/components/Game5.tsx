@@ -237,8 +237,8 @@ function render(
 
 export default function ThreeScene() {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const canvasWidth = 800; // Update this to match Game2.tsx width
-    const canvasHeight = 600; // Update this to match Game2.tsx height
+    const canvasWidth = 4000; // Update this to match Game2.tsx width
+    const canvasHeight = 1995; // Update this to match Game2.tsx height
     const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
 	const [errorCount, setErrorCount] = useState(0);
