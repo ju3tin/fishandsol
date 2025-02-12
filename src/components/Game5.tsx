@@ -31,14 +31,16 @@ const Game5 = () => {
     scene.add(ambientLight, directionalLight);
 
     // ✅ Create Camera
-    const camera = new THREE.PerspectiveCamera(75, canvasAspectRatio, 0.1, 1000);
-    camera.position.set(0, 10, 30); // 🔹 Move Camera Further
-    camera.lookAt(0, 5, -5); // 🔹 Ensure Camera Faces Text
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 5, 20); // Position the camera
+    camera.lookAt(0, 1, 0); // Look at the text
 
     // ✅ WebGL Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current! });
-    renderer.setSize(window.innerWidth, window.innerWidth / canvasAspectRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x202020); // Set a dark background color
     renderer.shadowMap.enabled = true;
+    document.body.appendChild(renderer.domElement);
 
     // ✅ Orbit Controls
     const controls = new OrbitControls(camera, renderer.domElement);
@@ -47,27 +49,34 @@ const Game5 = () => {
     // ✅ Load Font for Status Text
     const fontLoader = new FontLoader();
     fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-      console.log('✅ Font Loaded:', font); // 🔹 Debugging
-
+      console.log('Font loaded:', font);
       fontRef.current = font;
+
       const textGeometry = new TextGeometry('Status: Waiting', {
-        font: font,
-        size: 15, // 🔹 Increased size
-        depth: 5, // 🔹 Make text 3D
+        font: fontRef.current,
+        size: 10,
+        depth: 2,
         curveSegments: 12,
         bevelEnabled: false,
       });
 
-      const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // 🔹 Bright Red for Visibility
+      const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-      textMesh.position.set(0, 1, -5); // Adjust Y and Z values as needed
+      textMesh.position.set(0, 1, -5); // Position in front of the camera
       scene.add(textMesh);
+      console.log('Text mesh added to the scene:', textMesh);
       statusTextRef.current = textMesh;
     },
     undefined,
     (error) => {
-        console.error('Error loading font:', error); // Log any loading errors
+        console.error('Error loading font:', error);
     });
+
+    // Add a simple cube for testing
+    const geometry = new THREE.BoxGeometry(1, 1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); // Green color
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube); // Add the cube to the scene
 
     // ✅ Handle Window Resize
     function onWindowResize() {
