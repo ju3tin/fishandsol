@@ -7,6 +7,8 @@ import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import styles from '../styles/Game1.module.css';
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
+import { FontLoader } from 'three/examples/jsm/loaders/FontLoader';
+import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry';
 //import { preloadImages, rocketWidth, rocketHeight, curveFunction, backgroundImage, drawRocketPath, drawCrashedRocket, drawRocket, drawCountdown, drawMultiplier } from './Game2';
 //import { render } from './Game2';
 
@@ -245,8 +247,9 @@ function render(
 		//	}
 }
 
-export default function ThreeScene() {
+const Game5 = () => {
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
+    const statusTextRef = useRef<THREE.Mesh | null>(null); // Reference for the status text
     const canvasWidth = 4000; // Update this to match Game2.tsx width
     const canvasHeight = 1995; // Update this to match Game2.tsx height
     const [context, setContext] = useState<any>(null);
@@ -313,11 +316,42 @@ export default function ThreeScene() {
     }
     window.addEventListener('resize', onWindowResize);
 
+    // Load font and create status text
+    const fontLoader = new FontLoader();
+    fontLoader.load('/path/to/font.json', (font) => {
+        const textGeometry = new TextGeometry('Status: Waiting', {
+            font: font,
+            size: 1,
+            height: 0.1,
+            curveSegments: 12,
+            bevelEnabled: false,
+        });
+
+        const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
+        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+        textMesh.position.set(0, 1, -5); // Position in front of the model
+        scene.add(textMesh);
+        statusTextRef.current = textMesh; // Store reference
+    });
+
     // ✅ Animation Loop
     function animate() {
       requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
+
+      // Update status text based on game state
+      if (statusTextRef.current) {
+        statusTextRef.current.geometry.dispose(); // Dispose of old geometry
+        const newTextGeometry = new TextGeometry(`Status: ${gameState.status}`, {
+            font: fontLoader.loader.paths[0].generator.parameters.font,
+            size: 1,
+            height: 0.1,
+            curveSegments: 12,
+            bevelEnabled: false,
+        });
+        statusTextRef.current.geometry = newTextGeometry; // Update geometry
+      }
     }
     animate();
 
@@ -325,8 +359,13 @@ export default function ThreeScene() {
     return () => {
       window.removeEventListener('resize', onWindowResize);
       controls.dispose();
+      // Dispose of the text mesh if it exists
+      if (statusTextRef.current) {
+        scene.remove(statusTextRef.current);
+        statusTextRef.current.geometry.dispose();
+      }
     };
-  }, []);
+  }, [gameState]);
 
 
 	useEffect(() => {
@@ -351,3 +390,5 @@ export default function ThreeScene() {
     
     );
 }
+
+export default Game5;
