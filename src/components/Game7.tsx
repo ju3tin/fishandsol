@@ -17,7 +17,7 @@ const Game7 = () => {
         renderer.setClearColor(0x202020); // Set a dark background color
         document.body.appendChild(renderer.domElement);
 
-        fontLoader.load('/path/to/font.json', (font) => {
+        fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
             fontRef.current = font;
 
             const textGeometry = new TextGeometry('Status: Waiting', {
@@ -33,6 +33,10 @@ const Game7 = () => {
             textMesh.position.set(0, 1, -5); // Position in front of the camera
             scene.add(textMesh);
             console.log('Text mesh added to the scene:', textMesh);
+        },
+        undefined,
+        (error) => {
+            console.error('Error loading font:', error);
         });
 
         // Add a simple cube for testing
