@@ -9,7 +9,7 @@ interface GameLayoutProps {
 }
 
 const GameLayout: React.FC<GameLayoutProps> = ({ children, width }) => {
-	return <div style={{ width: `${width}px` }} className={styles.GameLayout}>{children}</div>;
+	return <div className={styles.GameLayout}>{children}</div>;
 };
 
 export default GameLayout;
