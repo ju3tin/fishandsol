@@ -32,29 +32,28 @@ const Game7 = () => {
 
             // Function to create and update text geometry
             const createTextMesh = (text: string) => {
-                if (fontRef.current) {
-                    const textGeometry = new TextGeometry(text, {
-                        font: fontRef.current,
-                        size: 10,
-                        depth: 2,
-                        curveSegments: 12,
-                        bevelEnabled: false,
-                    });
-
-                    const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
-                    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-                    textMesh.position.set(0, 1, -5); // Position in front of the camera
-                    scene.add(textMesh); // Add text mesh to the scene
-
-                    return textMesh; // Return the created text mesh
-                } else {
-                    console.error('Font is not loaded yet'); // Optional: log an error if the font is not loaded
-                    return null;
+                if (!fontRef.current) {
+                    console.error('Font is not loaded yet'); // Log an error if the font is not loaded
+                    return null; // Return null if the font is not available
                 }
+
+                const textGeometry = new TextGeometry(text, {
+                    font: fontRef.current,
+                    size: 10,
+                    depth: 2,
+                    curveSegments: 12,
+                    bevelEnabled: false,
+                });
+
+                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
+                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                textMesh.position.set(0, 1, -5); // Position in front of the camera
+
+                return textMesh; // Return the created text mesh
             };
 
             // Create initial text mesh
-            const textMesh = createTextMesh(`Status: ${gameState.status}`);
+            let textMesh: THREE.Mesh | null = createTextMesh(`Status: ${gameState.status}`);
 
             // Animation loop
             const animate = () => {
@@ -66,9 +65,14 @@ const Game7 = () => {
 
             // Update text mesh when game state changes
             const updateText = () => {
-                scene.remove(textMesh); // Remove the old text mesh
+                if (textMesh) { // Check if textMesh is not null
+                    scene.remove(textMesh); // Remove the old text mesh
+                }
                 const newTextMesh = createTextMesh(`Status: ${gameState.status}`); // Create new text mesh
-                scene.add(newTextMesh); // Add new text mesh to the scene
+                if (newTextMesh) { // Check if newTextMesh is not null
+                    scene.add(newTextMesh); // Add new text mesh to the scene
+                    textMesh = newTextMesh; // Update the reference to the current text mesh
+                }
             };
 
             // Subscribe to game state changes (adjust based on your store)
