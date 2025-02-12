@@ -22,9 +22,9 @@ const Game5 = () => {
 
     // ✅ Create Scene
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x202020); // Dark background for visibility
+    scene.background = new THREE.Color(0x202020); // Dark background
 
-    // ✅ Lighting
+    // ✅ Lighting (For Objects, Not Needed for Text)
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
     const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
     directionalLight.position.set(5, 10, 5);
@@ -32,7 +32,8 @@ const Game5 = () => {
 
     // ✅ Create Camera
     const camera = new THREE.PerspectiveCamera(75, canvasAspectRatio, 0.1, 1000);
-    camera.position.set(0, 5, 20); // Move camera further to see text
+    camera.position.set(0, 10, 30); // 🔹 Move Camera Further
+    camera.lookAt(0, 5, -5); // 🔹 Ensure Camera Faces Text
 
     // ✅ WebGL Renderer
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current! });
@@ -43,47 +44,31 @@ const Game5 = () => {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
 
-    // ✅ Load FBX Model (Rocket)
-     // ✅ Load Font for Status Text
-     const fontLoader = new FontLoader();
-     fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-       fontRef.current = font;
-       console.log('Font Loaded:', font); // ✅ Debugging
- 
-       const textGeometry = new TextGeometry('Status: Waiting', {
-         font: fontRef.current,
-         size: 10, // Size of the text
-         depth: 2, // Thickness of the text
-         curveSegments: 12,
-         bevelEnabled: false,
-       });
- 
-       const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff }); // White color
-       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-       textMesh.position.set(0, 1, -5); // Adjust these values as needed
-       textMesh.castShadow = true;
-       textMesh.receiveShadow = true;
- 
-       scene.add(textMesh);
-       statusTextRef.current = textMesh;
-     },
-     undefined, // Progress callback (optional)
-     (error) => {
-         console.error('Error loading font:', error); // Log any loading errors
-     });
- 
-    const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      '/fish.fbx',
-      (object) => {
-        object.scale.set(0.005, 0.005, 0.005);
-        scene.add(object);
-      },
-      undefined,
-      (error) => console.error('FBX Load Error:', error)
-    );
+    // ✅ Load Font for Status Text
+    const fontLoader = new FontLoader();
+    fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+      console.log('✅ Font Loaded:', font); // 🔹 Debugging
 
-   
+      fontRef.current = font;
+      const textGeometry = new TextGeometry('Status: Waiting', {
+        font: font,
+        size: 15, // 🔹 Increased size
+        depth: 5, // 🔹 Make text 3D
+        curveSegments: 12,
+        bevelEnabled: false,
+      });
+
+      const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // 🔹 Bright Red for Visibility
+      const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+      textMesh.position.set(0, 5, -5); // 🔹 Move Text Forward
+      scene.add(textMesh);
+      statusTextRef.current = textMesh;
+    },
+    undefined,
+    (error) => {
+        console.error('Error loading font:', error); // Log any loading errors
+    });
+
     // ✅ Handle Window Resize
     function onWindowResize() {
       const width = window.innerWidth;
@@ -97,23 +82,11 @@ const Game5 = () => {
     onWindowResize();
 
     // ✅ Animation Loop
-    const animate = () => {
+    function animate() {
       requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
-
-      // ✅ Update Status Text Dynamically
-      if (statusTextRef.current && fontRef.current) {
-        statusTextRef.current.geometry.dispose();
-        statusTextRef.current.geometry = new TextGeometry(`Status: ${gameState.status}`, {
-          font: fontRef.current,
-          size: 10, // ✅ Keep size large
-          depth: 2,
-          curveSegments: 12,
-          bevelEnabled: false,
-        });
-      }
-    };
+    }
 
     animate();
 
@@ -126,7 +99,7 @@ const Game5 = () => {
         statusTextRef.current.geometry.dispose();
       }
     };
-  }, [gameState.status]);
+  }, []);
 
   return (
     <canvas
