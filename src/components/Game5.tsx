@@ -1,28 +1,20 @@
 'use client';
 
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader.js'; // ✅ Import correct Font type
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 import { useGameStore, GameState } from '../store/gameStore2';
 import styles from '../styles/Game1.module.css';
-import { toast } from 'react-toastify';
 
 const canvasAspectRatio = 4000 / 1995;
-
-// Define a custom type for Font if necessary
-type Font = {
-    // Define the properties you need from the font object
-    // This is a simplified version; adjust as needed based on your usage
-    data: any; // Replace with actual type if known
-};
 
 const Game5 = () => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const statusTextRef = useRef<THREE.Mesh | null>(null);
-  const fontRef = useRef<Font | null>(null);
+  const fontRef = useRef<Font | null>(null); // ✅ Use correct Three.js Font type
   const gameState = useGameStore((state: GameState) => state);
 
   const fontLoader = new FontLoader();
@@ -56,17 +48,15 @@ const Game5 = () => {
       (object) => {
         object.scale.set(0.005, 0.005, 0.005);
         scene.add(object);
-      },
-      (xhr) => console.log((xhr.loaded / xhr.total) * 100 + '% loaded'),
-      (error) => console.log(error)
+      }
     );
 
     // ✅ Load Font for Status Text
     fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
-      fontRef.current = font;
+      fontRef.current = font; // ✅ Correct Three.js Font type
 
       const textGeometry = new TextGeometry('Status: Waiting', {
-        font: fontRef.current,
+        font: fontRef.current, // ✅ Correct font reference
         size: 1,
         depth: 0.1,
         curveSegments: 12,
@@ -102,7 +92,7 @@ const Game5 = () => {
       if (statusTextRef.current && fontRef.current) {
         statusTextRef.current.geometry.dispose();
         statusTextRef.current.geometry = new TextGeometry(`Status: ${gameState.status}`, {
-          font: fontRef.current,
+          font: fontRef.current, // ✅ Correct font reference
           size: 1,
           depth: 0.1,
           curveSegments: 12,
