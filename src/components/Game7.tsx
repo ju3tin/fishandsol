@@ -80,7 +80,9 @@ const Game7 = () => {
 
             return () => {
                 unsubscribe(); // Cleanup subscription on unmount
-                scene.remove(textMesh); // Remove text mesh on unmount
+                if (textMesh) { // Check if textMesh is not null
+                    scene.remove(textMesh); // Remove text mesh on unmount
+                }
             };
         });
 
