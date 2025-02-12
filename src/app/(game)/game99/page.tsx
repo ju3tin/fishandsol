@@ -40,7 +40,7 @@ export default function Home() {
 		<GameLayout width={layoutWidth}> {/* Pass the layoutWidth as width prop */}
 		  <CrashList />
 		  <Game />
-		   <Game5 width={layoutWidth} /> {/* Pass the layoutWidth as width prop */}
+		   <Game5 /> {/* Pass the layoutWidth as width prop */}
 	  <GameControls />
 		  <BetList />
 		</GameLayout>
