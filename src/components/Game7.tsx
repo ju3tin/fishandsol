@@ -59,7 +59,7 @@ const Game7 = () => {
             fbxLoader.load(
               '/fish.fbx',
               (object) => {
-                object.scale.set(1, 1, 1);
+                object.scale.set(0.5, 0.5, 0.5);
                 scene.add(object);
               },
               undefined,
