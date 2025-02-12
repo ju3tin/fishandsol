@@ -44,6 +44,30 @@ const Game5 = () => {
     controls.enableDamping = true;
 
     // ✅ Load FBX Model (Rocket)
+     // ✅ Load Font for Status Text
+     const fontLoader = new FontLoader();
+     fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+       fontRef.current = font;
+       console.log('Font Loaded:', font); // ✅ Debugging
+ 
+       const textGeometry = new TextGeometry('Status: Waiting', {
+         font: fontRef.current,
+         size: 10, // Size of the text
+         depth: 2, // Thickness of the text
+         curveSegments: 12,
+         bevelEnabled: false,
+       });
+ 
+       const textMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff }); // White color
+       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+       textMesh.position.set(0, 1, -5); // Adjust these values as needed
+       textMesh.castShadow = true;
+       textMesh.receiveShadow = true;
+ 
+       scene.add(textMesh);
+       statusTextRef.current = textMesh;
+     });
+ 
     const fbxLoader = new FBXLoader();
     fbxLoader.load(
       '/fish.fbx',
@@ -55,30 +79,7 @@ const Game5 = () => {
       (error) => console.error('FBX Load Error:', error)
     );
 
-    // ✅ Load Font for Status Text
-    const fontLoader = new FontLoader();
-    fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
-      fontRef.current = font;
-      console.log('Font Loaded:', font); // ✅ Debugging
-
-      const textGeometry = new TextGeometry('Status: Waiting', {
-        font: fontRef.current,
-        size: 10, // ✅ Increased size
-        depth: 2, // ✅ Use depth instead of height for thickness
-        curveSegments: 12,
-        bevelEnabled: false,
-      });
-
-      const textMaterial = new THREE.MeshStandardMaterial({ color: 0xffcc00 }); // ✅ Better lighting support
-      const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-      textMesh.position.set(-10, 5, -10); // ✅ Adjust position
-      textMesh.castShadow = true;
-      textMesh.receiveShadow = true;
-
-      scene.add(textMesh);
-      statusTextRef.current = textMesh;
-    });
-
+   
     // ✅ Handle Window Resize
     function onWindowResize() {
       const width = window.innerWidth;
