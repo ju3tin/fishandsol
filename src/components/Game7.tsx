@@ -1,18 +1,13 @@
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
-
-// Define a custom type for Font if necessary
-type Font = {
-    // Define the properties you need from the font object
-    // This is a simplified version; adjust as needed based on your usage
-    data: any; // Replace with actual type if known
-};
 
 const Game7 = () => {
     const fontRef = useRef<Font | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
+    const fontLoader = new FontLoader();
 
     useEffect(() => {
         const scene = new THREE.Scene();
@@ -22,32 +17,23 @@ const Game7 = () => {
         renderer.setClearColor(0x202020); // Set a dark background color
         document.body.appendChild(renderer.domElement);
 
-        const fontLoader = new FontLoader();
-        fontLoader.load(
-            '/path/to/font.json',
-            (font) => {
-                console.log('Font loaded:', font);
-                fontRef.current = font;
+        fontLoader.load('/path/to/font.json', (font) => {
+            fontRef.current = font;
 
-                const textGeometry = new TextGeometry('Status: Waiting', {
-                    font: fontRef.current,
-                    size: 10,
-                    depth: 2,
-                    curveSegments: 12,
-                    bevelEnabled: false,
-                });
+            const textGeometry = new TextGeometry('Status: Waiting', {
+                font: fontRef.current,
+                size: 10,
+                depth: 2,
+                curveSegments: 12,
+                bevelEnabled: false,
+            });
 
-                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
-                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-                textMesh.position.set(0, 1, -5); // Position in front of the camera
-                scene.add(textMesh);
-                console.log('Text mesh added to the scene:', textMesh);
-            },
-            undefined,
-            (error) => {
-                console.error('Error loading font:', error);
-            }
-        );
+            const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
+            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+            textMesh.position.set(0, 1, -5); // Position in front of the camera
+            scene.add(textMesh);
+            console.log('Text mesh added to the scene:', textMesh);
+        });
 
         // Add a simple cube for testing
         const geometry = new THREE.BoxGeometry(1, 1, 1);
