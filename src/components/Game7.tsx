@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
+import { undefined } from './Game5';
 
 const Game7 = () => {
     const fontRef = useRef<Font | null>(null);
@@ -38,6 +40,17 @@ const Game7 = () => {
         (error) => {
             console.error('Error loading font:', error);
         });
+const fbxLoader = new FBXLoader();
+    fbxLoader.load(
+      '/fish.fbx',
+      (object) => {
+        object.scale.set(0.005, 0.005, 0.005);
+        scene.add(object);
+      },
+      undefined,
+      (error) => console.error('FBX Load Error:', error)
+    );
+
 
         // Add a simple cube for testing
         const geometry = new THREE.BoxGeometry(1, 1, 1);
