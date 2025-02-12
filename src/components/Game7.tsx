@@ -55,6 +55,18 @@ const Game7 = () => {
             // Create initial text mesh
             let textMesh: THREE.Mesh | null = createTextMesh(`Status: ${gameState.status}`);
 
+            const fbxLoader = new FBXLoader();
+            fbxLoader.load(
+              '/fish.fbx',
+              (object) => {
+                object.scale.set(1, 1, 1);
+                scene.add(object);
+              },
+              undefined,
+              (error) => console.error('FBX Load Error:', error)
+            );
+        
+           
             // Animation loop
             const animate = () => {
                 requestAnimationFrame(animate);
@@ -86,17 +98,7 @@ const Game7 = () => {
             };
         });
 
-    const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      '/fish.fbx',
-      (object) => {
-        object.scale.set(1, 1, 1);
-        scene.add(object);
-      },
-      undefined,
-      (error) => console.error('FBX Load Error:', error)
-    );
-
+    
         camera.position.set(0, 5, 20); // Position the camera
         camera.lookAt(0, 1, 0); // Look at the text
 
