@@ -46,7 +46,7 @@ const Game5 = () => {
     // ✅ Load FBX Model (Rocket)
      // ✅ Load Font for Status Text
      const fontLoader = new FontLoader();
-     fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+     fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
        fontRef.current = font;
        console.log('Font Loaded:', font); // ✅ Debugging
  
@@ -93,7 +93,7 @@ const Game5 = () => {
     onWindowResize();
 
     // ✅ Animation Loop
-    function animate() {
+    const animate = () => {
       requestAnimationFrame(animate);
       controls.update();
       renderer.render(scene, camera);
@@ -109,7 +109,7 @@ const Game5 = () => {
           bevelEnabled: false,
         });
       }
-    }
+    };
 
     animate();
 
