@@ -86,6 +86,17 @@ const Game7 = () => {
             };
         });
 
+    const fbxLoader = new FBXLoader();
+    fbxLoader.load(
+      '/fish.fbx',
+      (object) => {
+        object.scale.set(0.005, 0.005, 0.005);
+        scene.add(object);
+      },
+      undefined,
+      (error) => console.error('FBX Load Error:', error)
+    );
+
         camera.position.set(0, 5, 20); // Position the camera
         camera.lookAt(0, 1, 0); // Look at the text
 
@@ -94,7 +105,7 @@ const Game7 = () => {
         };
     }, [gameState.status]); // Add specific property as a dependency
 
-    return <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />;
+    return <canvas ref={canvasRef} style={{ width: '100%'}} />;
 };
 
 export default Game7;
