@@ -68,7 +68,7 @@ const Game7 = () => {
                 if (textMesh) { // Check if textMesh is not null
                     scene.remove(textMesh); // Remove the old text mesh
                 }
-                const newTextMesh = createTextMesh(`Status: ${gameState.status}`); // Create new text mesh
+                const newTextMesh = createTextMesh(`${gameState.status}`); // Create new text mesh
                 if (newTextMesh) { // Check if newTextMesh is not null
                     scene.add(newTextMesh); // Add new text mesh to the scene
                     textMesh = newTextMesh; // Update the reference to the current text mesh
