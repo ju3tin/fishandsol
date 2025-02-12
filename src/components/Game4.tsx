@@ -40,8 +40,8 @@ export default function Game() {
             const loader = new FBXLoader();
             loader.load("/fish.fbx", (fbx: THREE.Group) => {
                 fbx.scale.set(0.01, 0.01, 0.01);
-                scene.add(fbx);
-
+                scene.add(fbx);git log --oneline
+  
                 const animate = () => { 
                     requestAnimationFrame(animate);
                     const expectedX = gameState.timeElapsed / 100;
