@@ -322,7 +322,7 @@ const Game5 = () => {
         const textGeometry = new TextGeometry('Status: Waiting', {
             font: font,
             size: 1,
-            height: 0.1,
+            depth: 0.1,
             curveSegments: 12,
             bevelEnabled: false,
         });
@@ -346,7 +346,7 @@ const Game5 = () => {
         const newTextGeometry = new TextGeometry(`Status: ${gameState.status}`, {
             font: fontLoader.loader.paths[0].generator.parameters.font,
             size: 1,
-            height: 0.1,
+            depth: 0.1,
             curveSegments: 12,
             bevelEnabled: false,
         });
