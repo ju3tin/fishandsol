@@ -60,7 +60,7 @@ const Game5 = () => {
 
       const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // 🔹 Bright Red for Visibility
       const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-      textMesh.position.set(0, 5, -5); // 🔹 Move Text Forward
+      textMesh.position.set(0, 1, -5); // Adjust Y and Z values as needed
       scene.add(textMesh);
       statusTextRef.current = textMesh;
     },
