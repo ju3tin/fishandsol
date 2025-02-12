@@ -50,23 +50,22 @@ const Game5 = () => {
     // ✅ Load Font for Status Text
     const fontLoader = new FontLoader();
     fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-      console.log('Font loaded:', font);
-      fontRef.current = font;
+        console.log('Font loaded:', font);
+        fontRef.current = font;
 
-      const textGeometry = new TextGeometry('Status: Waiting', {
-        font: fontRef.current,
-        size: 10,
-        depth: 2,
-        curveSegments: 12,
-        bevelEnabled: false,
-      });
+        const textGeometry = new TextGeometry('Status: Waiting', {
+            font: fontRef.current,
+            size: 10,
+            depth: 2,
+            curveSegments: 12,
+            bevelEnabled: false,
+        });
 
-      const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
-      const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-      textMesh.position.set(0, 1, -5); // Position in front of the camera
-      scene.add(textMesh);
-      console.log('Text mesh added to the scene:', textMesh);
-      statusTextRef.current = textMesh;
+        const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
+        const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+        textMesh.position.set(0, 1, -5); // Position in front of the camera
+        scene.add(textMesh);
+        console.log('Text mesh added to the scene:', textMesh);
     },
     undefined,
     (error) => {
