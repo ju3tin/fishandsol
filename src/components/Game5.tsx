@@ -52,7 +52,7 @@ const Game5 = () => {
     );
 
     // ✅ Load Font for Status Text
-    fontLoader.load('/fonts/helvetiker_regular.typeface.json', (font) => {
+    fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
       fontRef.current = font; // ✅ Correct Three.js Font type
 
       const textGeometry = new TextGeometry('Status: Waiting', {
