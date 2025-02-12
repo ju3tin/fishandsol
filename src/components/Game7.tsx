@@ -1,15 +1,20 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
-import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { useGameStore, GameState } from '../store/gameStore2';
+import styles from '../styles/Game1.module.css';
 
 
 const Game7 = () => {
-    const fontRef = useRef<Font | null>(null);
     const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const gameState = useGameStore((state: GameState) => state); // Access the game state
+    const statusTextRef = useRef<THREE.Mesh | null>(null);
+    const fontRef = useRef<Font | null>(null);
+    const gameState = useGameStore((state: GameState) => state);
 
 
     const fontLoader = new FontLoader();
@@ -19,63 +24,64 @@ const Game7 = () => {
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         const renderer = new THREE.WebGLRenderer({ canvas: canvasRef.current! });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x202020); // Set a dark background color
         document.body.appendChild(renderer.domElement);
 
+        const fontLoader = new FontLoader();
         fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
             fontRef.current = font;
 
-            const textGeometry = new TextGeometry('Status: Waiting', {
-                font: fontRef.current,
-                size: 10,
-                depth: 2,
-                curveSegments: 12,
-                bevelEnabled: false,
-            });
+            // Function to create and update text geometry
+            const createTextMesh = (text: string) => {
+                const textGeometry = new TextGeometry(text, {
+                    font: fontRef.current,
+                    size: 10,
+                    depth: 2,
+                    curveSegments: 12,
+                    bevelEnabled: false,
+                });
 
-            const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
-            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-            textMesh.position.set(0, 1, -5); // Position in front of the camera
-            scene.add(textMesh);
-            console.log('Text mesh added to the scene:', textMesh);
-        },
-        undefined,
-        (error) => {
-            console.error('Error loading font:', error);
+                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
+                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                textMesh.position.set(0, 1, -5); // Position in front of the camera
+                scene.add(textMesh); // Add text mesh to the scene
+
+                return textMesh; // Return the created text mesh
+            };
+
+            // Create initial text mesh
+            const textMesh = createTextMesh(`Status: ${gameState.status}`);
+
+            // Animation loop
+            const animate = () => {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera); // Render the scene
+            };
+
+            animate(); // Start the animation loop
+
+            // Update text mesh when game state changes
+            const updateText = () => {
+                scene.remove(textMesh); // Remove the old text mesh
+                const newTextMesh = createTextMesh(`Status: ${gameState.status}`); // Create new text mesh
+                scene.add(newTextMesh); // Add new text mesh to the scene
+            };
+
+            // Subscribe to game state changes (adjust based on your store)
+            const unsubscribe = useGameStore.subscribe(updateText);
+
+            return () => {
+                unsubscribe(); // Cleanup subscription on unmount
+                scene.remove(textMesh); // Remove text mesh on unmount
+            };
         });
-const fbxLoader = new FBXLoader();
-    fbxLoader.load(
-      '/fish.fbx',
-      (object) => {
-        object.scale.set(1, 1, 1);
-        object.position.set(0, 1, -5);
-        scene.add(object);
-      },
-      undefined,
-      (error) => console.error('FBX Load Error:', error)
-    );
-
-
-        // Add a simple cube for testing
-        const geometry = new THREE.BoxGeometry(1, 1, 1);
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }); // Green color
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube); // Add the cube to the scene
 
         camera.position.set(0, 5, 20); // Position the camera
         camera.lookAt(0, 1, 0); // Look at the text
 
-        const animate = () => {
-            requestAnimationFrame(animate);
-            renderer.render(scene, camera); // Render the scene
-        };
-
-        animate(); // Start the animation loop
-
         return () => {
             // Cleanup if necessary
         };
-    }, []);
+    }, [gameState.status]); // Add specific property as a dependency
 
     return <canvas ref={canvasRef} style={{ width: '100%', height: '100%' }} />;
 };
