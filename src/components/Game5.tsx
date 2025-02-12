@@ -337,7 +337,7 @@ export default function ThreeScene() {
 
 
   return (
-        <canvas className={styles.Game} ref={canvasRef}></canvas>
+        <canvas className={styles.Game} ref={canvasRef}  style={{border: '1px solid #000',width: '100%', aspectRatio: '4000 / 1995'}}></canvas>
     
     );
 }
