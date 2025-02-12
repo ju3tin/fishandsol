@@ -5,7 +5,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader.js';
-import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+//import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { useGameStore, GameState } from '../store/gameStore2';
 import styles from '../styles/Game1.module.css';
 
