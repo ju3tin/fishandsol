@@ -66,6 +66,10 @@ const Game5 = () => {
  
        scene.add(textMesh);
        statusTextRef.current = textMesh;
+     },
+     undefined, // Progress callback (optional)
+     (error) => {
+         console.error('Error loading font:', error); // Log any loading errors
      });
  
     const fbxLoader = new FBXLoader();
