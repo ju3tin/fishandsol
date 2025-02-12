@@ -32,20 +32,25 @@ const Game7 = () => {
 
             // Function to create and update text geometry
             const createTextMesh = (text: string) => {
-                const textGeometry = new TextGeometry(text, {
-                    font: fontRef.current,
-                    size: 10,
-                    depth: 2,
-                    curveSegments: 12,
-                    bevelEnabled: false,
-                });
+                if (fontRef.current) {
+                    const textGeometry = new TextGeometry(text, {
+                        font: fontRef.current,
+                        size: 10,
+                        depth: 2,
+                        curveSegments: 12,
+                        bevelEnabled: false,
+                    });
 
-                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
-                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-                textMesh.position.set(0, 1, -5); // Position in front of the camera
-                scene.add(textMesh); // Add text mesh to the scene
+                    const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
+                    const textMesh = new THREE.Mesh(textGeometry, textMaterial);
+                    textMesh.position.set(0, 1, -5); // Position in front of the camera
+                    scene.add(textMesh); // Add text mesh to the scene
 
-                return textMesh; // Return the created text mesh
+                    return textMesh; // Return the created text mesh
+                } else {
+                    console.error('Font is not loaded yet'); // Optional: log an error if the font is not loaded
+                    return null;
+                }
             };
 
             // Create initial text mesh
