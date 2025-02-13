@@ -91,7 +91,7 @@ const Game7 = () => {
 
     }, [gameState.status]);
 
-    return <canvas className={styles.Game} ref={canvasRef}></canvas>;
+    return <canvas className={styles.Game1} ref={canvasRef}></canvas>;
 };
 
 export default Game7;
