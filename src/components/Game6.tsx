@@ -123,12 +123,18 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     });
 
     // Animation Loop
-    function animate() {
+    function animate(deltaTime: number) {
       requestAnimationFrame(animate);
       controls.update();
+      
+      if (mixerRef.current) {
+        mixerRef.current.update(deltaTime * 0.001); // Update animation
+      }
+
       renderer.render(scene, camera);
     }
-    animate();
+    animate(0);
+
 
     // Cleanup
     return () => {
