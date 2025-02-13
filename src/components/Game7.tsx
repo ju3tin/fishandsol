@@ -59,7 +59,7 @@ const Game7 = () => {
             fbxLoader.load(
               '/fish.fbx',
               (object) => {
-                object.scale.set(1, 1, 1);
+                object.scale.set(0.5, 0.5, 0.5);
                 scene.add(object);
               },
               undefined,
@@ -107,7 +107,7 @@ const Game7 = () => {
         };
     }, [gameState.status]); // Add specific property as a dependency
 
-    return <canvas ref={canvasRef} style={{ width: '100%'}} />;
+    return <canvas className={styles.Game} ref={canvasRef}></canvas>;
 };
 
 export default Game7;
