@@ -53,7 +53,7 @@ const Game8 = () => {
             };
 
             // Create initial text mesh
-            const initialText = gameState.status === 'Waiting' ? `Time Remaining: ${gameState.timeRemaining}` : `Status: ${gameState.status}`;
+            const initialText = gameState.status === 'Waiting' ? `${gameState.timeRemaining}` : `${gameState.status}`;
             textMesh = createTextMesh(initialText); // Assign to outer variable
 
             if (textMesh) {
