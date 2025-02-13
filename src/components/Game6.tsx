@@ -67,7 +67,11 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     const fontLoader = new FontLoader();
     fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
       fontRef.current = font;
-      updateText(gameState.status);
+      if (gameState.status === 'Waiting') {
+        updateText(gameState.timeRemaining.toString());
+      }else{
+        updateText(gameState.status)
+      }
     });
 
     function updateText(text: string) {
