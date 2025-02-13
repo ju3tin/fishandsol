@@ -89,7 +89,7 @@ const Game7 = () => {
         camera.position.set(0, 5, 20);
         camera.lookAt(0, 1, 0);
 
-    }, [gameState]);
+    }, [gameState.status]);
 
     return <canvas className={styles.Game} ref={canvasRef}></canvas>;
 };
