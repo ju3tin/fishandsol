@@ -53,6 +53,11 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       scene.add(object);
     });
 
+    const textureLoader = new THREE.TextureLoader();
+    const bgTexture = textureLoader.load('/under3.png'); // Replace with your image path
+    scene.background = bgTexture;
+
+
     // Animation Loop
     function animate() {
       requestAnimationFrame(animate);
