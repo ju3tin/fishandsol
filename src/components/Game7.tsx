@@ -52,7 +52,10 @@ const Game7 = () => {
                 return textMesh;
             };
 
-            let textMesh: THREE.Mesh | null = createTextMesh(`Status: ${gameState.status}`);
+            // Create initial text mesh based on game state
+            const initialText = gameState.status === 'Waiting' ? `Time Remaining: ${gameState.timeRemaining}` : `Status: ${gameState.status}`;
+            const textMesh = createTextMesh(initialText);
+            scene.add(textMesh);
 
             const fbxLoader = new FBXLoader();
             fbxLoader.load(
@@ -72,27 +75,26 @@ const Game7 = () => {
 
             animate();
 
+            // Update text mesh when game state changes
             const updateText = () => {
-                if (textMesh) scene.remove(textMesh);
-                const newTextMesh = createTextMesh(`${gameState.status}`);
-                if (newTextMesh) {
-                    scene.add(newTextMesh);
-                    textMesh = newTextMesh;
-                }
+                scene.remove(textMesh);
+                const newText = gameState.status === 'Waiting' ? `Time Remaining: ${gameState.timeRemaining}` : `Status: ${gameState.status}`;
+                const newTextMesh = createTextMesh(newText);
+                scene.add(newTextMesh);
             };
 
             const unsubscribe = useGameStore.subscribe(updateText);
 
             return () => {
                 unsubscribe();
-                if (textMesh) scene.remove(textMesh);
+                scene.remove(textMesh);
             };
         });
 
         camera.position.set(0, 5, 20);
         camera.lookAt(0, 1, 0);
 
-    }, [gameState.status]);
+    }, [gameState]);
 
     return <canvas className={styles.Game1} ref={canvasRef}></canvas>;
 };
