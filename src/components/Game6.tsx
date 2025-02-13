@@ -67,7 +67,9 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     const fontLoader = new FontLoader();
     fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
       fontRef.current = font;
-      updateText(gameState.status, gameState.timeRemaining);
+      updateText(gameState.status, 
+                 Number(gameState.timeRemaining), // Convert to number
+                 Number(gameState.multiplier)); // Convert to number
     });
 
     function updateText(status: string, timeRemaining: number, multiplier: number) {
