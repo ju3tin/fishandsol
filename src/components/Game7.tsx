@@ -26,18 +26,6 @@ const Game7 = () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
-
-        const fbxLoader = new FBXLoader();
-            fbxLoader.load(
-              '/fish.fbx',
-              (object) => {
-                object.scale.set(0.5, 0.5, 0.5);
-                scene.add(object);
-              },
-              undefined,
-              (error) => console.error('FBX Load Error:', error)
-            );
-
         const fontLoader = new FontLoader();
         fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
             fontRef.current = font;
@@ -67,7 +55,16 @@ const Game7 = () => {
             // Create initial text mesh
             let textMesh: THREE.Mesh | null = createTextMesh(`Status: ${gameState.status}`);
 
-            
+            const fbxLoader = new FBXLoader();
+            fbxLoader.load(
+              '/fish.fbx',
+              (object) => {
+                object.scale.set(0.5, 0.5, 0.5);
+                scene.add(object);
+              },
+              undefined,
+              (error) => console.error('FBX Load Error:', error)
+            );
         
            
             // Animation loop
@@ -108,10 +105,9 @@ const Game7 = () => {
         return () => {
             // Cleanup if necessary
         };
-    }, [gameState]); // Add specific property as a dependency
+    }, [gameState.status]); // Add specific property as a dependency
 
-    return 	(<canvas id="gameCanvas" className={styles.Game} ref={canvasRef}></canvas>
-    );
+    return <canvas ref={canvasRef} style={{ width: '100%'}} />;
 };
 
 export default Game7;
