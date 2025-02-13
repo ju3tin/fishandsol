@@ -129,7 +129,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       controls.update();
       
       if (mixerRef.current) {
-        mixerRef.current.update(deltaTime * 1); // Update animation
+        mixerRef.current.update(deltaTime * 0.001); // Update animation
       }
 
       renderer.render(scene, camera);
