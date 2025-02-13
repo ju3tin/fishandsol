@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState, useCallback } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
@@ -10,7 +10,7 @@ import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
 interface ThreeSceneProps {
-  width: number; // Accept width as a prop
+  width: number;
 }
 
 export default function ThreeScene({ width }: ThreeSceneProps) {
@@ -18,11 +18,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
   const aspectRatio = 4000 / 1995;
   const fontRef = useRef<Font | null>(null);
   const gameState = useGameStore((state: GameState) => state);
-  const [errorCount, setErrorCount] = useState(0);
-  const errors: string[] = []; // Explicitly define the type of errors
-
-  let textMesh: THREE.Mesh | null = null; // Declare textMesh outside
-
+  const textMeshRef = useRef<THREE.Mesh | null>(null);
 
   useEffect(() => {
     if (!canvasRef.current) return;
@@ -40,7 +36,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     // WebGL Renderer (Attach to Canvas)
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current });
 
-    // Function to Resize Canvas
+    // Resize Handler
     function resizeCanvas() {
       const canvasHeight = width / aspectRatio;
       camera.aspect = aspectRatio;
@@ -48,7 +44,6 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       renderer.setSize(width, canvasHeight);
     }
 
-    // Initialize Canvas Size & Listen for Resizing
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
@@ -56,68 +51,52 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.target.set(0, 1, 0);
-    const fontLoader = new FontLoader();
+
+    // Load Fish Model
     const fbxLoader = new FBXLoader();
     fbxLoader.load('/fish.fbx', (object) => {
       object.scale.set(0.005, 0.005, 0.005);
       scene.add(object);
     });
 
+    // Load Background Texture
     const textureLoader = new THREE.TextureLoader();
-    const bgTexture = textureLoader.load('/under3.png'); // Replace with your image path
-    scene.background = bgTexture;
+    scene.background = textureLoader.load('/under3.png');
 
+    // Load Font
+    const fontLoader = new FontLoader();
     fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
-            fontRef.current = font;
+      fontRef.current = font;
+      updateText(gameState.status);
+    });
 
-            const createTextMesh = (text: string) => {
-                if (!fontRef.current) return null;
+    function updateText(text: string) {
+      if (!fontRef.current) return;
 
-                const textGeometry = new TextGeometry(text, {
-                    font: fontRef.current,
-                    size: 10,
-                    depth: 2,
-                    curveSegments: 12,
-                    bevelEnabled: false,
-                });
+      // Remove existing text
+      if (textMeshRef.current) {
+        scene.remove(textMeshRef.current);
+      }
 
-                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-                const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-                textMesh.position.set(0, 1, -5);
+      // Create new text mesh
+      const textGeometry = new TextGeometry(text, {
+        font: fontRef.current,
+        size: 10,
+        depth: 2,
+        curveSegments: 12,
+        bevelEnabled: false,
+      });
 
-                return textMesh;
-            };
+      const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+      textMeshRef.current = new THREE.Mesh(textGeometry, textMaterial);
+      textMeshRef.current.position.set(0, 1, -5);
+      scene.add(textMeshRef.current);
+    }
 
-            // Create initial text mesh
-            const initialText = gameState.status === 'Waiting' ? `${gameState.timeRemaining}` : `${gameState.status}`;
-            textMesh = createTextMesh(initialText); // Assign to outer variable
-
-            if (textMesh) {
-                scene.add(textMesh);
-            } else {
-                console.error('Failed to create text mesh: Font may not be loaded.');
-            }
-
-            const updateText = () => {
-                if (textMesh) {
-                    scene.remove(textMesh);
-                }
-                textMesh = createTextMesh(`Status: ${gameState.status}`); // Update textMesh
-                if (textMesh) {
-                    scene.add(textMesh);
-                } else {
-                    console.error('Failed to create new text mesh: Font may not be loaded.');
-                }
-            };
-
-            const unsubscribe = useGameStore.subscribe(updateText);
-
-            return () => {
-                unsubscribe();
-                if (textMesh) scene.remove(textMesh); // Ensure cleanup
-            };
-        });
-
+    // Subscribe to game state updates
+    const unsubscribe = useGameStore.subscribe((state) => {
+      updateText(state.status);
+    });
 
     // Animation Loop
     function animate() {
@@ -127,10 +106,11 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     }
     animate();
 
-    // Cleanup Function
+    // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       controls.dispose();
+      unsubscribe();
     };
   }, [width]);
 
