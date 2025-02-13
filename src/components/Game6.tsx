@@ -125,7 +125,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
     // Animation Loop
     let clock = new THREE.Clock();
-    const targetFPS = 30; // Set this to match Blender's FPS
+    const targetFPS = 60; // Set this to match Blender's FPS
     const frameDuration = 1 / targetFPS; // Time per frame
 
     function animate() {
