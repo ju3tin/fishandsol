@@ -1,12 +1,12 @@
 'use client';
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
 import styles from '../styles/Game1.module.css';
 import { useGameStore, GameState } from '../store/gameStore2';
-import { Font, FontLoader } from 'three/examples/jsm/loaders/FontLoader.js';
+import { FontLoader, Font } from 'three/examples/jsm/loaders/FontLoader.js';
 import { TextGeometry } from 'three/examples/jsm/geometries/TextGeometry.js';
 
 interface ThreeSceneProps {
@@ -67,20 +67,19 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     const fontLoader = new FontLoader();
     fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
       fontRef.current = font;
-      if (gameState.status == 'Waiting') {
-        updateText(gameState.timeRemaining.toString());
-      }else{
-        updateText(gameState.status)
-      }
+      updateText(gameState.status, gameState.timeRemaining);
     });
 
-    function updateText(text: string) {
+    function updateText(status: string, timeRemaining: number) {
       if (!fontRef.current) return;
 
       // Remove existing text
       if (textMeshRef.current) {
         scene.remove(textMeshRef.current);
       }
+
+      // Determine text content
+      const text = status === 'Waiting' ? `Time: ${timeRemaining}` : status;
 
       // Create new text mesh
       const textGeometry = new TextGeometry(text, {
@@ -99,7 +98,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
     // Subscribe to game state updates
     const unsubscribe = useGameStore.subscribe((state) => {
-      updateText(state.status);
+      updateText(state.status, state.timeRemaining);
     });
 
     // Animation Loop
