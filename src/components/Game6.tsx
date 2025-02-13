@@ -100,6 +100,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
       textMeshRef.current = new THREE.Mesh(textGeometry, textMaterial);
       textMeshRef.current.position.set(0, 1, -5);
+      textMeshRef.current.scale.set(0.005, 0.005, 0.005);
       scene.add(textMeshRef.current);
     }
 
