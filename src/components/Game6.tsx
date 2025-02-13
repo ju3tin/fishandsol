@@ -124,19 +124,39 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     });
 
     // Animation Loop
+    let clock = new THREE.Clock();
+    const targetFPS = 30; // Set this to match Blender's FPS
+    const frameDuration = 1 / targetFPS; // Time per frame
+
+    function animate() {
+      requestAnimationFrame(animate);
+    
+      const deltaTime = clock.getDelta(); // Time since last frame
+      const timeElapsed = clock.elapsedTime;
+    
+      if (mixerRef.current) {
+        mixerRef.current.update(frameDuration); // Update at fixed FPS
+      }
+    
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+
+/*
     function animate(deltaTime: number) {
       requestAnimationFrame(animate);
       controls.update();
       
       if (mixerRef.current) {
         mixerRef.current.update(deltaTime); 
-       // mixerRef.current.update(deltaTime * 0.001); // Update animation
+    
       }
 
       renderer.render(scene, camera);
     }
     animate(0);
-
+*/
 
     // Cleanup
     return () => {
