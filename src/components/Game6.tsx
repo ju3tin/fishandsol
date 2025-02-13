@@ -56,11 +56,11 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
     // Load Fish Model
     const fbxLoader = new FBXLoader();
-    fbxLoader.load('/fish.fbx', (object) => {
-      object.scale.set(0.005, 0.005, 0.005);
+    fbxLoader.load('/fish1.fbx', (object) => {
+      object.scale.set(0.05, 0.05, 0.05);
+      object.position.set(0, 1, -5);
       scene.add(object);
 
-      // Create Animation Mixer
       const mixer = new THREE.AnimationMixer(object);
       mixerRef.current = mixer;
 
@@ -68,6 +68,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
         const action = mixer.clipAction(object.animations[0]); // Play the first animation
         action.play();
       }
+
     });
 
     // Load Background Texture
