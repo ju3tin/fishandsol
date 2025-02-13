@@ -13,6 +13,8 @@ interface ThreeSceneProps {
   width: number;
 }
 
+const BlenderFPS = 24; // Set this to the desired frames per second
+
 export default function ThreeScene({ width }: ThreeSceneProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const aspectRatio = 4000 / 1995;
@@ -66,8 +68,8 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
       if (object.animations.length > 0) {
         const action = mixer.clipAction(object.animations[0]); // Play the first animation
-    action.setEffectiveTimeScale(0.005); // Slows animation to 50% speed
-    action.play();
+        action.setEffectiveTimeScale(BlenderFPS / 60); // Adjust speed
+        action.play();
       }
 
     });
