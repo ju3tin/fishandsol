@@ -55,7 +55,12 @@ const Game7 = () => {
             // Create initial text mesh based on game state
             const initialText = gameState.status === 'Waiting' ? `Time Remaining: ${gameState.timeRemaining}` : `Status: ${gameState.status}`;
             const textMesh = createTextMesh(initialText);
-            scene.add(textMesh);
+
+            if (textMesh) {
+                scene.add(textMesh);
+            } else {
+                console.error('Failed to create text mesh: Font may not be loaded.');
+            }
 
             const fbxLoader = new FBXLoader();
             fbxLoader.load(
