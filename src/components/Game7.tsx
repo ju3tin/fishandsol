@@ -105,7 +105,7 @@ const Game7 = () => {
         return () => {
             // Cleanup if necessary
         };
-    }, [gameState.status]); // Add specific property as a dependency
+    }, [gameState]); // Add specific property as a dependency
 
     return <canvas className={styles.Game} ref={canvasRef} />;
 };
