@@ -59,6 +59,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     // Load Fish Model
     const fbxLoader = new FBXLoader();
     fbxLoader.load('/fish1.fbx', (object) => {
+      object.rotation.set(0, 0, 0);
       object.scale.set(0.05, 0.05, 0.05);
       object.position.set(0, 1, -5);
       scene.add(object);
