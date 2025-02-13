@@ -66,7 +66,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
       if (object.animations.length > 0) {
         const action = mixer.clipAction(object.animations[0]); // Play the first animation
-    action.setEffectiveTimeScale(0.5); // Slows animation to 50% speed
+    action.setEffectiveTimeScale(0.25); // Slows animation to 50% speed
     action.play();
       }
 
