@@ -26,6 +26,18 @@ const Game7 = () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
+
+        const fbxLoader = new FBXLoader();
+            fbxLoader.load(
+              '/fish.fbx',
+              (object) => {
+                object.scale.set(0.5, 0.5, 0.5);
+                scene.add(object);
+              },
+              undefined,
+              (error) => console.error('FBX Load Error:', error)
+            );
+
         const fontLoader = new FontLoader();
         fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
             fontRef.current = font;
@@ -55,16 +67,7 @@ const Game7 = () => {
             // Create initial text mesh
             let textMesh: THREE.Mesh | null = createTextMesh(`Status: ${gameState.status}`);
 
-            const fbxLoader = new FBXLoader();
-            fbxLoader.load(
-              '/fish.fbx',
-              (object) => {
-                object.scale.set(0.5, 0.5, 0.5);
-                scene.add(object);
-              },
-              undefined,
-              (error) => console.error('FBX Load Error:', error)
-            );
+            
         
            
             // Animation loop
