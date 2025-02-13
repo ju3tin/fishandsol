@@ -16,6 +16,7 @@ const Game7 = () => {
     const [errorCount, setErrorCount] = useState(0);
 	const errors: string[] = []; // Explicitly define the type of errors
 
+    let textMesh: THREE.Mesh | null = null; // Use let instead of const
 
     useEffect(() => {
         const scene = new THREE.Scene();
@@ -82,10 +83,16 @@ const Game7 = () => {
 
             // Update text mesh when game state changes
             const updateText = () => {
-                scene.remove(textMesh);
-                const newText = gameState.status === 'Waiting' ? `Time Remaining: ${gameState.timeRemaining}` : `Status: ${gameState.status}`;
-                const newTextMesh = createTextMesh(newText);
-                scene.add(newTextMesh);
+                if (textMesh) {
+                    scene.remove(textMesh);
+                }
+                const newTextMesh = createTextMesh(`Status: ${gameState.status}`);
+                if (newTextMesh) {
+                    scene.add(newTextMesh);
+                    textMesh = newTextMesh;
+                } else {
+                    console.error('Failed to create new text mesh: Font may not be loaded.');
+                }
             };
 
             const unsubscribe = useGameStore.subscribe(updateText);
