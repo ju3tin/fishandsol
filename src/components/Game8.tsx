@@ -31,6 +31,18 @@ const Game8 = () => {
         scene.background = bgTexture;
 
         const fontLoader = new FontLoader();
+        const fbxLoader = new FBXLoader();
+            
+        fbxLoader.load(
+            '/fish.fbx',
+            (object) => {
+                object.scale.set(0.5, 0.5, 0.5);
+                scene.add(object);
+            },
+            undefined,
+            (error) => console.error('FBX Load Error:', error)
+        );
+
         fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
             fontRef.current = font;
 
@@ -62,16 +74,7 @@ const Game8 = () => {
                 console.error('Failed to create text mesh: Font may not be loaded.');
             }
 
-            const fbxLoader = new FBXLoader();
-            fbxLoader.load(
-                '/fish.fbx',
-                (object) => {
-                    object.scale.set(0.5, 0.5, 0.5);
-                    scene.add(object);
-                },
-                undefined,
-                (error) => console.error('FBX Load Error:', error)
-            );
+            
 
             const animate = () => {
                 requestAnimationFrame(animate);
