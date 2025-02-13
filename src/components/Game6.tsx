@@ -55,7 +55,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     // Load Fish Model
     const fbxLoader = new FBXLoader();
     fbxLoader.load('/fish.fbx', (object) => {
-      object.scale.set(0.005, 0.005, 0.005);
+      object.scale.set(0.05, 0.05, 0.05);
       object.position.set(0, 1, -5);
       scene.add(object);
     });
@@ -100,7 +100,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
       textMeshRef.current = new THREE.Mesh(textGeometry, textMaterial);
       textMeshRef.current.position.set(0, 1, -5);
-      textMeshRef.current.scale.set(0.005, 0.005, 0.005);
+      textMeshRef.current.scale.set(0.05, 0.05, 0.05);
       scene.add(textMeshRef.current);
     }
 
