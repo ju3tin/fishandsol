@@ -107,7 +107,7 @@ const Game7 = () => {
         };
     }, [gameState.status]); // Add specific property as a dependency
 
-    return <canvas ref={canvasRef} style={{ width: '100%'}} />;
+    return <canvas className={styles.Game} ref={canvasRef} />;
 };
 
 export default Game7;
