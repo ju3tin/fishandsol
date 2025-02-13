@@ -70,7 +70,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       updateText(gameState.status, gameState.timeRemaining);
     });
 
-    function updateText(status: string, timeRemaining: number) {
+    function updateText(status: string, timeRemaining: number, multiplier: number) {
       if (!fontRef.current) return;
 
       // Remove existing text
@@ -79,8 +79,12 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       }
 
       // Determine text content
-      const text = status === 'Waiting' ? `Time: ${timeRemaining}` : status;
-
+      let text = status;
+      if (status === 'Waiting') {
+        text = `Time: ${timeRemaining}`;
+      } else if (status === 'Running') {
+        text = `Multiplier: ${multiplier}`;
+      }
       // Create new text mesh
       const textGeometry = new TextGeometry(text, {
         font: fontRef.current,
@@ -98,7 +102,9 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
     // Subscribe to game state updates
     const unsubscribe = useGameStore.subscribe((state) => {
-      updateText(state.status, state.timeRemaining);
+      updateText(state.status, 
+                 Number(state.timeRemaining), // Convert to number
+                 Number(state.multiplier)); // Convert to number
     });
 
     // Animation Loop
