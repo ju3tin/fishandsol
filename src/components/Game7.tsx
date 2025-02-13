@@ -1,4 +1,3 @@
-"use client"
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -15,9 +14,8 @@ const Game7 = () => {
     const fontRef = useRef<Font | null>(null);
     const gameState = useGameStore((state: GameState) => state);
     const [errorCount, setErrorCount] = useState(0);
-    const errors: string[] = []; // Explicitly define the type of errors
+	const errors: string[] = []; // Explicitly define the type of errors
 
-    let textMesh: THREE.Mesh | null = null; // Declare textMesh outside
 
     useEffect(() => {
         const scene = new THREE.Scene();
@@ -35,6 +33,7 @@ const Game7 = () => {
         fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
             fontRef.current = font;
 
+            // Function to create and update text geometry
             const createTextMesh = (text: string) => {
                 if (!fontRef.current) return null;
 
@@ -53,25 +52,17 @@ const Game7 = () => {
                 return textMesh;
             };
 
-            // Create initial text mesh
-            const initialText = gameState.status === 'Waiting' ? `Time Remaining: ${gameState.timeRemaining}` : `Status: ${gameState.status}`;
-            textMesh = createTextMesh(initialText); // Assign to outer variable
-
-            if (textMesh) {
-                scene.add(textMesh);
-            } else {
-                console.error('Failed to create text mesh: Font may not be loaded.');
-            }
+            let textMesh: THREE.Mesh | null = createTextMesh(`Status: ${gameState.status}`);
 
             const fbxLoader = new FBXLoader();
             fbxLoader.load(
-                '/fish.fbx',
-                (object) => {
-                    object.scale.set(0.5, 0.5, 0.5);
-                    scene.add(object);
-                },
-                undefined,
-                (error) => console.error('FBX Load Error:', error)
+              '/fish.fbx',
+              (object) => {
+                object.scale.set(0.5, 0.5, 0.5);
+                scene.add(object);
+              },
+              undefined,
+              (error) => console.error('FBX Load Error:', error)
             );
 
             const animate = () => {
@@ -82,14 +73,11 @@ const Game7 = () => {
             animate();
 
             const updateText = () => {
-                if (textMesh) {
-                    scene.remove(textMesh);
-                }
-                textMesh = createTextMesh(`Status: ${gameState.status}`); // Update textMesh
-                if (textMesh) {
-                    scene.add(textMesh);
-                } else {
-                    console.error('Failed to create new text mesh: Font may not be loaded.');
+                if (textMesh) scene.remove(textMesh);
+                const newTextMesh = createTextMesh(`${gameState.status}`);
+                if (newTextMesh) {
+                    scene.add(newTextMesh);
+                    textMesh = newTextMesh;
                 }
             };
 
@@ -97,13 +85,14 @@ const Game7 = () => {
 
             return () => {
                 unsubscribe();
-                if (textMesh) scene.remove(textMesh); // Ensure cleanup
+                if (textMesh) scene.remove(textMesh);
             };
         });
 
         camera.position.set(0, 5, 20);
         camera.lookAt(0, 1, 0);
-    }, [gameState]);
+
+    }, [gameState.status]);
 
     return <canvas className={styles.Game1} ref={canvasRef}></canvas>;
 };
