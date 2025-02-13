@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
@@ -13,6 +13,9 @@ const Game7 = () => {
     const statusTextRef = useRef<THREE.Mesh | null>(null);
     const fontRef = useRef<Font | null>(null);
     const gameState = useGameStore((state: GameState) => state);
+    const [errorCount, setErrorCount] = useState(0);
+	const errors: string[] = []; // Explicitly define the type of errors
+
 
     useEffect(() => {
         const scene = new THREE.Scene();
