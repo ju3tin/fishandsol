@@ -1,5 +1,3 @@
-'use client';
-
 import { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -16,9 +14,6 @@ const Game7 = () => {
     const fontRef = useRef<Font | null>(null);
     const gameState = useGameStore((state: GameState) => state);
 
-
-    const fontLoader = new FontLoader();
-
     useEffect(() => {
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -26,16 +21,18 @@ const Game7 = () => {
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.body.appendChild(renderer.domElement);
 
+        // Load background texture
+        const textureLoader = new THREE.TextureLoader();
+        const bgTexture = textureLoader.load('/under3.png'); // Replace with your image path
+        scene.background = bgTexture;
+
         const fontLoader = new FontLoader();
         fontLoader.load('/examples/fonts/helvetiker_regular.typeface.json', (font) => {
             fontRef.current = font;
 
             // Function to create and update text geometry
             const createTextMesh = (text: string) => {
-                if (!fontRef.current) {
-                    console.error('Font is not loaded yet'); // Log an error if the font is not loaded
-                    return null; // Return null if the font is not available
-                }
+                if (!fontRef.current) return null;
 
                 const textGeometry = new TextGeometry(text, {
                     font: fontRef.current,
@@ -45,14 +42,13 @@ const Game7 = () => {
                     bevelEnabled: false,
                 });
 
-                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 }); // Red color
+                const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
                 const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-                textMesh.position.set(0, 1, -5); // Position in front of the camera
+                textMesh.position.set(0, 1, -5);
 
-                return textMesh; // Return the created text mesh
+                return textMesh;
             };
 
-            // Create initial text mesh
             let textMesh: THREE.Mesh | null = createTextMesh(`Status: ${gameState.status}`);
 
             const fbxLoader = new FBXLoader();
@@ -65,51 +61,37 @@ const Game7 = () => {
               undefined,
               (error) => console.error('FBX Load Error:', error)
             );
-        
-           
-            // Animation loop
+
             const animate = () => {
                 requestAnimationFrame(animate);
-                renderer.render(scene, camera); // Render the scene
+                renderer.render(scene, camera);
             };
 
-            animate(); // Start the animation loop
+            animate();
 
-            // Update text mesh when game state changes
             const updateText = () => {
-                if (textMesh) { // Check if textMesh is not null
-                    scene.remove(textMesh); // Remove the old text mesh
-                }
-                const newTextMesh = createTextMesh(`${gameState.status}`); // Create new text mesh
-                if (newTextMesh) { // Check if newTextMesh is not null
-                    scene.add(newTextMesh); // Add new text mesh to the scene
-                    textMesh = newTextMesh; // Update the reference to the current text mesh
+                if (textMesh) scene.remove(textMesh);
+                const newTextMesh = createTextMesh(`${gameState.status}`);
+                if (newTextMesh) {
+                    scene.add(newTextMesh);
+                    textMesh = newTextMesh;
                 }
             };
 
-            // Subscribe to game state changes (adjust based on your store)
             const unsubscribe = useGameStore.subscribe(updateText);
 
             return () => {
-                unsubscribe(); // Cleanup subscription on unmount
-                if (textMesh) { // Check if textMesh is not null
-                    scene.remove(textMesh); // Remove text mesh on unmount
-                }
+                unsubscribe();
+                if (textMesh) scene.remove(textMesh);
             };
         });
 
-    
-        camera.position.set(0, 5, 20); // Position the camera
-        camera.lookAt(0, 1, 0); // Look at the text
+        camera.position.set(0, 5, 20);
+        camera.lookAt(0, 1, 0);
 
-        return () => {
-            // Cleanup if necessary
-        };
-    }, [gameState.status]); // Add specific property as a dependency
+    }, [gameState.status]);
 
-    return (<canvas className={styles.Game} ref={canvasRef}>
-        
-    </canvas>);
+    return <canvas className={styles.Game} ref={canvasRef}></canvas>;
 };
 
 export default Game7;
