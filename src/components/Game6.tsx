@@ -22,6 +22,8 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
   const gameState = useGameStore((state: GameState) => state);
   const textMeshRef = useRef<THREE.Mesh | null>(null);
   const mixerRef = useRef<THREE.AnimationMixer | null>(null); // Store animation mixer reference
+  const fishRef = useRef<THREE.Object3D | null>(null); // Store fish reference
+
 
 
   useEffect(() => {
@@ -62,6 +64,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       object.rotation.set(0, 0, 0);
       object.scale.set(0.05, 0.05, 0.05);
       object.position.set(0, 1, -5);
+      fishRef.current = object;
       scene.add(object);
 
       const mixer = new THREE.AnimationMixer(object);
@@ -120,11 +123,26 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     }
 
     // Subscribe to game state updates
-    const unsubscribe = useGameStore.subscribe((state) => {
+   /* const unsubscribe = useGameStore.subscribe((state) => {
       updateText(state.status, 
-                 Number(state.timeRemaining), // Convert to number
-                 Number(state.multiplier)); // Convert to number
-    });
+                Number(state.timeRemaining),
+                Number(state.multiplier));
+              });
+*/
+
+ // Subscribe to game state updates (Move Fish During Countdown)
+ const unsubscribe = useGameStore.subscribe((state) => {
+  updateText(state.status, Number(state.timeRemaining), Number(state.multiplier));
+
+  // Move fish closer to the camera during countdown
+  if (fishRef.current && state.status === 'Waiting') {
+    const initialPosition = -10; // Start far away
+    const finalPosition = -2; // Closer to camera
+    const progress = (10 - state.timeRemaining) / 10; // Normalize to range 0 - 1
+    fishRef.current.position.z = THREE.MathUtils.lerp(initialPosition, finalPosition, progress);
+  }
+});
+
 
     // Animation Loop
     let clock = new THREE.Clock();
