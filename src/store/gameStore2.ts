@@ -335,12 +335,13 @@ export const useGameStore = create<GameState>((set, get) => {
 			  break;
 		  case "SECOND_BEFORE_START":
 	
-		  if (typeof message1.data === 'number' && !isNaN(message1.data)) {
-			  set({ timeRemaining: message1.data }); // Only update if it's a valid number
-		  } else {
-			  // Optionally log or handle the invalid case
-			  console.warn('Invalid timeRemaining data received:', message1.data);
-		  }
+		  const timeRemaining = message1.data;
+	
+		  if (timeRemaining <= 0) {
+			set({ timeRemaining: 0 })
+		} else {
+			set({ timeRemaining });
+		}
 	
 		  set({
 			status: 'Waiting',
