@@ -139,15 +139,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     const initialPosition = -10; // Start far away
     const finalPosition = -2; // Closer to camera
     const progress = (10 - state.timeRemaining) / 10; // Normalize to range 0 - 1
-
-    // Calculate the target z position
-    const targetZ = THREE.MathUtils.lerp(initialPosition, finalPosition, progress);
-    
-    // Smoothly interpolate the fish's z position
-    fishRef.current.position.z += (targetZ - fishRef.current.position.z) * 0.1; // Adjust the multiplier for speed
-    
-    // Add sinusoidal movement for a swimming effect
-    fishRef.current.position.y = Math.sin(progress * Math.PI * 2) * 0.5; // Adjust the multiplier for height
+    fishRef.current.position.z = THREE.MathUtils.lerp(initialPosition, finalPosition, progress);
   }
   if (fishRef.current && state.status === 'Running'){
 
