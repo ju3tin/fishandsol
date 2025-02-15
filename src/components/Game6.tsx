@@ -104,6 +104,8 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       if (status === 'Waiting') {
         if (typeof timeRemaining === 'number' && !isNaN(timeRemaining)) {
           text = `Time: ${timeRemaining}`;
+        }else{
+          text = `Time: `;
         }
       } else if (status === 'Running') {
         text = `Multiplier: ${multiplier}`;
