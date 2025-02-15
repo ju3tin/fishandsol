@@ -140,11 +140,11 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
   if (fishRef.current && state.status === 'Waiting') {
     const initialPosition = -10; // Start far away
     const finalPosition = -2; // Closer to camera
-    const progress = (10 - state.timeRemaining) / 10; // Normalize to range 0 - 1
-    const distance = THREE.MathUtils.lerp(initialPosition, finalPosition, progress); // Calculate the distance
-    fishRef.current.translateZ(distance); // Move fish smoothly closer to the camera
-   //fishRef.current.translateZ = (THREE.MathUtils.lerp(initialPosition, finalPosition, progress)); // Move fish closer to the camera
-
+    if (!isNaN(state.timeRemaining)) { // Check if timeRemaining is not NaN
+        const progress = (10 - state.timeRemaining) / 10; // Normalize to range 0 - 1
+        const distance = THREE.MathUtils.lerp(initialPosition, finalPosition, progress); // Calculate the distance
+        fishRef.current.translateZ(distance); // Move fish smoothly closer to the camera
+    }
   }
   if (fishRef.current && state.status === 'Running'){
 
