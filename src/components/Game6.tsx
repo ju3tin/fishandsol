@@ -142,9 +142,29 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
   if (fishRef.current && state.status === 'Waiting') {
     const initialPosition = -10; // Start far away
     const finalPosition = -2; // Closer to camera
+    const duration = 8; // Duration in seconds
+    const startTime = performance.now(); // Get the current time
+
+    function translateFish() {
+      const elapsedTime = (performance.now() - startTime) / 1000; // Convert to seconds
+      const progress = Math.min(elapsedTime / duration, 1); // Normalize to range 0 - 1
+      if (fishRef.current) {
+        fishRef.current.position.z = THREE.MathUtils.lerp(initialPosition, finalPosition, progress); // Move fish smoothly closer to the camera
+      }
+
+      if (progress < 1) {
+          requestAnimationFrame(translateFish); // Continue translating until the duration is reached
+      }
+  }
+
+  translateFish(); // Start the translation
+
+    if(state.timeRemaining == 9){
+    //  fishRef.current.translateZ(THREE.MathUtils.lerp(-10, 10, 8)); 
+    }
     if (!isNaN(state.timeRemaining)) {
-    const progress = (10 - state.timeRemaining) / 10; // Normalize to range 0 - 1
-    fishRef.current.position.z = THREE.MathUtils.lerp(initialPosition, finalPosition, progress);
+   // const progress = (10 - state.timeRemaining) / 10; // Normalize to range 0 - 1
+   // fishRef.current.position.z = THREE.MathUtils.lerp(initialPosition, finalPosition, progress);
     //fishRef.current.translateZ(THREE.MathUtils.lerp(initialPosition, finalPosition, progress)); // Move fish closer to the camera 
     //const distance = THREE.MathUtils.lerp(initialPosition, finalPosition, progress); // Calculate the distance
     //fishRef.current.translateZ(distance); // Move fish smoothly closer to the camera
