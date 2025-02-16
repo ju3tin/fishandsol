@@ -146,6 +146,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     const startTime = performance.now(); // Get the current time
 
     function translateFish() {
+      if(state.timeRemaining == 9){
       const elapsedTime = (performance.now() - startTime) / 1000; // Convert to seconds
       const progress = Math.min(elapsedTime / duration, 1); // Normalize to range 0 - 1
       if (fishRef.current) {
@@ -155,6 +156,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       if (progress < 1) {
           requestAnimationFrame(translateFish); // Continue translating until the duration is reached
       }
+    }
   }
 
   translateFish(); // Start the translation
