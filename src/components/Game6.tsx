@@ -96,9 +96,9 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     window.addEventListener('resize', resizeCanvas);
 
     // Orbit Controls
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.target.set(0, 1, 0);
+    // const controls = new OrbitControls(camera, renderer.domElement);
+    // controls.enableDamping = true;
+    // controls.target.set(0, 1, 0);
 
     //controls.enabled = false; // This will prevent any camera movement
 
@@ -269,7 +269,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
         mixerRef.current.update(frameDuration); // Update at fixed FPS
       }
     
-      controls.update();
+      // controls.update();
       renderer.render(scene, camera);
     }
     animate();
@@ -309,14 +309,14 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     };
 
     // Call updateCamera whenever the camera is manipulated
-    controls.addEventListener('change', updateCamera);
+    // controls.addEventListener('change', updateCamera);
 
     // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
-      controls.dispose();
+      // controls.dispose();
       unsubscribe();
-      controls.removeEventListener('change', updateCamera);
+      // controls.removeEventListener('change', updateCamera);
     };
   }, [width]);
 
