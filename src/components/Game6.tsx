@@ -192,7 +192,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
     const initialPosition = -10; // Start far away
     const finalPosition = -2; // Closer to camera
-    const duration = 7; // Duration in seconds
+    const duration = 8; // Duration in seconds
     const startTime = performance.now(); // Get the current time
     const duration2 = 2;
 
@@ -211,7 +211,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
           requestAnimationFrame(translateFish); // Continue translating until the duration is reached
       }
     }
-    if (state.timeRemaining == 2) {
+    if (state.timeRemaining == 1) {
      
       const elapsedTime = (performance.now() - startTime) / 1000; // Convert to seconds
       const progress = Math.min(elapsedTime / duration, 1); // Normalize to range 0 - 1
