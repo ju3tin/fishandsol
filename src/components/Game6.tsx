@@ -43,6 +43,39 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     // WebGL Renderer (Attach to Canvas)
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current });
 
+    function limitSkinWeights(geometry: THREE.BufferGeometry) {
+      const skinWeight = geometry.attributes.skinWeight;
+      const skinIndex = geometry.attributes.skinIndex;
+  
+      for (let i = 0; i < skinWeight.count; i++) {
+          let weights = [
+              skinWeight.getX(i),
+              skinWeight.getY(i),
+              skinWeight.getZ(i),
+              skinWeight.getW(i)
+          ];
+          let indices = [
+              skinIndex.getX(i),
+              skinIndex.getY(i),
+              skinIndex.getZ(i),
+              skinIndex.getW(i)
+          ];
+  
+          // Sort weights from highest to lowest
+          let sortedIndices = weights.map((w, index) => ({ weight: w, index }))
+              .sort((a, b) => b.weight - a.weight);
+  
+          // Keep only the top 4 weights
+          for (let j = 0; j < 4; j++) {
+              skinWeight.setComponent(i, j, sortedIndices[j].weight);
+              skinIndex.setComponent(i, j, indices[sortedIndices[j].index]);
+          }
+      }
+  
+      geometry.attributes.skinWeight.needsUpdate = true;
+      geometry.attributes.skinIndex.needsUpdate = true;
+  }
+
     // Resize Handler
     function resizeCanvas() {
       const canvasHeight = width / aspectRatio;
@@ -62,6 +95,11 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     // Load Fish Model
     const fbxLoader = new FBXLoader();
     fbxLoader.load('/fish1.fbx', (object) => {
+      object.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh && (child as THREE.Mesh).geometry) {
+            limitSkinWeights((child as THREE.Mesh).geometry);
+        }
+    });
       object.rotation.set(0, 0, 0);
       object.scale.set(0.05, 0.05, 0.05);
       object.position.set(0, 1, -5);
