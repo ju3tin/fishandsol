@@ -217,11 +217,30 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     animate(0);
 */
 
+    // Function to log camera position and rotation
+    const logCameraTransform = () => {
+        console.log('Camera Position:', camera.position);
+        console.log('Camera Rotation:', camera.rotation);
+    };
+
+    // Initial log
+    logCameraTransform();
+
+    // Update log on camera change
+    const updateCamera = () => {
+        logCameraTransform();
+        // You can also add any additional logic for camera updates here
+    };
+
+    // Call updateCamera whenever the camera is manipulated
+    controls.addEventListener('change', updateCamera);
+
     // Cleanup
     return () => {
       window.removeEventListener('resize', resizeCanvas);
       controls.dispose();
       unsubscribe();
+      controls.removeEventListener('change', updateCamera);
     };
   }, [width]);
 
