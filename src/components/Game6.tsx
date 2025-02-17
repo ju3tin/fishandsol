@@ -169,10 +169,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
       const textMaterial = new THREE.MeshBasicMaterial({ color: 0xff0000 });
       textMeshRef.current = new THREE.Mesh(textGeometry, textMaterial);
-
-      // Center the text by adjusting its position
-      const textWidth = textGeometry.boundingBox ? textGeometry.boundingBox.getSize(new THREE.Vector3()).x : 0;
-      textMeshRef.current.position.set(-textWidth / 2, 1, -5); // Adjust the x position to center the text
+      textMeshRef.current.position.set(0, 1, -5);
       textMeshRef.current.rotation.set(0, 0, 0);
       textMeshRef.current.scale.set(0.05, 0.05, 0.05);
       scene.add(textMeshRef.current);
