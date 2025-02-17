@@ -189,8 +189,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
   // Move fish closer to the camera during countdown
   if (fishRef.current && state.status === 'Waiting') {
-    fishRef.current.position.set(0, 1, -5);
-    fishRef.current.rotation.set(0, 0, 0);
+
     const initialPosition = -10; // Start far away
     const finalPosition = -2; // Closer to camera
     const duration = 7; // Duration in seconds
@@ -199,9 +198,11 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
     function translateFish() {
       if(state.timeRemaining == 9){
+      
       const elapsedTime = (performance.now() - startTime) / 1000; // Convert to seconds
       const progress = Math.min(elapsedTime / duration, 1); // Normalize to range 0 - 1
       if (fishRef.current) {
+        fishRef.current.position.set(0, 1, -5);
         fishRef.current.rotation.y = THREE.MathUtils.degToRad(0); // Convert degrees to radians
         fishRef.current.position.z = THREE.MathUtils.lerp(initialPosition, finalPosition, progress); // Move fish smoothly closer to the camera
       }
