@@ -113,7 +113,8 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       object.position.set(0, 1, -5);
       fishRef.current = object;
       scene.add(object);
-
+      console.log('Object Position:', fishRef.current.position);
+      
       const mixer = new THREE.AnimationMixer(object);
       mixerRef.current = mixer;
 
@@ -188,6 +189,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
 
   // Move fish closer to the camera during countdown
   if (fishRef.current && state.status === 'Waiting') {
+    fishRef.current.position.set(0, 1, -5);
     const initialPosition = -10; // Start far away
     const finalPosition = -2; // Closer to camera
     const duration = 7; // Duration in seconds
@@ -288,6 +290,10 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
         console.log('Camera Position:', camera.position);
         console.log('Camera Rotation:', camera.rotation);
     };
+
+    const logObjectTransform = () => {
+      console.log('Object Rotation:', camera.rotation);
+  };
 
     // Initial log
     logCameraTransform();
