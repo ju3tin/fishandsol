@@ -207,14 +207,16 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       }
     }
     if (state.timeRemaining == 2) {
-      // Move fish to bottom left of the screen
+     
       const elapsedTime = (performance.now() - startTime) / 1000; // Convert to seconds
       const progress = Math.min(elapsedTime / duration, 1); // Normalize to range 0 - 1
     
       if (fishRef.current) {
-          // Set the desired position for the bottom left corner
+      
           const bottomLeftPosition = new THREE.Vector3(-5, -2, -5); // Adjust these values as needed
           fishRef.current.position.copy(bottomLeftPosition);
+          fishRef.current.rotation.y = THREE.MathUtils.degToRad(90); // Convert degrees to radians
+  
       }
       if (progress < 1) {
         requestAnimationFrame(translateFish); // Continue translating until the duration is reached
