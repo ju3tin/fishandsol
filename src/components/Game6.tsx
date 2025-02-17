@@ -190,6 +190,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
   // Move fish closer to the camera during countdown
   if (fishRef.current && state.status === 'Waiting') {
     fishRef.current.position.set(0, 1, -5);
+    fishRef.current.rotation.set(0, 0, 0);
     const initialPosition = -10; // Start far away
     const finalPosition = -2; // Closer to camera
     const duration = 7; // Duration in seconds
