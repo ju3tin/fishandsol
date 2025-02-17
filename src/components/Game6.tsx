@@ -67,8 +67,14 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
   
           // Keep only the top 4 weights
           for (let j = 0; j < 4; j++) {
-              skinWeight.setComponent(i, j, sortedIndices[j].weight);
-              skinIndex.setComponent(i, j, indices[sortedIndices[j].index]);
+              if (j < sortedIndices.length) {
+                  skinWeight.setComponent(i, j, sortedIndices[j].weight);
+                  skinIndex.setComponent(i, j, indices[sortedIndices[j].index]);
+              } else {
+                  // If there are fewer than 4 weights, set the remaining to 0
+                  skinWeight.setComponent(i, j, 0);
+                  skinIndex.setComponent(i, j, 0);
+              }
           }
       }
   
