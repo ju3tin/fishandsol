@@ -100,7 +100,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     controls.enableDamping = true;
     controls.target.set(0, 1, 0);
 
-    controls.enabled = false; // This will prevent any camera movement
+    //controls.enabled = false; // This will prevent any camera movement
 
     // Load Fish Model
     const fbxLoader = new FBXLoader();
