@@ -38,7 +38,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     // Create Camera
     const camera = new THREE.PerspectiveCamera(75, aspectRatio, 0.1, 1000);
     camera.position.set(0, 0, 0);
-    camera.rotation.set(0, 0, 0);
+    camera.rotation.set(1.5707953267948966, 0, 0);
 
     // WebGL Renderer (Attach to Canvas)
     const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvasRef.current });
