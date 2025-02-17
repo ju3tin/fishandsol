@@ -190,8 +190,9 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
   if (fishRef.current && state.status === 'Waiting') {
     const initialPosition = -10; // Start far away
     const finalPosition = -2; // Closer to camera
-    const duration = 8; // Duration in seconds
+    const duration = 7; // Duration in seconds
     const startTime = performance.now(); // Get the current time
+    const duration2 = 2;
 
     function translateFish() {
       if(state.timeRemaining == 9){
@@ -205,6 +206,21 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
           requestAnimationFrame(translateFish); // Continue translating until the duration is reached
       }
     }
+    if (state.timeRemaining == 2) {
+      // Move fish to bottom left of the screen
+      const elapsedTime = (performance.now() - startTime) / 1000; // Convert to seconds
+      const progress = Math.min(elapsedTime / duration, 1); // Normalize to range 0 - 1
+    
+      if (fishRef.current) {
+          // Set the desired position for the bottom left corner
+          const bottomLeftPosition = new THREE.Vector3(-5, -2, -5); // Adjust these values as needed
+          fishRef.current.position.copy(bottomLeftPosition);
+      }
+      if (progress < 1) {
+        requestAnimationFrame(translateFish); // Continue translating until the duration is reached
+    }
+  }
+  
   }
 
   translateFish(); // Start the translation
