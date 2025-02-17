@@ -110,7 +110,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
     });
       object.rotation.set(0, 0, 0);
       object.scale.set(0.05, 0.05, 0.05);
-      object.position.set(0, 1, -5);
+      object.position.set(0, 0, 0);
       fishRef.current = object;
       scene.add(object);
       console.log('Object Position:', fishRef.current.position);
@@ -202,7 +202,7 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
       const elapsedTime = (performance.now() - startTime) / 1000; // Convert to seconds
       const progress = Math.min(elapsedTime / duration, 1); // Normalize to range 0 - 1
       if (fishRef.current) {
-        fishRef.current.position.set(0, 1, -5);
+        fishRef.current.position.set(0, 0, 0);
         fishRef.current.rotation.y = THREE.MathUtils.degToRad(0); // Convert degrees to radians
         fishRef.current.position.z = THREE.MathUtils.lerp(initialPosition, finalPosition, progress); // Move fish smoothly closer to the camera
       }
