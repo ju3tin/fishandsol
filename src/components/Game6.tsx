@@ -61,17 +61,19 @@ export default function ThreeScene({ width }: ThreeSceneProps) {
               skinIndex.getW(i)
           ];
   
-          // Sort weights from highest to lowest
-          let sortedIndices = weights.map((w, index) => ({ weight: w, index }))
-              .sort((a, b) => b.weight - a.weight);
+          // Create an array of weight-index pairs
+          let weightIndexPairs = weights.map((weight, index) => ({ weight, index }));
   
-          // Keep only the top 4 weights
+          // Sort by weight descending
+          weightIndexPairs.sort((a, b) => b.weight - a.weight);
+  
+          // Reset weights and indices
           for (let j = 0; j < 4; j++) {
-              if (j < sortedIndices.length) {
-                  skinWeight.setComponent(i, j, sortedIndices[j].weight);
-                  skinIndex.setComponent(i, j, indices[sortedIndices[j].index]);
+              if (j < weightIndexPairs.length) {
+                  skinWeight.setComponent(i, j, weightIndexPairs[j].weight);
+                  skinIndex.setComponent(i, j, indices[weightIndexPairs[j].index]);
               } else {
-                  // If there are fewer than 4 weights, set the remaining to 0
+                  // Set remaining weights and indices to 0
                   skinWeight.setComponent(i, j, 0);
                   skinIndex.setComponent(i, j, 0);
               }
