@@ -47,7 +47,7 @@ export default function RootLayout({
 	return (
     <html lang='en' className='dark'>
       <head>
-      <Head1 />
+     
       </head>
     
 				<body className={inter.className}>
