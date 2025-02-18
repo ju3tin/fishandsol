@@ -22,7 +22,7 @@ export default function CrashGraph() {
       let crashed = false;
 
       // Create Path for Curve
-      const points: Two.Vector[] = [];
+      const points: any[] = [];
       const path = new Two.Path(points, false, false);
       path.stroke = "red";
       path.linewidth = 3;
