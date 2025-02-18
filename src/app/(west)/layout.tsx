@@ -21,7 +21,6 @@ import PageHeader from '../components/PageHeader';
 import PageFooter from '../components/PageFooter';
 import Head from "next/head";
 
-import { SessionProvider } from "next-auth/react";
 import type { ReactNode } from "react";
 
 interface RootLayoutProps {
@@ -46,25 +45,18 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-    <SessionProvider>
     <html lang='en' className='dark'>
       <head>
       <Head1 />
       </head>
     
 				<body className={inter.className}>
-        <ConnectionProvider endpoint={endpoint}>
-          <WalletProvider wallets={wallets} autoConnect>
-            <WalletModalProvider>
-           
+        
               <main className='mx-5 mt-16 sm:ml-[300px] sm:mt-3'>{children}
                 <Toaster /></main>
 				
-            </WalletModalProvider>
-          </WalletProvider>
-        </ConnectionProvider>
 				</body>
 			</html>
-      </SessionProvider>
+     
 	);
 }

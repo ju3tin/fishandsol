@@ -1,6 +1,6 @@
 import styles from "./page.module.css";
 
-import Game from '../../../components/newGame2';
+import Game from '../../../components/Game2';
 import CrashList from '../../../components/CrashList';
 import GameControls from '../../../components/GameControls';
 import BetList from '../../../components/BetList';

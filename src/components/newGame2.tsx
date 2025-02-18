@@ -1,86 +1,70 @@
-"use client";
-import { useEffect, useRef } from "react";
-import Two from "two.js";
+"use client"
+import React, { useEffect, useRef } from "react";
 
-export default function CrashGraph() {
-  const mountRef = useRef(null);
+const CrashGameGraph: React.FC = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  let startTime = Date.now();
+
+  const degreesToRadians = (deg: number) => (deg * Math.PI) / 180;
 
   useEffect(() => {
-    // Ensure mountRef is defined and not null
-    if (mountRef.current) {
-      // Two.js Setup
-      const params = { width: window.innerWidth, height: window.innerHeight };
-      const two = new Two(params).appendTo(mountRef.current);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
 
-      // Graph Variables
-      let t = 0; // Time step
-      const speed = 0.05; // Growth speed
-      const maxTime = 5; // Max time limit
-      const crashTime = Math.random() * (maxTime - 1.5) + 1.5; // Random crash point
-      const scaleX = 100; // Scale factor for x-axis
-      const scaleY = 50; // Scale factor for y-axis
-      let crashed = false;
+    const drawGraph = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      let elapsedTime = (Date.now() - startTime) / 1000;
+      let angle;
+      if (elapsedTime <= 3) {
+        angle = 10 + (5 / 3) * elapsedTime; // Linear increase from 10 to 15 degrees
+      } else {
+        let k = 0.02; // Adjust this value for curve intensity
+        angle = 15 + k * Math.pow(elapsedTime - 3, 2); // Quadratic increase
+      }
+      
+      let radians = degreesToRadians(angle);
+      let x = 0;
+      let y = canvas.height - 50;
+      let velocityX = Math.cos(radians) * 5;
+      let velocityY = -Math.sin(radians) * 5;
 
-      // Create Path for Curve
-      const points: any[] = [];
-      const path = new Two.Path(points, false, false);
-      path.stroke = "red";
-      path.linewidth = 3;
-      path.noFill();
-      two.add(path);
-
-      // Create Multiplier Label
-      const label = new Two.Text("1.00x", 100, two.height - 50);
-      label.fill = "white";
-      label.size = 20;
-      two.add(label);
-
-      // Crash Explosion Effect
-      const explosion = new Two.Circle(0, 0, 10);
-      explosion.fill = "orange";
-      explosion.noStroke();
-      explosion.visible = false;
-      two.add(explosion);
-
-      // Animation Loop
-      function animate() {
-        if (crashed) return;
-
-        t += speed;
-        if (t >= crashTime) {
-          crashed = true;
-          explosion.translation.set(points[points.length - 1].x, points[points.length - 1].y);
-          explosion.visible = true;
-          explosion.scale = 1.5;
-          two.update();
-          return;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      
+      for (let t = 0; x < canvas.width; t += 1) {
+        if (elapsedTime > 3) {
+          let k = 0.02;
+          angle = 15 + k * Math.pow(elapsedTime - 3, 2);
+          radians = degreesToRadians(angle);
+          velocityX = Math.cos(radians) * 5;
+          velocityY = -Math.sin(radians) * 5;
+        } else {
+          angle = 10 + (5 / 3) * elapsedTime;
+          radians = degreesToRadians(angle);
+          velocityX = Math.cos(radians) * 5;
+          velocityY = -Math.sin(radians) * 5;
         }
-
-        // Add new point following y = exp(t / 2) curve
-        const x = t * scaleX;
-        const y = two.height - Math.exp(t / 2) * scaleY; // Inverted Y-axis for Two.js
-
-        points.push(new Two.Anchor(x, y));
-        path.vertices = points;
-
-        // Update multiplier label
-        label.value = `${(Math.exp(t / 2)).toFixed(2)}x`;
-        label.translation.set(x + 20, y - 10);
-
-        two.update();
-        requestAnimationFrame(animate);
+        x += velocityX;
+        y += velocityY;
+        ctx.lineTo(x, y);
       }
 
-      animate();
+      ctx.strokeStyle = "#ff0000";
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    };
 
-      // Cleanup on unmount
-      return () => {
-        two.clear();
-      };
-    } else {
-      console.error('mountRef.current is null. Ensure the ref is attached to a valid DOM element.');
-    }
+    const animate = () => {
+      drawGraph();
+      requestAnimationFrame(animate);
+    };
+
+    animate();
   }, []);
 
-  return <div ref={mountRef} className="w-full h-screen bg-black" />;
-}
+  return <canvas ref={canvasRef} width={800} height={400} />;
+};
+
+export default CrashGameGraph;

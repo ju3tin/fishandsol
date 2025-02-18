@@ -168,13 +168,17 @@ function drawCountdown(
 	context: CanvasRenderingContext2D,
 	timeRemaining: number,
 ) {
-	const canvas = context.canvas;
+	if (typeof timeRemaining === 'number' && !isNaN(timeRemaining)){
 
-	context.fillStyle = 'rgba(255, 255, 255, 1.0)';
-	context.font = '220px Arial';
-	const text = `Launch in ${timeRemaining} secs`;
-	const textWidth = context.measureText(text).width;
-	context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
+		const canvas = context.canvas;
+		context.fillStyle = 'rgba(255, 255, 255, 1.0)';
+		context.font = '220px Arial';
+		const text = `Launch in ${timeRemaining} secs`;
+		const textWidth = context.measureText(text).width;
+		context.fillText(text, canvas.width / 2 - textWidth / 2, canvas.height / 2);
+
+	}
+	
 }
 
 function drawRocketPath(
