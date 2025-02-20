@@ -1,35 +1,24 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { useGameStore, GameState } from '../store/gameStore2';
-
-const getRandomCrashPoint = (): number => Math.random() * 5 + 1.5; // Random crash between 1.5x and 6.5x
+import { useGameStore, GameState } from "../store/gameStore2"; // Import Zustand store
 
 const CrashGraph: React.FC = () => {
+  const { timeElapsed, multiplier, isCrashed } = useGameStore();
   const [data, setData] = useState<{ time: number; multiplier: number }[]>([]);
-  const [time, setTime] = useState(0);
-  const [crashPoint, setCrashPoint] = useState(getRandomCrashPoint());
-  const [isCrashed, setIsCrashed] = useState(false);
 
   useEffect(() => {
-    if (isCrashed) return;
+    if (isCrashed) return; // Stop updating if crashed
 
     const interval = setInterval(() => {
-      setTime((prevTime) => {
-        const newTime = prevTime + 0.1;
-        const newMultiplier = Math.exp(newTime / 2); // Exponential curve
-
-        if (newMultiplier >= crashPoint) {
-          setIsCrashed(true);
-          clearInterval(interval);
-        }
-
-        setData((prevData) => [...prevData, { time: newTime, multiplier: newMultiplier }]);
-        return newTime;
-      });
-    }, 100);
+      setData((prevData) => [
+        ...prevData,
+        { time: timeElapsed, multiplier: Number(multiplier) }, // Ensure multiplier is a number
+      ]);
+    }, 100); // Update every 100ms
 
     return () => clearInterval(interval);
-  }, [isCrashed]);
+  }, [timeElapsed, multiplier, isCrashed]);
 
   return (
     <div className="p-4 bg-gray-900 text-white rounded-lg shadow-md">
@@ -37,12 +26,12 @@ const CrashGraph: React.FC = () => {
       <ResponsiveContainer width="100%" height={300}>
         <LineChart data={data}>
           <XAxis dataKey="time" tick={{ fill: "white" }} />
-          <YAxis domain={[1, crashPoint + 1]} tick={{ fill: "white" }} />
+          <YAxis domain={[1, Math.max(...data.map((d) => d.multiplier), 2)]} tick={{ fill: "white" }} />
           <Tooltip />
           <Line type="monotone" dataKey="multiplier" stroke="#00ff00" strokeWidth={2} dot={false} />
         </LineChart>
       </ResponsiveContainer>
-      {isCrashed && <p className="text-red-500 mt-2">Crashed at {crashPoint.toFixed(2)}x!</p>}
+      {isCrashed && <p className="text-red-500 mt-2">Crashed at {Number(multiplier).toFixed(2)}x!</p>}
     </div>
   );
 };

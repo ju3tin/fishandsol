@@ -1,7 +1,7 @@
 "use client"
 import styles from "./page.module.css";
 
-import Game from '../../../components/newGame3';
+import Game from '../../../components/newGame5';
 import CrashList from '../../../components/CrashList';
 import GameControls from '../../../components/GameControls';
 import BetList from '../../../components/BetList';
