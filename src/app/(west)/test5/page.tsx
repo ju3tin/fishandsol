@@ -34,8 +34,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 	return (
 		<main className={styles.main}>
 				<GameLayout> {/* Pass the layoutWidth as width prop */}
-		  <CrashList />
-		  <Game />
+		 
 		  <div className="chat-container">
         <div className="chat-messages">
         <JsonFetcher url="/api" />
@@ -61,6 +60,8 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
           <button onClick={handleSendMessage}>Send</button>
         </div>
       </div>
+	  <CrashList />
+	  <Game />
 	  <GameControls />
 
 		  <BetList />
