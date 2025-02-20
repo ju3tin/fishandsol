@@ -3,7 +3,7 @@
 //import RootProvider from '../providers/RootProvider';
 
 import { Toaster } from "@/components/ui/sonner"
-
+import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
@@ -52,7 +52,7 @@ export default function RootLayout({
     
 				<body className={inter.className}>
         
-              <main className='mx-5 mt-16 sm:ml-[300px] sm:mt-3'>{children}
+        <main className='mx-5 mt-16 sm:ml-[300px] sm:mt-3'>{children}
                 <Toaster /></main>
 				
 				</body>
