@@ -33,7 +33,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 	  };
 	return (
 		<main className={styles.main}>
-	  <div className="chat-container">
+	  <div className="chat-container p-4 bg-gray-900 text-white rounded-lg shadow-md" style={{ maxHeight: '500px' }}>
         <div className="chat-messages">
         <JsonFetcher url="/api" />
           {chatMessages.map((msg, index) => {
