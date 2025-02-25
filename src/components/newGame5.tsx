@@ -57,7 +57,7 @@ const CrashGraph: React.FC = () => {
         </LineChart>
       </ResponsiveContainer>
       {gameState.status === "Crashed" && (
-        <p className="text-red-500 mt-2">Crashed at {gameState.crashPoint.toFixed(2)}x!</p>
+        <p className="text-red-500 mt-2">Crashed at {gameState.multiplier.toFixed(2)}x!</p>
       )}
       {gameState.status === "Waiting" && <p className="text-yellow-500 mt-2">Waiting for the next round...</p>}
     </div>
