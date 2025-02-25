@@ -29,7 +29,7 @@ export let address1a: string = '';
 const WalletConnection = () => {
   const { connection } = useConnection();
   const { select, wallets, publicKey, disconnect, connecting } = useWallet();
-        const setUserWalletAddress = useGameStore((state) => state.setUserWalletAddress);
+      //  const setUserWalletAddress = useGameStore((state) => state.setUserWalletAddress);
        const [wallet, setWallet] = useState<WalletAdapter | null>(null);
 
   const [open, setOpen] = useState<boolean>(false);
