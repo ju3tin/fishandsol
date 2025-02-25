@@ -18,9 +18,9 @@ useEffect(() => {
   if (gameState.status == "Running") return;
 
   console.log("Graph updating with:", {
-    timeElapsed: gameState.timeElapsed,
+    //timeElapsed: gameState.timeElapsed,
     multiplier: gameState.multiplier,
-    crashPoint: gameState.crashPoint,
+    //crashPoint: gameState.crashPoint,
   });
 /*
   intervalRef.current = setInterval(() => {
@@ -60,7 +60,7 @@ useEffect(() => {
         const newTime = prevTime + 0.1;
         const newMultiplier = Math.exp(newTime / 2); // Exponential curve
 
-        if (newMultiplier >= crashPoint) {
+        if (gameState.status == 'Crashed') {
           setIsCrashed(true);
           clearInterval(interval);
         }
@@ -84,7 +84,7 @@ useEffect(() => {
           <Line type="monotone" dataKey="multiplier" stroke="#00ff00" strokeWidth={2} dot={false} />
         </LineChart>
       </ResponsiveContainer>
-      {isCrashed && <p className="text-red-500 mt-2">Crashed at {crashPoint.toFixed(2)}x!</p>}
+      {gameState.status == 'Crashed' && <p className="text-red-500 mt-2">Crashed at {gameState.multiplier}x!</p>}
     </div>
   );
 };
