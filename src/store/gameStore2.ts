@@ -89,8 +89,39 @@ export type GameActions = {
 	setUserWalletAddress: (address: string) => void;
 }
 
-export type GameState = GameStateData & { actions: GameActions } & {
-	setUserWalletAddress: (address: string) => void;
+export interface GameState {
+	gameState: {
+		action: string;
+		status: string;
+	};
+	gameId: string|null;
+	status: GameStatus;
+	players: Bet[];
+	waiting: Bet[];
+	address1a: string;
+	startTime: number;
+	isConnected: boolean;
+	isLoggedIn: boolean;
+	isWaiting: boolean;
+	isPlaying: boolean;
+	isCashedOut: boolean;
+	timeRemaining: number;
+	timeElapsed: number;
+	multiplier: string;
+	crashes: CrashedGame[];
+	balances: Record<string, string>;
+	wallet: string|null;
+	errors: string[];
+	errorCount: number;
+	data2?: string | number;
+	crashPoint?: number;
+	isCrashed: boolean;
+
+	crashData?: {
+		multiplier: string;
+		time: number;
+	};
+	actions: GameActions;
 	userWalletAddress: string;
 }
 
@@ -696,5 +727,9 @@ export const useGameStore = create<GameState>((set, get) => {
 		actions,
 		userWalletAddress: '',
 		setUserWalletAddress: (address: string) => set({ userWalletAddress: address }),
+		gameState: {
+			action: '',
+			status: '',
+		},
 	};
 });

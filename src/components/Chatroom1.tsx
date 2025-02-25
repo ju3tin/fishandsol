@@ -40,7 +40,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
     ) : null; // Return null for messages that do not match
   })}
 </div>
-<div className="chat-input">
+<div style={{backgroundColor: 'black' }} className="chat-input">
   <input
     type="text"
     value={inputMessage}

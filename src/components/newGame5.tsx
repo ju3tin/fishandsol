@@ -11,6 +11,19 @@ const CrashGraph: React.FC = () => {
   const [crashPoint, setCrashPoint] = useState(getRandomCrashPoint());
   const [isCrashed, setIsCrashed] = useState(false);
 
+  const gameState = useGameStore((state: GameState) => state);
+
+  useEffect(() => {
+    console.log("Current game state action:", gameState.status); // Debugging line
+    if (gameState.status == 'Crashed') {
+      console.log('i crash my shit 2')
+      setData([]);
+      setTime(0);
+      setCrashPoint(getRandomCrashPoint());
+      setIsCrashed(false);
+    }
+  }, [gameState.status]);
+
   useEffect(() => {
     if (isCrashed) return;
 
