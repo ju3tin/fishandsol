@@ -17,15 +17,29 @@ const CrashGraph: React.FC = () => {
   useEffect(() => {
     if (gameState.status !== "Running") return;
 
+    console.log("Graph updating with:", {
+      timeElapsed: gameState.timeElapsed,
+      multiplier: gameState.multiplier,
+      crashPoint: gameState.crashPoint,
+    });
+
     const interval = setInterval(() => {
-      setData((prevData) => [
-        ...prevData,
-        { time: gameState.timeElapsed, multiplier: gameState.multiplier },
-      ]);
+      setData((prevData) => {
+        if (
+          prevData.length > 0 &&
+          prevData[prevData.length - 1].time === gameState.timeElapsed
+        ) {
+          return prevData; // Prevent duplicate time entries
+        }
+        return [
+          ...prevData,
+          { time: gameState.timeElapsed, multiplier: gameState.multiplier },
+        ];
+      });
 
       if (gameState.crashPoint !== undefined && gameState.multiplier >= gameState.crashPoint) {
         clearInterval(interval);
-    }
+      }
     }, 100);
 
     return () => clearInterval(interval);
@@ -37,13 +51,13 @@ const CrashGraph: React.FC = () => {
       <ResponsiveContainer width={800} height={300}>
         <LineChart data={data}>
           <XAxis dataKey="time" tick={{ fill: "white" }} />
-          <YAxis domain={[1, (gameState.multiplier || 2) + 1]} tick={{ fill: "white" }} />
+          <YAxis domain={[1, (gameState.crashPoint || 2) + 1]} tick={{ fill: "white" }} />
           <Tooltip />
           <Line type="monotone" dataKey="multiplier" stroke="#00ff00" strokeWidth={2} dot={false} />
         </LineChart>
       </ResponsiveContainer>
       {gameState.status === "Crashed" && (
-        <p className="text-red-500 mt-2">Crashed at {gameState.multiplier.toFixed(2)}x!</p>
+        <p className="text-red-500 mt-2">Crashed at {gameState.crashPoint.toFixed(2)}x!</p>
       )}
       {gameState.status === "Waiting" && <p className="text-yellow-500 mt-2">Waiting for the next round...</p>}
     </div>
