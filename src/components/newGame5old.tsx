@@ -65,7 +65,7 @@ useEffect(() => {
           clearInterval(interval);
         }
 
-        setData((prevData) => [...prevData, { time: newTime, multiplier: newMultiplier }]);
+        setData((prevData) => [...prevData, { time: gameState.multiplier, multiplier: newMultiplier }]);
         return newTime;
       });
     }, 100);
