@@ -145,11 +145,11 @@ function render(
 
 function drawMultiplier(
 	context: CanvasRenderingContext2D,
-	multiplier: string,
+	multiplier: number,
 ) {
 	const canvas = context.canvas;
 
-	const multiplierNumeric = Number.parseFloat(multiplier);
+	const multiplierNumeric = Number.parseFloat(multiplier.toString());
 
 	if (multiplierNumeric > 5)
 		context.fillStyle = 'red';
