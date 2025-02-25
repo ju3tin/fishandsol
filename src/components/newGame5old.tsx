@@ -13,7 +13,17 @@ const CrashGraph: React.FC = () => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 const gameState = useGameStore((state: GameState) => state);
 
-  
+useEffect(() => {
+  if (gameState.status === "Waiting") {
+    console.log("Game reset - clearing graph data");
+    setData([]);
+    setTime(0);
+    setIsCrashed(false);
+    setCrashPoint(getRandomCrashPoint());
+  }
+}, [gameState.status]);
+
+
 useEffect(() => {
   if (gameState.status == "Running") return;
 
