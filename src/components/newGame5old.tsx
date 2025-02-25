@@ -1,5 +1,5 @@
 "use client"
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
 import { useGameStore, GameState } from '../store/gameStore2';
 
@@ -10,8 +10,49 @@ const CrashGraph: React.FC = () => {
   const [time, setTime] = useState(0);
   const [crashPoint, setCrashPoint] = useState(getRandomCrashPoint());
   const [isCrashed, setIsCrashed] = useState(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+const gameState = useGameStore((state: GameState) => state);
 
-  useEffect(() => {
+  
+useEffect(() => {
+  if (gameState.status == "Running") return;
+
+  console.log("Graph updating with:", {
+    timeElapsed: gameState.timeElapsed,
+    multiplier: gameState.multiplier,
+    crashPoint: gameState.crashPoint,
+  });
+/*
+  intervalRef.current = setInterval(() => {
+    setData((prevData) => {
+      if (
+        prevData.length > 0 &&
+        prevData[prevData.length - 1].time === gameState.timeElapsed
+      ) {
+        return prevData; // Prevent duplicate entries
+      }
+      return [
+        ...prevData,
+        { time: gameState.timeElapsed, multiplier: gameState.multiplier },
+      ];
+    });
+
+    if (gameState.crashPoint !== undefined && gameState.multiplier >= gameState.crashPoint) {
+      if (intervalRef.current) clearInterval(intervalRef.current);
+    }
+  }, 100);
+*/
+/*
+  return () => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+  };
+  */
+}, [gameState.status]);
+
+
+useEffect(() => {
+   
+  
     if (isCrashed) return;
 
     const interval = setInterval(() => {
