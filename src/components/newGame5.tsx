@@ -13,10 +13,10 @@ const CrashGraph: React.FC = () => {
 
   const gameState = useGameStore((state: GameState) => state);
 
+  // Reset chart when gameState.status is 'Crashed'
   useEffect(() => {
-    console.log("Current game state action:", gameState.status); // Debugging line
-    if (gameState.status == 'Crashed') {
-      console.log('i crash my shit 2')
+    if (gameState.status === 'Crashed') {
+      console.log('Game crashed - resetting chart');
       setData([]);
       setTime(0);
       setCrashPoint(getRandomCrashPoint());
@@ -43,7 +43,7 @@ const CrashGraph: React.FC = () => {
     }, 100);
 
     return () => clearInterval(interval);
-  }, [isCrashed]);
+  }, [isCrashed, crashPoint]); // Include crashPoint to restart when it's updated
 
   return (
     <div className="p-4 bg-gray-900 text-white rounded-lg shadow-md">
