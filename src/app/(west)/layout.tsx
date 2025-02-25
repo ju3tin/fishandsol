@@ -52,7 +52,7 @@ export default function RootLayout({
     
 				<body className={inter.className}>
         
-        <main className='mx-5 mt-16 sm:ml-[300px] sm:mt-3'>{children}
+        <main className='mx-5 mt-16 sm:mt-3'>{children}
                 <Toaster /></main>
 				
 				</body>
