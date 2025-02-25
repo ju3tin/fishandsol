@@ -71,7 +71,7 @@ useEffect(() => {
     }, 100);
 
     return () => clearInterval(interval);
-  }, [isCrashed]);
+  }, [isCrashed, gameState.status]);
 
   return (
     <div className="p-4 bg-gray-900 text-white rounded-lg shadow-md">
