@@ -56,7 +56,7 @@ export type GameStateData = {
 	isCashedOut: boolean;
 	timeRemaining: number;
 	timeElapsed: number;
-	multiplier: string;
+	multiplier: number;
 	crashes: CrashedGame[];
 	balances: Record<string, string>;
 	wallet: string|null;
@@ -107,7 +107,7 @@ export interface GameState {
 	isCashedOut: boolean;
 	timeRemaining: number;
 	timeElapsed: number;
-	multiplier: string;
+	multiplier: number;
 	crashes: CrashedGame[];
 	balances: Record<string, string>;
 	wallet: string|null;
@@ -139,7 +139,7 @@ const initialState : GameStateData = {
 	isCashedOut: false,
 	timeRemaining: 0,
 	timeElapsed: 0,
-	multiplier: '0',
+	multiplier: 0,
 	crashes: [],
 	balances: {},
 	wallet: null,
@@ -180,7 +180,7 @@ type UpdateBalancesEventParams = {
 
 type PlayerWonEventParams = {
 	wallet: string;
-	multiplier: string;
+	multiplier: number;
 }
 
 type AuthenticateResponseParams = {
@@ -328,7 +328,7 @@ export const useGameStore = create<GameState>((set, get) => {
 				  const { crashes } = get();
 		  
 				  set({
-					multiplier: Number(messageData.multiplier).toFixed(2),
+					multiplier: Number(messageData.multiplier),
 					  status: 'Crashed',
 					  crashes: [...(
 						  crashes.length <= 30
@@ -554,7 +554,7 @@ export const useGameStore = create<GameState>((set, get) => {
 			const newPlayers = [...players];
 
 			newPlayers[index].isCashedOut = true;
-			newPlayers[index].cashOut = params.multiplier;
+			newPlayers[index].cashOut = params.multiplier.toString();
 			newPlayers[index].cashOutTime = new Date();
 
 			if (wallet == params.wallet) {
