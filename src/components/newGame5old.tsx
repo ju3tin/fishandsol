@@ -84,7 +84,7 @@ useEffect(() => {
   }, [isCrashed, gameState.status]);
 
   return (
-    <div className="p-4 bg-black-900 text-white rounded-lg shadow-md">
+    <div style={{backgroundImage: `url(https://media.geeksforgeeks.org/wp-content/uploads/20240523121650/React1.png)`}} className="p-4 text-white rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4">Crash Graph</h2>
       <ResponsiveContainer width={800} height={300}>
         <LineChart data={data}>
