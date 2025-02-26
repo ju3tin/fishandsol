@@ -90,7 +90,7 @@ useEffect(() => {
         <LineChart data={data}>
           <XAxis hide={true} dataKey="time" tick={{ fill: "black" }} />
           <YAxis hide={true} domain={[1, crashPoint + 1]} tick={{ fill: "black" }} />
-          <Tooltip />
+          {/*<Tooltip />*/}
           <Line type="monotone" dataKey="multiplier" stroke="#00ff00" strokeWidth={2} dot={false} />
         </LineChart>
       </ResponsiveContainer>
