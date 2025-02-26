@@ -2,7 +2,7 @@
 import styles from "./page.module.css";
 
 import { useEffect, useState, useRef } from 'react';
-import Game from '../../../components/newGame5';
+import Game from '../../../components/newGame5old';
 import CrashList from '../../../components/CrashList';
 import GameControls from '../../../components/GameControls';
 import BetList from '../../../components/BetList';
