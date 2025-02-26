@@ -14,14 +14,14 @@ const CrashGraph: React.FC = () => {
 const gameState = useGameStore((state: GameState) => state);
 
 useEffect(() => {
-  if (gameState.status === "Waiting") {
+  if (gameState.status === "Waiting" && gameState.timeRemaining == 1) {
     console.log("Game reset - clearing graph data");
     setData([]);
     setTime(0);
     setIsCrashed(false);
     setCrashPoint(getRandomCrashPoint());
   }
-}, [gameState.status]);
+}, [gameState.status, gameState.timeRemaining]);
 
 
 useEffect(() => {
@@ -84,12 +84,12 @@ useEffect(() => {
   }, [isCrashed, gameState.status]);
 
   return (
-    <div className="p-4 bg-gray-900 text-white rounded-lg shadow-md">
+    <div className="p-4 bg-black-900 text-white rounded-lg shadow-md">
       <h2 className="text-xl font-bold mb-4">Crash Graph</h2>
       <ResponsiveContainer width={800} height={300}>
         <LineChart data={data}>
-          <XAxis dataKey="time" tick={{ fill: "white" }} />
-          <YAxis domain={[1, crashPoint + 1]} tick={{ fill: "white" }} />
+          <XAxis dataKey="time" tick={{ fill: "black" }} />
+          <YAxis domain={[1, crashPoint + 1]} tick={{ fill: "black" }} />
           <Tooltip />
           <Line type="monotone" dataKey="multiplier" stroke="#00ff00" strokeWidth={2} dot={false} />
         </LineChart>
