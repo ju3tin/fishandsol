@@ -1,7 +1,7 @@
-"use client"
+"use client";
 import React, { useState, useEffect, useRef } from "react";
-import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts";
-import { useGameStore, GameState } from '../store/gameStore2';
+import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
+import { useGameStore, GameState } from "../store/gameStore2";
 
 const getRandomCrashPoint = (): number => Math.random() * 5 + 1.5; // Random crash between 1.5x and 6.5x
 
@@ -10,59 +10,18 @@ const CrashGraph: React.FC = () => {
   const [time, setTime] = useState(0);
   const [crashPoint, setCrashPoint] = useState(getRandomCrashPoint());
   const [isCrashed, setIsCrashed] = useState(false);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-const gameState = useGameStore((state: GameState) => state);
+  const gameState = useGameStore((state: GameState) => state);
 
-useEffect(() => {
-  if (gameState.status === "Waiting" && gameState.timeRemaining == 1) {
-    console.log("Game reset - clearing graph data");
-    setData([]);
-    setTime(0);
-    setIsCrashed(false);
-    setCrashPoint(getRandomCrashPoint());
-  }
-}, [gameState.status, gameState.timeRemaining]);
-
-
-useEffect(() => {
-  if (gameState.status == "Running") return;
-
-  console.log("Graph updating with:", {
-    //timeElapsed: gameState.timeElapsed,
-    multiplier: gameState.multiplier,
-    //crashPoint: gameState.crashPoint,
-  });
-/*
-  intervalRef.current = setInterval(() => {
-    setData((prevData) => {
-      if (
-        prevData.length > 0 &&
-        prevData[prevData.length - 1].time === gameState.timeElapsed
-      ) {
-        return prevData; // Prevent duplicate entries
-      }
-      return [
-        ...prevData,
-        { time: gameState.timeElapsed, multiplier: gameState.multiplier },
-      ];
-    });
-
-    if (gameState.crashPoint !== undefined && gameState.multiplier >= gameState.crashPoint) {
-      if (intervalRef.current) clearInterval(intervalRef.current);
+  useEffect(() => {
+    if (gameState.status === "Waiting" && gameState.timeRemaining === 1) {
+      setData([]);
+      setTime(0);
+      setIsCrashed(false);
+      setCrashPoint(getRandomCrashPoint());
     }
-  }, 100);
-*/
-/*
-  return () => {
-    if (intervalRef.current) clearInterval(intervalRef.current);
-  };
-  */
-}, [gameState.status]);
+  }, [gameState.status, gameState.timeRemaining]);
 
-
-useEffect(() => {
-   
-  
+  useEffect(() => {
     if (isCrashed) return;
 
     const interval = setInterval(() => {
@@ -70,12 +29,12 @@ useEffect(() => {
         const newTime = prevTime + 0.1;
         const newMultiplier = Math.exp(newTime / 2); // Exponential curve
 
-        if (gameState.status == 'Crashed') {
+        if (gameState.status === "Crashed") {
           setIsCrashed(true);
           clearInterval(interval);
         }
 
-        setData((prevData) => [...prevData, { time: gameState.multiplier, multiplier: newMultiplier }]);
+        setData((prevData) => [...prevData, { time: newTime, multiplier: newMultiplier }]);
         return newTime;
       });
     }, 100);
@@ -83,18 +42,44 @@ useEffect(() => {
     return () => clearInterval(interval);
   }, [isCrashed, gameState.status]);
 
+  const lastPoint = data.length > 0 ? data[data.length - 1] : { time: 0, multiplier: 1 };
+    const overlayPath = data
+    .map((point, index) => {
+      const x = (point.time / (time + 1)) * 800; // Adjust X scaling
+      const y = 300 - (point.multiplier / (crashPoint + 1)) * 300; // Adjust Y scaling
+      return `${index === 0 ? "M" : "L"} ${x},${y}`;
+    })
+    .join(" ");
   return (
-    <div style={{backgroundImage: `url(/under3.png)`}} className="p-4 text-white rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4"></h2>
+    <div className="p-4 text-white rounded-lg shadow-md relative" style={{ backgroundImage: `url(/under3.png)` }}>
+     
+     
+     
       <ResponsiveContainer width={800} height={300}>
         <LineChart data={data}>
-          <XAxis hide={true} dataKey="time" tick={{ fill: "black" }} />
-          <YAxis hide={true} domain={[1, crashPoint + 1]} tick={{ fill: "black" }} />
-          {/*<Tooltip />*/}
+          <XAxis hide dataKey="time" />
+          <YAxis hide domain={[1, crashPoint + 1]} />
           <Line type="monotone" dataKey="multiplier" stroke="#00ff00" strokeWidth={2} dot={false} />
         </LineChart>
       </ResponsiveContainer>
-      {gameState.status == 'Crashed' && <p className="text-red-500 mt-2">Crashed at {gameState.multiplier}x!</p>}
+      <div style={{}}>
+      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <path d={overlayPath} stroke="blue" strokeWidth="3" fill="none" />
+      </svg>
+      {/* Floating SVG Circle */}
+      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+     
+  <image
+    href="/fish.svg" 
+    width="40"
+    height="40"
+    x={`${(lastPoint.time / (crashPoint + 1)) * 100}%`}
+    y={`${100 - (lastPoint.multiplier / (crashPoint + 1)) * 100}%`}
+    transform="translate(-15, -15)" // Centers the image
+  />
+</svg>
+</div>
+      {gameState.status === "Crashed" && <p className="text-red-500 mt-2">Crashed at {gameState.multiplier}x!</p>}
     </div>
   );
 };
