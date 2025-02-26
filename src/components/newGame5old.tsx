@@ -84,12 +84,12 @@ useEffect(() => {
   }, [isCrashed, gameState.status]);
 
   return (
-    <div style={{backgroundImage: `url(https://media.geeksforgeeks.org/wp-content/uploads/20240523121650/React1.png)`}} className="p-4 text-white rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Crash Graph</h2>
+    <div style={{backgroundImage: `url(/under3.png)`}} className="p-4 text-white rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-4"></h2>
       <ResponsiveContainer width={800} height={300}>
         <LineChart data={data}>
-          <XAxis dataKey="time" tick={{ fill: "black" }} />
-          <YAxis domain={[1, crashPoint + 1]} tick={{ fill: "black" }} />
+          <XAxis hide={true} dataKey="time" tick={{ fill: "black" }} />
+          <YAxis hide={true} domain={[1, crashPoint + 1]} tick={{ fill: "black" }} />
           <Tooltip />
           <Line type="monotone" dataKey="multiplier" stroke="#00ff00" strokeWidth={2} dot={false} />
         </LineChart>
