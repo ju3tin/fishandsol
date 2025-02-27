@@ -129,6 +129,21 @@ const CrashGraph: React.FC = () => {
           fill="none"
         />
       </svg>
+{/* 
+      <svg className="absolute top-0 left-0 w-full h-full pointer-events-none">
+        <defs>
+          <linearGradient id="gradientStroke" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style={{ stopColor: '#00ff00', stopOpacity: 1 }} />
+            <stop offset="100%" style={{ stopColor: '#0000ff', stopOpacity: 1 }} />
+          </linearGradient>
+        </defs>
+        <path
+          d={generatePath()} // Use the generated path based on the current position of Point B
+          stroke="url(#gradientStroke)" // Use the gradient for the stroke
+          strokeWidth="3"
+          fill="none"
+        />
+*/}
 
       <svg  className="absolute top-0 left-0 w-full h-full pointer-events-none">
         <image
