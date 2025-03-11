@@ -34,12 +34,12 @@ export default function Header() {
     <span className="w-8 h-8 border bg-accent rounded-full overflow-hidden">
       <Image src="/images/logo1.png" alt="Profile" width={32} height={32} className="object-cover" />
     </span>
-
+    </Link>
     {/* Centered Image */}
-    <span style={{ width:'100%', }} className="flex items-center justify-center w-52 h-24">
+    <span style={{ width:'100%', }} className="flex items-center justify-center h-24">
       <Image src="/image07.png" alt="Profile" width={200} height={100} className="object-contain" />
     </span>
-  </Link>
+  
 
   <div className="ml-4 flex items-center gap-3">
     <DropdownMenu>
