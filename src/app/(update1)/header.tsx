@@ -31,9 +31,10 @@ export default function Header() {
         prefetch={false}
       >
         <span className="w-8 h-8 border bg-accent rounded-full overflow-hidden">
-  <Image src="/path-to-image.jpg" alt="Profile" width={32} height={32} className="object-cover" />
+  <Image src="image07.png" alt="Profile" width={32} className="object-cover" />
 </span>
-        <span>Chippy</span>
+        <span> <Image src="/images/logo1.png" alt="Profile" width={32} height={32} className="object-cover" />
+        </span>
       </Link>
 
       <div className="ml-4 flex items-center gap-3">
