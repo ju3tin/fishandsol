@@ -30,7 +30,7 @@ export default function Header() {
         prefetch={false}
       >
         <span className="w-8 h-8 border bg-accent rounded-full" />
-        <span>Acme Inc</span>
+        <span>Chippy</span>
       </Link>
 
       <div className="ml-4 flex items-center gap-3">
