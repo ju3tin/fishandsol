@@ -36,7 +36,7 @@ export default function Header() {
     </span>
 
     {/* Centered Image */}
-    <span className="flex items-center justify-center w-52 h-24">
+    <span style={{ width:'100%', }} className="flex items-center justify-center w-52 h-24">
       <Image src="/image07.png" alt="Profile" width={200} height={100} className="object-contain" />
     </span>
   </Link>
