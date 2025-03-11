@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 import Link from 'next/link';
+import Image from "next/image";
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -29,7 +30,9 @@ export default function Header() {
         className="flex items-center gap-2 text-lg font-semibold md:text-base"
         prefetch={false}
       >
-        <span className="w-8 h-8 border bg-accent rounded-full" />
+        <span className="w-8 h-8 border bg-accent rounded-full overflow-hidden">
+  <Image src="/path-to-image.jpg" alt="Profile" width={32} height={32} className="object-cover" />
+</span>
         <span>Chippy</span>
       </Link>
 
