@@ -12,5 +12,4 @@ const ResponsiveIframe = ({ width = 800, height = 400 }) => {
     );
   };
 
-
-export default ResponsiveIframe;
+  export default ResponsiveIframe;

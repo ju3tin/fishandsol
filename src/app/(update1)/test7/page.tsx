@@ -9,7 +9,7 @@ import BetList from '../../../components/BetList';
 import JsonFetcher from "../../components/JsonFetcher";
 import Chatroom from '../../../components/Chatroom1';
 import GameLayout from '../../../components/GameLayout';
-import Iframe3 from '../../../components/Iframe1';
+import Iframe3 from '../../../components/Iframe4';
 
   
 export default function Home() {
