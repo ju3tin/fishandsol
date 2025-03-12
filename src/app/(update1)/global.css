@@ -5,7 +5,7 @@
   .wallet-adapter-button-trigger {
     background-color: #512da800 !important;
     font-size: 0.875rem !important;
-    color: rgb(163 163 163 / var(--tw-text-opacity, 1));
+    color: rgb(163 163 163 / var(--tw-text-opacity, 1)) !important;
     padding: 5px !important;
 }
 .bg-accent {
