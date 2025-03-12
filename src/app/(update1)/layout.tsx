@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-
+import Head from 'next/head'
 import ContextProvider from '@/components/context-provider';
 
 import './global.css';
@@ -23,6 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+
+<Head>
+        <title>My page title</title>
+      </Head>
       
       <body className={inter.className}>
         <ContextProvider>
