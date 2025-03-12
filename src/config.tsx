@@ -1,6 +1,6 @@
 import { usePathname } from 'next/navigation';
 
-import { Bell, Briefcase, Home, Settings, User } from 'lucide-react';
+import { Bell, Briefcase, Home, Settings, User, BookOpenCheck } from 'lucide-react';
 
 export const NavItems = () => {
   const pathname = usePathname() || '';
@@ -18,9 +18,9 @@ export const NavItems = () => {
       position: 'top',
     },
     {
-      name: 'Profile',
+      name: 'Whitepaper',
       href: '/profile',
-      icon: <User size={20} />,
+      icon: <BookOpenCheck size={20} />,
       active: isNavItemActive(pathname, '/profile'),
       position: 'top',
     },
