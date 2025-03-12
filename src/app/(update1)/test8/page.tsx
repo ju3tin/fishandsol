@@ -9,7 +9,6 @@ import BetList from '../../../components/BetList';
 import JsonFetcher from "../../components/JsonFetcher";
 import Chatroom from '../../../components/Chatroom1';
 import GameLayout from '../../../components/GameLayout';
-import Iframe3 from '../../../components/Iframe1';
 
   
 export default function Home() {
@@ -39,9 +38,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 		 
 		
 	  <CrashList />
-	  <div className="container1">
-  <iframe className="responsive-iframe" src="/test6"></iframe>
-</div>
+	  <Game />
 	  <GameControls />
 
 		  <BetList />

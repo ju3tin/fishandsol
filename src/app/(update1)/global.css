@@ -12,6 +12,25 @@
   background-color: hsl(0deg 0% 0%);
 }
 
+.container1 {
+  position: relative;
+ top:0;
+ left: 0;
+  width: 100%;
+
+}
+
+/* Then style the iframe to fit in the container div with full height and width */
+.responsive-iframe {
+  
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  width: 800px;
+  height: 400px;
+}
+
   @layer base {
     :root {
       --background: 0 0% 100%;
