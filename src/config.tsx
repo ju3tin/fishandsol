@@ -1,6 +1,6 @@
 import { usePathname } from 'next/navigation';
 
-import { Bell, Briefcase, Home, Settings, User, BookOpenCheck } from 'lucide-react';
+import { Bell, Briefcase, Home, Settings, User, BookOpenCheck, Fish } from 'lucide-react';
 
 export const NavItems = () => {
   const pathname = usePathname() || '';

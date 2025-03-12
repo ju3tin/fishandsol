@@ -2,8 +2,14 @@
 
 import { Fragment, useEffect, useState } from 'react';
 
-import Link from 'next/link';
+import WalletContextProvider from "@/providers/WalletContextProvider";
+import {
+    ConnectionProvider,
+    WalletProvider,
+  } from "@solana/wallet-adapter-react";
 
+import Link from 'next/link';
+import LoginButton from './login-buton';
 import {
   Tooltip,
   TooltipContent,
@@ -68,6 +74,12 @@ export default function SideNav() {
                           isSidebarExpanded={isSidebarExpanded}
                         />
                       </div>
+                      <WalletContextProvider>
+         
+
+         <LoginButton />
+        {/* <Header /> */} 
+              </WalletContextProvider>
                     </Fragment>
                   );
                 }
