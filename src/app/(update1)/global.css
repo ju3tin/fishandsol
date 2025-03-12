@@ -4,6 +4,9 @@
 
   .wallet-adapter-button-trigger {
     background-color: #512da800 !important;
+    font-size: 0.875rem;
+    color: rgb(163 163 163 / var(--tw-text-opacity, 1));
+    padding: 5px;
 }
 
   @layer base {
