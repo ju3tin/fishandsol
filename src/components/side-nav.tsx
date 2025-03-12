@@ -74,16 +74,17 @@ export default function SideNav() {
                           isSidebarExpanded={isSidebarExpanded}
                         />
                       </div>
-                      <WalletContextProvider>
+                    
+                    </Fragment>
+                  );
+                }
+              })}
+                <WalletContextProvider>
          
 
          <LoginButton />
         {/* <Header /> */} 
               </WalletContextProvider>
-                    </Fragment>
-                  );
-                }
-              })}
             </div>
           </div>
           {/* Bottom */}
