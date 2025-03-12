@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Head } from 'next/document';
 
 import ContextProvider from '@/components/context-provider';
 
@@ -23,6 +24,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <Head>
+   <link href="/style5.css" rel="stylesheet" />
+</Head>
       <body className={inter.className}>
         <ContextProvider>
           <Header />
