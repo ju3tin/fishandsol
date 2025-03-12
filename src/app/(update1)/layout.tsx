@@ -26,6 +26,7 @@ export default function RootLayout({
 
 <Head>
         <title>My page title</title>
+        <link rel="stylesheet" crossOrigin="anonymous" href="/style5.css" />
       </Head>
       
       <body className={inter.className}>
