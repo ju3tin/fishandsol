@@ -39,6 +39,7 @@ export default function Header() {
     <Link 
     href="#"
     >
+       {/* Centered Image */}
     <span style={{ width:'100%', }} className="flex items-center justify-center h-24">
       <Image src="/image07.png" alt="Profile" width={200} height={100} className="object-contain" />
     </span>
@@ -46,6 +47,7 @@ export default function Header() {
   
 
   <div className="ml-4 flex items-center gap-3">
+    {/*
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
@@ -53,6 +55,7 @@ export default function Header() {
           size="icon"
           className="overflow-hidden rounded-full"
         >
+          
           <Avatar>
             <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
             <AvatarFallback>CN</AvatarFallback>
@@ -68,7 +71,7 @@ export default function Header() {
         <DropdownMenuItem>Logout</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-
+ */}
     {/* Mobile Menu Button */}
     <button onClick={() => setIsOpen(true)} className="block sm:hidden">
       <Menu size={24} />
