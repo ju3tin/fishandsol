@@ -1,15 +1,17 @@
-const ResponsiveIframe = ({ width = 800, height = 400 }) => {
-    const aspectRatio = (height / width) * 100; // Convert to percentage
-  
-    return (
-      <div className="relative w-full" style={{ paddingTop: `${aspectRatio}%` }}>
+import React from "react";
+
+const ResponsiveIframe = () => {
+  return (
+    <div className="w-full max-w-[800px] mx-auto">
+      <div className="relative pt-[50%]">
         <iframe
           src='/test6'
-          className="absolute top-0 left-0 w-full h-full"
+          className="absolute top-0 left-0 w-full h-full border-0"
           allowFullScreen
         ></iframe>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
-  export default ResponsiveIframe;
+export default ResponsiveIframe;
