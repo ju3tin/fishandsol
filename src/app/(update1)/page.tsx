@@ -6,7 +6,7 @@ import Game from '../../components/newGame5old';
 import CrashList from '../../components/CrashList';
 import GameControls from '../../components/GameControls2';
 import BetList from '../../components/BetList';
-import JsonFetcher from "../../components/JsonFetcher";
+//import JsonFetcher from "../../components/JsonFetcher";
 import Chatroom from '../../components/Chatroom1';
 import GameLayout from '../../components/GameLayout';
 import Iframe3 from '../../components/Iframe4';
