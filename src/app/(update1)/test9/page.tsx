@@ -7,6 +7,7 @@ import Game5 from '../../../components/Game2';
 import CrashList from '../../../components/CrashList';
 import GameControls from '../../../components/GameControls2';
 import BetList from '../../../components/BetList';
+import Tabs from '../../../components/tabs';
 //import JsonFetcher from "../../components/JsonFetcher";
 import Chatroom from '../../../components/Chatroom1';
 import GameLayout from '../../../components/GameLayout';
@@ -57,6 +58,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 	  <GameControls />
 
       {!isMobile && <BetList />}
+      {isMobile && <Tabs />}
 		</GameLayout>
 		</main>
 	);
