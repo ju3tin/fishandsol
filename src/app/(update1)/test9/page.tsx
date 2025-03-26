@@ -14,6 +14,8 @@ import Iframe3 from '../../../components/Iframe4';
 
   
 export default function Home() {
+const [isMobile, setIsMobile] = useState(false);
+
 
 const [chatMessages, setChatMessages] = useState<Array<{ text: string; timestamp: string }>>([]);
 const [inputMessage, setInputMessage] = useState('');
@@ -33,9 +35,18 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 		  setInputMessage('');
 		}
 	  };
+      useEffect(() => {
+		const checkScreenSize = () => setIsMobile(window.innerWidth <= 768);
+	
+		checkScreenSize(); // Initial check
+		window.addEventListener("resize", checkScreenSize);
+	
+		return () => window.removeEventListener("resize", checkScreenSize);
+	  }, []);
+
 	return (
 		<main className={styles.main}>
-	 <Chatroom />
+	  {!isMobile &&  <Chatroom />}
 				<GameLayout> {/* Pass the layoutWidth as width prop */}
 		 
 		
