@@ -26,7 +26,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 	  };
 	return (
 	
-<div className="chat-container p-4 bg-gray-900 text-white rounded-lg shadow-md" style={{ maxHeight: '500px' }}>
+<div className="chat-container p-4 text-white rounded-lg shadow-md" style={{ maxHeight: '500px' }}>
 <div style={{overflow:'scroll' , overflowX:'hidden', height: '408px' }} className="chat-messages">
 <JsonFetcher url="/api" />
   {chatMessages.map((msg, index) => {
