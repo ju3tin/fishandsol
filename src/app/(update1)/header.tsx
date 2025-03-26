@@ -23,7 +23,7 @@ export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 flex items-center h-16 px-4 border-b bg-white dark:bg-gray-900 shadow-md md:px-6 justify-between">
+    <header className="sticky top-0 z-50 flex items-center h-16 px-4 border-b bg-white dark:bg-black-900 shadow-md md:px-6 justify-between">
       <Link
         href="#"
         className="flex items-center gap-2 text-lg font-semibold md:text-base"
