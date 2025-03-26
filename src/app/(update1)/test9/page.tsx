@@ -56,7 +56,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 </div>
 	  <GameControls />
 
-		  <BetList />
+      {!isMobile && <BetList />}
 		</GameLayout>
 		</main>
 	);

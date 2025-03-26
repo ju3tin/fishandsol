@@ -47,7 +47,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 	return (
 		<main className={styles.main}>
 	
-	 {!isMobile &&  <Chatroom />}
+	 {!isMobile && <Chatroom />}
 				<GameLayout> {/* Pass the layoutWidth as width prop */}
 		 
 		
@@ -57,7 +57,7 @@ const ChatMessage = ({ timestamp, text }: { timestamp: string; text: string }) =
 </div>
 	  <GameControls />
 
-		  <BetList />
+	  {!isMobile && <BetList />}
 		</GameLayout>
 		</main>
 	);
