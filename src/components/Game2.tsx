@@ -3,7 +3,6 @@
 import * as THREE from 'three';
 import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 
-import { OrbitControls, useFBX } from "@react-three/drei";
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 
@@ -44,10 +43,33 @@ if (typeof window !== 'undefined') {
 const rocketWidth = 440;
 const rocketHeight = 440;
 
-function curveFunction(t: number) {
-	return coeffA * (Math.exp(coeffB * t) - 1);
-}
-
+function curveFunction(t: number, width: number, height: number) {
+	const startX = 0;  // Start from the left edge of the canvas
+	const startY = 50;  // Start from the bottom of the canvas
+	
+	const controlX = width * 0.85; // Control point X starts at 85% of canvas width
+	const controlY = height - 1500; // Control point Y to curve upwards
+	
+	const endX = t * width; // End X based on time (t) and canvas width
+	const endY = height - (500 * Math.min(1, t / 1000)); // Simulates incline & leveling
+  
+	let bezierY: number;
+  
+	// Normalize `t` to be between 0 and 1
+	const normalizedT = Math.min(t, 1);
+  
+	// Use linear motion for the first 85% of the canvas width (0 <= t < 0.85)
+	if (normalizedT < 0.85) {
+	  bezierY = startY; // Stay at the bottom during linear movement
+	} else {
+	  // Quadratic Bezier curve formula after 85% width
+	  bezierY =
+		(1 - normalizedT) ** 2 * startY + 2 * (1 - normalizedT) * normalizedT * controlY + normalizedT ** 2 * endY;
+	}
+  
+	return bezierY;
+  }
+  
  // Dynamic SVG paths
  const imagePaths = {
 	rocket: 'fish.svg',
@@ -90,7 +112,7 @@ function render(
 	const minY = rocketHeight;
 
 	const expectedX = gameState.timeElapsed;
-	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000);
+	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000, canvas.width, canvas.height);
 
 	const rocketX = Math.min(expectedX, maxX);
 	const rocketY = Math.max(expectedY, minY);
@@ -203,7 +225,7 @@ function drawRocketPath(
 
 	for (let t = 0; t <= timeElapsed/step; t += step) {
 		const x = step * t;
-		const y = canvas.height - curveFunction(x/1000);
+		const y = canvas.height - curveFunction(x/1000, canvas.width, canvas.height);
 //after 2.0x immulate curve
 		context.lineTo(x, y);
 	}
@@ -217,10 +239,10 @@ function drawRocket(
 	x: number,
 	y: number,
 ) {
+	const canvas = context.canvas;
 	// Obtain angle from the path derivative
-
-	const d1 = curveFunction(timeElapsed/1000);
-	const d2 = curveFunction((timeElapsed + 10)/1000);
+	const d1 = curveFunction(timeElapsed/1000, canvas.width, canvas.height);
+	const d2 = curveFunction((timeElapsed + 10)/1000, canvas.width, canvas.height);
 	const slope = (d2 - d1)/10;
 	const angle = -Math.atan(slope) + 2*Math.PI/4;
 
@@ -244,6 +266,7 @@ function drawCrashedRocket(
 }
 
 export default function Game() {
+	const [pointB, setPointB] = useState({ x: 0, y: 0 });
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
