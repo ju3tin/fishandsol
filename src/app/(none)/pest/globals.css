@@ -74,4 +74,7 @@
     @apply bg-background text-foreground;
   }
 }
+.bg-accent {
+    background-color: hsl(0deg 0% 0%);
+  }
 

@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Rocket } from "lucide-react"
+import { Fish } from "lucide-react"
 import GameChat from "./game-chat"
 
 // Type for cashout events
@@ -18,6 +18,8 @@ type CashoutEvent = {
 
 const CrashGame = () => {
   // Game state
+
+  const [isMobile, setIsMobile] = useState(false);
   const [gameState, setGameState] = useState<"idle" | "running" | "crashed">("idle")
   const [currentMultiplier, setCurrentMultiplier] = useState(1)
   const [crashPoint, setCrashPoint] = useState(0)
@@ -40,6 +42,15 @@ const CrashGame = () => {
   // Constants
   const MAX_MULTIPLIER = 100
   const GAME_DURATION_MS = 15000 // 15 seconds max game duration
+
+  useEffect(() => {
+    const checkScreenSize = () => setIsMobile(window.innerWidth <= 768);
+
+    checkScreenSize(); // Initial check
+    window.addEventListener("resize", checkScreenSize);
+
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   // Update ref when state changes
   useEffect(() => {
@@ -281,10 +292,11 @@ const CrashGame = () => {
     <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Chat - Left Side */}
-        <div className="lg:col-span-3 h-[500px]">
-          <GameChat gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
-        </div>
+       
 
+        {!isMobile &&  <div className="lg:col-span-3 h-[500px]">
+          <GameChat gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
+        </div>}
         {/* Game Display - Middle */}
         <div className="lg:col-span-7">
           <Card className="bg-black border-black">
@@ -369,7 +381,7 @@ const CrashGame = () => {
                         animate={{ scale: 1 }}
                         transition={{ duration: 0.2 }}
                       >
-                        <Rocket className="text-green-400 h-6 w-6" />
+                        <Fish className="text-green-400 h-6 w-6" />
                       </motion.div>
                     )}
                   </div>
@@ -490,6 +502,11 @@ const CrashGame = () => {
             </CardContent>
           </Card>
         </div>
+
+        {isMobile &&  <div className="lg:col-span-3 h-[500px]">
+          <GameChat gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
+        </div>}
+
       </div>
     </div>
   )

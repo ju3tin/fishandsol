@@ -50,22 +50,22 @@ export default function SideNav() {
   };
 
   return (
-    <div style={{backgroundColor:'black'}} className="pr-4">
-      <div style={{backgroundColor:"black"}}
+    <div className="pr-4">
+      <div
         className={cn(
           isSidebarExpanded ? 'w-[200px]' : 'w-[68px]',
-          'border-r transition-all duration-300 ease-in-out transform hidden sm:flex h-full bg-black',
+          'border-r transition-all duration-300 ease-in-out transform hidden sm:flex h-full bg-accent',
         )}
       >
-        <aside style={{backgroundColor:"black"}} className="flex h-full flex-col w-full break-words px-4 overflow-x-hidden columns-1">
+        <aside className="flex h-full flex-col w-full break-words px-4 overflow-x-hidden columns-1">
           {/* Top */}
-          <div style={{backgroundColor:"black"}} className="mt-4 relative pb-2">
-            <div style={{backgroundColor:"black"}} className="flex flex-col space-y-1">
+          <div className="mt-4 relative pb-2">
+            <div className="flex flex-col space-y-1">
               {navItems.map((item, idx) => {
                 if (item.position === 'top') {
                   return (
                     <Fragment key={idx}>
-                      <div style={{backgroundColor:"black"}} className="space-y-1">
+                      <div className="space-y-1">
                         <SideNavItem
                           label={item.name}
                           icon={item.icon}
@@ -88,13 +88,13 @@ export default function SideNav() {
             </div>
           </div>
           {/* Bottom */}
-          <div style={{backgroundColor:"black"}} className="sticky bottom-0 mt-auto whitespace-nowrap mb-4 transition duration-200 block">
+          <div className="sticky bottom-0 mt-auto whitespace-nowrap mb-4 transition duration-200 block">
             <ThemeToggle isDropDown={true} />
             {navItems.map((item, idx) => {
               if (item.position === 'bottom') {
                 return (
                   <Fragment key={idx}>
-                    <div style={{backgroundColor:"black"}} className="space-y-1">
+                    <div className="space-y-1">
                       <SideNavItem
                         label={item.name}
                         icon={item.icon}
@@ -109,10 +109,10 @@ export default function SideNav() {
             })}
           </div>
         </aside>
-        <div style={{backgroundColor:"black"}} className="mt-[calc(calc(90vh)-40px)] relative">
+        <div className="mt-[calc(calc(90vh)-40px)] relative">
           <button
             type="button"
-            className="absolute bottom-32 right-[-12px] flex h-6 w-6 items-center justify-center border border-muted-foreground/20 rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out"
+            className="absolute bottom-32 right-[-12px] flex h-6 w-6 items-center justify-center border border-muted-foreground/20 rounded-full bg-accent shadow-md hover:shadow-lg transition-shadow duration-300 ease-in-out"
             onClick={toggleSidebar}
           >
             {isSidebarExpanded ? (
