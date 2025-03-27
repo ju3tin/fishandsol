@@ -287,7 +287,7 @@ const CrashGame = () => {
 
         {/* Game Display - Middle */}
         <div className="lg:col-span-7">
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-black border-black">
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-2xl font-bold text-white">{gameState === "crashed" ? "CRASHED!" : "Multiplier"}</h2>
@@ -414,7 +414,7 @@ const CrashGame = () => {
 
         {/* Betting controls - Right Side */}
         <div className="lg:col-span-2">
-          <Card className="bg-gray-800 border-gray-700">
+          <Card className="bg-black border-black">
             <CardContent className="p-6">
               <div className="space-y-4">
                 <div>
