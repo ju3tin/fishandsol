@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import ContextProvider from '@/components/context-provider';
 import Header from './header';
 
-import SideNav from '../../../components/side-nav';
+import SideNav from '../../../components/side-nav1';
 
 const inter = Inter({ subsets: ["latin"] })
 
