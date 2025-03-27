@@ -278,7 +278,7 @@ const CrashGame = () => {
   }
 
   return (
-    <div className="w-full max-w-6xl">
+    <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Chat - Left Side */}
         <div className="lg:col-span-3 h-[500px]">
@@ -286,7 +286,7 @@ const CrashGame = () => {
         </div>
 
         {/* Game Display - Middle */}
-        <div className="lg:col-span-6">
+        <div className="lg:col-span-7">
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
@@ -413,7 +413,7 @@ const CrashGame = () => {
         </div>
 
         {/* Betting controls - Right Side */}
-        <div className="lg:col-span-3">
+        <div className="lg:col-span-2">
           <Card className="bg-gray-800 border-gray-700">
             <CardContent className="p-6">
               <div className="space-y-4">
