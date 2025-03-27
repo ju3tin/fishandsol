@@ -149,7 +149,12 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
   }
 
   return (
-    <Card className="bg-gray-800 border-gray-700 h-full flex flex-col">
+    <Card className="bg-gray-800 border-gray-700 h-full flex flex-col" style={{
+      backgroundImage: "url('/chat-bg.jpg')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundBlendMode: "overlay"
+    }}>
       <CardHeader className="pb-2">
         <CardTitle className="text-white text-lg">Game Chat</CardTitle>
       </CardHeader>

@@ -376,7 +376,7 @@ const CrashGame = () => {
                 )}
 
                 {gameState === "idle" && (
-                  <div className="flex items-center justify-center h-full">
+                  <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
                     <p className="text-gray-400">Place your bet and start the game</p>
                   </div>
                 )}
