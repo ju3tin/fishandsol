@@ -3,6 +3,10 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
+import ContextProvider from '@/components/context-provider';
+import Header from './header';
+
+import SideNav from '../../../components/side-nav';
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,9 +23,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
+      <link rel="stylesheet" crossOrigin="anonymous" href="/style5.css" />
+      <ContextProvider>
+          <Header />
+          <div className="flex">
+            <SideNav />
+            <div className="w-full overflow-x-auto">
+              <div className="sm:h-[calc(99vh-60px)] overflow-auto ">
+                <div className="">
+                  <div className="">{children}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ContextProvider>
       </body>
     </html>
   )

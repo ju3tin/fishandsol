@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Rocket } from "lucide-react"
+import GameChat from "./game-chat"
 
 // Type for cashout events
 type CashoutEvent = {
@@ -168,6 +169,11 @@ const CrashGame = () => {
     }, 3000)
   }
 
+  // Reset game to idle state
+  const resetGame = () => {
+    setGameState("idle")
+  }
+
   // Add a cashout event
   const addCashoutEvent = (id: string, multiplier: number, amount: string) => {
     // Add to cashouts
@@ -272,209 +278,218 @@ const CrashGame = () => {
   }
 
   return (
-    <div className="w-full max-w-4xl">
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Game display */}
-        <Card className="flex-1 bg-gray-800 border-gray-700">
-          <CardContent className="p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-white">{gameState === "crashed" ? "CRASHED!" : "Multiplier"}</h2>
-              <div className="text-3xl font-mono font-bold text-green-400">{currentMultiplier.toFixed(2)}x</div>
-            </div>
+    <div className="w-full max-w-6xl">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* Chat - Left Side */}
+        <div className="lg:col-span-3 h-[500px]">
+          <GameChat gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
+        </div>
 
-            {/* Game visualization */}
-            <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
+        {/* Game Display - Middle */}
+        <div className="lg:col-span-6">
+          <Card className="bg-gray-800 border-gray-700">
+            <CardContent className="p-6">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl font-bold text-white">{gameState === "crashed" ? "CRASHED!" : "Multiplier"}</h2>
+                <div className="text-3xl font-mono font-bold text-green-400">{currentMultiplier.toFixed(2)}x</div>
+              </div>
+
+              {/* Game visualization */}
+              <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
+                {gameState !== "idle" && (
+                  <div className="absolute inset-0">
+                    {/* Curve path */}
+                    <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <motion.path
+                        ref={pathRef}
+                        d={getCurvePath()}
+                        fill="none"
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: pathProgress }}
+                        transition={{ duration: 0.1 }}
+                      />
+
+                      {/* Cashout dots - only render if path exists and multiplier progress <= current path progress */}
+                      {pathRef.current &&
+                        cashouts.map((cashout) => {
+                          // Calculate progress based on multiplier
+                          const cashoutProgress = getMultiplierProgress(cashout.multiplier)
+
+                          // Only render dots that are at or behind the current line position
+                          if (cashoutProgress <= pathProgress) {
+                            const position = getPointAtProgress(cashoutProgress)
+
+                            return (
+                              <g key={cashout.id}>
+                                <circle
+                                  cx={position.x}
+                                  cy={position.y}
+                                  r="2"
+                                  fill="#fbbf24"
+                                  stroke="#fbbf24"
+                                  strokeWidth="1"
+                                />
+                                <text
+                                  x={position.x + (cashout.id === "you" ? -3 : 3)}
+                                  y={position.y - 5}
+                                  fontSize="4"
+                                  fill="#fbbf24"
+                                  textAnchor={cashout.id === "you" ? "end" : "start"}
+                                >
+                                  {cashout.id === "you" ? "You" : cashout.id}
+                                </text>
+                                <text
+                                  x={position.x + (cashout.id === "you" ? -3 : 3)}
+                                  y={position.y - 1}
+                                  fontSize="3"
+                                  fill="#fbbf24"
+                                  textAnchor={cashout.id === "you" ? "end" : "start"}
+                                >
+                                  {cashout.multiplier.toFixed(2)}x
+                                </text>
+                              </g>
+                            )
+                          }
+                          return null
+                        })}
+                    </svg>
+
+                    {/* Rocket indicator */}
+                    {gameState === "running" && pathRef.current && (
+                      <motion.div
+                        className="absolute"
+                        style={{
+                          left: `${getRocketPosition().x}%`,
+                          top: `${getRocketPosition().y}%`,
+                          transform: `translate(-50%, -50%) rotate(${getRocketRotation()}deg)`,
+                        }}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Rocket className="text-green-400 h-6 w-6" />
+                      </motion.div>
+                    )}
+                  </div>
+                )}
+
+                {gameState === "idle" && (
+                  <div className="flex items-center justify-center h-full">
+                    <p className="text-gray-400">Place your bet and start the game</p>
+                  </div>
+                )}
+
+                {gameState === "crashed" && (
+                  <div className="absolute inset-0 bg-red-900/30 flex items-center justify-center">
+                    <p className="text-3xl font-bold text-red-500">CRASHED AT {crashPoint.toFixed(2)}x</p>
+                  </div>
+                )}
+
+                {userCashedOut && (
+                  <div className="absolute top-4 right-4 bg-green-900/80 px-3 py-1 rounded-full">
+                    <p className="text-green-400 font-bold">Cashed Out: +{userWinnings.toFixed(2)} SOL</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Game history */}
+              <div className="flex gap-2 overflow-x-auto py-2">
+                {gameHistory.map((multiplier, index) => (
+                  <div
+                    key={index}
+                    className={`px-2 py-1 rounded text-xs font-mono ${
+                      multiplier < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
+                    }`}
+                  >
+                    {multiplier.toFixed(2)}x
+                  </div>
+                ))}
+                {gameHistory.length === 0 && <p className="text-gray-500 text-sm">No game history yet</p>}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Betting controls - Right Side */}
+        <div className="lg:col-span-3">
+          <Card className="bg-gray-800 border-gray-700">
+            <CardContent className="p-6">
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="bet-amount" className="text-white">
+                    Bet Amount (SOL)
+                  </Label>
+                  <Input
+                    id="bet-amount"
+                    type="number"
+                    value={betAmount}
+                    onChange={(e) => setBetAmount(e.target.value)}
+                    disabled={gameState !== "idle"}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    min="0.01"
+                    step="0.01"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="auto-cashout" className="text-white">
+                    Auto Cashout At
+                  </Label>
+                  <Input
+                    id="auto-cashout"
+                    type="number"
+                    value={autoCashoutAt}
+                    onChange={(e) => setAutoCashoutAt(e.target.value)}
+                    disabled={gameState !== "idle"}
+                    className="bg-gray-700 border-gray-600 text-white"
+                    min="1.01"
+                    step="0.01"
+                  />
+                </div>
+
+                {gameState === "idle" ? (
+                  <Button onClick={startGame} className="w-full bg-green-600 hover:bg-green-700">
+                    Place Bet
+                  </Button>
+                ) : gameState === "running" ? (
+                  <Button
+                    onClick={() => cashout()}
+                    className="w-full bg-yellow-600 hover:bg-yellow-700"
+                    disabled={userCashedOut}
+                  >
+                    Cash Out ({currentMultiplier.toFixed(2)}x)
+                  </Button>
+                ) : (
+                  <Button disabled className="w-full bg-red-600">
+                    Crashed
+                  </Button>
+                )}
+              </div>
+
+              {/* Active players */}
               {gameState !== "idle" && (
-                <div className="absolute inset-0">
-                  {/* Curve path */}
-                  <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
-                    <motion.path
-                      ref={pathRef}
-                      d={getCurvePath()}
-                      fill="none"
-                      stroke="#10b981"
-                      strokeWidth="2"
-                      initial={{ pathLength: 0 }}
-                      animate={{ pathLength: pathProgress }}
-                      transition={{ duration: 0.1 }}
-                    />
-
-                    {/* Cashout dots - only render if path exists and multiplier progress <= current path progress */}
-                    {pathRef.current &&
-                      cashouts.map((cashout) => {
-                        // Calculate progress based on multiplier
-                        const cashoutProgress = getMultiplierProgress(cashout.multiplier)
-
-                        // Only render dots that are at or behind the current line position
-                        if (cashoutProgress <= pathProgress) {
-                          const position = getPointAtProgress(cashoutProgress)
-
-                          return (
-                            <g key={cashout.id}>
-                              <circle
-                                cx={position.x}
-                                cy={position.y}
-                                r="2"
-                                fill="#fbbf24"
-                                stroke="#fbbf24"
-                                strokeWidth="1"
-                              />
-                              <text
-                                x={position.x + (cashout.id === "you" ? -3 : 3)}
-                                y={position.y - 5}
-                                fontSize="4"
-                                fill="#fbbf24"
-                                textAnchor={cashout.id === "you" ? "end" : "start"}
-                              >
-                                {cashout.id === "you" ? "You" : cashout.id}
-                              </text>
-                              <text
-                                x={position.x + (cashout.id === "you" ? -3 : 3)}
-                                y={position.y - 1}
-                                fontSize="3"
-                                fill="#fbbf24"
-                                textAnchor={cashout.id === "you" ? "end" : "start"}
-                              >
-                                {cashout.multiplier.toFixed(2)}x
-                              </text>
-                            </g>
-                          )
-                        }
-                        return null
-                      })}
-                  </svg>
-
-                  {/* Rocket indicator */}
-                  {gameState === "running" && pathRef.current && (
-                    <motion.div
-                      className="absolute"
-                      style={{
-                        left: `${getRocketPosition().x}%`,
-                        top: `${getRocketPosition().y}%`,
-                        transform: `translate(-50%, -50%) rotate(${getRocketRotation()}deg)`,
-                      }}
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.2 }}
-                    >
-                      <Rocket className="text-green-400 h-6 w-6" />
-                    </motion.div>
-                  )}
+                <div className="mt-6">
+                  <h3 className="text-sm font-medium text-gray-400 mb-2">Active Players</h3>
+                  <div className="space-y-2">
+                    {cashouts.length === 0 && !userCashedOut && (
+                      <div className="text-xs text-gray-500">Waiting for players to cash out...</div>
+                    )}
+                    {cashouts.map((cashout) => (
+                      <div key={cashout.id} className="flex justify-between items-center text-xs">
+                        <span className="font-medium text-white">{cashout.id === "you" ? "You" : cashout.id}</span>
+                        <span className="text-yellow-400">
+                          {cashout.amount.toFixed(2)} SOL @ {cashout.multiplier.toFixed(2)}x
+                        </span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
-
-              {gameState === "idle" && (
-                <div className="flex items-center justify-center h-full">
-                  <p className="text-gray-400">Place your bet and start the game</p>
-                </div>
-              )}
-
-              {gameState === "crashed" && (
-                <div className="absolute inset-0 bg-red-900/30 flex items-center justify-center">
-                  <p className="text-3xl font-bold text-red-500">CRASHED AT {crashPoint.toFixed(2)}x</p>
-                </div>
-              )}
-
-              {userCashedOut && (
-                <div className="absolute top-4 right-4 bg-green-900/80 px-3 py-1 rounded-full">
-                  <p className="text-green-400 font-bold">Cashed Out: +{userWinnings.toFixed(2)} SOL</p>
-                </div>
-              )}
-            </div>
-
-            {/* Game history */}
-            <div className="flex gap-2 overflow-x-auto py-2">
-              {gameHistory.map((multiplier, index) => (
-                <div
-                  key={index}
-                  className={`px-2 py-1 rounded text-xs font-mono ${
-                    multiplier < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
-                  }`}
-                >
-                  {multiplier.toFixed(2)}x
-                </div>
-              ))}
-              {gameHistory.length === 0 && <p className="text-gray-500 text-sm">No game history yet</p>}
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Betting controls */}
-        <Card className="w-full md:w-80 bg-gray-800 border-gray-700">
-          <CardContent className="p-6">
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="bet-amount" className="text-white">
-                  Bet Amount (SOL)
-                </Label>
-                <Input
-                  id="bet-amount"
-                  type="number"
-                  value={betAmount}
-                  onChange={(e) => setBetAmount(e.target.value)}
-                  disabled={gameState !== "idle"}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  min="0.01"
-                  step="0.01"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="auto-cashout" className="text-white">
-                  Auto Cashout At
-                </Label>
-                <Input
-                  id="auto-cashout"
-                  type="number"
-                  value={autoCashoutAt}
-                  onChange={(e) => setAutoCashoutAt(e.target.value)}
-                  disabled={gameState !== "idle"}
-                  className="bg-gray-700 border-gray-600 text-white"
-                  min="1.01"
-                  step="0.01"
-                />
-              </div>
-
-              {gameState === "idle" ? (
-                <Button onClick={startGame} className="w-full bg-green-600 hover:bg-green-700">
-                  Place Bet
-                </Button>
-              ) : gameState === "running" ? (
-                <Button
-                  onClick={() => cashout()}
-                  className="w-full bg-yellow-600 hover:bg-yellow-700"
-                  disabled={userCashedOut}
-                >
-                  Cash Out ({currentMultiplier.toFixed(2)}x)
-                </Button>
-              ) : (
-                <Button disabled className="w-full bg-red-600">
-                  Crashed
-                </Button>
-              )}
-            </div>
-
-            {/* Active players */}
-            {gameState !== "idle" && (
-              <div className="mt-6">
-                <h3 className="text-sm font-medium text-gray-400 mb-2">Active Players</h3>
-                <div className="space-y-2">
-                  {cashouts.length === 0 && !userCashedOut && (
-                    <div className="text-xs text-gray-500">Waiting for players to cash out...</div>
-                  )}
-                  {cashouts.map((cashout) => (
-                    <div key={cashout.id} className="flex justify-between items-center text-xs">
-                      <span className="font-medium text-white">{cashout.id === "you" ? "You" : cashout.id}</span>
-                      <span className="text-yellow-400">
-                        {cashout.amount.toFixed(2)} SOL @ {cashout.multiplier.toFixed(2)}x
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   )
