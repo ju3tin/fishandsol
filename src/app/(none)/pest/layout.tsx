@@ -22,7 +22,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body style={{backgroundColor:'black !important'}} className={inter.className}>
       <link rel="stylesheet" crossOrigin="anonymous" href="/style5.css" />
       <ContextProvider>
           <Header />
