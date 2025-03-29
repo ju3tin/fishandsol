@@ -89,7 +89,7 @@ export default function SideNav() {
           </div>
           {/* Bottom */}
           <div className="sticky bottom-0 mt-auto whitespace-nowrap mb-4 transition duration-200 block">
-            <ThemeToggle isDropDown={true} />
+          {/*}  <ThemeToggle isDropDown={true} /> */}
             {navItems.map((item, idx) => {
               if (item.position === 'bottom') {
                 return (
