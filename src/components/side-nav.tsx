@@ -80,7 +80,7 @@ export default function SideNav() {
                   );
                 }
               })}
-                <img src='/images/crypto-wallet.svg' alt="icon" /><WalletContextProvider>
+                <img height={20} width={20} src='/dude1.svg' alt="icon" /><WalletContextProvider>
          
 
          <LoginButton />
