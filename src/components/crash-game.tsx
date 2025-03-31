@@ -434,7 +434,7 @@ const CrashGame = () => {
         </div>}
 
       </div>
-      {isMobile && <BetList />}
+      {!isMobile && <BetList />}
     </div>
   )
 }
