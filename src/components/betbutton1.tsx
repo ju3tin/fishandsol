@@ -32,7 +32,20 @@ type BetbuttonProps = {
     const [betAmount, setBetAmount] = useState("0.1")
     const [autoCashoutAt, setAutoCashoutAt] = useState("2")
     const audioRef = useRef<HTMLAudioElement>(null)
+    const audioRef1 = useRef<HTMLAudioElement>(null)
+    useEffect(() => {
+      // Check if game crashed and user didn't cash out
+      if (gameState === "crashed" && !userCashedOut) {
+        loseout()
+      }
+    }, [gameState, userCashedOut])
 
+    const loseout = () => {
+      if (audioRef1.current) {
+        audioRef1.current.play()
+      }
+
+    }
     const handleCashout = () => {
       if (audioRef.current) {
         audioRef.current.play()
@@ -51,7 +64,7 @@ type BetbuttonProps = {
     return (
       <div className="lg:col-span-2">
           <audio ref={audioRef} src="/sounds/cheering.mp3" /> {/* Add your MP3 file path here */}
-    
+          <audio ref={audioRef1} src="/sounds/losing.mp3" /> {/* Add your MP3 file path here */}
         <Card className="bg-black border-black">
           <CardContent className="p-6">
             <div className="space-y-4">
