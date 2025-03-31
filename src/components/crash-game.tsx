@@ -305,7 +305,8 @@ const CrashGame = () => {
           <Card className="bg-black border-black">
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold text-white">{gameState === "crashed" ? "CRASHED!" : "Multiplier"}</h2>
+
+                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "crashed" ? "CRASHED!" : "Multiplier"}</h2>}
                 <div className="text-3xl font-mono font-bold text-green-400">{currentMultiplier.toFixed(2)}x</div>
               </div>
 
