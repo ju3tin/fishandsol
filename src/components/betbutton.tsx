@@ -16,27 +16,30 @@ type CashoutEvent = {
     amount: number
   }
 
-const Betbutton = () => { 
+type BetbuttonProps = {
+  gameState: "idle" | "running" | "crashed";
+  crashPoint: number;
+  onCrash: () => void;
+}
 
-    const [isMobile, setIsMobile] = useState(false);
-    const [gameState, setGameState] = useState<"idle" | "running" | "crashed">("idle")
-    const [currentMultiplier, setCurrentMultiplier] = useState(1)
-    const [crashPoint, setCrashPoint] = useState(0)
-    const [betAmount, setBetAmount] = useState("0.1")
-    const [autoCashoutAt, setAutoCashoutAt] = useState("2")
-    const [gameHistory, setGameHistory] = useState<number[]>([])
-    const [userCashedOut, setUserCashedOut] = useState(false)
-    const [userWinnings, setUserWinnings] = useState(0)
-    const [pathProgress, setPathProgress] = useState(0)
-    const [cashouts, setCashouts] = useState<CashoutEvent[]>([])
-  
-    // Animation refs
-    const animationRef = useRef<number>(0)
-    const startTimeRef = useRef<number>(0)
-    const gameTimerRef = useRef<NodeJS.Timeout | null>(null)
-    const pathRef = useRef<SVGPathElement | null>(null)
-    const svgRef = useRef<SVGSVGElement | null>(null)
-    const currentMultiplierRef = useRef<number>(1)
+const Betbutton = ({ gameState, crashPoint, onCrash }: BetbuttonProps) => {
+  const [isMobile, setIsMobile] = useState(false);
+  const [currentMultiplier, setCurrentMultiplier] = useState(1)
+  const [betAmount, setBetAmount] = useState("0.1")
+  const [autoCashoutAt, setAutoCashoutAt] = useState("2")
+  const [gameHistory, setGameHistory] = useState<number[]>([])
+  const [userCashedOut, setUserCashedOut] = useState(false)
+  const [userWinnings, setUserWinnings] = useState(0)
+  const [pathProgress, setPathProgress] = useState(0)
+  const [cashouts, setCashouts] = useState<CashoutEvent[]>([])
+
+  // Animation refs
+  const animationRef = useRef<number>(0)
+  const startTimeRef = useRef<number>(0)
+  const gameTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const pathRef = useRef<SVGPathElement | null>(null)
+  const svgRef = useRef<SVGSVGElement | null>(null)
+  const currentMultiplierRef = useRef<number>(1)
 
 // Constants
 const MAX_MULTIPLIER = 100
@@ -73,15 +76,10 @@ const startGame = () => {
   setUserWinnings(0)
   setCashouts([])
 
-  // Generate crash point
-  const newCrashPoint = generateCrashPoint()
-  setCrashPoint(newCrashPoint)
-
   // Reset multiplier and start game
   setCurrentMultiplier(1)
   currentMultiplierRef.current = 1
   setPathProgress(0)
-  setGameState("running")
   startTimeRef.current = Date.now()
 
   // Start animation loop
@@ -89,11 +87,11 @@ const startGame = () => {
 
   // Set timer for game end
   gameTimerRef.current = setTimeout(() => {
-    endGame(newCrashPoint)
+    endGame(crashPoint)
   }, GAME_DURATION_MS)
 
   // Simulate other players cashing out at random times
-  simulateOtherPlayers(newCrashPoint)
+  simulateOtherPlayers(crashPoint)
 }
 
 // Simulate other players cashing out
@@ -110,7 +108,7 @@ const simulateOtherPlayers = (crashPoint: number) => {
 
     setTimeout(() => {
       // Only add cashout if game is still running and the multiplier hasn't been reached yet
-      if (gameState === "running") {
+      if (crashPoint >= cashoutMultiplier) {
         // Ensure we only cash out at the current or lower multiplier
         const actualMultiplier = Math.min(cashoutMultiplier, currentMultiplierRef.current)
 
@@ -166,7 +164,6 @@ const endGame = (finalMultiplier: number) => {
   }
 
   // Update game state
-  setGameState("crashed")
   setCurrentMultiplier(finalMultiplier)
   currentMultiplierRef.current = finalMultiplier
 
@@ -175,13 +172,13 @@ const endGame = (finalMultiplier: number) => {
 
   // Reset after a delay
   setTimeout(() => {
-    setGameState("idle")
+    onCrash()
   }, 3000)
 }
 
 // Reset game to idle state
 const resetGame = () => {
-  setGameState("idle")
+  onCrash()
 }
 
 // Add a cashout event
@@ -199,7 +196,7 @@ const addCashoutEvent = (id: string, multiplier: number, amount: string) => {
 
 // Cash out current bet
 const cashout = (exactMultiplier?: number) => {
-  if (gameState !== "running" || userCashedOut) return
+  if (userCashedOut) return
 
   // Use the exact multiplier passed in, or the current multiplier ref value
   // This ensures we use the most up-to-date multiplier value
@@ -302,7 +299,7 @@ const getRocketRotation = () => {
               type="number"
               value={betAmount}
               onChange={(e) => setBetAmount(e.target.value)}
-              disabled={gameState !== "idle"}
+              disabled={userCashedOut}
               className="bg-gray-700 border-gray-600 text-white"
               min="0.01"
               step="0.01"
@@ -318,38 +315,30 @@ const getRocketRotation = () => {
               type="number"
               value={autoCashoutAt}
               onChange={(e) => setAutoCashoutAt(e.target.value)}
-              disabled={gameState !== "idle"}
+              disabled={userCashedOut}
               className="bg-gray-700 border-gray-600 text-white"
               min="1.01"
               step="0.01"
             />
           </div>
 
-          {gameState === "idle" ? (
-            <Button onClick={startGame} className="w-full bg-green-600 hover:bg-green-700">
-              Place Bet
-            </Button>
-          ) : gameState === "running" ? (
-            <Button
-              onClick={() => cashout()}
-              className="w-full bg-yellow-600 hover:bg-yellow-700"
-              disabled={userCashedOut}
-            >
-              Cash Out ({currentMultiplier.toFixed(2)}x)
-            </Button>
-          ) : (
+          {userCashedOut ? (
             <Button disabled className="w-full bg-red-600">
               Crashed
+            </Button>
+          ) : (
+            <Button onClick={startGame} className="w-full bg-green-600 hover:bg-green-700">
+              Place Bet
             </Button>
           )}
         </div>
 
         {/* Active players */}
-        {gameState !== "idle" && (
+        {userCashedOut && (
           <div className="mt-6">
             <h3 className="text-sm font-medium text-gray-400 mb-2">Active Players</h3>
             <div className="space-y-2">
-              {cashouts.length === 0 && !userCashedOut && (
+              {cashouts.length === 0 && (
                 <div className="text-xs text-gray-500">Waiting for players to cash out...</div>
               )}
               {cashouts.map((cashout) => (
