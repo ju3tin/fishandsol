@@ -437,9 +437,7 @@ const CrashGame = () => {
          cashouts={cashouts}
        />
 
-        {isMobile &&  <div className="lg:col-span-3 h-[500px]">
-          <GameChat gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
-        </div>}
+      
 
       </div>
       {!isMobile && <BetList />}
