@@ -11,6 +11,8 @@ import GameChat from "./game-chat"
 import Betbutton from "./betbutton1"
 import BetList from "./BetList1"
 import Tabs from './tabs1';
+import useSound from 'use-sound';
+
 
 // Type for cashout events
 type CashoutEvent = {
@@ -21,6 +23,9 @@ type CashoutEvent = {
 
 const CrashGame = () => {
   // Game state
+
+  const [play, { sound }] = useSound('/sound/cheering.mp3');
+  const [play1] = useSound('/sound/cheering.mp3');
 
   const [isMobile, setIsMobile] = useState(false);
   const [gameState, setGameState] = useState<"idle" | "running" | "crashed">("idle")
@@ -208,7 +213,7 @@ const CrashGame = () => {
     // Use the exact multiplier passed in, or the current multiplier ref value
     // This ensures we use the most up-to-date multiplier value
     const cashoutMultiplier = exactMultiplier || currentMultiplierRef.current
-
+    play();
     setUserCashedOut(true)
     const winnings = Number.parseFloat(betAmount) * cashoutMultiplier
     setUserWinnings(winnings)
