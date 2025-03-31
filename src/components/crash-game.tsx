@@ -10,6 +10,7 @@ import { Fish } from "lucide-react"
 import GameChat from "./game-chat"
 import Betbutton from "./betbutton1"
 import BetList from "./BetList1"
+import Tabs from './tabs1';
 
 // Type for cashout events
 type CashoutEvent = {
@@ -442,6 +443,7 @@ const CrashGame = () => {
 
       </div>
       {!isMobile && <BetList />}
+      {isMobile && <Tabs gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />}
     </div>
   )
 }
