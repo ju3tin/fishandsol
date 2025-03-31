@@ -2,6 +2,8 @@
 
 import { Fragment, useEffect, useState } from 'react';
 
+import Iconwallet from '../images/crypto-wallet.svg';
+
 import WalletContextProvider from "@/providers/WalletContextProvider";
 import {
     ConnectionProvider,
@@ -79,12 +81,12 @@ export default function SideNav() {
                   );
                 }
               })}
-                <WalletContextProvider>
+              <img src='/images/cryto-wallet.svg' alt="icon" /><WalletContextProvider>
          
 
          <LoginButton />
         {/* <Header /> */} 
-              </WalletContextProvider>
+       </WalletContextProvider>
             </div>
           </div>
           {/* Bottom */}
