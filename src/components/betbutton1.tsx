@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import JSConfetti from 'js-confetti';
 
 type BetbuttonProps = {
     gameState: "idle" | "running" | "crashed";
@@ -36,6 +37,14 @@ type BetbuttonProps = {
       if (audioRef.current) {
         audioRef.current.play()
       }
+      const jsConfetti = new JSConfetti()
+      jsConfetti.addConfetti({
+        emojis: ['💰', '🎉', '✨'],
+        emojiSize: 50,
+        confettiNumber: 100,
+      })
+      
+
       onCashout()
     }
 
