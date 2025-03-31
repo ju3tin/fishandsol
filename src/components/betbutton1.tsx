@@ -30,9 +30,19 @@ type BetbuttonProps = {
   }: BetbuttonProps) => {
     const [betAmount, setBetAmount] = useState("0.1")
     const [autoCashoutAt, setAutoCashoutAt] = useState("2")
-  
+    const audioRef = useRef<HTMLAudioElement>(null)
+
+    const handleCashout = () => {
+      if (audioRef.current) {
+        audioRef.current.play()
+      }
+      onCashout()
+    }
+
     return (
       <div className="lg:col-span-2">
+          <audio ref={audioRef} src="/sounds/cheering.mp3" /> {/* Add your MP3 file path here */}
+    
         <Card className="bg-black border-black">
           <CardContent className="p-6">
             <div className="space-y-4">
@@ -77,7 +87,7 @@ type BetbuttonProps = {
                 </Button>
               ) : gameState === "running" ? (
                 <Button
-                  onClick={onCashout}
+                  onClick={handleCashout}
                   className="w-full bg-yellow-600 hover:bg-yellow-700"
                   disabled={userCashedOut}
                 >
