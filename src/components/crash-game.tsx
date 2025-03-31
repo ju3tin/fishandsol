@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
 import GameChat from "./game-chat"
-import Betbutton from "./betbutton"
+import Betbutton from "./betbutton1"
 import BetList from "./BetList1"
 
 // Type for cashout events
@@ -427,7 +427,14 @@ const CrashGame = () => {
         </div>
 
         {/* Betting controls - Right Side */}
-       <Betbutton gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
+       <Betbutton 
+         gameState={gameState}
+         currentMultiplier={currentMultiplier}
+         onStartGame={startGame}
+         onCashout={() => cashout()}
+         userCashedOut={userCashedOut}
+         cashouts={cashouts}
+       />
 
         {isMobile &&  <div className="lg:col-span-3 h-[500px]">
           <GameChat gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
