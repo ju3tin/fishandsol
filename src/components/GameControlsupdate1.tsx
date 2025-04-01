@@ -1,33 +1,63 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import React from "react";
+import ReactDOM from "react-dom";
+import QRCode from "react-qr-code";
+import JSConfetti from 'js-confetti';
+import { FaWallet } from 'react-icons/fa'; // Using FontAwesome for example
+import {Tabs, Tab, CardBody} from "@nextui-org/react";
+import copy from "copy-to-clipboard";
+//import { toast } from "react-toastify";
+
+
 import {
 	Card,
 	CardContent,
 	CardFooter,
 	CardHeader,
 	CardTitle,
-} from "@/components/ui/card";
+} from "@/components/uis/card";
 import { toast } from "sonner";
-//import { useWalletContext } from "../../src/providers/WalletContextProvider";
 import { Checkbox } from "@nextui-org/checkbox";
-import { useGameStore, GameState } from "../store/gameStore";
+import { useGameStore, GameState } from "../store/gameStore1";
 import { useEffectEvent } from "../hooks/useEffectEvent";
 import useWalletAuth from "../hooks/useWalletAuth";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
+import { Input } from "@/components/uis/input";
+import { Button } from "@/components/uis/button";
+import { Label } from "@/components/uis/label";
 import { currencies } from "../lib/currencies";
 import CurrencyList from "./CurrencyList";
-import styles from "../styles/components/GameControls.module.css";
+import styles from "../styles/components/GameControls1.module.css";
+import { address1a } from "./WalletConnection";
 
 export default function GameControls() {
+	const textRef = useRef();
+	
+	const [copied, setCopied] = useState(false);
+	const textToCopy = "This is the text to copy!";
+  
+	const handleCopy = () => {
+		navigator.clipboard
+		  .writeText(textToCopy)
+		  .then(() => {
+			setCopied(true);
+			setTimeout(() => setCopied(false), 2000); // Reset after 2 seconds
+		  })
+		  .catch((err) => {
+			console.error("Failed to copy text: ", err);
+		  });
+	  };
+	
+	
 	const walletAuth = useWalletAuth();
-
+	const [overlayVisible, setOverlayVisible] = useState(false);
+	const [demoAmount, setDemoAmount] = useState<string>("0");
 	const [betAmount, setBetAmount] = useState<string>("0");
 	const [autoCashOut, setAutoCashOut] = useState<string>("0");
 	const [currency, setCurrency] = useState<string>(currencies[0].id);
 	const [isAutoCashOutDisabled, setIsAutoCashOutDisabled] = useState(false);
+	const [address1a, setAddress1a] = useState<string>('');
 
 	const isWaiting = useGameStore((game: GameState) => game.isWaiting);
 	const isPlaying = useGameStore((game: GameState) => game.isPlaying);
@@ -39,7 +69,7 @@ export default function GameControls() {
 	const errors = useGameStore((game: GameState) => game.errors);
 	const errorCount = useGameStore((game: GameState) => game.errorCount);
 
-	const { placeBet, cancelBet, cashOut } = useGameStore(
+	const { placeBet, cancelBet, cashOut, setUserWalletAddress } = useGameStore(
 		(game: GameState) => game.actions
 	);
 
@@ -49,6 +79,10 @@ export default function GameControls() {
 	const handleChangeBetAmount = (amount: string) => {
 		setBetAmount(amount);
 	};
+	
+	const handleChangeDemoAmount = (amount: string) => {
+		setDemoAmount(amount);
+	}
 
 	const handleChangeAutoCashOut = (amount: string) => {
 		setAutoCashOut(amount);
@@ -61,6 +95,12 @@ export default function GameControls() {
 		}
 	};
 
+	const jsConfetti = useRef<JSConfetti>();
+
+	useEffect(() => {
+		jsConfetti.current = new JSConfetti();
+	}, []);
+
 	const handleButtonClick = () => {
 		if (isWaiting) {
 			cancelBet();
@@ -70,7 +110,10 @@ export default function GameControls() {
 		if (isPlaying && !isCashedOut) {
 			cashOut();
 		} else {
-			placeBet(betAmount, autoCashOut, currency);
+			console.log("address1a dude2", address1a);
+			setUserWalletAddress(address1a);
+			placeBet(betAmount, autoCashOut, currency, address1a || '');
+			jsConfetti.current?.addConfetti();
 		}
 	};
 
@@ -94,18 +137,148 @@ export default function GameControls() {
 	const showErrorToast = useEffectEvent(() => {
 		if (errors.length > 0) toast("⚠️ " + errors[errors.length - 1]);
 	});
+	const toggleOverlay = () => {
+		setOverlayVisible(!overlayVisible);
+	  };
+	  
+	
 
 	useEffect(() => {
 		showErrorToast();
 	}, [errorCount, showErrorToast]);
-	//const { wallet1a } = useWalletContext();
+
+
+
+	
+	
 	return (
 		<Card>
+		 {/* Button to trigger overlay
+		 <Button onClick={toggleOverlay} className="show-overlay-btn">
+		 Show Message Board
+	   </Button> */}
+ 
+	   {/* Overlay */}
+	   {overlayVisible && (
+		 <div className="overlay">
+		   <div className="message-board-container">
+			 <div className="message-form">
+			   
+			 <Tabs aria-label="Options">
+        <Tab key="Sol" title="Sol">
+		<Tabs aria-label="Options">
+        <Tab key="Chippydeposit" title="Deposit">
+		  <Card>
+	  
+<div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+  <QRCode
+    size={256}
+    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+    value='fuck you'
+    viewBox={`0 0 256 256`}
+  />
+        <p>{textToCopy}</p>
+      <a href="#" onClick={(e) => { e.preventDefault(); handleCopy(); }}>
+        {copied ? "Copied!" : "Copy to Clipboard"}
+      </a>
+</div>
+
+          </Card>
+		  </Tab>
+		  <Tab key="ChippyWithdraw" title="Withdraw">
+		  <Card>
+		  Enter a wallet address on the Solana network. Your withdrawal will be processed INSANTLY.
+<div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+ <Label>Amount</Label>
+ <input type="text" id="username" 
+        placeholder="SOL" />
+ <Label>Wallet Address for Withdrawal</Label>
+ <input type="text" id="username" 
+        placeholder="Wallet Address" />
+
+<Button>Withdrawal</Button>
+ 
+</div>
+          </Card>
+		  </Tab>
+		  </Tabs>
+        </Tab>
+        <Tab key="Chippy" title="Chippy">
+		<Tabs aria-label="Options">
+        <Tab key="Chippydeposit" title="Deposit">
+		  <Card>
+		  
+		  <div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+  <QRCode
+    size={256}
+    style={{ height: "auto", maxWidth: "100%", width: "100%" }}
+    value='fuck you'
+    viewBox={`0 0 256 256`}
+  />
+        <p>{textToCopy}</p>
+      <a href="#" onClick={(e) => { e.preventDefault(); handleCopy(); }}>
+        {copied ? "Copied!" : "Copy to Clipboard"}
+      </a>
+</div>
+          </Card>
+		  </Tab>
+		  <Tab key="ChippyWithdraw" title="Withdraw">
+		  <Card>
+		  Enter a wallet address on the Solana network. Your withdrawal will be processed INSANTLY.
+<div style={{ height: "auto", margin: "0 auto", maxWidth: 64, width: "100%" }}>
+<Label>Amount</Label>
+ <input type="text" id="username" 
+        placeholder="SOL" />
+ <Label>Wallet Address for Withdrawal</Label>
+ <input type="text" id="username" 
+        placeholder="Wallet Address" />
+
+<Button>Withdrawal</Button>
+</div>
+          </Card>
+		  </Tab>
+		  </Tabs>
+        </Tab>
+        <Tab key="Demo" title="Demo">
+<Card>
+	<Label>Demo Amount {demoAmount}</Label>
+	</Card>          
+		  <Card>
+Use demo currency to play our games without any risk. If you run out of demo credits, you can reset your demo balance anytime by clicking the button below. Have fun and enjoy your experience!
+		  <Button
+		  onClick={() => handleChangeDemoAmount('100')}
+		  >
+		  <FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
+			Reset Demo Balance		
+		  </Button>
+          </Card>
+        </Tab>
+      </Tabs>
+			 
+			 </div>
+ 
+			
+ 
+			 <button onClick={toggleOverlay} className="close-overlay-btn">
+			   Close
+			 </button>
+		   </div>
+		 </div>
+	   )}
+	
 			<CardHeader>
 				<CardTitle>Place your bets!</CardTitle>
 			</CardHeader>
 
 			<CardContent>
+				<Label>Demo Amount</Label>
+				<Input
+					placeholder="Demo amount"
+					type="number"
+					min="0"
+					value={demoAmount}
+					disabled
+				/>
 				<Label>Bet Amount</Label>
 				<Input
 					placeholder="Bet amount"
@@ -141,6 +314,10 @@ export default function GameControls() {
 				<Button onClick={handleButtonClick} disabled={isButtonDisabled} className={styles.BetButton}>
 					{getButtonText()}
 				</Button>
+				<div>
+				<Button  onClick={toggleOverlay} className={styles.BetButton}>
+				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
+					Deposit Chippy</Button></div>
 			</CardFooter>
 		</Card>
 	);
