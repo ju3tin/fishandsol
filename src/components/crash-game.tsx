@@ -394,7 +394,7 @@ const CrashGame = () => {
         </div>
 
         {/* Betting controls - Right Side */}
-        <GameControls />
+      
         <Betbutton 
           gameState={getChatGameState()}
           currentMultiplier={Number(gameState.multiplier) || 1}
