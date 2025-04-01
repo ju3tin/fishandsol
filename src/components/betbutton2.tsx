@@ -167,6 +167,9 @@ type BetbuttonProps = {
 
     return (
       <div className="lg:col-span-2">
+            <audio ref={audioRef} src="/sounds/cheering.mp3" /> {/* Add your MP3 file path here */}
+          <audio ref={audioRef1} src="/sounds/losing.mp3" /> {/* Add your MP3 file path here */}
+    
 {/* new top */}
 
 <Card>
@@ -340,9 +343,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 
 {/* new bottom */}
 
-          <audio ref={audioRef} src="/sounds/cheering.mp3" /> {/* Add your MP3 file path here */}
-          <audio ref={audioRef1} src="/sounds/losing.mp3" /> {/* Add your MP3 file path here */}
-        <Card className="bg-black border-black">
+          <Card className="bg-black border-black">
           <CardContent className="p-6">
             <div className="space-y-4">
               <div>
