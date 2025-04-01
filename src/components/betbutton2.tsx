@@ -133,7 +133,7 @@ type BetbuttonProps = {
 			if (isPlaying && !isCashedOut) {
 				return "Cash out";
 			} else {
-				return `Place bet (${currentMultiplier.toFixed(2)}x)`;
+				return `Cash Out (${currentMultiplier.toFixed(2)}x)`;
 			}
 		} else {
 			return "Place bet";
