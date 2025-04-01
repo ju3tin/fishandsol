@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
 import GameChat from "./game-chat"
+import GameControls from './GameControlsupdate1';
 import Betbutton from "./betbutton1"
 import BetList from "./BetList1"
 import Tabs from './tabs1';
@@ -401,6 +402,7 @@ const CrashGame = () => {
           userCashedOut={userCashedOut}
           cashouts={cashouts}
         />
+        <GameControls />
       </div>
       {!isMobile && <BetList />}
       {isMobile && gameState.crashPoint && <Tabs gameState={getChatGameState()} crashPoint={gameState.crashPoint} onCrash={resetGame} />}
