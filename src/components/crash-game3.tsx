@@ -122,7 +122,7 @@ const CrashGame = () => {
 
       setTimeout(() => {
         // Only add cashout if game is still running and the multiplier hasn't been reached yet
-        if (gameState === "running") {
+        if (gameState5.status === "Running") {
           // Ensure we only cash out at the current or lower multiplier
           const actualMultiplier = Math.min(cashoutMultiplier, currentMultiplierRef.current)
 
@@ -211,7 +211,7 @@ const CrashGame = () => {
 
   // Cash out current bet
   const cashout = (exactMultiplier?: number) => {
-    if (gameState !== "running" || userCashedOut) return
+    if (gameState5.status !== "Running" || userCashedOut) return
 
     // Use the exact multiplier passed in, or the current multiplier ref value
     // This ensures we use the most up-to-date multiplier value
@@ -320,7 +320,7 @@ const CrashGame = () => {
 
               {/* Game visualization */}
               <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
-                {gameState !== "idle" && (
+                {gameState5.status !== "Waiting" && (
                   <div className="absolute inset-0">
                     {/* Curve path */}
                     <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -381,7 +381,7 @@ const CrashGame = () => {
                     </svg>
 
                     {/* Rocket indicator */}
-                    {gameState === "running" && pathRef.current && (
+                    {gameState5.status === "Running" && pathRef.current && (
                       <motion.div
                         className="absolute"
                         style={{
@@ -399,13 +399,13 @@ const CrashGame = () => {
                   </div>
                 )}
 
-                {gameState === "idle" && (
+                {gameState5.status === "Waiting" && (
                   <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
                     <p className="text-gray-400">Place your bet and start the game</p>
                   </div>
                 )}
 
-                {gameState === "crashed" && (
+                {gameState5.status === "Crashed" && (
                   <div className="absolute inset-0 bg-red-900/30 flex items-center justify-center">
                     <p className="text-3xl font-bold text-red-500">CRASHED AT {crashPoint.toFixed(2)}x</p>
                   </div>
