@@ -65,6 +65,15 @@ type BetbuttonProps = {
       const toggleOverlay = () => {
         setOverlayVisible(!overlayVisible);
         };
+    const socket1 = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER!);
+    const set = useGameStore.setState;
+    socket1.onopen = () => {
+      console.log('Connected to WebSocket server');
+      set({ isConnected: true });
+    };
+    socket1.onmessage = (event) => {
+      const message1 = JSON.parse(event.data);
+    }
     const gameState5 = useGameStore((state: GameState) => state);
     const isWaiting = useGameStore((game: GameState) => game.isWaiting);
 	  const isPlaying = useGameStore((game: GameState) => game.isPlaying);

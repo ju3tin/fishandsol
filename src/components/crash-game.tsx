@@ -26,6 +26,15 @@ type CashoutEvent = {
 
 const CrashGame = () => {
   // Game state
+  const socket1 = new WebSocket(process.env.NEXT_PUBLIC_CRASH_SERVER!);
+  const set = useGameStore.setState;
+  socket1.onopen = () => {
+    console.log('Connected to WebSocket server');
+    set({ isConnected: true });
+  };
+  socket1.onmessage = (event) => {
+    const message1 = JSON.parse(event.data);
+  }
   const gameState = useGameStore((state: GameState) => state);
 
   const [play, { sound }] = useSound('/sound/cheering.mp3');
@@ -366,7 +375,7 @@ const CrashGame = () => {
 
                 {gameState.status === "Waiting" && (
                   <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
-                    <p className="text-gray-400">Place your bet and start the game</p>
+                    <p className="text-gray-400"> {gameState.timeRemaining}</p>
                   </div>
                 )}
 
