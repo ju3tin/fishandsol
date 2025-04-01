@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
 import GameChat from "./game-chat"
 import GameControls from './GameControlsupdate1';
-import Betbutton from "./betbutton1"
+import Betbutton from "./betbutton2"
 import BetList from "./BetList1"
 import Tabs from './tabs1';
 import useSound from 'use-sound';
