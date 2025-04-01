@@ -93,7 +93,7 @@ const CrashGame = () => {
     setCurrentMultiplier(1)
     currentMultiplierRef.current = 1
     setPathProgress(0)
-    setGameState("running")
+    gameState5.status === "Running"
     startTimeRef.current = Date.now()
 
     // Start animation loop
@@ -122,7 +122,7 @@ const CrashGame = () => {
 
       setTimeout(() => {
         // Only add cashout if game is still running and the multiplier hasn't been reached yet
-        if (gameState === "running") {
+        if (gameState5.status === "Running") {
           // Ensure we only cash out at the current or lower multiplier
           const actualMultiplier = Math.min(cashoutMultiplier, currentMultiplierRef.current)
 
@@ -211,7 +211,7 @@ const CrashGame = () => {
 
   // Cash out current bet
   const cashout = (exactMultiplier?: number) => {
-    if (gameState !== "running" || userCashedOut) return
+    if (gameState5.status !== 'Running' || userCashedOut) return
 
     // Use the exact multiplier passed in, or the current multiplier ref value
     // This ensures we use the most up-to-date multiplier value
@@ -381,7 +381,7 @@ const CrashGame = () => {
                     </svg>
 
                     {/* Rocket indicator */}
-                    {gameState === "running" && pathRef.current && (
+                    {gameState5.status === "Running" && pathRef.current && (
                       <motion.div
                         className="absolute"
                         style={{
