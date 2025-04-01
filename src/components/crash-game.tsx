@@ -25,18 +25,14 @@ type CashoutEvent = {
 
 const CrashGame = () => {
   // Game state
-  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+  const gameState = useGameStore((state: GameState) => state);
 
   const [play, { sound }] = useSound('/sound/cheering.mp3');
   const [play1] = useSound('/sound/cheering.mp3');
 
   const [isMobile, setIsMobile] = useState(false);
-  const [gameState, setGameState] = useState<"idle" | "running" | "crashed">("idle")
-  const [currentMultiplier, setCurrentMultiplier] = useState(1)
-  const [crashPoint, setCrashPoint] = useState(0)
   const [betAmount, setBetAmount] = useState("0.1")
   const [autoCashoutAt, setAutoCashoutAt] = useState("2")
-  const [gameHistory, setGameHistory] = useState<number[]>([])
   const [userCashedOut, setUserCashedOut] = useState(false)
   const [userWinnings, setUserWinnings] = useState(0)
   const [pathProgress, setPathProgress] = useState(0)
@@ -54,6 +50,20 @@ const CrashGame = () => {
   const MAX_MULTIPLIER = 100
   const GAME_DURATION_MS = 15000 // 15 seconds max game duration
 
+  // Convert game state to chat state
+  const getChatGameState = (): "idle" | "running" | "crashed" => {
+    switch (gameState.status) {
+      case "Waiting":
+        return "idle";
+      case "Running":
+        return "running";
+      case "Crashed":
+        return "crashed";
+      default:
+        return "idle";
+    }
+  }
+
   useEffect(() => {
     const checkScreenSize = () => setIsMobile(window.innerWidth <= 768);
 
@@ -65,15 +75,8 @@ const CrashGame = () => {
 
   // Update ref when state changes
   useEffect(() => {
-    currentMultiplierRef.current = currentMultiplier
-  }, [currentMultiplier])
-
-  // Generate a crash point
-  const generateCrashPoint = () => {
-    // Random number between 1 and MAX_MULTIPLIER
-    // This is a simplified version - in a real game, you'd use a provably fair algorithm
-    return 1 + Math.random() * 5 // Crash between 1x and 6x for testing
-  }
+    currentMultiplierRef.current = gameState.multiplier
+  }, [gameState.multiplier])
 
   // Start a new game
   const startGame = () => {
@@ -85,72 +88,32 @@ const CrashGame = () => {
     setUserWinnings(0)
     setCashouts([])
 
-    // Generate crash point
-    const newCrashPoint = generateCrashPoint()
-    setCrashPoint(newCrashPoint)
-
     // Reset multiplier and start game
-    setCurrentMultiplier(1)
     currentMultiplierRef.current = 1
     setPathProgress(0)
-    setGameState("running")
     startTimeRef.current = Date.now()
 
     // Start animation loop
     animateGame()
-
-    // Set timer for game end
-    gameTimerRef.current = setTimeout(() => {
-      endGame(newCrashPoint)
-    })
-
-    // Simulate other players cashing out at random times
-    simulateOtherPlayers(newCrashPoint)
-  }
-
-  // Simulate other players cashing out
-  const simulateOtherPlayers = (crashPoint: number) => {
-    // Create 3-5 random cashout events
-    const numPlayers = 3 + Math.floor(Math.random() * 3)
-
-    for (let i = 0; i < numPlayers; i++) {
-      // Random cashout multiplier between 1.1 and crash point
-      const cashoutMultiplier = 1.1 + Math.random() * (crashPoint - 1.1)
-
-      // Random delay before cashing out
-      const delay = 1000 + Math.random() * 8000
-
-      setTimeout(() => {
-        // Only add cashout if game is still running and the multiplier hasn't been reached yet
-        if (gameState5.status === "Running") {
-          // Ensure we only cash out at the current or lower multiplier
-          const actualMultiplier = Math.min(cashoutMultiplier, currentMultiplierRef.current)
-
-          // Only cash out if the multiplier is greater than 1.1
-          if (actualMultiplier > 1.1) {
-            addCashoutEvent(`player${i + 1}`, actualMultiplier, (0.05 + Math.random() * 0.5).toFixed(2))
-          }
-        }
-      }, delay)
-    }
   }
 
   // Animate the game
   const animateGame = () => {
+    if (!gameState.crashPoint) return;
+
     const elapsed = Date.now() - startTimeRef.current
     const progress = Math.min(1, elapsed / GAME_DURATION_MS)
 
     // Calculate current multiplier using bezier curve for smoother acceleration
     // This creates an exponential growth curve
     const t = progress
-    const multiplier = 1 + Math.pow(t, 2) * (crashPoint - 1)
+    const multiplier = 1 + Math.pow(t, 2) * (gameState.crashPoint - 1)
     const formattedMultiplier = Number.parseFloat(multiplier.toFixed(2))
 
-    setCurrentMultiplier(formattedMultiplier)
     currentMultiplierRef.current = formattedMultiplier
 
     // Calculate path progress based on multiplier
-    const newPathProgress = Math.min(1, (multiplier - 1) / (crashPoint - 1))
+    const newPathProgress = Math.min(1, (multiplier - 1) / (gameState.crashPoint - 1))
     setPathProgress(newPathProgress)
 
     // Check for auto cashout
@@ -159,8 +122,8 @@ const CrashGame = () => {
     }
 
     // Check if we've reached the crash point
-    if (multiplier >= crashPoint) {
-      endGame(crashPoint)
+    if (multiplier >= gameState.crashPoint) {
+      endGame(gameState.crashPoint)
       return
     }
 
@@ -178,22 +141,17 @@ const CrashGame = () => {
     }
 
     // Update game state
-    setGameState("crashed")
-    setCurrentMultiplier(finalMultiplier)
     currentMultiplierRef.current = finalMultiplier
-
-    // Add to history
-    setGameHistory((prev) => [finalMultiplier, ...prev].slice(0, 10))
 
     // Reset after a delay
     setTimeout(() => {
-      setGameState("idle")
+      setPathProgress(0)
     }, 3000)
   }
 
   // Reset game to idle state
   const resetGame = () => {
-    setGameState("idle")
+    setPathProgress(0)
   }
 
   // Add a cashout event
@@ -211,7 +169,7 @@ const CrashGame = () => {
 
   // Cash out current bet
   const cashout = (exactMultiplier?: number) => {
-    if (gameState5.status !== "Running" || userCashedOut) return
+    if (gameState.status !== "Running" || userCashedOut) return
 
     // Use the exact multiplier passed in, or the current multiplier ref value
     // This ensures we use the most up-to-date multiplier value
@@ -248,7 +206,7 @@ const CrashGame = () => {
     // End point - moves upward based on multiplier
     // As multiplier increases, the end point moves higher
     const endX = 100
-    const endY = Math.max(0, 50 - (currentMultiplier - 1) * 10)
+    const endY = Math.max(0, 50 - (currentMultiplierRef.current - 1) * 10)
 
     // For a curve that goes from bottom left to middle right, then curves upward,
     // we'll use a cubic bezier curve (C command in SVG path)
@@ -273,7 +231,8 @@ const CrashGame = () => {
 
   // Calculate multiplier progress
   const getMultiplierProgress = (multiplier: number) => {
-    return Math.min(1, (multiplier - 1) / (crashPoint - 1))
+    if (!gameState.crashPoint) return 0;
+    return Math.min(1, (multiplier - 1) / (gameState.crashPoint - 1))
   }
 
   // Get rocket position along the path
@@ -303,24 +262,21 @@ const CrashGame = () => {
     <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* Chat - Left Side */}
-       
-
-        {!isMobile &&  <div className="lg:col-span-3 h-[500px]">
-          <GameChat gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
+        {!isMobile && <div className="lg:col-span-3 h-[500px]">
+          <GameChat gameState={getChatGameState()} crashPoint={gameState.crashPoint} onCrash={resetGame} />
         </div>}
         {/* Game Display - Middle */}
         <div className="lg:col-span-7">
           <Card className="bg-black border-black">
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
-
-                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "crashed" ? "CRASHED!" : "Multiplier"}</h2>}
-                <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
+                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState.status === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
+                <div className="text-3xl font-mono font-bold text-green-400">{gameState.multiplier}x</div>
               </div>
 
               {/* Game visualization */}
               <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
-                {gameState !== "idle" && (
+                {gameState.status !== "Unknown" && (
                   <div className="absolute inset-0">
                     {/* Curve path */}
                     <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
@@ -381,7 +337,7 @@ const CrashGame = () => {
                     </svg>
 
                     {/* Rocket indicator */}
-                    {gameState5.status === "Running" && pathRef.current && (
+                    {gameState.status === "Running" && pathRef.current && (
                       <motion.div
                         className="absolute"
                         style={{
@@ -399,15 +355,15 @@ const CrashGame = () => {
                   </div>
                 )}
 
-                {gameState === "idle" && (
+                {gameState.status === "Waiting" && (
                   <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
                     <p className="text-gray-400">Place your bet and start the game</p>
                   </div>
                 )}
 
-                {gameState === "crashed" && (
+                {gameState.status === "Crashed" && gameState.crashPoint && (
                   <div className="absolute inset-0 bg-red-900/30 flex items-center justify-center">
-                    <p className="text-3xl font-bold text-red-500">CRASHED AT {crashPoint.toFixed(2)}x</p>
+                    <p className="text-3xl font-bold text-red-500">CRASHED AT {gameState.crashPoint.toFixed(2)}x</p>
                   </div>
                 )}
 
@@ -420,37 +376,34 @@ const CrashGame = () => {
 
               {/* Game history */}
               <div className="flex gap-2 overflow-x-auto py-2">
-                {gameHistory.map((multiplier, index) => (
+                {gameState.crashes.map((crash, index) => (
                   <div
                     key={index}
                     className={`px-2 py-1 rounded text-xs font-mono ${
-                      multiplier < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
+                      Number(crash.multiplier) < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
                     }`}
                   >
-                    {multiplier.toFixed(2)}x
+                    {Number(crash.multiplier).toFixed(2)}x
                   </div>
                 ))}
-                {gameHistory.length === 0 && <p className="text-gray-500 text-sm">No game history yet</p>}
+                {gameState.crashes.length === 0 && <p className="text-gray-500 text-sm">No game history yet</p>}
               </div>
             </CardContent>
           </Card>
         </div>
 
         {/* Betting controls - Right Side */}
-       <Betbutton 
-         gameState={gameState}
-         currentMultiplier={currentMultiplier}
-         onStartGame={startGame}
-         onCashout={() => cashout()}
-         userCashedOut={userCashedOut}
-         cashouts={cashouts}
-       />
-
-      
-
+        <Betbutton 
+          gameState={getChatGameState()}
+          currentMultiplier={Number(gameState.multiplier) || 1}
+          onStartGame={startGame}
+          onCashout={() => cashout()}
+          userCashedOut={userCashedOut}
+          cashouts={cashouts}
+        />
       </div>
       {!isMobile && <BetList />}
-      {isMobile && <Tabs gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />}
+      {isMobile && gameState.crashPoint && <Tabs gameState={getChatGameState()} crashPoint={gameState.crashPoint} onCrash={resetGame} />}
     </div>
   )
 }
