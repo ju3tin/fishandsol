@@ -330,14 +330,14 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 				/>
 			</CardContent>
 
-			<CardFooter>
+			<CardFooter className="flex flex-col gap-4">
 				<Button onClick={handleButtonClick} disabled={isButtonDisabled} className={styles.BetButton}>
 					{getButtonText()}
 				</Button>
-				<div>
-				<Button  onClick={toggleOverlay} className={styles.BetButton}>
-				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
-					Deposit Chippy</Button></div>
+				<Button onClick={toggleOverlay} className={styles.BetButton}>
+					<FaWallet className={styles.walletIcon} />
+					Deposit Chippy
+				</Button>
 			</CardFooter>
 		</Card>
 
