@@ -8,6 +8,7 @@ import JSConfetti from 'js-confetti';
 import { FaWallet } from 'react-icons/fa'; // Using FontAwesome for example
 import {Tabs, Tab, CardBody} from "@nextui-org/react";
 import copy from "copy-to-clipboard";
+//import { useWalletContext } from "../../src/providers/WalletContextProvider";
 //import { toast } from "react-toastify";
 
 
@@ -33,7 +34,9 @@ import { address1a } from "./WalletConnection";
 
 export default function GameControls() {
 	const gameState5 = useGameStore((state: GameState) => state);
-
+	const audioRef = useRef<HTMLAudioElement>(null)
+    const audioRef1 = useRef<HTMLAudioElement>(null)
+   
 	const textRef = useRef();
 	
 	const [copied, setCopied] = useState(false);
@@ -289,6 +292,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 					min="0"
 					onChange={(e) => handleChangeBetAmount(e.target.value)}
 					value={betAmount}
+					disabled={gameState.status !== "Waiting"}
 				/>
 				<Label>Auto Cashout</Label>
 				<Checkbox
@@ -329,6 +333,93 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 				</div>
 			</CardFooter>
 		
+		
+		{/* top */}
+          <audio ref={audioRef} src="/sounds/cheering.mp3" /> {/* Add your MP3 file path here */}
+          <audio ref={audioRef1} src="/sounds/losing.mp3" /> {/* Add your MP3 file path here */}
+        <Card className="bg-black border-black">
+          <CardContent className="p-6">
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="bet-amount" className="text-white">
+                  Bet Amount (SOL)
+                </Label>
+                <Input
+                  id="bet-amount"
+                  type="number"
+                  value={betAmount}
+                  onChange={(e) => setBetAmount(e.target.value)}
+                  disabled={gameState.status !== "Waiting"}
+                  className="bg-gray-700 border-gray-600 text-white"
+                  min="0.01"
+                  step="0.01"
+                />
+              </div>
+  
+              <div>
+                <Label htmlFor="auto-cashout" className="text-white">
+                  Auto Cashout At
+                </Label>
+                <Input
+                  id="auto-cashout"
+                  type="number"
+                  value={autoCashOut}
+                  onChange={(e) => handleChangeAutoCashOut(e.target.value)}
+                  disabled={gameState.status !== "Waiting"}
+                  className="bg-gray-700 border-gray-600 text-white"
+                  min="1.01"
+                  step="0.01"
+                />
+              </div>
+  
+              {gameState.status === "Waiting" ? (
+                <Button 
+                  onClick={handleButtonClick}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  Place Bet
+                </Button>
+              ) : gameState.status === "Running" ? (
+                <Button
+                  onClick={handleButtonClick}
+                  className="w-full bg-yellow-600 hover:bg-yellow-700"
+                  disabled={isCashedOut}
+                >
+                  Cash Out ({Number(gameState.multiplier).toFixed(2)}x)
+                </Button>
+              ) : (
+                <Button disabled className="w-full bg-red-600">
+                  Crashed
+                </Button>
+              )}
+            </div>
+  
+            {/* Active players */}
+            {gameState.status !== "Waiting" && (
+              <div className="mt-6">
+                <h3 className="text-sm font-medium text-gray-400 mb-2">Active Players</h3>
+                <div className="space-y-2">
+               {/*   {cashouts.length === 0 && !isCashedOut && (
+                    <div className="text-xs text-gray-500">Waiting for players to cash out...</div>
+                  )} */}
+               {/*   {cashouts.map((cashout) => (
+                    <div key={cashout.id} className="flex justify-between items-center text-xs">
+                      <span className="font-medium text-white">{cashout.id === "you" ? "You" : cashout.id}</span>
+                      <span className="text-yellow-400">
+                        {cashout.amount.toFixed(2)} SOL @ {cashout.multiplier.toFixed(2)}x
+                      </span>
+                    </div>
+                  ))}*/}
+                </div>
+              </div>
+            )}
+          </CardContent>
+        </Card>
+     
+		
+		
 		</div>
+
+		
 	);
 }
