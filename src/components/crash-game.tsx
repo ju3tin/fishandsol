@@ -93,7 +93,7 @@ const CrashGame = () => {
     setCurrentMultiplier(1)
     currentMultiplierRef.current = 1
     setPathProgress(0)
-    gameState5.status === "Running"
+    setGameState("running")
     startTimeRef.current = Date.now()
 
     // Start animation loop
@@ -102,7 +102,7 @@ const CrashGame = () => {
     // Set timer for game end
     gameTimerRef.current = setTimeout(() => {
       endGame(newCrashPoint)
-    }, GAME_DURATION_MS)
+    })
 
     // Simulate other players cashing out at random times
     simulateOtherPlayers(newCrashPoint)
@@ -211,7 +211,7 @@ const CrashGame = () => {
 
   // Cash out current bet
   const cashout = (exactMultiplier?: number) => {
-    if (gameState5.status !== 'Running' || userCashedOut) return
+    if (gameState5.status !== "Running" || userCashedOut) return
 
     // Use the exact multiplier passed in, or the current multiplier ref value
     // This ensures we use the most up-to-date multiplier value
@@ -456,4 +456,3 @@ const CrashGame = () => {
 }
 
 export default CrashGame
-
