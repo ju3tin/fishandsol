@@ -152,6 +152,7 @@ export default function GameControls() {
 	
 	
 	return (
+		<div className="lg:col-span-2">
 		<Card>
 		 {/* Button to trigger overlay
 		 <Button onClick={toggleOverlay} className="show-overlay-btn">
@@ -320,5 +321,6 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 					Deposit Chippy</Button></div>
 			</CardFooter>
 		</Card>
+		</div>
 	);
 }
