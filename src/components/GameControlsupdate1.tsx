@@ -153,7 +153,7 @@ export default function GameControls() {
 	
 	return (
 		<div className="lg:col-span-2">
-		<Card>
+		
 		 {/* Button to trigger overlay
 		 <Button onClick={toggleOverlay} className="show-overlay-btn">
 		 Show Message Board
@@ -320,7 +320,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
 					Deposit Chippy</Button></div>
 			</CardFooter>
-		</Card>
+		
 		</div>
 	);
 }
