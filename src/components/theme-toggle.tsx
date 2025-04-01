@@ -106,5 +106,5 @@ export function ThemeToggle({ isDropDown = false }: { isDropDown?: boolean }) {
         </button>
       </div>
     </>
-  );
+  ); 
 }
