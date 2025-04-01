@@ -362,9 +362,9 @@ const CrashGame = () => {
                   </div>
                 )}
 
-                {gameState.status === "Crashed" && gameState.crashPoint && (
+                {gameState.status === "Crashed"  && (
                   <div className="absolute inset-0 bg-red-900/30 flex items-center justify-center">
-                    <p className="text-3xl font-bold text-red-500">CRASHED AT {gameState.crashPoint.toFixed(2)}x</p>
+                    <p className="text-3xl font-bold text-red-500">CRASHED AT {gameState.multiplier}x</p>
                   </div>
                 )}
 
