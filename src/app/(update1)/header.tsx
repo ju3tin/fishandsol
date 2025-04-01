@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import Image from "next/image";
+import LoginButton from '@/components/login-buton';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -69,6 +70,7 @@ export default function Header() {
                   </div>
                 </Link>
               ))}
+              <LoginButton />
             </div>
           </SheetContent>
         </Sheet>
