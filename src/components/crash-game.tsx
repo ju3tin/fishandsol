@@ -38,6 +38,7 @@ const CrashGame = () => {
   const [userWinnings, setUserWinnings] = useState(0)
   const [pathProgress, setPathProgress] = useState(0)
   const [cashouts, setCashouts] = useState<CashoutEvent[]>([])
+  const [gameHistory, setGameHistory] = useState<number[]>([])
 
   // Animation refs
   const animationRef = useRef<number>(0)
@@ -259,6 +260,13 @@ const CrashGame = () => {
     return angle * (180 / Math.PI) + 90
   }
 
+  // Add this useEffect to watch for crashes
+  useEffect(() => {
+    if (gameState.status === "Crashed") {
+      setGameHistory(prev => [gameState.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
+    }
+  }, [gameState.status, gameState.multiplier])
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -377,17 +385,17 @@ const CrashGame = () => {
 
               {/* Game history */}
               <div className="flex gap-2 overflow-x-auto py-2">
-                {gameState.crashes.map((gameState, index) => (
+                {gameHistory.map((multiplier, index) => (
                   <div
                     key={index}
                     className={`px-2 py-1 rounded text-xs font-mono ${
-                      Number(gameState.multiplier) < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
+                      multiplier < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
                     }`}
                   >
-                    {Number(gameState.multiplier).toFixed(2)}x
+                    {multiplier.toFixed(2)}x
                   </div>
                 ))}
-                {gameState.crashes.length === 0 && <p className="text-gray-500 text-sm">No game history yet</p>}
+                {gameHistory.length === 0 && <p className="text-gray-500 text-sm">No game history yet</p>}
               </div>
             </CardContent>
           </Card>
