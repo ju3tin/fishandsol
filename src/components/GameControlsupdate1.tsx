@@ -49,7 +49,7 @@ export default function GameControls() {
 		  });
 	  };
 	
-	
+	const gameState = useGameStore((state: GameState) => state);
 	const walletAuth = useWalletAuth();
 	const [overlayVisible, setOverlayVisible] = useState(false);
 	const [demoAmount, setDemoAmount] = useState<string>("0");
@@ -127,7 +127,7 @@ export default function GameControls() {
 			if (isPlaying && !isCashedOut) {
 				return "Cash out";
 			} else {
-				return "Place bet (next round)";
+				return `Place bet (${gameState.multiplier})`;
 			}
 		} else {
 			return "Place bet";
