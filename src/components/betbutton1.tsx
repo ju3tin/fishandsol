@@ -1,11 +1,25 @@
 "use client"
 
-
+import {
+	Card,
+	CardContent,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { toast } from "sonner";
+//import { useWalletContext } from "../../src/providers/WalletContextProvider";
+import { Checkbox } from "@nextui-org/checkbox";
+import { useGameStore, GameState } from "../store/gameStore";
+import { useEffectEvent } from "../hooks/useEffectEvent";
+import useWalletAuth from "../hooks/useWalletAuth";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { currencies } from "../lib/currencies";
+import CurrencyList from "./CurrencyList";
+import styles from "../styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react"
-import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
 import JSConfetti from 'js-confetti';
 
 type BetbuttonProps = {
