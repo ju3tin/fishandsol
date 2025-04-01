@@ -338,7 +338,7 @@ const CrashGame = () => {
                     </svg>
 
                     {/* Rocket indicator */}
-                    {gameState.status === "Running" && pathRef.current && (
+                    {gameState.status === "Running" &&  (
                       <motion.div
                         className="absolute"
                         style={{
