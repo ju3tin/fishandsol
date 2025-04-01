@@ -96,7 +96,7 @@ function preloadImages(imagePaths: string[]) {
 
 
 function render(
-	gameState: GameState,
+	gameState5: GameState,
 	context: CanvasRenderingContext2D,
 ) {
 	if (!context)
@@ -111,8 +111,8 @@ function render(
 	const maxX = canvas.width - rocketWidth;
 	const minY = rocketHeight;
 
-	const expectedX = gameState.timeElapsed;
-	const expectedY = canvas.height - curveFunction(gameState.timeElapsed/1000, canvas.width, canvas.height);
+	const expectedX = gameState5.timeElapsed;
+	const expectedY = canvas.height - curveFunction(gameState5.timeElapsed/1000, canvas.width, canvas.height);
 
 	const rocketX = Math.min(expectedX, maxX);
 	const rocketY = Math.max(expectedY, minY);
@@ -146,19 +146,19 @@ function render(
 		
 	}
 
-	drawRocketPath(context, gameState.timeElapsed);
+	drawRocketPath(context, gameState5.timeElapsed);
 
-	if (gameState.status == 'Crashed')
+	if (gameState5.status == 'Crashed')
 		drawCrashedRocket(context, rocketX, rocketY);
 	else
-		drawRocket(context, gameState.timeElapsed, rocketX, rocketY);
+		drawRocket(context, gameState5.timeElapsed, rocketX, rocketY);
 
 	context.restore();
 
-	if (gameState.status == 'Waiting')
-		drawCountdown(context, gameState.timeRemaining);
+	if (gameState5.status == 'Waiting')
+		drawCountdown(context, gameState5.timeRemaining);
 	else
-		drawMultiplier(context, gameState.multiplier);
+		drawMultiplier(context, gameState5.multiplier);
 		
 	//	if (additionalImages.complete) {
 		//	context.drawImage(additionalImages.rocket, 0, 0, 200, 200); // Adjust size as needed
@@ -273,7 +273,7 @@ export default function Game() {
 	const [errorCount, setErrorCount] = useState(0);
 	const errors: string[] = []; // Explicitly define the type of errors
 
-	const gameState = useGameStore((gameState: GameState) => gameState);
+	const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
 	const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
@@ -304,14 +304,14 @@ export default function Game() {
 	useEffect(() => {
 		const doRender = () => { // Move doRender inside useEffect
 			render(
-				gameState,
+				gameState5,
 				context
 			);
 		}; // Wrap doRender in useCallback if needed
 
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [gameState, context]); // Add dependencies
+	}, [gameState5, context]); // Add dependencies
 
 	useEffect(() => {
 		showErrorToast();

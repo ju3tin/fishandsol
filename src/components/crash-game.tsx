@@ -12,6 +12,7 @@ import Betbutton from "./betbutton1"
 import BetList from "./BetList1"
 import Tabs from './tabs1';
 import useSound from 'use-sound';
+import { useGameStore, GameState } from '../store/gameStore2';
 
 
 // Type for cashout events
@@ -23,6 +24,7 @@ type CashoutEvent = {
 
 const CrashGame = () => {
   // Game state
+  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   const [play, { sound }] = useSound('/sound/cheering.mp3');
   const [play1] = useSound('/sound/cheering.mp3');
