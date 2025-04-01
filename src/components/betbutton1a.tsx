@@ -50,10 +50,10 @@ type BetbuttonProps = {
     const audioRef1 = useRef<HTMLAudioElement>(null)
     useEffect(() => {
       // Check if game crashed and user didn't cash out
-      if (gameState === "crashed" && !userCashedOut) {
+      if (gameState5.status === "Crashed" && !userCashedOut) {
         loseout()
       }
-    }, [gameState, userCashedOut])
+    }, [gameState5, userCashedOut])
 
     const loseout = () => {
       if (audioRef1.current) {
@@ -108,14 +108,14 @@ type BetbuttonProps = {
                   type="number"
                   value={autoCashoutAt}
                   onChange={(e) => setAutoCashoutAt(e.target.value)}
-                  disabled={gameState !== "idle"}
+                  disabled={gameState5.status !== "Waiting"}
                   className="bg-gray-700 border-gray-600 text-white"
                   min="1.01"
                   step="0.01"
                 />
               </div>
   
-              {gameState === "idle" ? (
+              {gameState5.status === "Waiting" ? (
                 <Button 
                   onClick={() => onStartGame(betAmount, autoCashoutAt)} 
                   className="w-full bg-green-600 hover:bg-green-700"
