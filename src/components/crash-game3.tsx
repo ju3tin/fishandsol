@@ -439,7 +439,7 @@ const CrashGame = () => {
         {/* Betting controls - Right Side */}
        <Betbutton 
          gameState={gameState}
-         currentMultiplier={currentMultiplier}
+         currentMultiplier={gameState5.multiplier}
          onStartGame={startGame}
          onCashout={() => cashout()}
          userCashedOut={userCashedOut}
