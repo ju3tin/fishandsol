@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -13,6 +13,7 @@ import BetList from "./BetList1"
 import Tabs from './tabs1';
 import useSound from 'use-sound';
 import { useGameStore, GameState } from '../store/gameStore2';
+import { toast } from 'react-toastify'; // Ensure you have the toast library
 
 
 // Type for cashout events
