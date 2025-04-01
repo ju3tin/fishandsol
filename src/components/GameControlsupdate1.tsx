@@ -385,7 +385,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   className="w-full bg-yellow-600 hover:bg-yellow-700"
                   disabled={isCashedOut}
                 >
-                  Cash Out ({Number(gameState.multiplier).toFixed(2)}x)
+                  Cash Out ({gameState.multiplier}x)
                 </Button>
               ) : (
                 <Button disabled className="w-full bg-red-600">
