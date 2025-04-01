@@ -26,7 +26,6 @@ type CashoutEvent = {
 
 const CrashGame = () => {
   // Game state
- 
   const gameState = useGameStore((state: GameState) => state);
 
   const [play, { sound }] = useSound('/sound/cheering.mp3');
@@ -367,7 +366,7 @@ const CrashGame = () => {
 
                 {gameState.status === "Waiting" && (
                   <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
-                    <p className="text-gray-400"> {gameState.timeRemaining}</p>
+                    <p className="text-gray-400">Place your bet and start the game</p>
                   </div>
                 )}
 
