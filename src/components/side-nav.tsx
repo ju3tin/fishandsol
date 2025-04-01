@@ -21,7 +21,7 @@ import { NavItems } from '@/config';
 import { cn } from '@/lib/utils2';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 
-import { ThemeToggle } from '../components/theme-toggle';
+//import { ThemeToggle } from '../components/theme-toggle';
 
 export default function SideNav() {
   const navItems = NavItems();
@@ -91,7 +91,7 @@ export default function SideNav() {
           </div>
           {/* Bottom */}
           <div className="sticky bottom-0 mt-auto whitespace-nowrap mb-4 transition duration-200 block">
-            <ThemeToggle isDropDown={true} />
+           {/*   <ThemeToggle isDropDown={true} />*/}
             {navItems.map((item, idx) => {
               if (item.position === 'bottom') {
                 return (
