@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
 import GameChat from "./game-chat"
-import Betbutton from "./betbutton1"
+import Betbutton from "./betbutton1a"
 import BetList from "./BetList1"
 import Tabs from './tabs1';
 import useSound from 'use-sound';
