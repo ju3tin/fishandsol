@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
 
 <Head>
-        <title>My page title</title>
+        <title>Chippie</title>
       </Head>
       
       <body className={inter.className}>
