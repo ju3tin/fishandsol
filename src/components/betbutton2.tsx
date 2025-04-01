@@ -65,14 +65,14 @@ type BetbuttonProps = {
       const toggleOverlay = () => {
         setOverlayVisible(!overlayVisible);
         };
-        const gameState5 = useGameStore((state: GameState) => state);
-        const isWaiting = useGameStore((game: GameState) => game.isWaiting);
-	const isPlaying = useGameStore((game: GameState) => game.isPlaying);
-	const isCashedOut = useGameStore((game: GameState) => game.isCashedOut);
-        const isConnected = useGameStore((game: GameState) => game.isConnected);
-        const [autoCashOut, setAutoCashOut] = useState<string>("0");
-        const [isAutoCashOutDisabled, setIsAutoCashOutDisabled] = useState(false);
-        const balances = useGameStore((game: GameState) => game.balances);
+    const gameState5 = useGameStore((state: GameState) => state);
+    const isWaiting = useGameStore((game: GameState) => game.isWaiting);
+	  const isPlaying = useGameStore((game: GameState) => game.isPlaying);
+	  const isCashedOut = useGameStore((game: GameState) => game.isCashedOut);
+    const isConnected = useGameStore((game: GameState) => game.isConnected);
+    const [autoCashOut, setAutoCashOut] = useState<string>("0");
+    const [isAutoCashOutDisabled, setIsAutoCashOutDisabled] = useState(false);
+    const balances = useGameStore((game: GameState) => game.balances);
     const [demoAmount, setDemoAmount] = useState<string>("0");
     const [copied, setCopied] = useState(false);
     const textToCopy = "This is the text to copy!";
