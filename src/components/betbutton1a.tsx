@@ -128,7 +128,7 @@ type BetbuttonProps = {
                   className="w-full bg-yellow-600 hover:bg-yellow-700"
                   disabled={userCashedOut}
                 >
-                  Cash Out ({currentMultiplier.toFixed(2)}x)
+                  Cash Out ({gameState5.multiplier}x)
                 </Button>
               ) : (
                 <Button disabled className="w-full bg-red-600">
