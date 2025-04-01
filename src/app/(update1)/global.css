@@ -12,6 +12,22 @@
   background-color: hsl(0deg 0% 0%);
 }
 
+.custom-wallet-button {
+  background-color: #4F46E5;
+  color: white;
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background 0.3s ease-in-out;
+}
+
+.custom-wallet-button:hover {
+  background-color: #4338CA;
+}
+
 .container1 {
   position: relative;
  top:0;

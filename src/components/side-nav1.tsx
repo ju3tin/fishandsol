@@ -81,7 +81,10 @@ export default function SideNav() {
                   );
                 }
               })}
-              <img src='/dude1.svg' alt="icon" /><WalletContextProvider>
+           {/*    <img src='/dude1.svg' alt="icon" />
+              <button className="wallet-adapter-button wallet-adapter-button-trigger" tabIndex={0} type="button" style={{pointerEvents:'auto'}}>Select Wallet</button>
+*/}
+              <WalletContextProvider>
          
 
          <LoginButton />
