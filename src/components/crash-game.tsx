@@ -328,7 +328,7 @@ const CrashGame = () => {
                                   fill="#fbbf24"
                                   textAnchor={cashout.id === "you" ? "end" : "start"}
                                 >
-                                  {cashout.multiplier.toFixed(2)}x
+                                  {gameState.multiplier}x
                                 </text>
                               </g>
                             )
@@ -377,14 +377,14 @@ const CrashGame = () => {
 
               {/* Game history */}
               <div className="flex gap-2 overflow-x-auto py-2">
-                {gameState.crashes.map((crash, index) => (
+                {gameState.crashes.map((gameState, index) => (
                   <div
                     key={index}
                     className={`px-2 py-1 rounded text-xs font-mono ${
-                      Number(crash.multiplier) < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
+                      Number(gameState.multiplier) < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
                     }`}
                   >
-                    {Number(crash.multiplier).toFixed(2)}x
+                    {Number(gameState.multiplier).toFixed(2)}x
                   </div>
                 ))}
                 {gameState.crashes.length === 0 && <p className="text-gray-500 text-sm">No game history yet</p>}
