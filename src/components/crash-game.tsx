@@ -394,6 +394,7 @@ const CrashGame = () => {
         </div>
 
         {/* Betting controls - Right Side */}
+        <GameControls />
         <Betbutton 
           gameState={getChatGameState()}
           currentMultiplier={Number(gameState.multiplier) || 1}
@@ -402,7 +403,7 @@ const CrashGame = () => {
           userCashedOut={userCashedOut}
           cashouts={cashouts}
         />
-        <GameControls />
+       
       </div>
       {!isMobile && <BetList />}
       {isMobile && gameState.crashPoint && <Tabs gameState={getChatGameState()} crashPoint={gameState.crashPoint} onCrash={resetGame} />}
