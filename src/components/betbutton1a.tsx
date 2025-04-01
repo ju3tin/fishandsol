@@ -132,7 +132,7 @@ type BetbuttonProps = {
                 </Button>
               ) : (
                 <Button disabled className="w-full bg-red-600">
-                  Crashed
+                  Crashed ({gameState5.multiplier}x)
                 </Button>
               )}
             </div>
