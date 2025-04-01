@@ -32,6 +32,8 @@ import styles from "../styles/components/GameControls1.module.css";
 import { address1a } from "./WalletConnection";
 
 export default function GameControls() {
+	const gameState5 = useGameStore((state: GameState) => state);
+
 	const textRef = useRef();
 	
 	const [copied, setCopied] = useState(false);
@@ -127,7 +129,7 @@ export default function GameControls() {
 			if (isPlaying && !isCashedOut) {
 				return "Cash out";
 			} else {
-				return `Place bet (${gameState.multiplier})`;
+				return `Place bet (${gameState5.multiplier})`;
 			}
 		} else {
 			return "Place bet";
