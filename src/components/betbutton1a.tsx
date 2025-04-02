@@ -50,6 +50,16 @@ type BetbuttonProps = {
     const [autoCashoutAt, setAutoCashoutAt] = useState("2")
     const audioRef = useRef<HTMLAudioElement>(null)
     const audioRef1 = useRef<HTMLAudioElement>(null)
+    const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
+
+    useEffect(() => {
+      if (typeof gameState5.timeRemaining === 'number' && !isNaN) {
+        gameState5.timeRemaining;
+      } else {
+        setPreviousTimeRemaining(gameState5.timeRemaining);
+      }
+    }, [gameState5.timeRemaining]);
+
     useEffect(() => {
       // Check if game crashed and user didn't cash out
       if (gameState5.status === "Crashed" && !userCashedOut) {
@@ -126,7 +136,7 @@ type BetbuttonProps = {
                   {typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
                         <p className="text-black">Place Bet {gameState5.timeRemaining}</p>
                     ) : (
-                        <p className="text-black"></p>
+                        <p className="text-black">Place Bet {previousTimeRemaining}</p>
                     )}
                 </Button>
               ) : gameState5.status === "Running" ? (
