@@ -10,8 +10,6 @@ import { Send } from "lucide-react"
 import { GameState, useGameStore } from "@/store/gameStore2"
 
 
-const gameState5 = useGameStore((gameState5: GameState) => gameState5);
-
 type ChatMessage = {
   id: string
   sender: string
@@ -36,6 +34,9 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
       isSystem: true,
     },
   ])
+
+const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+
   const [newMessage, setNewMessage] = useState("")
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
