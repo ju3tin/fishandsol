@@ -406,7 +406,11 @@ const CrashGame = () => {
 
                 {gameState5.status === "Waiting" && (
                   <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
-                    <p className="text-gray-400"><p className="text-gray-400"> {gameState5.timeRemaining}</p></p>
+                    {typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
+                        <p className="text-gray-400">Game Will Launch in {gameState5.timeRemaining}</p>
+                    ) : (
+                        <p className="text-gray-400"></p>
+                    )}
                   </div>
                 )}
 
