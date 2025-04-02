@@ -149,7 +149,7 @@ type BetbuttonProps = {
                     <div key={cashout.id} className="flex justify-between items-center text-xs">
                       <span className="font-medium text-white">{cashout.id === "you" ? "You" : cashout.id}</span>
                       <span className="text-yellow-400">
-                        {cashout.amount.toFixed(2)} SOL @ {cashout.multiplier.toFixed(2)}x
+                        {cashout.amount.toFixed(2)} SOL @ {currentMultiplier}x
                       </span>
                     </div>
                   ))}
