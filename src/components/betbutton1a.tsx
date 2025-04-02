@@ -123,7 +123,11 @@ type BetbuttonProps = {
                   onClick={() => onStartGame(betAmount, autoCashoutAt)} 
                   className="w-full bg-green-600 hover:bg-green-700"
                 >
-                  Place Bet
+                  {typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
+                        <p className="text-gray-400">Place Bet {gameState5.timeRemaining}x</p>
+                    ) : (
+                        <p className="text-gray-400"></p>
+                    )}
                 </Button>
               ) : gameState5.status === "Running" ? (
                 <Button
