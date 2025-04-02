@@ -26,7 +26,7 @@ type BetbuttonProps = {
     gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
     currentMultiplier: number;
     onStartGame: (betAmount: string, autoCashoutAt: string) => void;
-    onCashout: () => void;
+    onCashout: (multiplier: number) => void; // Update to accept a multiplier
     userCashedOut: boolean;
     cashouts: Array<{
       id: string;
@@ -95,7 +95,7 @@ type BetbuttonProps = {
       })
       
 
-      onCashout()
+      onCashout(currentMultiplier)
     }
 
     const handleButtonPress = () => {
