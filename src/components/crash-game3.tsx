@@ -183,8 +183,11 @@ const CrashGame = () => {
     currentMultiplierRef.current = finalMultiplier
 
     // Add to history
-    setGameHistory((prev) => [finalMultiplier, ...prev].slice(0, 10))
-
+    useEffect(() => {
+      if (gameState5.status === "Crashed") {
+        setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
+      }
+    }, [gameState5.status, gameState5.multiplier])
     // Reset after a delay
     setTimeout(() => {
       setGameState("idle")
