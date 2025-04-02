@@ -183,11 +183,7 @@ const CrashGame = () => {
     currentMultiplierRef.current = finalMultiplier
 
     // Add to history
-    useEffect(() => {
-      if (gameState5.status === "Crashed") {
-        setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
-      }
-    }, [gameState5.status, gameState5.multiplier])
+   
     // Reset after a delay
     setTimeout(() => {
       setGameState("idle")
@@ -237,6 +233,12 @@ const CrashGame = () => {
       }
     }
   }, [])
+
+  useEffect(() => {
+    if (gameState5.status === "Crashed") {
+      setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
+    }
+  }, [gameState5.status, gameState5.multiplier])
 
   // Calculate the curve path based on current multiplier
   const getCurvePath = () => {
