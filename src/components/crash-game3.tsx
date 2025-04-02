@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
-import GameChat from "./game-chat"
+import GameChat from "./game-chat3"
 import Betbutton from "./betbutton1a"
 import BetList from "./BetList1"
-import Tabs from './tabs1';
+import Tabs from './tabs3';
 import useSound from 'use-sound';
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
@@ -31,7 +31,7 @@ const CrashGame = () => {
   const [play1] = useSound('/sound/cheering.mp3');
 
   const [isMobile, setIsMobile] = useState(false);
-  const [gameState, setGameState] = useState<"Waiting" | "Running" | "Crashed">("Waiting")
+  const [gameState, setGameState] = useState<"idle" | "running" | "crashed">("idle")
   const [currentMultiplier, setCurrentMultiplier] = useState(1)
   const [crashPoint, setCrashPoint] = useState(0)
   const [betAmount, setBetAmount] = useState("0.1")
@@ -93,7 +93,7 @@ const CrashGame = () => {
     setCurrentMultiplier(1)
     currentMultiplierRef.current = 1
     setPathProgress(0)
-    setGameState("Running")
+    setGameState("running")
     startTimeRef.current = Date.now()
 
     // Start animation loop
@@ -178,7 +178,7 @@ const CrashGame = () => {
     }
 
     // Update game state
-    setGameState("Crashed")
+    setGameState("crashed")
     setCurrentMultiplier(finalMultiplier)
     currentMultiplierRef.current = finalMultiplier
 
@@ -187,13 +187,13 @@ const CrashGame = () => {
 
     // Reset after a delay
     setTimeout(() => {
-      setGameState("Waiting")
+      setGameState("idle")
     }, 3000)
   }
 
   // Reset game to idle state
   const resetGame = () => {
-    setGameState("Waiting")
+    setGameState("idle")
   }
 
   // Add a cashout event
@@ -314,7 +314,7 @@ const CrashGame = () => {
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
 
-                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
+                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "crashed" ? "CRASHED!" : "Multiplier"}</h2>}
                 <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
               </div>
 
