@@ -15,7 +15,7 @@ import BetList from "./BetList"; // Import your existing BetList
 import ChatRoom from "./game-chat"; // Create a ChatRoom component
 
 type BetsAndChatProps = {
-	gameState: "idle" | "running" | "crashed";
+	gameState: "Waiting" | "Running" | "Crashed";
 	crashPoint: number;
 	onCrash: () => void;
 }

@@ -17,7 +17,7 @@ type ChatMessage = {
 }
 
 type GameChatProps = {
-  gameState: "idle" | "running" | "crashed"
+  gameState: "Waiting" | "Running" | "Crashed";
   crashPoint?: number
   onCrash?: () => void
 }
@@ -44,10 +44,10 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
 
   // Add system messages when game state changes
   useEffect(() => {
-    if (gameState === "running") {
+    if (gameState === "Running") {
       addSystemMessage("Game started! Good luck!")
       simulatePlayerMessages()
-    } else if (gameState === "crashed" && crashPoint) {
+    } else if (gameState === "Crashed" && crashPoint) {
       addSystemMessage(`Game crashed at ${crashPoint.toFixed(2)}x!`)
 
       // Call onCrash callback after a delay
@@ -106,7 +106,7 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
       const delay = 1000 + Math.random() * 8000
 
       setTimeout(() => {
-        if (gameState === "running") {
+        if (gameState === "Running") {
           const randomPlayer = playerNames[Math.floor(Math.random() * playerNames.length)]
           const randomMessage = playerMessages[Math.floor(Math.random() * playerMessages.length)]
 
