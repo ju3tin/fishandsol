@@ -52,8 +52,14 @@ type BetbuttonProps = {
     const audioRef1 = useRef<HTMLAudioElement>(null)
     const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
     const [buttonPressCount, setButtonPressCount] = useState(0);
-    const [isButtonClicked, setIsButtonClicked] = useState(false);
+   // const [isButtonClicked, setIsButtonClicked] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
+
+    useEffect(() => {
+      if (gameState5.status === "Waiting") {
+        setButtonClicked(false);
+      }
+    }, [gameState5.status]);
 
     useEffect(() => {
       if (isNaN(gameState5.timeRemaining)) {
@@ -78,12 +84,6 @@ type BetbuttonProps = {
       }
     }, [gameState5.status]);
 
-    useEffect(() => {
-      if (gameState5.status === "Waiting") {
-        setButtonClicked(false);
-      }
-    }, [gameState5.status]);
-
     const loseout = () => {
       if (audioRef1.current) {
         audioRef1.current.play()
@@ -91,6 +91,7 @@ type BetbuttonProps = {
 
     }
     const handleCashout = () => {
+      setButtonClicked(true);
       const current12 = multiplier;
       console.log(`Current Multiplier: ${multiplier}`);
       if (audioRef.current) {
@@ -109,8 +110,6 @@ type BetbuttonProps = {
 
     const handleButtonPress = () => {
       setButtonPressCount((prevCount) => prevCount + 1);
-      setIsButtonClicked(true);
-      setButtonClicked(true);
       onStartGame(betAmount, autoCashoutAt);
     };
 
@@ -155,11 +154,11 @@ type BetbuttonProps = {
   
               {gameState5.status === "Waiting" ? (
                 <Button 
-                  onClick={isButtonClicked ? undefined : handleButtonPress} 
-                  className={`w-full ${isButtonClicked ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'}`}
-                  disabled={isButtonClicked}
+                  onClick={buttonPressCount > 0 ? undefined : handleButtonPress} 
+                  className={`w-full ${buttonPressCount > 0 ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'}`}
+                  disabled={buttonPressCount > 0}
                 >
-                  {isButtonClicked ? (
+                  {buttonPressCount > 0 ? (
                     <p className="text-black">Bet Placed</p>
                   ) : (
                     typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
