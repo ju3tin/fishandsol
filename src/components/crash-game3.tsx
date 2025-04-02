@@ -102,7 +102,7 @@ const CrashGame = () => {
     // Set timer for game end
     gameTimerRef.current = setTimeout(() => {
       endGame(newCrashPoint)
-    }, GAME_DURATION_MS)
+    })
 
     // Simulate other players cashing out at random times
     simulateOtherPlayers(newCrashPoint)
