@@ -192,7 +192,7 @@ const CrashGame = () => {
 
   // Reset game to idle state
   const resetGame = () => {
-    setGameState("idle")
+   gameState5.status == "Waiting"
   }
 
   // Add a cashout event
