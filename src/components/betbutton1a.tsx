@@ -53,9 +53,11 @@ type BetbuttonProps = {
     const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
 
     useEffect(() => {
-      if (typeof gameState5.timeRemaining === 'number' && !isNaN) {
-        gameState5.timeRemaining;
+      if (isNaN(gameState5.timeRemaining)) {
+        // If timeRemaining is NaN, keep the previous value
+        return;
       } else {
+        // Otherwise, update previousTimeRemaining with the current timeRemaining
         setPreviousTimeRemaining(gameState5.timeRemaining);
       }
     }, [gameState5.timeRemaining]);
