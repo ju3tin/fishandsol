@@ -24,7 +24,10 @@ type GameChatProps = {
   onCrash?: () => void
 }
 
-const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
+const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+
+
+const GameChat = ({}: GameChatProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
@@ -35,7 +38,6 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
     },
   ])
 
-const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   const [newMessage, setNewMessage] = useState("")
   const chatContainerRef = useRef<HTMLDivElement>(null)
@@ -56,11 +58,9 @@ const gameState5 = useGameStore((gameState5: GameState) => gameState5);
       addSystemMessage(`Game crashed at ${gameState5.multiplier}x!`)
 
       // Call onCrash callback after a delay
-      if (onCrash) {
-        setTimeout(onCrash, 500)
-      }
+     
     }
-  }, [gameState, crashPoint, gameState5])
+  }, [gameState5])
 
   // Add a system message
   const addSystemMessage = (message: string) => {
