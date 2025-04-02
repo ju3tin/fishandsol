@@ -145,7 +145,7 @@ type BetbuttonProps = {
               {gameState5.status === "Waiting" ? (
                 <Button 
                   onClick={buttonPressCount > 0 ? undefined : handleButtonPress} 
-                  className={`w-full ${buttonPressCount > 1 ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'}`}
+                  className={`w-full ${buttonPressCount > 0 ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'}`}
                   disabled={buttonPressCount > 0}
                 >
                   {buttonPressCount > 0 ? (
