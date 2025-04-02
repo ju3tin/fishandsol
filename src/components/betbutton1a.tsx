@@ -171,8 +171,6 @@ type BetbuttonProps = {
                   Crashed ({currentMultiplier}x)
                 </Button>
               )}
-
-              <p className="text-white">Button Press Count: {buttonPressCount}</p>
             </div>
   
             {/* Active players */}
