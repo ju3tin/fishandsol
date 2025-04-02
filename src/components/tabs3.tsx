@@ -12,10 +12,10 @@ import {
 } from "@/components/ui/card";
 
 import BetList from "./BetList"; // Import your existing BetList
-import ChatRoom from "./game-chat1"; // Create a ChatRoom component
+import ChatRoom from "./game-chat3"; // Create a ChatRoom component
 
 type BetsAndChatProps = {
-	gameState: "idle" | "running" | "crashed";
+	gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
 	crashPoint: number;
 	onCrash: () => void;
 }

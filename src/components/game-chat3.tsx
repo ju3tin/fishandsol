@@ -19,13 +19,12 @@ type ChatMessage = {
 }
 
 type GameChatProps = {
-  gameState: "idle" | "running" | "crashed"
+  gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped"
   crashPoint?: number
   onCrash?: () => void
 }
 
-
-const GameChat = ({}: GameChatProps) => {
+const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
@@ -36,11 +35,10 @@ const GameChat = ({}: GameChatProps) => {
     },
   ])
 
+const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   const [newMessage, setNewMessage] = useState("")
   const chatContainerRef = useRef<HTMLDivElement>(null)
-  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
-
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -58,9 +56,11 @@ const GameChat = ({}: GameChatProps) => {
       addSystemMessage(`Game crashed at ${gameState5.multiplier}x!`)
 
       // Call onCrash callback after a delay
-     
+      if (onCrash) {
+        setTimeout(onCrash, 500)
+      }
     }
-  }, [gameState5])
+  }, [gameState, crashPoint, gameState5])
 
   // Add a system message
   const addSystemMessage = (message: string) => {

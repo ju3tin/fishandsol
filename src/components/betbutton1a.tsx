@@ -23,7 +23,7 @@ import { useState, useEffect, useRef } from "react"
 import JSConfetti from 'js-confetti';
 
 type BetbuttonProps = {
-    gameState: "idle" | "running" | "crashed";
+    gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
     currentMultiplier: number;
     onStartGame: (betAmount: string, autoCashoutAt: string) => void;
     onCashout: () => void;

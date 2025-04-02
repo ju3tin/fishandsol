@@ -31,7 +31,7 @@ const CrashGame = () => {
   const [play1] = useSound('/sound/cheering.mp3');
 
   const [isMobile, setIsMobile] = useState(false);
-  const [gameState, setGameState] = useState<"idle" | "running" | "crashed">("idle")
+  const [gameState, setGameState] = useState<"Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped">(gameState5.status)
   const [currentMultiplier, setCurrentMultiplier] = useState(1)
   const [crashPoint, setCrashPoint] = useState(0)
   const [betAmount, setBetAmount] = useState("0.1")
@@ -93,7 +93,7 @@ const CrashGame = () => {
     setCurrentMultiplier(1)
     currentMultiplierRef.current = 1
     setPathProgress(0)
-    setGameState("running")
+    setGameState("Running")
     startTimeRef.current = Date.now()
 
     // Start animation loop
@@ -178,7 +178,7 @@ const CrashGame = () => {
     }
 
     // Update game state
-    setGameState("crashed")
+    setGameState("Crashed")
     setCurrentMultiplier(finalMultiplier)
     currentMultiplierRef.current = finalMultiplier
 
@@ -186,13 +186,13 @@ const CrashGame = () => {
    
     // Reset after a delay
     setTimeout(() => {
-      setGameState("idle")
+      setGameState("Waiting")
     }, 3000)
   }
 
   // Reset game to idle state
   const resetGame = () => {
-    setGameState("idle")
+    setGameState("Waiting")
   }
 
   // Add a cashout event
@@ -319,7 +319,7 @@ const CrashGame = () => {
             <CardContent className="p-6">
               <div className="flex justify-between items-center mb-4">
 
-                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "crashed" ? "CRASHED!" : "Multiplier"}</h2>}
+                {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
                 <div className="text-3xl font-mono font-bold text-green-400">{gameState5.multiplier}x</div>
               </div>
 
