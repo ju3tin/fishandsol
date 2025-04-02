@@ -406,7 +406,7 @@ const CrashGame = () => {
                     </svg>
 
                     {/* Rocket indicator */}
-                    {gameState5.status === "Running" && pathRef.current && (
+                    {gameState === "Running" && pathRef.current && (
                       <motion.div
                         className="absolute"
                         style={{
@@ -427,9 +427,9 @@ const CrashGame = () => {
                 {gameState5.status === "Waiting" && (
                   <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
                     {typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
-                        <p className="text-gray-400">Game Will Launch in {gameState5.timeRemaining}</p>
+                        <p className="text-gray-400">Game Will Launch In {gameState5.timeRemaining}</p>
                     ) : (
-                        <p className="text-gray-400">Game Will Launch in {previousTimeRemaining}</p>
+                        <p className="text-gray-400">Game Will Launch In {previousTimeRemaining}</p>
                     )}
                   </div>
                 )}
