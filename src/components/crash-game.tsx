@@ -54,16 +54,16 @@ const CrashGame = () => {
   const GAME_DURATION_MS = 15000 // 15 seconds max game duration
 
   // Convert game state to chat state
-  const getChatGameState = (): "idle" | "running" | "crashed" => {
+  const getChatGameState = (): "Waiting" | "Running" | "Crashed" => {
     switch (gameState.status) {
       case "Waiting":
-        return "idle";
+        return "Waiting";
       case "Running":
-        return "running";
+        return "Running";
       case "Crashed":
-        return "crashed";
+        return "Crashed";
       default:
-        return "idle";
+        return "Waiting";
     }
   }
 
@@ -402,7 +402,7 @@ const CrashGame = () => {
           </Card>
         </div>
 
-        {/* Betting controls - Right Side */}
+        {/* Betting controls - Right Side 
       
         <Betbutton 
           gameState={getChatGameState()}
@@ -411,7 +411,7 @@ const CrashGame = () => {
           onCashout={() => cashout()}
           userCashedOut={userCashedOut}
           cashouts={cashouts}
-        />
+        />*/}
        
       </div>
       {!isMobile && <BetList />}
