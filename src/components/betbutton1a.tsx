@@ -124,7 +124,7 @@ type BetbuttonProps = {
                   className="w-full bg-green-600 hover:bg-green-700"
                 >
                   {typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
-                        <p className="text-black">Place Bet {gameState5.timeRemaining}x</p>
+                        <p className="text-black">Place Bet {gameState5.timeRemaining}</p>
                     ) : (
                         <p className="text-black"></p>
                     )}
