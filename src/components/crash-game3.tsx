@@ -192,7 +192,16 @@ const CrashGame = () => {
 
   // Reset game to idle state
   const resetGame = () => {
-   gameState5.status == "Waiting"
+    if (gameState5.status === "Crashed") {
+      setGameState("idle"); // Reset to idle state
+      // Optionally, reset other states if needed
+      setCurrentMultiplier(1);
+      setCrashPoint(0);
+      setUserCashedOut(false);
+      setUserWinnings(0);
+      setCashouts([]);
+      setGameHistory([]); // Reset game history if needed
+    }
   }
 
   // Add a cashout event
@@ -303,6 +312,13 @@ const CrashGame = () => {
     // Convert to degrees and adjust (0 degrees is right, 90 is down)
     return angle * (180 / Math.PI) + 90
   }
+
+  // Example of calling resetGame after a crash
+  useEffect(() => {
+    if (gameState5.status === "Crashed") {
+      resetGame(); // Call resetGame when the status is "Crashed"
+    }
+  }, [gameState5.status]);
 
   return (
     <div className="w-full">
