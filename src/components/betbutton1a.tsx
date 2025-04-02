@@ -169,10 +169,12 @@ type BetbuttonProps = {
                   )}
                 </Button>
               ) : gameState5.status === "Running" ? (
+                
+                
                 <Button
                   onClick={handleCashout}
                   className="w-full bg-yellow-600 hover:bg-yellow-700"
-                  disabled={userCashedOut || buttonClicked}
+                  disabled={userCashedOut || buttonClicked || buttonPressCount > 0}
                 >
                   Cash Out ({currentMultiplier}x)
                 </Button>
