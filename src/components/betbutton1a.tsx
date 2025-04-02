@@ -51,6 +51,7 @@ type BetbuttonProps = {
     const audioRef = useRef<HTMLAudioElement>(null)
     const audioRef1 = useRef<HTMLAudioElement>(null)
     const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
+    const [buttonPressCount, setButtonPressCount] = useState(0);
 
     useEffect(() => {
       if (isNaN(gameState5.timeRemaining)) {
@@ -68,6 +69,12 @@ type BetbuttonProps = {
         loseout()
       }
     }, [gameState5, userCashedOut])
+
+    useEffect(() => {
+      if (gameState5.status === "Crashed") {
+        setButtonPressCount(0);
+      }
+    }, [gameState5.status]);
 
     const loseout = () => {
       if (audioRef1.current) {
@@ -90,6 +97,11 @@ type BetbuttonProps = {
 
       onCashout()
     }
+
+    const handleButtonPress = () => {
+      setButtonPressCount((prevCount) => prevCount + 1);
+      onStartGame(betAmount, autoCashoutAt);
+    };
 
     return (
       <div className="lg:col-span-2">
@@ -132,14 +144,19 @@ type BetbuttonProps = {
   
               {gameState5.status === "Waiting" ? (
                 <Button 
-                  onClick={() => onStartGame(betAmount, autoCashoutAt)} 
-                  className="w-full bg-green-600 hover:bg-green-700"
+                  onClick={buttonPressCount > 0 ? undefined : handleButtonPress} 
+                  className={`w-full ${buttonPressCount > 1 ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'}`}
+                  disabled={buttonPressCount > 0}
                 >
-                  {typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
-                        <p className="text-black">Place Bet {gameState5.timeRemaining}</p>
+                  {buttonPressCount > 0 ? (
+                    <p className="text-black">Bet Placed</p>
+                  ) : (
+                    typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
+                      <p className="text-black">Place Bet {gameState5.timeRemaining}</p>
                     ) : (
-                        <p className="text-black">Place Bet {previousTimeRemaining}</p>
-                    )}
+                      <p className="text-black">Place Bet {previousTimeRemaining}</p>
+                    )
+                  )}
                 </Button>
               ) : gameState5.status === "Running" ? (
                 <Button
@@ -154,6 +171,8 @@ type BetbuttonProps = {
                   Crashed ({currentMultiplier}x)
                 </Button>
               )}
+
+              <p className="text-white">Button Press Count: {buttonPressCount}</p>
             </div>
   
             {/* Active players */}
