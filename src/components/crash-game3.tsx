@@ -204,6 +204,12 @@ const CrashGame = () => {
     }, 3000)
   }
 
+  const handleCashout = (multiplier: number) => {
+    console.log(`Current Multiplier: ${multiplier}`); // Log the received multiplier
+    setCurrentMultiplier(multiplier); // Update the current multiplier state
+    // Additional cashout logic...
+  };
+
   // Reset game to idle state
   const resetGame = () => {
     setGameState("Waiting")
@@ -462,9 +468,9 @@ const CrashGame = () => {
         {/* Betting controls - Right Side */}
        <Betbutton 
          gameState={gameState}
-         currentMultiplier={currentMultiplier}
+         currentMultiplier={gameState5.multiplier}
          onStartGame={startGame}
-         onCashout={() => cashout()}
+         onCashout={handleCashout}
          userCashedOut={userCashedOut}
          cashouts={cashouts}
          multiplier={gameState5.multiplier}

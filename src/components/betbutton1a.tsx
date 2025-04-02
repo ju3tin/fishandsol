@@ -83,6 +83,7 @@ type BetbuttonProps = {
 
     }
     const handleCashout = () => {
+      const current12 = multiplier;
       console.log(`Current Multiplier: ${multiplier}`);
       if (audioRef.current) {
         audioRef.current.play()
@@ -95,7 +96,7 @@ type BetbuttonProps = {
       })
       
 
-      onCashout(currentMultiplier)
+      onCashout(current12);
     }
 
     const handleButtonPress = () => {
