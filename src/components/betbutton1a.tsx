@@ -33,6 +33,7 @@ type BetbuttonProps = {
       multiplier: number;
       amount: number;
     }>;
+    multiplier: number;
   }
   
   const Betbutton = ({ 
@@ -41,7 +42,8 @@ type BetbuttonProps = {
     onStartGame, 
     onCashout,
     userCashedOut,
-    cashouts 
+    cashouts,
+    multiplier
   }: BetbuttonProps) => {
     const gameState5 = useGameStore((gameState5: GameState) => gameState5);
     const [betAmount, setBetAmount] = useState("0.1")
@@ -62,6 +64,7 @@ type BetbuttonProps = {
 
     }
     const handleCashout = () => {
+      console.log(`Current Multiplier: ${multiplier}`);
       if (audioRef.current) {
         audioRef.current.play()
       }

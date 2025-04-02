@@ -453,6 +453,7 @@ const CrashGame = () => {
          onCashout={() => cashout()}
          userCashedOut={userCashedOut}
          cashouts={cashouts}
+         multiplier={gameState5.multiplier}
        />
 
       
