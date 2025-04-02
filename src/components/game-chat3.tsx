@@ -24,8 +24,6 @@ type GameChatProps = {
   onCrash?: () => void
 }
 
-const gameState5 = useGameStore((gameState5: GameState) => gameState5);
-
 
 const GameChat = ({}: GameChatProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -41,6 +39,8 @@ const GameChat = ({}: GameChatProps) => {
 
   const [newMessage, setNewMessage] = useState("")
   const chatContainerRef = useRef<HTMLDivElement>(null)
+  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
