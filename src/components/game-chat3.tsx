@@ -7,8 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Send } from "lucide-react"
-import { GameState, useGameStore } from "@/store/gameStore2"
-
 
 type ChatMessage = {
   id: string
@@ -19,7 +17,7 @@ type ChatMessage = {
 }
 
 type GameChatProps = {
-  gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped"
+  gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
   crashPoint?: number
   onCrash?: () => void
 }
@@ -34,9 +32,6 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
       isSystem: true,
     },
   ])
-
-const gameState5 = useGameStore((gameState5: GameState) => gameState5);
-
   const [newMessage, setNewMessage] = useState("")
   const chatContainerRef = useRef<HTMLDivElement>(null)
 
@@ -49,18 +44,18 @@ const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   // Add system messages when game state changes
   useEffect(() => {
-    if (gameState5.status === "Running") {
+    if (gameState === "Running") {
       addSystemMessage("Game started! Good luck!")
       simulatePlayerMessages()
-    } else if (gameState5.status === "Crashed") {
-      addSystemMessage(`Game crashed at ${gameState5.multiplier}x!`)
+    } else if (gameState === "Crashed" && crashPoint) {
+      addSystemMessage(`Game crashed at ${crashPoint.toFixed(2)}x!`)
 
       // Call onCrash callback after a delay
       if (onCrash) {
         setTimeout(onCrash, 500)
       }
     }
-  }, [gameState, crashPoint, gameState5])
+  }, [gameState, crashPoint])
 
   // Add a system message
   const addSystemMessage = (message: string) => {
@@ -111,7 +106,7 @@ const gameState5 = useGameStore((gameState5: GameState) => gameState5);
       const delay = 1000 + Math.random() * 8000
 
       setTimeout(() => {
-        if (gameState5.status === "Running") {
+        if (gameState === "Running") {
           const randomPlayer = playerNames[Math.floor(Math.random() * playerNames.length)]
           const randomMessage = playerMessages[Math.floor(Math.random() * playerMessages.length)]
 
