@@ -54,6 +54,20 @@ const CrashGame = () => {
   const MAX_MULTIPLIER = 100
   const GAME_DURATION_MS = 15000 // 15 seconds max game duration
 
+    // New state for previous time remaining
+    const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
+
+    // Update previous time remaining whenever gameState5.timeRemaining changes
+    useEffect(() => {
+      if (isNaN(gameState5.timeRemaining)) {
+        // If timeRemaining is NaN, keep the previous value
+        return;
+      } else {
+        // Otherwise, update previousTimeRemaining with the current timeRemaining
+        setPreviousTimeRemaining(gameState5.timeRemaining);
+      }
+    }, [gameState5.timeRemaining]);
+
   useEffect(() => {
     const checkScreenSize = () => setIsMobile(window.innerWidth <= 768);
 
@@ -409,7 +423,7 @@ const CrashGame = () => {
                     {typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
                         <p className="text-gray-400">Game Will Launch in {gameState5.timeRemaining}</p>
                     ) : (
-                        <p className="text-gray-400"></p>
+                        <p className="text-gray-400">Game Will Launch in {previousTimeRemaining}</p>
                     )}
                   </div>
                 )}
