@@ -406,7 +406,7 @@ const CrashGame = () => {
 
                 {gameState5.status === "Waiting" && (
                   <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
-                    <p className="text-gray-400">Place your bet and start the game</p>
+                    <p className="text-gray-400"><p className="text-gray-400"> {gameState5.timeRemaining}</p></p>
                   </div>
                 )}
 
