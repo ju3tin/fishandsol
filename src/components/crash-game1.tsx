@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
-import GameChat from "./game-chat"
+import GameChat from "./game-chat1"
 import Betbutton from "./betbutton"
 
 // Type for cashout events

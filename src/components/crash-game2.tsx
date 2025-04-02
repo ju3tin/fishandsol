@@ -7,10 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
-import GameChat from "./game-chat"
-import Betbutton from "./betbutton1"
+import GameChat from "./game-chat1"
+import Betbutton from "./betbutton4"
 import BetList from "./BetList1"
-import Tabs from './tabs1';
+import Tabs from './tabs';
 import useSound from 'use-sound';
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
@@ -436,7 +436,7 @@ const CrashGame = () => {
           </Card>
         </div>
 
-        {/* Betting controls - Right Side */}
+        {/* Betting controls - Right Side 
        <Betbutton 
          gameState={gameState}
          currentMultiplier={currentMultiplier}
@@ -445,13 +445,12 @@ const CrashGame = () => {
          userCashedOut={userCashedOut}
          cashouts={cashouts}
        />
-
+*/}
       
 
       </div>
       {!isMobile && <BetList />}
-      {isMobile && <Tabs gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />}
-    </div>
+       </div>
   )
 }
 
