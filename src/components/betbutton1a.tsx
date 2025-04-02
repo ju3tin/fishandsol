@@ -53,6 +53,7 @@ type BetbuttonProps = {
     const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
     const [buttonPressCount, setButtonPressCount] = useState(0);
     const [isButtonClicked, setIsButtonClicked] = useState(false);
+    const [buttonClicked, setButtonClicked] = useState(false);
 
     useEffect(() => {
       if (isNaN(gameState5.timeRemaining)) {
@@ -74,6 +75,12 @@ type BetbuttonProps = {
     useEffect(() => {
       if (gameState5.status === "Crashed") {
         setButtonPressCount(0);
+      }
+    }, [gameState5.status]);
+
+    useEffect(() => {
+      if (gameState5.status === "Waiting") {
+        setButtonClicked(false);
       }
     }, [gameState5.status]);
 
@@ -103,6 +110,7 @@ type BetbuttonProps = {
     const handleButtonPress = () => {
       setButtonPressCount((prevCount) => prevCount + 1);
       setIsButtonClicked(true);
+      setButtonClicked(true);
       onStartGame(betAmount, autoCashoutAt);
     };
 
@@ -165,7 +173,7 @@ type BetbuttonProps = {
                 <Button
                   onClick={handleCashout}
                   className="w-full bg-yellow-600 hover:bg-yellow-700"
-                  disabled={userCashedOut}
+                  disabled={userCashedOut || buttonClicked}
                 >
                   Cash Out ({currentMultiplier}x)
                 </Button>
