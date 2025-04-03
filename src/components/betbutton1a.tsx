@@ -80,7 +80,11 @@ type BetbuttonProps = {
 
     useEffect(() => {
       if (gameState5.status === "Crashed") {
-        setButtonPressCount(0);
+        const timer = setTimeout(() => {
+          setButtonPressCount(0);
+        }, 1000); // Set buttonPressCount to 0 after 1 second
+
+        return () => clearTimeout(timer); // Cleanup the timer on unmount
       }
     }, [gameState5.status]);
 
