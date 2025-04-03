@@ -73,10 +73,10 @@ type BetbuttonProps = {
 
     useEffect(() => {
       // Check if game crashed and user didn't cash out
-      if (gameState5.status === "Crashed" && setButtonPressCount(1) && setButtonClicked(false)) {
-        loseout()
+      if (gameState5.status === "Crashed" && buttonPressCount === 1 && !buttonClicked) {
+        loseout();
       }
-    }, [gameState5, userCashedOut, setButtonPressCount, setButtonClicked])
+    }, [gameState5, userCashedOut, buttonPressCount, buttonClicked]);
 
     useEffect(() => {
       if (gameState5.status === "Crashed") {
