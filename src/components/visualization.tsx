@@ -7,6 +7,7 @@ const GameVisual = () => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const fishRef = useRef<HTMLDivElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
 
   // Predefined control points
@@ -20,7 +21,8 @@ const GameVisual = () => {
 
   useEffect(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const fish = fishRef.current;
+    if (!canvas || !fish) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
@@ -32,8 +34,26 @@ const GameVisual = () => {
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
 
+    function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
+      const u = 1 - t;
+      const tt = t * t;
+      const uu = u * u;
+      const uuu = uu * u;
+      const ttt = tt * t;
+
+      const x = uuu * p0.x
+              + 3 * uu * t * p1.x
+              + 3 * u * tt * p2.x
+              + ttt * p3.x;
+      const y = uuu * p0.y
+              + 3 * uu * t * p1.y
+              + 3 * u * tt * p2.y
+              + ttt * p3.y;
+      return { x, y };
+    }
+
     function animate() {
-      if (!canvas || !ctx) return;
+      if (!canvas || !ctx || !fish) return;
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.beginPath();
@@ -49,13 +69,16 @@ const GameVisual = () => {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      t += 0.01; // Speed of the animation
+      // Move fish to current curve end
+      const fishPos = getBezierPoint(t, { x: 20, y: 20 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: 200, y: 200 });
+      fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px)`; // Adjust offset if needed
+
+      t += 0.01;
 
       if (t <= 1) {
         curveAnimationRef.current = requestAnimationFrame(animate);
       } else {
-        // Move to next transition
-        transitionIndex = (transitionIndex + 1) % controlPoints.length; // Loop forever
+        transitionIndex = (transitionIndex + 1) % controlPoints.length;
         t = 0;
         currentCP1 = targetCP1;
         currentCP2 = targetCP2;
@@ -90,6 +113,17 @@ const GameVisual = () => {
             height={150}
             className="w-full h-full"
           />
+          {/* Fish SVG */}
+          <div ref={fishRef} className="absolute w-6 h-6">
+            <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-blue-400">
+              <path
+                d="M2 12c2-4 6-8 10-8s8 4 10 8c-2 4-6 8-10 8s-8-4-10-8z"
+                stroke="currentColor"
+                strokeWidth="2"
+                fill="currentColor"
+              />
+            </svg>
+          </div>
         </div>
       )}
     </div>
