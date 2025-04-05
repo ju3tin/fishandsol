@@ -31,7 +31,7 @@ const GameVisual = () => {
     let transitionIndex = 0;
 
     // Initial control points for the curve
-    let currentCP1 = { x: 20, y: 20 }; // Point A - Starting Point
+    let currentCP1 = { x: 0, y: 200 }; // Point A - Starting Point
     let currentCP2 = { x: 200, y: 200 };
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
