@@ -13,7 +13,7 @@ const GameVisual = () => {
 
   // Predefined control points for the Bezier curve
   const controlPoints = [
-    { cp1: { x: 0, y: 120 }, cp2: { x: 200, y: 120 } }, // Start at {0, 120}, move straight
+    { cp1: { x: 0, y: 120 }, cp2: { x: 0, y: 120 } }, // Start at {0, 120}, move straight
     { cp1: { x: 120, y: 0 }, cp2: { x: 120, y: 120 } }, // Transition into curve
     { cp1: { x: 120, y: 90 }, cp2: { x: 200, y: 200 } },
     { cp1: { x: 120, y: 20 }, cp2: { x: 200, y: 100 } },
@@ -81,7 +81,7 @@ const GameVisual = () => {
       const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
 
       // Move Point B (final destination) dynamically based on t
-      const pointB = { x: 200 + (t * 100), y: 120 + (t * 40) };  // Point B moving over time
+      const pointB = { x: 0 + (t * 100), y: 120 + (t * -40) };  // Point B moving over time
 
       // Draw the Bezier curve on the canvas, with updated Point B
       ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointB.x, pointB.y);
