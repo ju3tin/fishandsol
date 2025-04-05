@@ -39,6 +39,13 @@ export const NavItems = () => {
       position: 'top',
     },
     {
+      name: 'Stake',
+      href: '/stable',
+      icon: <Briefcase size={20} />,
+      active: isNavItemActive(pathname, '/stable'),
+      position: 'top',
+    },
+    {
       name: 'Solana Information',
       href: '/solana',
       icon: <Briefcase size={20} />,
