@@ -46,6 +46,13 @@ export const NavItems = () => {
       position: 'top',
     },
     {
+      name: 'Leaderboards',
+      href: '/leaderboard',
+      icon: <Briefcase size={20} />,
+      active: isNavItemActive(pathname, '/leaderboard'),
+      position: 'top',
+    },
+    {
       name: 'Settings',
       href: '/settings',
       icon: <Settings size={20} />,
