@@ -1,18 +1,22 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useGameStore, GameState } from "../store/gameStore";
 
 const GameVisual = () => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
-  // States
-  const [pathProgress, setPathProgress] = useState(0);
-
-  // Refs
-  
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
+
+  // Predefined control points
+  const controlPoints = [
+    { cp1: { x: 50, y: 20 }, cp2: { x: 150, y: 80 } },
+    { cp1: { x: 100, y: 30 }, cp2: { x: 180, y: 120 } },
+    { cp1: { x: 60, y: 90 }, cp2: { x: 200, y: 50 } },
+    { cp1: { x: 120, y: 20 }, cp2: { x: 160, y: 100 } },
+    { cp1: { x: 80, y: 80 }, cp2: { x: 140, y: 140 } },
+  ];
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -21,24 +25,12 @@ const GameVisual = () => {
     if (!ctx) return;
 
     let t = 0;
-    let transitions = 0;
-    const maxTransitions = 5;
+    let transitionIndex = 0;
 
     let currentCP1 = { x: 20, y: 20 };
     let currentCP2 = { x: 200, y: 200 };
-    let targetCP1 = randomControlPoint();
-    let targetCP2 = randomControlPoint();
-
-    function randomControlPoint() {
-      if (canvas) {
-        return {
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-        };
-      } else {
-        return { x: 0, y: 0 };
-      }
-    }
+    let targetCP1 = controlPoints[0].cp1;
+    let targetCP2 = controlPoints[0].cp2;
 
     function animate() {
       if (!canvas || !ctx) return;
@@ -57,20 +49,19 @@ const GameVisual = () => {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      t += 0.01;
+      t += 0.01; // Speed of the animation
 
       if (t <= 1) {
         curveAnimationRef.current = requestAnimationFrame(animate);
       } else {
-        transitions++;
-        if (transitions < maxTransitions) {
-          t = 0;
-          currentCP1 = targetCP1;
-          currentCP2 = targetCP2;
-          targetCP1 = randomControlPoint();
-          targetCP2 = randomControlPoint();
-          curveAnimationRef.current = requestAnimationFrame(animate);
-        }
+        // Move to next transition
+        transitionIndex = (transitionIndex + 1) % controlPoints.length; // Loop forever
+        t = 0;
+        currentCP1 = targetCP1;
+        currentCP2 = targetCP2;
+        targetCP1 = controlPoints[transitionIndex].cp1;
+        targetCP2 = controlPoints[transitionIndex].cp2;
+        curveAnimationRef.current = requestAnimationFrame(animate);
       }
     }
 
@@ -82,7 +73,6 @@ const GameVisual = () => {
       }
     }
 
-    // Cleanup
     return () => {
       if (curveAnimationRef.current) {
         cancelAnimationFrame(curveAnimationRef.current);
@@ -102,7 +92,6 @@ const GameVisual = () => {
           />
         </div>
       )}
-      <div>Fuck you</div> {/* you can replace this 😅 */}
     </div>
   );
 };
