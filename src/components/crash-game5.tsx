@@ -345,7 +345,108 @@ const CrashGame = () => {
               </div>
 
               {/* Game visualization */}
-              <GameVisual />
+              <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
+                {gameState5.status !== "Waiting" && (
+                  <div className="absolute inset-0">
+                    {/* Curve path */}
+                    <svg ref={svgRef} width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none">
+                      <motion.path
+                        ref={pathRef}
+                        d={getCurvePath()}
+                        fill="none"
+                        stroke="#10b981"
+                        strokeWidth="2"
+                        initial={{ pathLength: 0 }}
+                        animate={{ pathLength: pathProgress }}
+                        transition={{ duration: 0.1 }}
+                      />
+
+                      {/* Cashout dots - only render if path exists and multiplier progress <= current path progress */}
+                      {pathRef.current &&
+                        cashouts.map((cashout) => {
+                          // Calculate progress based on multiplier
+                          const cashoutProgress = getMultiplierProgress(cashout.multiplier)
+
+                          // Only render dots that are at or behind the current line position
+                          if (cashoutProgress <= pathProgress) {
+                            const position = getPointAtProgress(cashoutProgress)
+
+                            return (
+                              <g key={cashout.id}>
+                                <circle
+                                  cx={position.x}
+                                  cy={position.y}
+                                  r="2"
+                                  fill="#fbbf24"
+                                  stroke="#fbbf24"
+                                  strokeWidth="1"
+                                />
+                                <text
+                                  x={position.x + (cashout.id === "you" ? -3 : 3)}
+                                  y={position.y - 5}
+                                  fontSize="4"
+                                  fill="#fbbf24"
+                                  textAnchor={cashout.id === "you" ? "end" : "start"}
+                                >
+                                  {cashout.id === "you" ? "You" : cashout.id}
+                                </text>
+                                <text
+                                  x={position.x + (cashout.id === "you" ? -3 : 3)}
+                                  y={position.y - 1}
+                                  fontSize="3"
+                                  fill="#fbbf24"
+                                  textAnchor={cashout.id === "you" ? "end" : "start"}
+                                >
+                                  {cashout.multiplier.toFixed(2)}x
+                                </text>
+                              </g>
+                            )
+                          }
+                          return null
+                        })}
+                    </svg>
+
+                    {/* Rocket indicator */}
+                    {gameState === "Running" && pathRef.current && (
+                      <motion.div
+                        className="absolute"
+                        style={{
+                          left: `${getRocketPosition().x}%`,
+                          top: `${getRocketPosition().y}%`,
+                          transform: `translate(-50%, -50%) rotate(${getRocketRotation()}deg)`,
+                        }}
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        <Fish className="text-green-400 h-6 w-6" />
+                      </motion.div>
+                    )}
+                  </div>
+                )}
+
+                {gameState5.status === "Waiting" && (
+                  <div style={{ backgroundImage: "url('/under3.png')" }} className="flex items-center justify-center h-full">
+                    {typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
+                        <p className="text-gray-400">Game Will Launch In {gameState5.timeRemaining}</p>
+                    ) : (
+                        <p className="text-gray-400">Game Will Launch In {previousTimeRemaining}</p>
+                    )}
+                  </div>
+                )}
+
+                {gameState5.status === "Crashed" && (
+                  <div className="absolute inset-0 bg-red-900/30 flex items-center justify-center">
+                    <p className="text-3xl font-bold text-red-500">CRASHED AT {gameState5.multiplier}x</p>
+                  </div>
+                )}
+
+                {userCashedOut && (
+                  <div className="absolute top-4 right-4 bg-green-900/80 px-3 py-1 rounded-full">
+                    <p className="text-green-400 font-bold">Cashed Out: +{userWinnings.toFixed(2)} SOL</p>
+                  </div>
+                )}
+              </div>
 
               {/* Game history */}
               <div className="flex gap-2 overflow-x-auto py-2">
