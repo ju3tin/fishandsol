@@ -72,8 +72,9 @@ const GameVisual = () => {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);  // Clear the canvas
       ctx.beginPath();
-      ctx.moveTo(20, 20);  // Point A - Starting point of the curve
+      ctx.moveTo(0, 120);  // Point A - Starting point of the curve
 
+     
       // Interpolate control points for smooth transitions between them
       const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
       const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
