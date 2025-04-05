@@ -52,6 +52,16 @@ const GameVisual = () => {
       return { x, y };
     }
 
+    function getBezierTangent(t: number, p0: any, p1: any, p2: any, p3: any) {
+      const u = 1 - t;
+      const tt = t * t;
+      const uu = u * u;
+
+      const dx = -3 * uu * p0.x + 3 * (uu - 2 * u * t) * p1.x + 3 * (2 * t * u - tt) * p2.x + 3 * tt * p3.x;
+      const dy = -3 * uu * p0.y + 3 * (uu - 2 * u * t) * p1.y + 3 * (2 * t * u - tt) * p2.y + 3 * tt * p3.y;
+      return Math.atan2(dy, dx);
+    }
+
     function animate() {
       if (!canvas || !ctx || !fish) return;
 
@@ -72,6 +82,10 @@ const GameVisual = () => {
       // Move fish to current curve end
       const fishPos = getBezierPoint(t, { x: 20, y: 20 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: 200, y: 200 });
       fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px)`; // Adjust offset if needed
+
+      // Rotate the fish based on tangent (angle)
+      const angle = getBezierTangent(t, { x: 20, y: 20 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: 200, y: 200 });
+      fish.style.transform += ` rotate(${angle}rad)`; // Rotate to face the curve
 
       t += 0.01;
 
