@@ -35,14 +35,14 @@ export const NavItems = () => {
     {
       name: 'About',
       href: '/about',
-      icon: <Bell size={20} />,
+      icon: <BadgeInfo size={20} />,
       active: isNavItemActive(pathname, '/about'),
       position: 'top',
     },
     {
       name: 'free Chippie Friday',
       href: '/chippyfriday',
-      icon: <Briefcase size={20} />,
+      icon: <Fish size={20} />,
       active: isNavItemActive(pathname, '/chippyfriday'),
       position: 'top',
     },
