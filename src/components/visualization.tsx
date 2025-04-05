@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGameStore, GameState } from "../store/gameStore";
 
 const GameVisual = () => {
@@ -10,7 +10,10 @@ const GameVisual = () => {
   const fishRef = useRef<HTMLDivElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
 
-  // Predefined control points
+  const [dots, setDots] = useState<Array<{ t: number; x: number; y: number }>>([]);
+  const [gameStartTime, setGameStartTime] = useState<number | null>(null);
+
+  // Predefined control points for the curve
   const controlPoints = [
     { cp1: { x: 50, y: 20 }, cp2: { x: 150, y: 80 } },
     { cp1: { x: 100, y: 30 }, cp2: { x: 180, y: 120 } },
@@ -34,6 +37,7 @@ const GameVisual = () => {
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
 
+    // Function to get Bezier curve point
     function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
       const u = 1 - t;
       const tt = t * t;
@@ -52,16 +56,29 @@ const GameVisual = () => {
       return { x, y };
     }
 
-    function getBezierTangent(t: number, p0: any, p1: any, p2: any, p3: any) {
-      const u = 1 - t;
-      const tt = t * t;
-      const uu = u * u;
-
-      const dx = -3 * uu * p0.x + 3 * (uu - 2 * u * t) * p1.x + 3 * (2 * t * u - tt) * p2.x + 3 * tt * p3.x;
-      const dy = -3 * uu * p0.y + 3 * (uu - 2 * u * t) * p1.y + 3 * (2 * t * u - tt) * p2.y + 3 * tt * p3.y;
-      return Math.atan2(dy, dx);
+    // Add a new dot (representing a bet) at a random position along the curve
+    function addRandomDot() {
+      const randomT = Math.random();
+      const point = getBezierPoint(randomT, { x: 20, y: 20 }, { x: targetCP1.x, y: targetCP1.y }, { x: targetCP2.x, y: targetCP2.y }, { x: 200, y: 200 });
+      setDots((prevDots) => [...prevDots, { t: randomT, x: point.x, y: point.y }]);
     }
 
+    // Update dots' positions over time
+    function updateDots() {
+      const elapsedTime = Date.now() - (gameStartTime || Date.now());
+      const totalTime = 15000; // 15 seconds
+
+      // Move each dot based on the percentage of time passed
+      setDots((prevDots) =>
+        prevDots.map((dot) => {
+          const dotT = dot.t + (elapsedTime / totalTime); // Move dot based on the time elapsed
+          const updatedPoint = getBezierPoint(dotT % 1, { x: 20, y: 20 }, { x: targetCP1.x, y: targetCP1.y }, { x: targetCP2.x, y: targetCP2.y }, { x: 200, y: 200 });
+          return { t: dotT % 1, x: updatedPoint.x, y: updatedPoint.y };
+        })
+      );
+    }
+
+    // Animation loop
     function animate() {
       if (!canvas || !ctx || !fish) return;
 
@@ -79,12 +96,23 @@ const GameVisual = () => {
       ctx.lineWidth = 2;
       ctx.stroke();
 
-      // Move fish to current curve end
+      // Update the position of each bet dot
+      updateDots();
+
+      // Draw the dots (representing bets)
+      ctx.fillStyle = "yellow";
+      dots.forEach(dot => {
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, 5, 0, Math.PI * 2); // Draw each dot
+        ctx.fill();
+      });
+
+      // Move fish along the curve
       const fishPos = getBezierPoint(t, { x: 20, y: 20 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: 200, y: 200 });
       fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px)`; // Adjust offset if needed
 
       // Rotate the fish based on tangent (angle)
-      const angle = getBezierTangent(t, { x: 20, y: 20 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: 200, y: 200 });
+      const angle = Math.atan2(cp2y - cp1y, cp2x - cp1x);
       fish.style.transform += ` rotate(${angle}rad)`; // Rotate to face the curve
 
       t += 0.01;
@@ -103,6 +131,11 @@ const GameVisual = () => {
     }
 
     if (gameState5.status === "Running") {
+      if (!gameStartTime) {
+        setGameStartTime(Date.now()); // Set game start time when it starts running
+      }
+
+      addRandomDot(); // Add random bet dot every animation cycle
       animate();
     } else {
       if (curveAnimationRef.current) {
@@ -115,7 +148,7 @@ const GameVisual = () => {
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [gameState5.status]);
+  }, [gameState5.status, dots, gameStartTime]);
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
