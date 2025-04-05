@@ -13,11 +13,11 @@ const GameVisual = () => {
 
   // Predefined control points for the Bezier curve
   const controlPoints = [
-    { cp1: { x: 120, y: 0 }, cp2: { x: 120, y: 0 } },
-    { cp1: { x: 120, y: 120 }, cp2: { x: 120, y: 120 } },
-    { cp1: { x: 60, y: 90 }, cp2: { x: 200, y: 50 } },
-    { cp1: { x: 120, y: 20 }, cp2: { x: 160, y: 100 } },
-    { cp1: { x: 80, y: 80 }, cp2: { x: 140, y: 140 } },
+    { cp1: { x: 0, y: 120 }, cp2: { x: 200, y: 120 } }, // Start at {0, 120}, move straight
+    { cp1: { x: 120, y: 0 }, cp2: { x: 120, y: 120 } }, // Transition into curve
+    { cp1: { x: 120, y: 90 }, cp2: { x: 200, y: 200 } },
+    { cp1: { x: 120, y: 20 }, cp2: { x: 200, y: 100 } },
+    { cp1: { x: 80, y: 80 }, cp2: { x: 200, y: 200 } },
   ];
 
   useEffect(() => {
@@ -31,8 +31,8 @@ const GameVisual = () => {
     let transitionIndex = 0;
 
     // Initial control points for the curve
-    let currentCP1 = { x: 0, y: 200 }; // Point A - Starting Point
-    let currentCP2 = { x: 200, y: 200 };
+    let currentCP1 = { x: 0, y: 120 }; // Point A - Starting Point
+    let currentCP2 = { x: 200, y: 120 };
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
 
@@ -74,25 +74,27 @@ const GameVisual = () => {
       ctx.beginPath();
       ctx.moveTo(0, 120);  // Point A - Starting point of the curve
 
-     
       // Interpolate control points for smooth transitions between them
       const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
       const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
       const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
       const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
 
-      // Draw the Bezier curve on the canvas
-      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, 200, 200);
+      // Move Point B (final destination) dynamically based on t
+      const pointB = { x: 200 + (t * 100), y: 120 + (t * 40) };  // Point B moving over time
+
+      // Draw the Bezier curve on the canvas, with updated Point B
+      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointB.x, pointB.y);
       ctx.strokeStyle = "white";
       ctx.lineWidth = 2;
       ctx.stroke();
 
       // Calculate the position of the fish at the current t along the curve
-      const fishPos = getBezierPoint(t, { x: 20, y: 20 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: 200, y: 200 });
+      const fishPos = getBezierPoint(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, pointB);
       fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px)`;  // Adjust offset if needed
 
       // Calculate the angle to rotate the fish based on the tangent (direction of the curve)
-      const angle = getBezierTangent(t, { x: 20, y: 20 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: 200, y: 200 });
+      const angle = getBezierTangent(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, pointB);
       fish.style.transform += ` rotate(${angle}rad)`;  // Rotate the fish to face the curve
 
       t += 0.01;  // Increment t to move the fish along the curve
