@@ -1,6 +1,14 @@
 import { usePathname } from 'next/navigation';
 
-import { Bell, Briefcase, Home, Settings, User, BookOpenCheck, Fish } from 'lucide-react';
+import { Bell, Briefcase, Home, Settings, User,WalletCards, BookOpenCheck, Fish,
+  Bookmark,
+  List,
+  Mail,
+  MoreHorizontal,
+  Users,
+  Gamepad2,
+  BadgeInfo,
+  Info, } from 'lucide-react';
 
 export const NavItems = () => {
   const pathname = usePathname() || '';
@@ -41,7 +49,7 @@ export const NavItems = () => {
     {
       name: 'Stake',
       href: '/stable',
-      icon: <Briefcase size={20} />,
+      icon: <WalletCards size={20} />,
       active: isNavItemActive(pathname, '/stable'),
       position: 'top',
     },
@@ -55,7 +63,7 @@ export const NavItems = () => {
     {
       name: 'Leaderboards',
       href: '/leaderboard',
-      icon: <Briefcase size={20} />,
+      icon: <User size={20} />,
       active: isNavItemActive(pathname, '/leaderboard'),
       position: 'top',
     },
