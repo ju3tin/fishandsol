@@ -13,8 +13,8 @@ const GameVisual = () => {
 
   // Predefined control points for the Bezier curve
   const controlPoints = [
-    { cp1: { x: 50, y: 20 }, cp2: { x: 500, y: 80 } },
-    { cp1: { x: 100, y: 30 }, cp2: { x: 50, y: 120 } },
+    { cp1: { x: 120, y: 0 }, cp2: { x: 120, y: 0 } },
+    { cp1: { x: 120, y: 120 }, cp2: { x: 120, y: 120 } },
     { cp1: { x: 60, y: 90 }, cp2: { x: 200, y: 50 } },
     { cp1: { x: 120, y: 20 }, cp2: { x: 160, y: 100 } },
     { cp1: { x: 80, y: 80 }, cp2: { x: 140, y: 140 } },
