@@ -7,6 +7,8 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
+import { FaWallet } from 'react-icons/fa'; // Using FontAwesome for example
+
 import { toast } from "sonner";
 //import { useWalletContext } from "../../src/providers/WalletContextProvider";
 import { Checkbox } from "@nextui-org/checkbox";
@@ -45,6 +47,11 @@ type BetbuttonProps = {
     cashouts,
     multiplier
   }: BetbuttonProps) => {
+    const toggleOverlay = () => {
+      setOverlayVisible(!overlayVisible);
+      };
+    const [overlayVisible, setOverlayVisible] = useState(false);
+	
     const [autoCashOut, setAutoCashOut] = useState<string>("0");
     const [isAutoCashOutDisabled, setIsAutoCashOutDisabled] = useState(true);
     const gameState5 = useGameStore((gameState5: GameState) => gameState5);
@@ -238,6 +245,10 @@ type BetbuttonProps = {
                     </div>
                   ))}
                 </div>
+                <div>
+				<Button  onClick={toggleOverlay} className={styles.BetButton}>
+				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
+					Deposit Chippy</Button></div>
               </div>
             )}
           </CardContent>
