@@ -39,8 +39,7 @@ type BetbuttonProps = {
     }>;
     multiplier: number;
   }
-  const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
-	
+
   const Betbutton = ({ 
     gameState, 
     currentMultiplier, 
@@ -78,6 +77,8 @@ type BetbuttonProps = {
       setDemoamountgreaterthan0(!demoamountgreaterthan0);
       //	console.log("red1");
       };
+      const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
+	
     const [overlayVisible, setOverlayVisible] = useState(false);
     const handleChangeDemoAmount = (amount: string) => {
       setDemoAmount(amount);
@@ -390,9 +391,12 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                 </Button>
               )}
             </div>
-  
+            <div>
+				<Button  onClick={toggleOverlay} className={styles.BetButton}>
+				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
+					Deposit Chippy</Button></div>
             {/* Active players */}
-            {gameState5.status !== "Waiting" && (
+           {/*  {gameState5.status !== "Waiting" && (
               <div className="mt-6">
                 <h3 className="text-sm font-medium text-gray-400 mb-2">Active Players</h3>
                 <div className="space-y-2">
@@ -408,12 +412,9 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                     </div>
                   ))}
                 </div>
-                <div>
-				<Button  onClick={toggleOverlay} className={styles.BetButton}>
-				<FaWallet className={styles.walletIcon} /> {/* Icon from FontAwesome */}
-					Deposit Chippy</Button></div>
+                
               </div>
-            )}
+            )} */}
           </CardContent>
         </Card>
       </div>
