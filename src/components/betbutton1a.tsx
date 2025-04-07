@@ -45,6 +45,8 @@ type BetbuttonProps = {
     cashouts,
     multiplier
   }: BetbuttonProps) => {
+    const [autoCashOut, setAutoCashOut] = useState<string>("0");
+    const [isAutoCashOutDisabled, setIsAutoCashOutDisabled] = useState(true);
     const gameState5 = useGameStore((gameState5: GameState) => gameState5);
     const [betAmount, setBetAmount] = useState("0.1")
     const [autoCashoutAt, setAutoCashoutAt] = useState("2")
@@ -56,6 +58,12 @@ type BetbuttonProps = {
     const [buttonClicked, setButtonClicked] = useState(false);
     const balances = useGameStore((game: GameState) => game.balances);
     const [currency, setCurrency] = useState<string>(currencies[0].id);
+    const handleCheckboxChange = (checked: boolean) => {
+      setIsAutoCashOutDisabled(checked);
+      if (checked) {
+        setAutoCashOut("0"); // Optionally reset autoCashOut when disabling
+      }
+    };
 	
     useEffect(() => {
       if (gameState5.status === "Waiting") {
@@ -144,8 +152,14 @@ type BetbuttonProps = {
   
               <div>
                 <Label htmlFor="auto-cashout" className="text-white">
-                  Auto Cashout At
+                  Auto Cashout
                 </Label>
+                <Checkbox
+					isSelected={isAutoCashOutDisabled}
+					onChange={(e) => handleCheckboxChange(e.target.checked)}
+				>
+					Disable Auto Cashout
+				</Checkbox>
                 <Input
                   id="auto-cashout"
                   type="number"
