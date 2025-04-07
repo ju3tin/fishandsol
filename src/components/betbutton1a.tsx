@@ -147,7 +147,7 @@ type BetbuttonProps = {
     const handleCashout = () => {
       setButtonClicked(true);
       const current12 = multiplier;
-      console.log(`Current Multiplier: ${multiplier}`);
+      console.log(`dude34 Current Multiplier: ${current12}`);
       if (audioRef.current) {
         audioRef.current.play()
       }
