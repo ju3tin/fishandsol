@@ -1,6 +1,10 @@
 import React, { useRef, useEffect } from 'react';
 
-const Visualization = () => {
+interface GameVisualProps {
+  currentMultiplier: number; // Define the prop type
+}
+
+const Visualization: React.FC<GameVisualProps> = ({ currentMultiplier }) => {
   const [dots, setDots] = React.useState<{ createdAt: number }[]>([]);
   const TOTAL_SIMULATION_TIME = 10000; // 10 seconds
 

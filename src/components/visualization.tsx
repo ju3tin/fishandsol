@@ -2,8 +2,10 @@
 
 import { useEffect, useRef } from "react";
 import { useGameStore, GameState } from "../store/gameStore";
-
-const GameVisual = () => {
+interface GameVisualProps {
+  currentMultiplier: number; // Define the prop type
+}
+const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier }) => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -150,7 +152,7 @@ const GameVisual = () => {
             height={200}
             className="w-full h-full"
           />
-          <div ref={fishRef} className="absolute w-6 h-6">
+          {gameState5.status === "Running" && <span style={{ top: '100px', display: 'block', position: 'absolute' }}>Current Multiplier {currentMultiplier}</span>}  <div ref={fishRef} className="absolute w-6 h-6">
             <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-blue-400">
               <path
                 d="M2 12c2-4 6-8 10-8s8 4 10 8c-2 4-6 8-10 8s-8-4-10-8z"

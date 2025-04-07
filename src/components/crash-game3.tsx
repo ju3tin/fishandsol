@@ -345,7 +345,7 @@ const CrashGame = () => {
               </div>
 
               {/* Game visualization */}
-              <GameVisual />
+              <GameVisual currentMultiplier={gameState5.multiplier}/>
 
               {/* Game history */}
               <div className="flex gap-2 overflow-x-auto py-2">
