@@ -54,7 +54,9 @@ type BetbuttonProps = {
     const [buttonPressCount, setButtonPressCount] = useState(0);
    // const [isButtonClicked, setIsButtonClicked] = useState(false);
     const [buttonClicked, setButtonClicked] = useState(false);
-
+    const balances = useGameStore((game: GameState) => game.balances);
+    const [currency, setCurrency] = useState<string>(currencies[0].id);
+	
     useEffect(() => {
       if (gameState5.status === "Waiting") {
         setButtonClicked(false);
@@ -155,7 +157,11 @@ type BetbuttonProps = {
                   step="0.01"
                 />
               </div>
-  
+              <Label>Currency</Label>
+				<CurrencyList 
+					balances={balances} 
+					onCurrencyChange={setCurrency}
+				/>
               {gameState5.status === "Waiting" ? (
                 <Button 
                   onClick={buttonPressCount > 0 ? undefined : handleButtonPress} 
