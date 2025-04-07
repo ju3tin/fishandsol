@@ -55,6 +55,8 @@ type BetbuttonProps = {
     const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
     const [buttonPressCount, setButtonPressCount] = useState(0);
    // const [isButtonClicked, setIsButtonClicked] = useState(false);
+   const [demoAmount, setDemoAmount] = useState<string>("0");
+	
     const [buttonClicked, setButtonClicked] = useState(false);
     const balances = useGameStore((game: GameState) => game.balances);
     const [currency, setCurrency] = useState<string>(currencies[0].id);
@@ -134,6 +136,16 @@ type BetbuttonProps = {
         <Card className="bg-black border-black">
           <CardContent className="p-6">
             <div className="space-y-4">
+            <div className={styles.inputGroup}>
+					<Label>Demo Amount</Label>
+					<Input
+						placeholder="Demo amount"
+						type="number"
+						min="0"
+						value={demoAmount}
+						disabled
+					/>
+				</div>
               <div>
                 <Label htmlFor="bet-amount" className="text-white">
                   Bet Amount (SOL)
