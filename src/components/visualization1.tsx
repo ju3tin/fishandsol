@@ -2,14 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { useGameStore, GameState } from "../store/gameStore";
-import { controlPoints } from "./controlPoints";
-
+import { controlPoints } from "./controlPoints"; // Import the control points
 interface GameVisualProps {
-  currentMultiplier: number;
+  currentMultiplier: number; // Define the prop type
   onCashout: (multiplier: number) => void;
   dude55: boolean;
 }
-
 const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55 }) => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
@@ -17,8 +15,21 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55 }) =>
   const fishRef = useRef<HTMLDivElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
 
-  const pointBRef = useRef<{ x: number; y: number }>({ x: 0, y: 120 });
+  // Updated controlPoints: includes cp1, cp2, and pointB
 
+useEffect(() =>{
+  if (dude55) {
+    const canvas1 = canvasRef.current;
+    if (!canvas1) return; // Add this null check
+    const ctx1 = canvas1.getContext("2d");
+    if (!ctx1) return; // Add this null check
+    console.log('you love')
+    ctx1.fillStyle = 'red'; // Set the color to red
+    ctx1.beginPath();
+    ctx1.arc(200, 200, 5, 0, Math.PI * 2); // Draw a circle at the end of the line
+    ctx1.fill(); // Fill the circle
+}
+})
   useEffect(() => {
     const canvas = canvasRef.current;
     const fish = fishRef.current;
@@ -65,6 +76,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55 }) =>
       ctx.beginPath();
       ctx.moveTo(0, 120);
 
+      // Interpolating control points and pointB
       const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
       const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
       const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
@@ -77,11 +89,13 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55 }) =>
       ctx.lineWidth = 2;
       ctx.stroke();
 
+        
+
       const fishPos = getBezierPoint(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
+      fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px)`;
 
-      fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px) rotate(${getBezierTangent(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy })}rad)`;
-
-      pointBRef.current = { x: pointBx, y: pointBy }; // 👈 Save the latest pointB position
+      const angle = getBezierTangent(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
+      fish.style.transform += ` rotate(${angle}rad)`;
 
       t += 0.01;
 
@@ -113,7 +127,12 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55 }) =>
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [gameState5.status]); // ❗ do NOT need dude55 here
+  }, [gameState5.status]);
+  useEffect(() => {
+    if (dude55) {
+        console.log(`this is my bet `+currentMultiplier);
+    }
+}, [dude55]); // Dependency array to run effect when dude55 changes
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
@@ -125,26 +144,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55 }) =>
             height={200}
             className="w-full h-full"
           />
-          {gameState5.status === "Running" && (
-            <>
-              <span style={{ top: '100px', display: 'block', position: 'absolute' }}>
-                Current Multiplier {currentMultiplier}x
-              </span>
-
-              {/* 🛑 Draw RED dot moving based on multiplier */}
-              {dude55 && (
-                <div
-                  className="absolute w-4 h-4 bg-red-500 rounded-full"
-                  style={{
-                    left: pointBRef.current.x - currentMultiplier * 10, // ← move left
-                    top: pointBRef.current.y + currentMultiplier * 5,   // ↓ move downward
-                    transform: "translate(-50%, -50%)",
-                  }}
-                />
-              )}
-            </>
-          )}
-          <div ref={fishRef} className="absolute w-6 h-6">
+          {gameState5.status === "Running" && <span style={{ top: '100px', display: 'block', position: 'absolute' }}>Current Multiplier {currentMultiplier}</span>}  <div ref={fishRef} className="absolute w-6 h-6">
             <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-blue-400">
               <path
                 d="M2 12c2-4 6-8 10-8s8 4 10 8c-2 4-6 8-10 8s-8-4-10-8z"

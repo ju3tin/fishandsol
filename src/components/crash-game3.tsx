@@ -27,6 +27,7 @@ type CashoutEvent = {
 const CrashGame = () => {
   // Game state
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+  const [isCashedOut, setIsCashedOut] = useState(false);
 
   const [play, { sound }] = useSound('/sound/cheering.mp3');
   const [play1] = useSound('/sound/cheering.mp3');
@@ -77,6 +78,12 @@ const CrashGame = () => {
 
     return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
+
+  useEffect(() =>{
+    if(gameState5.status == "Waiting"){
+      setIsCashedOut(false);
+    }
+  })
 
   // Update ref when state changes
   useEffect(() => {
@@ -208,6 +215,7 @@ const CrashGame = () => {
   const handleCashout = (multiplier: number) => {
     console.log(`Current Multiplier: ${multiplier}`); // Log the received multiplier
     setCurrentMultiplier(multiplier); // Update the current multiplier state
+    setIsCashedOut(true);
     // Additional cashout logic...
   };
 
@@ -229,6 +237,10 @@ const CrashGame = () => {
     ])
   }
 
+  const handleUserCashedOut = (hasUserCashedOut: boolean) => {
+    // Your logic here, e.g., updating state or performing an action
+    console.log(`User has cashed out: ${hasUserCashedOut}`);
+};
   // Cash out current bet
   const cashout = (exactMultiplier?: number) => {
     if (gameState5.status !== "Running" || userCashedOut) return
@@ -345,7 +357,7 @@ const CrashGame = () => {
               </div>
 
               {/* Game visualization */}
-              <GameVisual currentMultiplier={gameState5.multiplier}/>
+              <GameVisual dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
 
               {/* Game history */}
               <div className="flex gap-2 overflow-x-auto py-2">
@@ -374,6 +386,7 @@ const CrashGame = () => {
          userCashedOut={userCashedOut}
          cashouts={cashouts}
          multiplier={gameState5.multiplier}
+         dude45={handleUserCashedOut}
        />
 
       

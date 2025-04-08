@@ -38,7 +38,9 @@ type BetbuttonProps = {
       amount: number;
     }>;
     multiplier: number;
+    dude45: (hasUserCashedOut: boolean) => void;// Add this line
   }
+ 
 
   const Betbutton = ({ 
     gameState, 
@@ -47,10 +49,16 @@ type BetbuttonProps = {
     onCashout,
     userCashedOut,
     cashouts,
-    multiplier
+    multiplier,
+    dude45
   }: BetbuttonProps) => {
     const [betgreaterthan0, setBetgreaterthan0] = useState(false);
-	
+    const [hasUserCashedOut, setHasUserCashedOut] = useState(false); // Define state
+    const [cashon1, setCashon1] = useState(false); // Define cashon1 state
+
+   // const [hasUserCashedOut, setHasUserCashedOut] = useState(false);
+
+
     const textRef = useRef();
     const handleCopy = () => {
       navigator.clipboard
@@ -108,6 +116,8 @@ type BetbuttonProps = {
     useEffect(() => {
       if (gameState5.status === "Waiting") {
         setButtonClicked(false);
+        setHasUserCashedOut(false); // Set the state to true when cashing out
+        setCashon1(false); // Set cashon1 to true when cashing out
       }
     }, [gameState5.status]);
 
@@ -126,7 +136,7 @@ type BetbuttonProps = {
       if (gameState5.status === "Crashed" && buttonPressCount === 1 && !buttonClicked) {
         loseout();
       }
-    }, [gameState5, userCashedOut, buttonPressCount, buttonClicked]);
+    }, [gameState5, buttonPressCount, buttonClicked]);
 
     useEffect(() => {
       if (gameState5.status === "Crashed") {
@@ -146,6 +156,9 @@ type BetbuttonProps = {
     }
     const handleCashout = () => {
       setButtonClicked(true);
+      setHasUserCashedOut(true); // Set the state to true when cashing out
+     //setHasUserCashedOut(true);
+     setCashon1(true); // Set cashon1 to true when cashing out
       const current12 = multiplier;
       console.log(`dude34 Current Multiplier: ${current12}`);
       if (audioRef.current) {
@@ -166,6 +179,8 @@ type BetbuttonProps = {
       setButtonPressCount((prevCount) => prevCount + 1);
       onStartGame(betAmount, autoCashoutAt);
     };
+
+    //const [hasUserCashedOut, setHasUserCashedOut] = useState(false);
 
     return (
       <div className="lg:col-span-2">
