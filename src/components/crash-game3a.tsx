@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Fish } from "lucide-react"
 import GameChat from "./game-chat3"
-import Betbutton from "./betbutton1a"
+import Betbutton from "./betbutton1b"
 import BetList from "./BetList1"
 import GameVisual from './vis1';
 import Tabs from './tabs3';
@@ -244,10 +244,7 @@ const CrashGame = () => {
     // Add cashout dot for the user
     addCashoutEvent("you", cashoutMultiplier, betAmount)
   }
-  const handleUserCashedOut = (hasUserCashedOut: boolean) => {
-    // Your logic here, e.g., updating state or performing an action
-    console.log(`User has cashed out: ${hasUserCashedOut}`);
-};
+
   // Clean up on unmount
   useEffect(() => {
     return () => {
@@ -381,7 +378,6 @@ const CrashGame = () => {
          userCashedOut={userCashedOut}
          cashouts={cashouts}
          multiplier={gameState5.multiplier}
-         dude45={handleUserCashedOut}
        />
 
       
