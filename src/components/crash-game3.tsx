@@ -108,7 +108,8 @@ const CrashGame = () => {
   }
 
   // Start a new game
-  const startGame = () => {
+  const startGame = (betAmount: string) => {
+    setBetAmount(betAmount)
     if (Number.parseFloat(betAmount) <= 0) {
       return
     }
