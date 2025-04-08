@@ -15,6 +15,7 @@ import Tabs from './tabs3';
 import useSound from 'use-sound';
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
+import { currencyById } from '@/lib/currencies';
 
 
 // Type for cashout events
@@ -22,6 +23,13 @@ type CashoutEvent = {
   id: string
   multiplier: number
   amount: number
+}
+
+interface GameVisualProps {
+  currentMultiplier: number;
+  onCashout: (multiplier: number) => void;
+  dude55: boolean;
+  dude56: string; // Ensure this is a string
 }
 
 const CrashGame = () => {
@@ -43,6 +51,7 @@ const CrashGame = () => {
   const [userWinnings, setUserWinnings] = useState(0)
   const [pathProgress, setPathProgress] = useState(0)
   const [cashouts, setCashouts] = useState<CashoutEvent[]>([])
+  const [currency, setCurrency] = useState<string>("USD"); // or whatever default value you want
 
   // Animation refs
   const animationRef = useRef<number>(0)
@@ -108,8 +117,8 @@ const CrashGame = () => {
     setCashouts([])
 
     // Generate crash point
-    const newCrashPoint = generateCrashPoint()
-    setCrashPoint(newCrashPoint)
+   // const newCrashPoint = generateCrashPoint()
+   // setCrashPoint(newCrashPoint)
 
     // Reset multiplier and start game
     setCurrentMultiplier(1)
@@ -121,41 +130,10 @@ const CrashGame = () => {
     // Start animation loop
     animateGame()
 
-    // Set timer for game end
-    gameTimerRef.current = setTimeout(() => {
-      endGame(newCrashPoint)
-    })
 
-    // Simulate other players cashing out at random times
-    simulateOtherPlayers(newCrashPoint)
   }
 
-  // Simulate other players cashing out
-  const simulateOtherPlayers = (crashPoint: number) => {
-    // Create 3-5 random cashout events
-    const numPlayers = 3 + Math.floor(Math.random() * 3)
 
-    for (let i = 0; i < numPlayers; i++) {
-      // Random cashout multiplier between 1.1 and crash point
-      const cashoutMultiplier = 1.1 + Math.random() * (crashPoint - 1.1)
-
-      // Random delay before cashing out
-      const delay = 1000 + Math.random() * 8000
-
-      setTimeout(() => {
-        // Only add cashout if game is still running and the multiplier hasn't been reached yet
-        if (gameState5.status === "Running") {
-          // Ensure we only cash out at the current or lower multiplier
-          const actualMultiplier = Math.min(cashoutMultiplier, currentMultiplierRef.current)
-
-          // Only cash out if the multiplier is greater than 1.1
-          if (actualMultiplier > 1.1) {
-            addCashoutEvent(`player${i + 1}`, actualMultiplier, (0.05 + Math.random() * 0.5).toFixed(2))
-          }
-        }
-      }, delay)
-    }
-  }
 
   // Animate the game
   const animateGame = () => {
@@ -213,9 +191,10 @@ const CrashGame = () => {
   }
 
   const handleCashout = (multiplier: number) => {
-    console.log(`Current Multiplier: ${multiplier}`); // Log the received multiplier
+    console.log(`Current Multiplier: ${multiplier} wtf ${fucku}`); // Log the received multiplier
     setCurrentMultiplier(multiplier); // Update the current multiplier state
     setIsCashedOut(true);
+
     // Additional cashout logic...
   };
 
@@ -239,8 +218,11 @@ const CrashGame = () => {
 
   const handleUserCashedOut = (hasUserCashedOut: boolean) => {
     // Your logic here, e.g., updating state or performing an action
-    console.log(`User has cashed out: ${hasUserCashedOut}`);
+    console.log(`User has cashed out: ${hasUserCashedOut} ${fucku}` );
 };
+const fucku = (currency: string) => {
+  console.log(`users fucking thing123 ${currency}`)
+}
   // Cash out current bet
   const cashout = (exactMultiplier?: number) => {
     if (gameState5.status !== "Running" || userCashedOut) return
@@ -337,6 +319,11 @@ const CrashGame = () => {
     return angle * (180 / Math.PI) + 90
   }
 
+  const handleCurrencyChange = (currencyId: string) => {
+    console.log(`Selected currency: ${currencyId}`);
+    setCurrency(currencyId);
+  };
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -357,7 +344,7 @@ const CrashGame = () => {
               </div>
 
               {/* Game visualization */}
-              <GameVisual dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
+              <GameVisual dude56={currency} dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
 
               {/* Game history */}
               <div className="flex gap-2 overflow-x-auto py-2">
@@ -387,6 +374,7 @@ const CrashGame = () => {
          cashouts={cashouts}
          multiplier={gameState5.multiplier}
          dude45={handleUserCashedOut}
+         dude56={handleCurrencyChange}
        />
 
       

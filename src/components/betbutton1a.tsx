@@ -20,7 +20,7 @@ import useWalletAuth from "../hooks/useWalletAuth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { currencies } from "../lib/currencies";
+import { currencies, Currency, CurrencyId } from "../lib/currencies";
 import CurrencyList from "./CurrencyList";
 import styles from "../styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react"
@@ -29,7 +29,7 @@ import JSConfetti from 'js-confetti';
 type BetbuttonProps = {
     gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
     currentMultiplier: number;
-    onStartGame: (betAmount: string, autoCashoutAt: string) => void;
+    onStartGame: (betAmount: string, autoCashoutAt: string, CurrencyId: string) => void;
     onCashout: (multiplier: number) => void; // Update to accept a multiplier
     userCashedOut: boolean;
     cashouts: Array<{
@@ -38,7 +38,9 @@ type BetbuttonProps = {
       amount: number;
     }>;
     multiplier: number;
+    dude56: (CurrencyId: string) => void;
     dude45: (hasUserCashedOut: boolean) => void;// Add this line
+    
   }
  
 
@@ -50,7 +52,8 @@ type BetbuttonProps = {
     userCashedOut,
     cashouts,
     multiplier,
-    dude45
+    dude45,
+    dude56
   }: BetbuttonProps) => {
     const [betgreaterthan0, setBetgreaterthan0] = useState(false);
     const [hasUserCashedOut, setHasUserCashedOut] = useState(false); // Define state
@@ -160,7 +163,7 @@ type BetbuttonProps = {
      //setHasUserCashedOut(true);
      setCashon1(true); // Set cashon1 to true when cashing out
       const current12 = multiplier;
-      console.log(`dude34 Current Multiplier: ${current12}`);
+      console.log(`dude34 Current Multiplier: ${current12} using this 1235 ${currency}`);
       if (audioRef.current) {
         audioRef.current.play()
       }
@@ -173,11 +176,14 @@ type BetbuttonProps = {
       
 
       onCashout(current12);
+      dude56(currency);
     }
 
     const handleButtonPress = () => {
       setButtonPressCount((prevCount) => prevCount + 1);
-      onStartGame(betAmount, autoCashoutAt);
+      onStartGame(betAmount, autoCashoutAt, currency);
+      dude56(currency)
+      console.log(`this is the checked ${currency}`)
     };
 
     //const [hasUserCashedOut, setHasUserCashedOut] = useState(false);
