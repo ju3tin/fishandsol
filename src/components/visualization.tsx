@@ -8,10 +8,11 @@ interface GameVisualProps {
   currentMultiplier: number;
   onCashout: (multiplier: number) => void;
   dude55: boolean;
-  dude56: string
+  dude56: string;
+  betAmount: string;
 }
 
-const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56 }) => {
+const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, betAmount }) => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -140,7 +141,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
                     left: pointBRef.current.x - currentMultiplier * 10, // ← move left
                     top: pointBRef.current.y + currentMultiplier * 5,   // ↓ move downward
                     transform: "translate(-50%, -50%)",
-                  }}>{dude56}</div>
+                  }}>{dude56} and your bet amount {betAmount}</div>
                
               )}
             </>

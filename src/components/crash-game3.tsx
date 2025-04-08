@@ -30,6 +30,7 @@ interface GameVisualProps {
   onCashout: (multiplier: number) => void;
   dude55: boolean;
   dude56: string; // Ensure this is a string
+  betAmount: string;
 }
 
 const CrashGame = () => {
@@ -344,7 +345,7 @@ const fucku = (currency: string) => {
               </div>
 
               {/* Game visualization */}
-              <GameVisual dude56={currency} dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
+              <GameVisual betAmount={betAmount} dude56={currency} dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
 
               {/* Game history */}
               <div className="flex gap-2 overflow-x-auto py-2">
