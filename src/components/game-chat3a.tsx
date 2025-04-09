@@ -47,8 +47,11 @@ const GameChat = ({ currentMultiplier, gameState, crashPoint, onCrash }: GameCha
 
   // Add system messages when game state changes
   useEffect(() => {
-    if (gameState5.status === "Running") {
+    if (gameState5.status === "Running" && currentMultiplier <= 1.2){
       addSystemMessage("Game started! Good luck!")
+    }
+    if (gameState5.status === "Running") {
+     
       simulatePlayerMessages()
     } else if (gameState5.status === "Crashed" && currentMultiplier) {
       addSystemMessage(`Game crashed at ${currentMultiplier}x!`)
