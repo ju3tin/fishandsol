@@ -1,5 +1,5 @@
 "use client"
-import styles from "./page.module.css";
+import styles from "../page.module.css";
 
 import { useEffect, useState, useRef } from 'react';
 import Game from '../../../components/newGame5old';
