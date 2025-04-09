@@ -60,6 +60,10 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
       return Math.atan2(dy, dx);
     }
 
+    let logged = false; // 👈 add this at top of useEffect
+
+    let loggednum = 0;
+
     function animate() {
       if (!canvas || !ctx || !fish) return;
 
@@ -100,6 +104,12 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
         targetPointB = controlPoints[transitionIndex].pointB;
         curveAnimationRef.current = requestAnimationFrame(animate);
       }
+    }
+
+    if (dude55 && !logged) {
+      console.log("Recording t because dude55 is true:", t.toFixed(4));
+      logged = true; // prevent multiple logs
+      loggednum = t;
     }
 
     if (gameState5.status === "Running") {
