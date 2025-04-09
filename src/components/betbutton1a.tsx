@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { currencies, Currency, CurrencyId } from "../lib/currencies";
-import CurrencyList from "./CurrencyList";
+import CurrencyList from "./CurrencyList1";
 import styles from "../styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react"
 import JSConfetti from 'js-confetti';
