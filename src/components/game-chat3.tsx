@@ -3,6 +3,7 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
+import { useGameStore, GameState } from "../store/gameStore";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
@@ -23,6 +24,7 @@ type GameChatProps = {
 }
 
 const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
+  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
@@ -44,10 +46,10 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
 
   // Add system messages when game state changes
   useEffect(() => {
-    if (gameState === "Running") {
+    if (gameState5.status === "Running") {
       addSystemMessage("Game started! Good luck!")
       simulatePlayerMessages()
-    } else if (gameState === "Crashed" && crashPoint) {
+    } else if (gameState5.status === "Crashed" && crashPoint) {
       addSystemMessage(`Game crashed at ${crashPoint.toFixed(2)}x!`)
 
       // Call onCrash callback after a delay
@@ -55,7 +57,7 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
         setTimeout(onCrash, 500)
       }
     }
-  }, [gameState, crashPoint])
+  }, [gameState5, crashPoint])
 
   // Add a system message
   const addSystemMessage = (message: string) => {
@@ -106,7 +108,7 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
       const delay = 1000 + Math.random() * 8000
 
       setTimeout(() => {
-        if (gameState === "Running") {
+        if (gameState5.status === "Running") {
           const randomPlayer = playerNames[Math.floor(Math.random() * playerNames.length)]
           const randomMessage = playerMessages[Math.floor(Math.random() * playerMessages.length)]
 
