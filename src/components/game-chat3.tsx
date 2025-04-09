@@ -18,12 +18,13 @@ type ChatMessage = {
 }
 
 type GameChatProps = {
+  currentMultiplier: number;
   gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
   crashPoint?: number
   onCrash?: () => void
 }
 
-const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
+const GameChat = ({ currentMultiplier, gameState, crashPoint, onCrash }: GameChatProps) => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
@@ -49,8 +50,8 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
     if (gameState5.status === "Running") {
       addSystemMessage("Game started! Good luck!")
       simulatePlayerMessages()
-    } else if (gameState5.status === "Crashed" && gameState5.multiplier) {
-      addSystemMessage(`Game crashed at ${gameState5.multiplier}x!`)
+    } else if (gameState5.status === "Crashed" && currentMultiplier) {
+      addSystemMessage(`Game crashed at ${currentMultiplier}x!`)
 
       // Call onCrash callback after a delay
       if (onCrash) {
