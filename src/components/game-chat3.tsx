@@ -49,8 +49,8 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
     if (gameState5.status === "Running") {
       addSystemMessage("Game started! Good luck!")
       simulatePlayerMessages()
-    } else if (gameState5.status === "Crashed" && crashPoint) {
-      addSystemMessage(`Game crashed at ${crashPoint.toFixed(2)}x!`)
+    } else if (gameState5.status === "Crashed" && gameState5.multiplier) {
+      addSystemMessage(`Game crashed at ${gameState5.multiplier}x!`)
 
       // Call onCrash callback after a delay
       if (onCrash) {
