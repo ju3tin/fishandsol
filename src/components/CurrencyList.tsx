@@ -15,18 +15,26 @@ import styles from "../styles/components/CurrencyList.module.css";
 export type CurrencyListProps = {
 	balances: Record<string, string>; // Currency balances
 	onCurrencyChange: (selectedCurrency: string) => void; // Callback for selected currency
+	gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped"; // Game state prop
 };
 
 export default function CurrencyList({
 	balances,
 	onCurrencyChange,
+	gameState,
 }: CurrencyListProps) {
 	const handleChange = (value: string) => {
 		onCurrencyChange(value); // Notify parent component
 	};
 
+	const isDisabled = gameState === "Running"; // Disable dropdown when game is running
+
 	return (
-		<Select defaultValue={currencies[0].id} onValueChange={handleChange}>
+		<Select 
+			defaultValue={currencies[0].id} 
+			onValueChange={handleChange}
+			disabled={isDisabled} // <-- Disable select when running
+		>
 			<SelectTrigger>
 				<SelectValue placeholder="Select a currency" />
 			</SelectTrigger>

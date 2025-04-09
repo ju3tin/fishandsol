@@ -376,7 +376,8 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                 />
               </div>
               <Label>Currency</Label>
-				<CurrencyList 
+				<CurrencyList
+          gameState={gameState5.status}
 					balances={balances} 
 					onCurrencyChange={setCurrency}
 				/>
