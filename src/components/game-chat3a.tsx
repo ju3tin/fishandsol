@@ -24,8 +24,8 @@ type GameChatProps = {
   onCrash?: () => void
 }
 
-const GameChat = ({ currentMultiplier, gameState, crashPoint, onCrash }: GameChatProps) => {
-  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
+//  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
@@ -47,13 +47,13 @@ const GameChat = ({ currentMultiplier, gameState, crashPoint, onCrash }: GameCha
 
   // Add system messages when game state changes
   useEffect(() => {
-    if (gameState5.status === "Running" && currentMultiplier <= 1.2){
+    if (gameState === "Running" && currentMultiplier <= 1.2){
       addSystemMessage("Game started! Good luck!")
     }
-    if (gameState5.status === "Running") {
+    if (gameState === "Running") {
      
       simulatePlayerMessages()
-    } else if (gameState5.status === "Crashed" && currentMultiplier) {
+    } else if (gameState === "Crashed" && currentMultiplier) {
       addSystemMessage(`Game crashed at ${currentMultiplier}x!`)
 
       // Call onCrash callback after a delay
@@ -61,7 +61,7 @@ const GameChat = ({ currentMultiplier, gameState, crashPoint, onCrash }: GameCha
         setTimeout(onCrash, 500)
       }
     }
-  }, [gameState5, crashPoint])
+  }, [gameState, currentMultiplier])
 
   // Add a system message
   const addSystemMessage = (message: string) => {
@@ -112,7 +112,7 @@ const GameChat = ({ currentMultiplier, gameState, crashPoint, onCrash }: GameCha
       const delay = 1000 + Math.random() * 8000
 
       setTimeout(() => {
-        if (gameState5.status === "Running") {
+        if (gameState === "Running") {
           const randomPlayer = playerNames[Math.floor(Math.random() * playerNames.length)]
           const randomMessage = playerMessages[Math.floor(Math.random() * playerMessages.length)]
 
