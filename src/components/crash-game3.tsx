@@ -11,6 +11,7 @@ import GameChat from "./game-chat3a"
 import Betbutton from "./betbutton1a"
 import BetList from "./BetList1"
 import GameVisual from './visualization';
+import GameHistory from './gamehistory';
 import Tabs from './tabs3';
 import useSound from 'use-sound';
 import { useGameStore, GameState } from '../store/gameStore2';
@@ -33,6 +34,12 @@ interface GameVisualProps {
   betAmount: string;
 }
 
+interface GameHistoryProps {
+  dude55: boolean;
+  buttonPressCount: number;
+  currentMultiplier: number;
+}
+
 const CrashGame = () => {
   // Game state
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
@@ -40,10 +47,11 @@ const CrashGame = () => {
 
   const [play, { sound }] = useSound('/sound/cheering.mp3');
   const [play1] = useSound('/sound/cheering.mp3');
-
+  const [buttonClicked1, setbuttonClicked1] = useState(true);
+  const [buttonPressCount1, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
-  const [gameState, setGameState] = useState<"Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped">(gameState5.status)
-  const [currentMultiplier, setCurrentMultiplier] = useState(1)
+  const [gameState, setGameState] = useState(gameState5.status);
+  const [currentMultiplier, setCurrentMultiplier] = useState(1);
   const [crashPoint, setCrashPoint] = useState(0)
   const [betAmount, setBetAmount] = useState("0.1")
   const [autoCashoutAt, setAutoCashoutAt] = useState("2")
@@ -81,6 +89,8 @@ const CrashGame = () => {
     }, [gameState5.timeRemaining]);
 
   useEffect(() => {
+    setbuttonPressCount1(buttonPressCount1);
+    setbuttonClicked1(buttonClicked1);
     const checkScreenSize = () => setIsMobile(window.innerWidth <= 768);
 
     checkScreenSize(); // Initial check
@@ -326,6 +336,13 @@ const fucku = (currency: string) => {
     setCurrency(currencyId);
   };
 
+  const handleButtonClicked = (buttonClicked: boolean) => {
+    setbuttonClicked1(buttonClicked);
+  };
+  const buttonPressCount2 = (buttonPressCount: number) => {
+setbuttonPressCount1(buttonPressCount)
+  }
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -349,25 +366,14 @@ const fucku = (currency: string) => {
               <GameVisual betAmount={betAmount} dude56={currency} dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
 
               {/* Game history */}
-              <div className="flex gap-2 overflow-x-auto py-2">
-                {gameHistory.map((multiplier, index) => (
-                  <div
-                    key={index}
-                    className={`px-2 py-1 rounded text-xs font-mono ${
-                      multiplier < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
-                    }`}
-                  >
-                    {multiplier.toFixed(2)}x
-                  </div>
-                ))}
-                {gameHistory.length === 0 && <p className="text-gray-500 text-sm">No game history yet</p>}
-              </div>
+             <GameHistory gameState={gameState5.status} dude55={isCashedOut} buttonPressCount={buttonPressCount1} currentMultiplier={gameState5.multiplier} />
             </CardContent>
           </Card>
         </div>
 
         {/* Betting controls - Right Side */}
-       <Betbutton 
+       <Betbutton
+         gametime={gameState5.timeRemaining}
          gameState={gameState}
          currentMultiplier={gameState5.multiplier}
          onStartGame={startGame}
@@ -377,6 +383,8 @@ const fucku = (currency: string) => {
          multiplier={gameState5.multiplier}
          dude45={handleUserCashedOut}
          dude56={handleCurrencyChange}
+         dude56a={handleButtonClicked}
+         dude56b={buttonPressCount2}
        />
 
       

@@ -27,6 +27,7 @@ import { useState, useEffect, useRef } from "react"
 import JSConfetti from 'js-confetti';
 
 type BetbuttonProps = {
+    gametime: number;
     gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
     currentMultiplier: number;
     onStartGame: (betAmount: string, autoCashoutAt: string, CurrencyId: string) => void;
@@ -40,12 +41,16 @@ type BetbuttonProps = {
     multiplier: number;
     dude56: (CurrencyId: string) => void;
     dude45: (hasUserCashedOut: boolean) => void;// Add this line
+    dude56a: (buttonClicked: boolean) => void;
+    dude56b: (buttonPressCount: number) => void;
+
     
   }
  
 
   const Betbutton = ({ 
-    gameState, 
+    gameState,
+    gametime, 
     currentMultiplier, 
     onStartGame, 
     onCashout,
@@ -53,14 +58,15 @@ type BetbuttonProps = {
     cashouts,
     multiplier,
     dude45,
-    dude56
+    dude56,
+    dude56a,
+    dude56b
   }: BetbuttonProps) => {
     const [betgreaterthan0, setBetgreaterthan0] = useState(false);
     const [hasUserCashedOut, setHasUserCashedOut] = useState(false); // Define state
     const [cashon1, setCashon1] = useState(false); // Define cashon1 state
 
-   // const [hasUserCashedOut, setHasUserCashedOut] = useState(false);
-
+   
 
     const textRef = useRef();
     const handleCopy = () => {
@@ -125,14 +131,14 @@ type BetbuttonProps = {
     }, [gameState5.status]);
 
     useEffect(() => {
-      if (isNaN(gameState5.timeRemaining)) {
+      if (isNaN(gametime)) {
         // If timeRemaining is NaN, keep the previous value
         return;
       } else {
         // Otherwise, update previousTimeRemaining with the current timeRemaining
-        setPreviousTimeRemaining(gameState5.timeRemaining);
+        setPreviousTimeRemaining(gametime);
       }
-    }, [gameState5.timeRemaining]);
+    }, [gametime]);
 
     useEffect(() => {
       // Check if game crashed and user didn't cash out
@@ -160,7 +166,6 @@ type BetbuttonProps = {
     const handleCashout = () => {
       setButtonClicked(true);
       setHasUserCashedOut(true); // Set the state to true when cashing out
-     //setHasUserCashedOut(true);
      setCashon1(true); // Set cashon1 to true when cashing out
       const current12 = multiplier;
       console.log(`dude34 Current Multiplier: ${current12} using this 1235 ${currency}`);
@@ -186,8 +191,7 @@ type BetbuttonProps = {
       console.log(`this is the checked ${currency}`)
     };
 
-    //const [hasUserCashedOut, setHasUserCashedOut] = useState(false);
-
+   
     return (
       <div className="lg:col-span-2">
           <audio ref={audioRef} src="/sounds/cheering.mp3" /> {/* Add your MP3 file path here */}
@@ -347,7 +351,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   type="number"
                   value={betAmount}
                   onChange={(e) => setBetAmount(e.target.value)}
-                  disabled={gameState5.status !== "Waiting"}
+                  disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
                   className="bg-gray-700 border-gray-600 text-white"
                   min="0.01"
                   step="0.01"
@@ -359,6 +363,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   Auto Cashout
                 </Label>
                 <Checkbox
+          disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
 					isSelected={isAutoCashOutDisabled}
 					onChange={(e) => handleCheckboxChange(e.target.checked)}
 				>
@@ -369,7 +374,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   type="number"
                   value={autoCashoutAt}
                   onChange={(e) => setAutoCashoutAt(e.target.value)}
-                  disabled={gameState5.status !== "Waiting"}
+                  disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
                   className="bg-gray-700 border-gray-600 text-white"
                   min="1.01"
                   step="0.01"
@@ -377,7 +382,9 @@ Use demo currency to play our games without any risk. If you run out of demo cre
               </div>
               <Label>Currency</Label>
 				<CurrencyList
-          gameState={gameState5.status}
+          buttonPressCount={buttonPressCount}
+          buttonClicked={buttonClicked}
+          gameState={gameState}
 					balances={balances} 
 					onCurrencyChange={setCurrency}
 				/>
@@ -390,8 +397,8 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   {buttonPressCount > 0 ? (
                     <p className="text-black">Bet Placed</p>
                   ) : (
-                    typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
-                      <p className="text-black">Place Bet {gameState5.timeRemaining}</p>
+                    typeof gametime === 'number' && !isNaN(gametime) ? (
+                      <p className="text-black">Place Bet {gametime}</p>
                     ) : (
                       <p className="text-black">Place Bet {previousTimeRemaining}</p>
                     )
