@@ -334,7 +334,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 		</div>
 		</div>
 	   )}
-          <CardContent className="p-6">
+          
             <div className="space-y-4">
             <div className={styles.inputGroup}>
 					<Label>Demo Amount</Label>
@@ -448,7 +448,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                 
               </div>
             )} */}
-          </CardContent>
+         
         </Card>
       </div>
     )
