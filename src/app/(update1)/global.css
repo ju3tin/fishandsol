@@ -36,6 +36,27 @@
 
 }
 
+/* styles.css */
+
+/* Default styles for larger screens */
+.card {
+  background-color: #1a1a1a; /* Dark background */
+  border: 1px solid #444; /* Lighter border */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow effect */
+  padding: 16px; /* Padding for larger screens */
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .card {
+    background-color: #2a2a2a; /* Slightly different background for mobile */
+    border: 1px solid #666; /* Adjust border for mobile */
+    border-radius: 4px; /* Smaller border radius for mobile */
+    padding: 12px; /* Less padding for mobile */
+  }
+}
+
 /* Then style the iframe to fit in the container div with full height and width */
 .responsive-iframe {
   
