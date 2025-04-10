@@ -17,7 +17,7 @@ interface HistoryEntry {
   dudeClicked: boolean;
 }
 
-const GameHistory: React.FC<GameHistoryProps> = ({ gameState, dude55, buttonPressCount, currentMultiplier, isButtonPressed }) => {
+const GameHistory: React.FC<GameHistoryProps> = ({ gameState, dude55, currentMultiplier, isButtonPressed }) => {
   const [gameHistory, setGameHistory] = useState<HistoryEntry[]>([]);
 
   useEffect(() => {
