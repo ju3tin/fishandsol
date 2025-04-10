@@ -27,9 +27,9 @@ export const NavItems = () => {
     },
     {
       name: 'Whitepaper',
-      href: '/profile',
+      href: '/whitepaper',
       icon: <BookOpenCheck size={20} />,
-      active: isNavItemActive(pathname, '/profile'),
+      active: isNavItemActive(pathname, '/whitepaper'),
       position: 'top',
     },
     {
