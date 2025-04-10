@@ -38,10 +38,10 @@ const GameHistory: React.FC<GameHistoryProps> = ({ gameState, dude55, currentMul
           <div
             key={index}
             className={`px-2 py-1 rounded text-xs font-mono ${
-              entry.multiplier < 2 ? "bg-red-900/50 text-red-400" : "bg-green-900/50 text-green-400"
+              entry.dudeClicked ? "bg-green-900/50 text-green-400" : "bg-red-900/50 text-red-400"
             }`}
           >
-            {entry.multiplier.toFixed(2)}x - {entry.dudeClicked ? "Clicked" : "Not Clicked"} - {entry.isButtonPressed ? "1" : "2"}
+            {entry.multiplier.toFixed(2)}x {/*- {entry.isButtonPressed ? "1" : "2"} */}
           </div>
         ))
       ) : (
