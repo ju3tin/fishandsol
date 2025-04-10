@@ -202,6 +202,10 @@ const CrashGame = () => {
     }, 3000)
   }
 
+  const ispressed = (isButtonPressed: boolean) => {
+    setIsButtonPressed(isButtonPressed)
+  }
+
   const handleCashout = (multiplier: number) => {
     console.log(`Current Multiplier: ${multiplier} wtf ${fucku}`); // Log the received multiplier
     setCurrentMultiplier(multiplier); // Update the current multiplier state
