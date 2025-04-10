@@ -56,7 +56,7 @@ export const NavItems = () => {
     {
       name: 'Solana Information',
       href: '/solana',
-      icon: <Briefcase size={20} />,
+      icon: <img src="/images/solanalogo.svg" alt="Solana Logo" style={{ width: 20, height: 20 }} />, // Adjust the path and size as needed
       active: isNavItemActive(pathname, '/solana'),
       position: 'top',
     },
