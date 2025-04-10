@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import Head from 'next/head'
 import ContextProvider from '@/components/context-provider';
+import { Analytics } from "@vercel/analytics/react";
 
 import './global.css';
 
@@ -43,6 +44,7 @@ export default function RootLayout({
             </div>
           </div>
         </ContextProvider>
+        <Analytics />
       </body>
     </html>
   );

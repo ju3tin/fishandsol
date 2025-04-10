@@ -67,6 +67,7 @@ export default function RootLayout({
           </WalletProvider>
         </ConnectionProvider>
 				</body>
+        <Analytics />
 			</html>
       </SessionProvider>
 	);
