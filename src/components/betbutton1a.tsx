@@ -174,7 +174,7 @@ const Betbutton = ({
   };
   const balances = useGameStore((game: GameState) => game.balances);
   return (
-    <div>
+    <>
     <div className="card1 lg:col-span-2 bg-black border-black">
       <audio ref={audioRef} src="/sounds/cheering.mp3" />
       <audio ref={audioRef1} src="/sounds/losing.mp3" />
@@ -431,7 +431,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 				</div>
               <div>
                 <Label htmlFor="bet-amount" className="text-white">
-                  Bet Amount (SOL)
+                  Bet Amount (SOL1)
                 </Label>
                 <Input
                   id="bet-amount"
@@ -534,7 +534,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
          
         </Card>
       </div>
-</div>
+</>
   );
 };
 
