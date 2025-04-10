@@ -175,7 +175,7 @@ const Betbutton = ({
   const balances = useGameStore((game: GameState) => game.balances);
   return (
     <div>
-    <div className="card lg:col-span-2 bg-black border-black">
+    <div className="card1 lg:col-span-2 bg-black border-black">
       <audio ref={audioRef} src="/sounds/cheering.mp3" />
       <audio ref={audioRef1} src="/sounds/losing.mp3" />
 
@@ -280,7 +280,7 @@ const Betbutton = ({
         </Button>
       </div>
     </div>
-    <div className="card1 lg:col-span-2 bg-black border-black">
+    <div className="card lg:col-span-2 bg-black border-black">
           <audio ref={audioRef} src="/sounds/cheering.mp3" /> {/* Add your MP3 file path here */}
           <audio ref={audioRef1} src="/sounds/losing.mp3" /> {/* Add your MP3 file path here */}
         <Card className="bg-black border-black">
