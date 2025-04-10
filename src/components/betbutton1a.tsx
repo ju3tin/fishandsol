@@ -197,10 +197,10 @@ type BetbuttonProps = {
 
    
     return (
-      <div className="lg:col-span-2">
+      <div className="lg:col-span-2 bg-black border-black">
           <audio ref={audioRef} src="/sounds/cheering.mp3" /> {/* Add your MP3 file path here */}
           <audio ref={audioRef1} src="/sounds/losing.mp3" /> {/* Add your MP3 file path here */}
-        <Card className="bg-black border-black">
+       
         {overlayVisible && (
 		 <div className="overlay">
 		   <div className="message-board-container">
@@ -449,7 +449,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
               </div>
             )} */}
          
-        </Card>
+       
       </div>
     )
   }
