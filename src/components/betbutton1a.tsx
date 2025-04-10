@@ -27,6 +27,7 @@ import { useState, useEffect, useRef } from "react"
 import JSConfetti from 'js-confetti';
 
 type BetbuttonProps = {
+  isButtonPressed: boolean;
     gametime: number;
     gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
     currentMultiplier: number;
@@ -56,6 +57,7 @@ type BetbuttonProps = {
     onCashout,
     userCashedOut,
     cashouts,
+    isButtonPressed,
     multiplier,
     dude45,
     dude56,
@@ -123,6 +125,7 @@ type BetbuttonProps = {
     };
 	
     useEffect(() => {
+      const isButtonPressed = buttonPressCount !== 0;
       if (gameState5.status === "Waiting") {
         setButtonClicked(false);
         setHasUserCashedOut(false); // Set the state to true when cashing out

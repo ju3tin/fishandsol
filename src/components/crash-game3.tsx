@@ -48,7 +48,7 @@ const CrashGame = () => {
   const [play, { sound }] = useSound('/sound/cheering.mp3');
   const [play1] = useSound('/sound/cheering.mp3');
   const [buttonClicked1, setbuttonClicked1] = useState(true);
-  const [buttonPressCount1, setbuttonPressCount1] = useState(0);
+  const [buttonPressCount, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [gameState, setGameState] = useState(gameState5.status);
   const [currentMultiplier, setCurrentMultiplier] = useState(1);
@@ -89,7 +89,7 @@ const CrashGame = () => {
     }, [gameState5.timeRemaining]);
 
   useEffect(() => {
-    setbuttonPressCount1(buttonPressCount1);
+    setbuttonPressCount1(buttonPressCount);
     setbuttonClicked1(buttonClicked1);
     const checkScreenSize = () => setIsMobile(window.innerWidth <= 768);
 
@@ -343,6 +343,8 @@ const fucku = (currency: string) => {
 setbuttonPressCount1(buttonPressCount)
   }
 
+  const [isButtonPressed, setIsButtonPressed] = useState(false);
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -366,13 +368,14 @@ setbuttonPressCount1(buttonPressCount)
               <GameVisual betAmount={betAmount} dude56={currency} dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
 
               {/* Game history */}
-             <GameHistory gameState={gameState5.status} dude55={isCashedOut} buttonPressCount={buttonPressCount1} currentMultiplier={gameState5.multiplier} />
+             <GameHistory gameState={gameState5.status} dude55={isCashedOut} isButtonPressed={isButtonPressed} buttonPressCount={buttonPressCount} currentMultiplier={gameState5.multiplier} />
             </CardContent>
           </Card>
         </div>
 
         {/* Betting controls - Right Side */}
        <Betbutton
+        isButtonPressed={isButtonPressed}
          gametime={gameState5.timeRemaining}
          gameState={gameState}
          currentMultiplier={gameState5.multiplier}
