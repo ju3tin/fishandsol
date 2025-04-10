@@ -168,6 +168,7 @@ type BetbuttonProps = {
     }
     const handleCashout = () => {
       setButtonClicked(true);
+    //  setIsButtonPressed()
       setHasUserCashedOut(true); // Set the state to true when cashing out
      setCashon1(true); // Set cashon1 to true when cashing out
       const current12 = multiplier;
