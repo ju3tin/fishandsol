@@ -47,7 +47,9 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   useEffect(() => {
     if (gameState === "Running") {
       addSystemMessage("Game started! Good luck!")
-      simulatePlayerMessages()
+      setTimeout(() => {
+        simulatePlayerMessages();
+      }, 5000);
     } else if (gameState === "Crashed" && currentMultiplier) {
       addSystemMessage(`Game crashed at ${currentMultiplier}x!`)
 
