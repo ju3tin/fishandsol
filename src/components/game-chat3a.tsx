@@ -55,14 +55,12 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       setTimeout(() => {
         simulatePlayerMessages();
       }, 5000);
-    } else if (gameState === "Crashed" && currentMultiplier) {
-      setHasGameStarted(false)
+    } else if (gameState === "Crashed" && currentMultiplier && hasGameStarted) {
+      
       addSystemMessage(`Game crashed at ${currentMultiplier}x!`)
-
+      setHasGameStarted(false)
       // Call onCrash callback after a delay
-      if (onCrash) {
-        setTimeout(onCrash, 500)
-      }
+     
     }
   }, [gameState, currentMultiplier, hasGameStarted])
 
