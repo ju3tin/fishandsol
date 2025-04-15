@@ -76,7 +76,7 @@ const Betbutton = ({
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioRef1 = useRef<HTMLAudioElement>(null);
   const textToCopy = "This is the text to copy!";
-  //const gameState5 = useGameStore((state: GameState) => state);
+  const gameState5 = useGameStore((state: GameState) => state);
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
     
   const handleCopy = () => {
@@ -112,40 +112,40 @@ const Betbutton = ({
     }
   };
 
-  useEffect(() => {
-    if (isNaN(gametime)) {
-      // If timeRemaining is NaN, keep the previous value
-      return;
-    } else {
-      // Otherwise, update previousTimeRemaining with the current timeRemaining
-      setPreviousTimeRemaining(gametime);
-    }
-  }, [gametime]);
+ useEffect(() => {
+      if (isNaN(gametime)) {
+        // If timeRemaining is NaN, keep the previous value
+        return;
+      } else {
+        // Otherwise, update previousTimeRemaining with the current timeRemaining
+        setPreviousTimeRemaining(gametime);
+      }
+    }, [gametime]);
 
   useEffect(() => {
-    if (gameState === "Waiting") {
+    if (gameState5.status === "Waiting") {
       setButtonClicked(false);
       setHasUserCashedOut(false);
       setCashon1(false);
     }
-  }, [gameState]);
+  }, [gameState5.status]);
 
   useEffect(() => {
-    if (gameState === "Crashed" && buttonPressCount === 1 && !buttonClicked) {
+    if (gameState5.status === "Crashed" && buttonPressCount === 1 && !buttonClicked) {
       loseout();
     }
-  }, [gameState, buttonPressCount, buttonClicked]);
+  }, [gameState5, buttonPressCount, buttonClicked]);
 
   useEffect(() => {
     
-    if (gameState === "Crashed") {
+    if (gameState5.status === "Crashed") {
       const timer = setTimeout(() => {
         setButtonPressCount(0);
       }, 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [gameState]);
+  }, [gameState5.status]);
 
   const loseout = () => {
     if (audioRef1.current) {
@@ -448,7 +448,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   type="number"
                   value={betAmount}
                   onChange={(e) => setBetAmount(e.target.value)}
-                  disabled={gameState !== "Waiting" || buttonClicked || buttonPressCount === 1}
+                  disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
                   className="bg-gray-700 border-gray-600 text-white"
                   min="0.01"
                   step="0.01"
@@ -460,7 +460,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   Auto Cashout
                 </Label>
                 <Checkbox
-          disabled={gameState !== "Waiting" || buttonClicked || buttonPressCount === 1}
+          disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
 					isSelected={isAutoCashOutDisabled}
 					onChange={(e) => handleCheckboxChange(e.target.checked)}
 				>
@@ -471,7 +471,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   type="number"
                   value={autoCashoutAt}
                   onChange={(e) => setAutoCashoutAt(e.target.value)}
-                  disabled={gameState !== "Waiting" || buttonClicked || buttonPressCount === 1}
+                  disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
                   className="bg-gray-700 border-gray-600 text-white"
                   min="1.01"
                   step="0.01"
@@ -485,7 +485,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 					balances={balances} 
 					onCurrencyChange={setCurrency}
 				/>
-              {gameState === "Waiting" ? (
+              {gameState5.status === "Waiting" ? (
                 <Button 
                   onClick={buttonPressCount > 0 ? undefined : handleButtonPress} 
                   className={`w-full ${buttonPressCount > 0 ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'}`}
@@ -501,7 +501,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                     )
                   )}
                 </Button>
-              ) : gameState === "Running" ? (
+              ) : gameState5.status === "Running" ? (
                 
                 
                 <Button
