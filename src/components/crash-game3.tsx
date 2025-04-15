@@ -356,7 +356,7 @@ setbuttonPressCount1(buttonPressCount)
        
 
         {!isMobile &&  <div className="lg:col-span-3 h-[500px]">
-          <GameChat currentMultiplier={gameState5.multiplier} gameState={gameState} crashPoint={crashPoint} onCrash={resetGame} />
+          <GameChat currentMultiplier={gameState5.multiplier} gameState={gameState5.status} crashPoint={crashPoint} onCrash={resetGame} />
         </div>}
         {/* Game Display - Middle */}
         <div className="lg:col-span-7">
