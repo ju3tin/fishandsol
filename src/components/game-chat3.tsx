@@ -99,30 +99,30 @@ const GameChat = ({ gameState, crashPoint, onCrash }: GameChatProps) => {
       "CoinFlip",
     ]
 
-    // Send 1-3 messages during the game
-    const numMessages = 1 + Math.floor(Math.random() * 3)
+ // Send 1-3 messages during the game
+ const numMessages = 1 + Math.floor(Math.random() * 3)
 
-    for (let i = 0; i < numMessages; i++) {
-      const delay = 1000 + Math.random() * 8000
+ for (let i = 0; i < numMessages; i++) {
+   const delay = 1000 + Math.random() * 8000
 
-      setTimeout(() => {
-        if (gameState === "Running") {
-          const randomPlayer = playerNames[Math.floor(Math.random() * playerNames.length)]
-          const randomMessage = playerMessages[Math.floor(Math.random() * playerMessages.length)]
+   setTimeout(() => {
+     if (gameState === "Running") {
+       const randomPlayer = playerNames[Math.floor(Math.random() * playerNames.length)]
+       const randomMessage = playerMessages[Math.floor(Math.random() * playerMessages.length)]
 
-          setMessages((prev) => [
-            ...prev,
-            {
-              id: Date.now().toString() + i,
-              sender: randomPlayer,
-              message: randomMessage,
-              timestamp: new Date(),
-            },
-          ])
-        }
-      }, delay)
-    }
-  }
+       setMessages((prev) => [
+         ...prev,
+         {
+           id: Date.now().toString() + i,
+           sender: randomPlayer,
+           message: randomMessage,
+           timestamp: new Date(),
+         },
+       ])
+     }
+   }, delay)
+ }
+}
 
   // Handle sending a new message
   const handleSendMessage = (e: React.FormEvent) => {

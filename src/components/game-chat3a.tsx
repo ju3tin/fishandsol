@@ -109,13 +109,13 @@ const GameChat = ({ currentMultiplier, gameState }: GameChatProps) => {
     const numMessages = 1 + Math.floor(Math.random() * 3)
 
     for (let i = 0; i < numMessages; i++) {
-     // const delay = 1000 + Math.random() * 8000
-
-      
+      const delay = 1000 + Math.random() * 8000
+   
+      setTimeout(() => {
         if (gameState === "Running") {
           const randomPlayer = playerNames[Math.floor(Math.random() * playerNames.length)]
           const randomMessage = playerMessages[Math.floor(Math.random() * playerMessages.length)]
-
+   
           setMessages((prev) => [
             ...prev,
             {
@@ -126,10 +126,9 @@ const GameChat = ({ currentMultiplier, gameState }: GameChatProps) => {
             },
           ])
         }
-      
+      }, delay)
     }
-  }
-
+   }
   // Handle sending a new message
   const handleSendMessage = (e: React.FormEvent) => {
     e.preventDefault()
