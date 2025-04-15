@@ -35,6 +35,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   ])
   const [newMessage, setNewMessage] = useState("")
   const chatContainerRef = useRef<HTMLDivElement>(null)
+  const [hasGameStarted, setHasGameStarted] = useState(false)
 
   // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
@@ -45,12 +46,17 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
 
   // Add system messages when game state changes
   useEffect(() => {
-    if (gameState === "Running") {
+
+
+    if (gameState === "Running" && !hasGameStarted) {
       addSystemMessage("Game started! Good luck!")
+      setHasGameStarted(true)
+
       setTimeout(() => {
         simulatePlayerMessages();
       }, 5000);
     } else if (gameState === "Crashed" && currentMultiplier) {
+      setHasGameStarted(false)
       addSystemMessage(`Game crashed at ${currentMultiplier}x!`)
 
       // Call onCrash callback after a delay
@@ -58,7 +64,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
         setTimeout(onCrash, 500)
       }
     }
-  }, [gameState, currentMultiplier])
+  }, [gameState, currentMultiplier, hasGameStarted])
 
   // Add a system message
   const addSystemMessage = (message: string) => {
