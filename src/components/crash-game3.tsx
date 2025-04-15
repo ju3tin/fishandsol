@@ -381,7 +381,7 @@ setbuttonPressCount1(buttonPressCount)
        <Betbutton
         isButtonPressed={isButtonPressed}
          gametime={gameState5.timeRemaining}
-         gameState={gameState}
+         gameState={gameState5.status}
          currentMultiplier={gameState5.multiplier}
          onStartGame={startGame}
          onCashout={handleCashout}
