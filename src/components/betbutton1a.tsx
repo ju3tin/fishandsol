@@ -76,7 +76,7 @@ const Betbutton = ({
   const audioRef = useRef<HTMLAudioElement>(null);
   const audioRef1 = useRef<HTMLAudioElement>(null);
   const textToCopy = "This is the text to copy!";
-  const gameState5 = useGameStore((state: GameState) => state);
+  //const gameState5 = useGameStore((state: GameState) => state);
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
     
   const handleCopy = () => {
@@ -134,7 +134,7 @@ const Betbutton = ({
     if (gameState === "Crashed" && buttonPressCount === 1 && !buttonClicked) {
       loseout();
     }
-  }, [gameState5, buttonPressCount, buttonClicked]);
+  }, [gameState, buttonPressCount, buttonClicked]);
 
   useEffect(() => {
     
