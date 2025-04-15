@@ -113,6 +113,16 @@ const Betbutton = ({
   };
 
   useEffect(() => {
+    if (isNaN(gametime)) {
+      // If timeRemaining is NaN, keep the previous value
+      return;
+    } else {
+      // Otherwise, update previousTimeRemaining with the current timeRemaining
+      setPreviousTimeRemaining(gametime);
+    }
+  }, [gametime]);
+
+  useEffect(() => {
     if (gameState5.status === "Waiting") {
       setButtonClicked(false);
       setHasUserCashedOut(false);
