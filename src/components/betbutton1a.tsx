@@ -123,29 +123,29 @@ const Betbutton = ({
   }, [gametime]);
 
   useEffect(() => {
-    if (gameState5.status === "Waiting") {
+    if (gameState === "Waiting") {
       setButtonClicked(false);
       setHasUserCashedOut(false);
       setCashon1(false);
     }
-  }, [gameState5.status]);
+  }, [gameState]);
 
   useEffect(() => {
-    if (gameState5.status === "Crashed" && buttonPressCount === 1 && !buttonClicked) {
+    if (gameState === "Crashed" && buttonPressCount === 1 && !buttonClicked) {
       loseout();
     }
   }, [gameState5, buttonPressCount, buttonClicked]);
 
   useEffect(() => {
     
-    if (gameState5.status === "Crashed") {
+    if (gameState === "Crashed") {
       const timer = setTimeout(() => {
         setButtonPressCount(0);
       }, 1000);
 
       return () => clearTimeout(timer);
     }
-  }, [gameState5.status]);
+  }, [gameState]);
 
   const loseout = () => {
     if (audioRef1.current) {
@@ -448,7 +448,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   type="number"
                   value={betAmount}
                   onChange={(e) => setBetAmount(e.target.value)}
-                  disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
+                  disabled={gameState !== "Waiting" || buttonClicked || buttonPressCount === 1}
                   className="bg-gray-700 border-gray-600 text-white"
                   min="0.01"
                   step="0.01"
@@ -460,7 +460,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   Auto Cashout
                 </Label>
                 <Checkbox
-          disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
+          disabled={gameState !== "Waiting" || buttonClicked || buttonPressCount === 1}
 					isSelected={isAutoCashOutDisabled}
 					onChange={(e) => handleCheckboxChange(e.target.checked)}
 				>
@@ -471,7 +471,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                   type="number"
                   value={autoCashoutAt}
                   onChange={(e) => setAutoCashoutAt(e.target.value)}
-                  disabled={gameState5.status !== "Waiting" || buttonClicked || buttonPressCount === 1}
+                  disabled={gameState !== "Waiting" || buttonClicked || buttonPressCount === 1}
                   className="bg-gray-700 border-gray-600 text-white"
                   min="1.01"
                   step="0.01"
@@ -485,7 +485,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 					balances={balances} 
 					onCurrencyChange={setCurrency}
 				/>
-              {gameState5.status === "Waiting" ? (
+              {gameState === "Waiting" ? (
                 <Button 
                   onClick={buttonPressCount > 0 ? undefined : handleButtonPress} 
                   className={`w-full ${buttonPressCount > 0 ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'}`}
@@ -501,7 +501,7 @@ Use demo currency to play our games without any risk. If you run out of demo cre
                     )
                   )}
                 </Button>
-              ) : gameState5.status === "Running" ? (
+              ) : gameState === "Running" ? (
                 
                 
                 <Button
