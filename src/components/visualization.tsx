@@ -101,8 +101,12 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
           ctx.arc(x, y, 4, 0, Math.PI * 2);
           ctx.fillStyle = dotT.color;
           ctx.fill();
-       //   ctx.drawImage(img, x - 8, y - 8, 16, 16); // Use the loaded image
-        
+       //   
+       // 
+       // 
+       img.onload =() => {
+       ctx.drawImage(img, x - 8, y - 8, 16, 16); // Use the loaded image
+      }
        // };
       });
     
