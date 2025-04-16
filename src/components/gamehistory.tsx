@@ -27,6 +27,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ gameState, dude55, currentMul
         dudeClicked: dude55,
         isButtonPressed: isButtonPressed,
       };
+      console.log(isButtonPressed+" dude 123")
       setGameHistory(prev => [newEntry, ...prev].slice(0, 10)); // Keep only the last 10 entries
     }
   }, [gameState, currentMultiplier, dude55, isButtonPressed]);
