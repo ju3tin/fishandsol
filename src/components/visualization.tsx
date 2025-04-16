@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react";
 import { useGameStore, GameState } from "../store/gameStore";
 import { controlPoints } from "./controlPoints";
+import { color } from "framer-motion";
 
 interface GameVisualProps {
   currentMultiplier: number;
@@ -84,12 +85,12 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
       ctx.stroke();
     
       // 🟠 Add dots here
-      const tValues = [0.2, 0.5, 0.8];
+      const tValues = [{number :0.2,color:'red'}, {number:0.5,color:'red'}, {number:0.8,color:'orange'}];
       tValues.forEach((dotT) => {
-        const { x, y } = getBezierPoint(dotT, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
+        const { x, y } = getBezierPoint(dotT.number, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
         ctx.beginPath();
         ctx.arc(x, y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = dotT.color;
         ctx.fill();
       });
     
