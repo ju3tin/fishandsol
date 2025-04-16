@@ -3,10 +3,12 @@
 import { useEffect, useState } from 'react';
 
 interface GameHistoryProps {
+  dude45: boolean;
   dude55: boolean;
   buttonPressCount: number;
   currentMultiplier: number;
   gameState: string;
+  dude56a: boolean;
   isButtonPressed: boolean;
 }
 
@@ -15,9 +17,12 @@ interface HistoryEntry {
   isButtonPressed: boolean;
   buttonPressCount: number;
   dudeClicked: boolean;
+  dude45: boolean;
+  dude55: boolean;
+  dude56a: boolean;
 }
 
-const GameHistory: React.FC<GameHistoryProps> = ({ gameState, dude55, currentMultiplier, isButtonPressed, buttonPressCount }) => {
+const GameHistory: React.FC<GameHistoryProps> = ({ gameState, dude55, currentMultiplier, isButtonPressed, buttonPressCount, dude56a, dude45 }) => {
   const [gameHistory, setGameHistory] = useState<HistoryEntry[]>([]);
 
   useEffect(() => {
@@ -25,13 +30,16 @@ const GameHistory: React.FC<GameHistoryProps> = ({ gameState, dude55, currentMul
       const newEntry: HistoryEntry = {
         multiplier: currentMultiplier,
         dudeClicked: dude55,
+        dude45: dude45,
+        dude56a: dude56a,
+        dude55: dude55,
         isButtonPressed: isButtonPressed,
         buttonPressCount: buttonPressCount,
       };
-      console.log(isButtonPressed + " " + buttonPressCount + " dude 123");
+      console.log(isButtonPressed, buttonPressCount, dude45, dude55, dude56a +" dude 123");
       setGameHistory(prev => [newEntry, ...prev].slice(0, 10)); // Keep only the last 10 entries
     }
-  }, [gameState, currentMultiplier, dude55, isButtonPressed]);
+  }, [gameState, currentMultiplier, dude55, buttonPressCount, dude45, dude55, dude56a, isButtonPressed]);
 
   return (
     <div className="flex gap-2 overflow-x-auto py-2">

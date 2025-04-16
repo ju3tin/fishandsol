@@ -59,6 +59,7 @@ const Betbutton = ({
   dude56a,
   dude56b,
 }: BetbuttonProps) => {
+  const [setisButtonPressed] = useState(false);
   const [betgreaterthan0, setBetgreaterthan0] = useState(false);
   const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
   const [overlayVisible, setOverlayVisible] = useState(false);
@@ -180,6 +181,9 @@ const Betbutton = ({
     setButtonPressCount((prevCount) => prevCount + 1);
     onStartGame(betAmount, autoCashoutAt, currency);
     dude56(currency);
+    dude56a(buttonClicked);
+    dude56b(buttonPressCount);
+
     console.log(`this is the checked ${currency}`);
   };
   const balances = useGameStore((game: GameState) => game.balances);

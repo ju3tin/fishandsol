@@ -372,7 +372,15 @@ setbuttonPressCount1(buttonPressCount)
               <GameVisual betAmount={betAmount} dude56={currency} dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
 
               {/* Game history */}
-             <GameHistory gameState={gameState5.status} dude55={isCashedOut} isButtonPressed={isButtonPressed} buttonPressCount={buttonPressCount} currentMultiplier={gameState5.multiplier} />
+             <GameHistory 
+               gameState={gameState5.status} 
+               dude55={isCashedOut} 
+               isButtonPressed={isButtonPressed}
+               buttonPressCount={buttonPressCount} 
+               currentMultiplier={gameState5.multiplier}
+               dude45={userCashedOut}
+               dude56a={isButtonPressed}
+             />
             </CardContent>
           </Card>
         </div>
