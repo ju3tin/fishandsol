@@ -88,56 +88,56 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
     }, []);
 
     function animate() {
-      if (!canvas || !ctx || !fish) return;
-    
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.beginPath();
-      ctx.moveTo(0, 120);
-    
-      const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
-      const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
-      const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
-      const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
-      const pointBx = currentPointB.x + (targetPointB.x - currentPointB.x) * t;
-      const pointBy = currentPointB.y + (targetPointB.y - currentPointB.y) * t;
-    
-      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointBx, pointBy);
-      ctx.strokeStyle = "white";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    
-      // 🟣 Draw SVGs as dots
-      if (svgImagesRef.current.length === 3) {
-        svgImagesRef.current.forEach((img, i) => {
-          const dotT = tValues[i];
-          const { x, y } = getBezierPoint(dotT, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
-          ctx.drawImage(img, x - 8, y - 8, 16, 16); // center the image
-        });
-      }
-    
-      // 🐟 Move fish
-      const fishPos = getBezierPoint(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
-      fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px) rotate(${getBezierTangent(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy })}rad)`;
-    
-      pointBRef.current = { x: pointBx, y: pointBy };
-    
-      t += 0.01;
-    
-      if (t <= 1) {
-        curveAnimationRef.current = requestAnimationFrame(animate);
-      } else {
-        transitionIndex = (transitionIndex + 1) % controlPoints.length;
-        t = 0;
-        currentCP1 = targetCP1;
-        currentCP2 = targetCP2;
-        currentPointB = targetPointB;
-        targetCP1 = controlPoints[transitionIndex].cp1;
-        targetCP2 = controlPoints[transitionIndex].cp2;
-        targetPointB = controlPoints[transitionIndex].pointB;
-        curveAnimationRef.current = requestAnimationFrame(animate);
-      }
-    }
-    
+  if (!canvas || !ctx || !fish) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.beginPath();
+  ctx.moveTo(0, 120);
+
+  const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
+  const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
+  const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
+  const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
+  const pointBx = currentPointB.x + (targetPointB.x - currentPointB.x) * t;
+  const pointBy = currentPointB.y + (targetPointB.y - currentPointB.y) * t;
+
+  ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointBx, pointBy);
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // 🟣 Draw SVGs as dots
+  if (svgImagesRef.current.length === 3) {
+    svgImagesRef.current.forEach((img, i) => {
+      const dotT = tValues[i];
+      const { x, y } = getBezierPoint(dotT, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
+      ctx.drawImage(img, x - 8, y - 8, 16, 16); // center the image
+    });
+  }
+
+  // 🐟 Move fish
+  const fishPos = getBezierPoint(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
+  fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px) rotate(${getBezierTangent(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy })}rad)`;
+
+  pointBRef.current = { x: pointBx, y: pointBy };
+
+  t += 0.01;
+
+  if (t <= 1) {
+    curveAnimationRef.current = requestAnimationFrame(animate);
+  } else {
+    transitionIndex = (transitionIndex + 1) % controlPoints.length;
+    t = 0;
+    currentCP1 = targetCP1;
+    currentCP2 = targetCP2;
+    currentPointB = targetPointB;
+    targetCP1 = controlPoints[transitionIndex].cp1;
+    targetCP2 = controlPoints[transitionIndex].cp2;
+    targetPointB = controlPoints[transitionIndex].pointB;
+    curveAnimationRef.current = requestAnimationFrame(animate);
+  }
+}
+
     
 
     if (dude55 && !logged) {
