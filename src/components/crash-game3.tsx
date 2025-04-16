@@ -376,9 +376,9 @@ setbuttonPressCount1(buttonPressCount)
               onCashout={handleCashout} 
               currentMultiplier={gameState5.multiplier} 
               tValues={[
-              { number: 0.25, color: "gold", svg: "/demo.svg" },
-              { number: 0.5, color: "green", svg: "/3182.png" },
-              { number: 0.85, color: "purple", svg: "/sol.svg" },
+              { number: 1.25/gameState5.multiplier, color: "gold", svg: "/demo.svg" },
+              { number: 2.5/gameState5.multiplier, color: "green", svg: "/3182.png" },
+              { number: 3.85/gameState5.multiplier, color: "purple", svg: "/sol.svg" },
               ]}/>
 
               {/* Game history */}
