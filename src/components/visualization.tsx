@@ -85,13 +85,24 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
       ctx.stroke();
     
       // 🟠 Add dots here
-      const tValues = [{number :0.2,color:'red'}, {number:0.5,color:'red'}, {number:0.8,color:'orange'}];
+      const tValues = [
+        { number: 0.2, color: 'red', svg: '/btc.svg' },
+        { number: 0.5, color: 'red', svg: '/eth.svg' },
+        { number: 0.8, color: 'orange', svg: '/demo.svg' }
+      ];
+
       tValues.forEach((dotT) => {
         const { x, y } = getBezierPoint(dotT.number, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
-        ctx.beginPath();
-        ctx.arc(x, y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = dotT.color;
-        ctx.fill();
+        const img = new Image(); // Create a new Image object
+        img.src = dotT.svg; // Set the source to the SVG path
+
+        img.onload = () => {
+          ctx.beginPath();
+          ctx.arc(x, y, 4, 0, Math.PI * 2);
+          ctx.drawImage(img, x - 8, y - 8, 16, 16); // Use the loaded image
+          ctx.fillStyle = dotT.color;
+          ctx.fill();
+        };
       });
     
       // Move fish
