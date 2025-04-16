@@ -85,35 +85,80 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
     
       // 🟠 Add dots here
       const tValues = [0.2, 0.5, 0.8];
-      tValues.forEach((dotT) => {
-        const { x, y } = getBezierPoint(dotT, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
-        ctx.beginPath();
-        ctx.arc(x, y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = "red";
-        ctx.fill();
-      });
-    
-      // Move fish
-      const fishPos = getBezierPoint(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
-      fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px) rotate(${getBezierTangent(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy })}rad)`;
-    
-      pointBRef.current = { x: pointBx, y: pointBy };
-    
-      t += 0.01;
-    
-      if (t <= 1) {
-        curveAnimationRef.current = requestAnimationFrame(animate);
-      } else {
-        transitionIndex = (transitionIndex + 1) % controlPoints.length;
-        t = 0;
-        currentCP1 = targetCP1;
-        currentCP2 = targetCP2;
-        currentPointB = targetPointB;
-        targetCP1 = controlPoints[transitionIndex].cp1;
-        targetCP2 = controlPoints[transitionIndex].cp2;
-        targetPointB = controlPoints[transitionIndex].pointB;
-        curveAnimationRef.current = requestAnimationFrame(animate);
-      }
+      const svgPaths = ["/dot1.svg", "/dot2.svg", "/dot3.svg"]; // or imported SVGs
+      const svgImagesRef = useRef<HTMLImageElement[]>([]);
+
+      // Load SVGs once
+      useEffect(() => {
+        const loadSVGs = async () => {
+          const images = await Promise.all(
+            svgPaths.map(
+              (src) =>
+                new Promise<HTMLImageElement>((resolve) => {
+                  const img = new Image();
+                  img.src = src;
+                  img.onload = () => resolve(img);
+                })
+            )
+          );
+          svgImagesRef.current = images;
+        };
+
+        loadSVGs();
+      }, []);
+
+      // Render SVGs instead of drawing on canvas
+      return (
+        <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
+          {gameState5.status !== "Waiting" && (
+            <div className="absolute inset-0">
+              <canvas
+                ref={canvasRef}
+                width={400}
+                height={200}
+                className="w-full h-full"
+              />
+              {gameState5.status === "Running" && (
+                <>
+                  <span style={{ top: '100px', display: 'block', position: 'absolute' }}>
+                    Current Multiplier {currentMultiplier}x
+                  </span>
+
+                  {/* 🛑 Draw SVG dots moving based on multiplier */}
+                  {dude55 && tValues.map((dotT, index) => {
+                    const { x, y } = getBezierPoint(dotT, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
+                    return (
+                      <img
+                        key={index}
+                        src={svgImagesRef.current[index]?.src}
+                        alt={`dot-${index}`}
+                        className="absolute"
+                        style={{
+                          left: `${x}px`,
+                          top: `${y}px`,
+                          width: '8px', // Adjust size as needed
+                          height: '8px', // Adjust size as needed
+                          transform: "translate(-50%, -50%)",
+                        }}
+                      />
+                    );
+                  })}
+                </>
+              )}
+              <div ref={fishRef} className="absolute w-6 h-6">
+                <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-blue-400">
+                  <path
+                    d="M2 12c2-4 6-8 10-8s8 4 10 8c-2 4-6 8-10 8s-8-4-10-8z"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    fill="currentColor"
+                  />
+                </svg>
+              </div>
+            </div>
+          )}
+        </div>
+      );
     }
     
 
