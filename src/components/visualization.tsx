@@ -87,7 +87,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
       // 🟠 Add dots here
       const tValues = [
         { number: 0.2, color: 'red', svg: '/btc.svg' },
-        { number: 0.5, color: 'red', svg: '/eth.svg' },
+        { number: 0.5, color: 'red', svg: '/sol.svg' },
         { number: 0.8, color: 'orange', svg: '/demo.svg' }
       ];
 
@@ -101,7 +101,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
           ctx.arc(x, y, 4, 0, Math.PI * 2);
           ctx.fillStyle = dotT.color;
           ctx.fill();
-          ctx.drawImage(img, x - 8, y - 8, 16, 16); // Use the loaded image
+       //   ctx.drawImage(img, x - 8, y - 8, 16, 16); // Use the loaded image
         
         };
       });
