@@ -96,14 +96,14 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
         const img = new Image(); // Create a new Image object
         img.src = dotT.svg; // Set the source to the SVG path
 
-        img.onload = () => {
+     //   img.onload = () => {
           ctx.beginPath();
           ctx.arc(x, y, 4, 0, Math.PI * 2);
           ctx.fillStyle = dotT.color;
           ctx.fill();
        //   ctx.drawImage(img, x - 8, y - 8, 16, 16); // Use the loaded image
         
-        };
+       // };
       });
     
       // Move fish
