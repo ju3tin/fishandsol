@@ -20,6 +20,28 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
   const curveAnimationRef = useRef<number>(0);
 
   const pointBRef = useRef<{ x: number; y: number }>({ x: 0, y: 120 });
+  const tValues = [0.2, 0.5, 0.8];
+  const svgPaths = ["/demo.svg", "/sol.svg", "/eth.svg"]; // or imported SVGs
+  const svgImagesRef = useRef<HTMLImageElement[]>([]);
+
+  // Load SVGs once
+  useEffect(() => {
+    const loadSVGs = async () => {
+      const images = await Promise.all(
+        svgPaths.map(
+          (src) =>
+            new Promise<HTMLImageElement>((resolve) => {
+              const img = new Image();
+              img.src = src;
+              img.onload = () => resolve(img);
+            })
+        )
+      );
+      svgImagesRef.current = images;
+    };
+
+    loadSVGs();
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -64,28 +86,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
 
     let loggednum = 0;
 
-    const tValues = [0.2, 0.5, 0.8];
-    const svgPaths = ["/demo.svg", "/sol.svg", "/eth.svg"]; // or imported SVGs
-    const svgImagesRef = useRef<HTMLImageElement[]>([]);
-
-    // Load SVGs once
-    useEffect(() => {
-      const loadSVGs = async () => {
-        const images = await Promise.all(
-          svgPaths.map(
-            (src) =>
-              new Promise<HTMLImageElement>((resolve) => {
-                const img = new Image();
-                img.src = src;
-                img.onload = () => resolve(img);
-              })
-          )
-        );
-        svgImagesRef.current = images;
-      };
-
-      loadSVGs();
-    }, []);
+   
 
 
     function animate() {
