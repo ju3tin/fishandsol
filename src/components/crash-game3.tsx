@@ -376,11 +376,12 @@ setbuttonPressCount1(buttonPressCount)
                gameState={gameState5.status} 
                dude55={isCashedOut} 
                isButtonPressed={isButtonPressed}
-               buttonPressCount={buttonPressCount} 
+               buttonPressCount={buttonPressCount}
                currentMultiplier={gameState5.multiplier}
                dude45={userCashedOut}
                dude56a={isButtonPressed}
                dude56b={buttonPressCount}
+               buttonPressCount2={buttonPressCount}
              />
             </CardContent>
           </Card>
