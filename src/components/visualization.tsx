@@ -64,6 +64,30 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
 
     let loggednum = 0;
 
+    const tValues = [0.2, 0.5, 0.8];
+    const svgPaths = ["/dot1.svg", "/dot2.svg", "/dot3.svg"]; // or imported SVGs
+    const svgImagesRef = useRef<HTMLImageElement[]>([]);
+
+    // Load SVGs once
+    useEffect(() => {
+      const loadSVGs = async () => {
+        const images = await Promise.all(
+          svgPaths.map(
+            (src) =>
+              new Promise<HTMLImageElement>((resolve) => {
+                const img = new Image();
+                img.src = src;
+                img.onload = () => resolve(img);
+              })
+          )
+        );
+        svgImagesRef.current = images;
+      };
+
+      loadSVGs();
+    }, []);
+
+
     function animate() {
       if (!canvas || !ctx || !fish) return;
     
@@ -84,29 +108,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
       ctx.stroke();
     
       // 🟠 Add dots here
-      const tValues = [0.2, 0.5, 0.8];
-      const svgPaths = ["/dot1.svg", "/dot2.svg", "/dot3.svg"]; // or imported SVGs
-      const svgImagesRef = useRef<HTMLImageElement[]>([]);
-
-      // Load SVGs once
-      useEffect(() => {
-        const loadSVGs = async () => {
-          const images = await Promise.all(
-            svgPaths.map(
-              (src) =>
-                new Promise<HTMLImageElement>((resolve) => {
-                  const img = new Image();
-                  img.src = src;
-                  img.onload = () => resolve(img);
-                })
-            )
-          );
-          svgImagesRef.current = images;
-        };
-
-        loadSVGs();
-      }, []);
-
+    
       // Render SVGs instead of drawing on canvas
       return (
         <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
