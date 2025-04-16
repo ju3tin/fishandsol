@@ -66,9 +66,9 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
     let loggednum = 0;
 
     const tValues = [
-      { number: 0.2, color: 'red', svg: '/31832.png' },
-      { number: 0.5, color: 'red', svg: '/sol.svg' },
-      { number: 0.8, color: 'orange', svg: '/demo.svg' }
+      { number: 1.2, color: 'red', svg: '/31832.png' },
+      { number: 3.5, color: 'red', svg: '/sol.svg' },
+      { number: 4.8, color: 'orange', svg: '/demo.svg' }
     ];
 
     function animate() {
@@ -94,7 +94,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
       
 
       tValues.forEach((dotT) => {
-        const { x, y } = getBezierPoint(dotT.number, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
+        const { x, y } = getBezierPoint(dotT.number/currentMultiplier , { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
         const img = new Image(); // Create a new Image object
         img.src = dotT.svg; // Set the source to the SVG path
 
