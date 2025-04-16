@@ -377,7 +377,7 @@ setbuttonPressCount1(buttonPressCount)
               currentMultiplier={gameState5.multiplier} 
               tValues={[
               { number: 1.25/gameState5.multiplier, color: "gold", svg: "/demo.svg" },
-              { number: 2.5/gameState5.multiplier, color: "green", svg: "/3182.png" },
+              { number: 2.5/gameState5.multiplier, color: "green", svg: "/31832.png" },
               { number: 3.85/gameState5.multiplier, color: "purple", svg: "/sol.svg" },
               ]}/>
 
