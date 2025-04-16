@@ -65,7 +65,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
     let loggednum = 0;
 
     const tValues = [0.2, 0.5, 0.8];
-    const svgPaths = ["/dot1.svg", "/dot2.svg", "/dot3.svg"]; // or imported SVGs
+    const svgPaths = ["/demo.svg", "/sol.svg", "/eth.svg"]; // or imported SVGs
     const svgImagesRef = useRef<HTMLImageElement[]>([]);
 
     // Load SVGs once
