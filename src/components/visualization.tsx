@@ -65,6 +65,12 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
 
     let loggednum = 0;
 
+    const tValues = [
+      { number: 0.2, color: 'red', svg: '/31832.png' },
+      { number: 0.5, color: 'red', svg: '/sol.svg' },
+      { number: 0.8, color: 'orange', svg: '/demo.svg' }
+    ];
+
     function animate() {
       if (!canvas || !ctx || !fish) return;
     
@@ -85,11 +91,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
       ctx.stroke();
     
       // 🟠 Add dots here
-      const tValues = [
-        { number: 0.2, color: 'red', svg: '/btc.svg' },
-        { number: 0.5, color: 'red', svg: '/sol.svg' },
-        { number: 0.8, color: 'orange', svg: '/demo.svg' }
-      ];
+      
 
       tValues.forEach((dotT) => {
         const { x, y } = getBezierPoint(dotT.number, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
