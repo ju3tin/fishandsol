@@ -369,7 +369,11 @@ setbuttonPressCount1(buttonPressCount)
               </div>
 
               {/* Game visualization */}
-              <GameVisual betAmount={betAmount} dude56={currency} dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier}/>
+              <GameVisual betAmount={betAmount} dude56={currency} dude55={isCashedOut} onCashout={handleCashout} currentMultiplier={gameState5.multiplier} tValues={[
+    { number: 0.25, color: "gold", svg: "/gold.svg" },
+    { number: 0.5, color: "green", svg: "/leaf.svg" },
+    { number: 0.85, color: "purple", svg: "/star.svg" },
+  ]}/>
 
               {/* Game history */}
              <GameHistory 
