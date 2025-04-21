@@ -195,14 +195,14 @@ tValues.forEach((dotT) => {
             </>
           )}
           <div ref={fishRef} className="absolute w-6 h-6">
-            <svg viewBox="0 0 24 24" fill="none" className="w-full h-full text-blue-400">
-              <path
-                d="M2 12c2-4 6-8 10-8s8 4 10 8c-2 4-6 8-10 8s-8-4-10-8z"
-                stroke="currentColor"
-                strokeWidth="2"
-                fill="currentColor"
-              />
-            </svg>
+          <img
+  src="/images/f1sh.png"
+  alt="End Fish"
+  className="absolute w-6 h-6"
+  style={{
+    transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`,
+  }}
+/>
           </div>
         </div>
       )}
