@@ -77,72 +77,81 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
     ];
 */
 
+const fish1 = new Image();
+fish1.src = "/images/f1sh.png"; // Use your actual path
+fish1.onload = () => {
+  requestAnimationFrame(animate);
+};
 
-    function animate() {
-      if (!canvas || !ctx || !fish) return;
-    
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.beginPath();
-      ctx.moveTo(0, 120);
-    
-      const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
-      const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
-      const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
-      const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
-      const pointBx = currentPointB.x + (targetPointB.x - currentPointB.x) * t;
-      const pointBy = currentPointB.y + (targetPointB.y - currentPointB.y) * t;
-    
-      ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointBx, pointBy);
-      ctx.strokeStyle = "white";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    
-      // 🟠 Add dots here
-      
 
-     // ✂️ Remove this
-// const tValues = [ ... ]
+function animate() {
+  if (!canvas || !ctx || !fish1.complete) return;
 
-// ✅ Use props.tValues inside animate()
-tValues.forEach((dotT) => {
-  const { x, y } = getBezierPoint(dotT.number, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
-  const img = new Image();
-  img.src = dotT.svg;
-
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  ctx.arc(x, y, 4, 0, Math.PI * 2);
-  ctx.fillStyle = dotT.color;
-  ctx.fill();
+  ctx.moveTo(0, 120);
 
-  img.onload = () => {
-    ctx.drawImage(img, x - 8, y - 8, 16, 16);
-  };
-});
+  const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
+  const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
+  const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
+  const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
+  const pointBx = currentPointB.x + (targetPointB.x - currentPointB.x) * t;
+  const pointBy = currentPointB.y + (targetPointB.y - currentPointB.y) * t;
 
-    
-      // Move fish
-      const fishPos = getBezierPoint(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy });
-      fish.style.transform = `translate(${fishPos.x - 10}px, ${fishPos.y - 10}px) rotate(${getBezierTangent(t, { x: 0, y: 120 }, { x: cp1x, y: cp1y }, { x: cp2x, y: cp2y }, { x: pointBx, y: pointBy })}rad)`;
-    
-      pointBRef.current = { x: pointBx, y: pointBy };
-    
-      t += 0.01;
-    
-      if (t <= 1) {
-        curveAnimationRef.current = requestAnimationFrame(animate);
-      } else {
-        transitionIndex = (transitionIndex + 1) % controlPoints.length;
-        t = 0;
-        currentCP1 = targetCP1;
-        currentCP2 = targetCP2;
-        currentPointB = targetPointB;
-        targetCP1 = controlPoints[transitionIndex].cp1;
-        targetCP2 = controlPoints[transitionIndex].cp2;
-        targetPointB = controlPoints[transitionIndex].pointB;
-        curveAnimationRef.current = requestAnimationFrame(animate);
-      }
-    }
-    
+  ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointBx, pointBy);
+  ctx.strokeStyle = "white";
+  ctx.lineWidth = 2;
+  ctx.stroke();
+
+  // 🟠 Draw dots
+  tValues.forEach((dotT) => {
+    const { x, y } = getBezierPoint(
+      dotT.number,
+      { x: 0, y: 120 },
+      { x: cp1x, y: cp1y },
+      { x: cp2x, y: cp2y },
+      { x: pointBx, y: pointBy }
+    );
+
+    const img = new Image();
+    img.src = dotT.svg;
+
+    ctx.beginPath();
+    ctx.arc(x, y, 4, 0, Math.PI * 2);
+    ctx.fillStyle = dotT.color;
+    ctx.fill();
+
+    img.onload = () => {
+      ctx.drawImage(img, x - 8, y - 8, 20, 20);
+    };
+  });
+
+  // 🐟 Draw fish1 at the end of the curve (pointB)
+  ctx.save();
+  ctx.translate(pointBx, pointBy);
+  ctx.drawImage(fish1, -25, -25, 50, 50); // Adjust position/size as needed
+  ctx.restore();
+
+  pointBRef.current = { x: pointBx, y: pointBy };
+
+  t += 0.01;
+
+  if (t <= 1) {
+    curveAnimationRef.current = requestAnimationFrame(animate);
+  } else {
+    transitionIndex = (transitionIndex + 1) % controlPoints.length;
+    t = 0;
+    currentCP1 = targetCP1;
+    currentCP2 = targetCP2;
+    currentPointB = targetPointB;
+    targetCP1 = controlPoints[transitionIndex].cp1;
+    targetCP2 = controlPoints[transitionIndex].cp2;
+    targetPointB = controlPoints[transitionIndex].pointB;
+    curveAnimationRef.current = requestAnimationFrame(animate);
+  }
+}
+
+
 
     if (dude55 && !logged) {
       console.log("Recording t because dude55 is true:", t.toFixed(4));
@@ -194,13 +203,13 @@ tValues.forEach((dotT) => {
               )}
             </>
           )}
-          <div ref={fishRef} className="absolute w-6 h-6">
+          <div style={{display:"none"}} ref={fishRef} className="absolute w-6 h-6">
           <img
   src="/images/f1sh.png"
   alt="End Fish"
   className="absolute w-6 h-6"
   style={{
-    transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`,
+    transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`, marginTop:`-150px`
   }}
 />
           </div>
