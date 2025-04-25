@@ -40,7 +40,7 @@ export const NavItems = () => {
       position: 'top',
     },
     {
-      name: 'free Chippie Friday',
+      name: 'Free Chippy Friday',
       href: '/chippyfriday',
       icon: <Fish size={20} />,
       active: isNavItemActive(pathname, '/chippyfriday'),
