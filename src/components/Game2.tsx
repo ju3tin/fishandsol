@@ -5,7 +5,10 @@ import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
+import { controlPoints } from "./controlPoints";
 
+
+const pointBRef = useRef<{ x: number; y: number }>({ x: 0, y: 120 });
 
 import styles from '../styles/Game1.module.css';
 
