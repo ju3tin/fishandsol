@@ -24,6 +24,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fishRef = useRef<HTMLDivElement | null>(null);
   const curveAnimationRef = useRef<number>(0);
+  const backgroundImage = useRef<HTMLDivElement | null>(null);
 
   const pointBRef = useRef<{ x: number; y: number }>({ x: 0, y: 120 });
 

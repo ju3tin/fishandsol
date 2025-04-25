@@ -24,7 +24,7 @@ let svgImage: HTMLImageElement;
 
 if (typeof window !== 'undefined') {
 	rocketImage = new Image();
-	rocketImage.src = 'fish.svg';
+	rocketImage.src = '/images/chippy.svg';
 
 	explodeImage = new Image();
 	explodeImage.src = 'explode.svg';
