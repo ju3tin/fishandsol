@@ -78,7 +78,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
 */
 
 const fish1 = new Image();
-fish1.src = "/images/f1sh.png"; // Use your actual path
+fish1.src = "/images/chippy.svg"; // Use your actual path
 fish1.onload = () => {
   requestAnimationFrame(animate);
 };
