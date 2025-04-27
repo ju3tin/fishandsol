@@ -28,4 +28,10 @@ export const controlPoints = [
     { cp1: { x: 120, y: 20 }, cp2: { x: 200, y: 25 }, pointB: { x: 400, y: 10 } },
     { cp1: { x: 120, y: 20 }, cp2: { x: 200, y: 25 }, pointB: { x: 400, y: 5 } },
     { cp1: { x: 120, y: 20 }, cp2: { x: 200, y: 25 }, pointB: { x: 400, y: 0 } },
+    { cp1: { x: 0, y: 120 }, cp2: { x: 0, y: 120 }, pointB: { x: 0, y: 120 } },
+    { cp1: { x: 25, y: 120 }, cp2: { x: 50, y: 120 }, pointB: { x: 100, y: 120 } },
+    { cp1: { x: 75, y: 120 }, cp2: { x: 125, y: 115 }, pointB: { x: 150, y: 110 } },
+    { cp1: { x: 175, y: 105 }, cp2: { x: 225, y: 90 }, pointB: { x: 250, y: 80 } },
+    { cp1: { x: 275, y: 70 }, cp2: { x: 325, y: 50 }, pointB: { x: 350, y: 40 } },
+    { cp1: { x: 375, y: 30 }, cp2: { x: 400, y: 20 }, pointB: { x: 400, y: 0 } },
   ];

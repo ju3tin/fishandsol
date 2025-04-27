@@ -1,5 +1,6 @@
 "use client"
 import Image from "next/image";
+import GameVisual from '../../../components/visualization';
 export default function visual() {
     return (
         <div>
