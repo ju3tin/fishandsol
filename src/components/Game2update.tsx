@@ -283,7 +283,7 @@ interface GameVisualProps {
 	}[];
   }
 
-  const Game: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, betAmount, tValues }) => {
+  const Game1: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, betAmount, tValues }) => {
 	const [pointB, setPointB] = useState({ x: 0, y: 0 });
 	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
@@ -493,4 +493,4 @@ interface GameVisualProps {
 
 
 
-export default Game;
+export default Game1;
