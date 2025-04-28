@@ -2,6 +2,8 @@
 
 import * as THREE from 'three';
 import { useRef, useEffect, useState, useCallback, useMemo, MutableRefObject } from 'react';
+
+//import { useEffect, useRef, useState } from "react";
 import { controlPoints } from "./controlPoints1";
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
@@ -435,11 +437,7 @@ const Game: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, be
 
 		let loggednum = 0;
 
-		const fish1 = new Image();
-		fish1.src = "/images/chippy.svg"; // Use your actual path
-		fish1.onload = () => {
-			requestAnimationFrame(animate);
-		};
+		
 
 		let startTime: number | null = null;
 		let elapsed = 0;
@@ -627,11 +625,7 @@ const Game: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, be
 	
 		let loggednum = 0;
 	
-	const fish1 = new Image();
-	fish1.src = "/images/chippy.svg"; // Use your actual path
-	fish1.onload = () => {
-	  requestAnimationFrame(animate);
-	};
+	
 	
 	let animationFrameId;
 	let startTime: number | null = null;
