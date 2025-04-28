@@ -6,6 +6,7 @@ import { controlPoints } from "./controlPoints";
 import { color } from "framer-motion";
 
 const startx = -50;
+const starty = 120;
 interface GameVisualProps {
   currentMultiplier: number;
   onCashout: (multiplier: number) => void;
@@ -27,7 +28,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
   const curveAnimationRef = useRef<number>(0);
   const backgroundImage = useRef<HTMLDivElement | null>(null);
 
-  const pointBRef = useRef<{ x: number; y: number }>({ x: 0, y: 120 });
+  const pointBRef = useRef<{ x: number; y: number }>({ x: 0, y: starty });
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -39,9 +40,9 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
     let t = 0;
     let transitionIndex = 0;
 
-    let currentCP1 = { x: startx, y: 120 };
-    let currentCP2 = { x: startx, y: 120 };
-    let currentPointB = { x: startx, y: 120 };
+    let currentCP1 = { x: startx, y: starty };
+    let currentCP2 = { x: startx, y: starty };
+    let currentPointB = { x: startx, y: starty };
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
     let targetPointB = controlPoints[0].pointB;
@@ -91,7 +92,7 @@ function animate() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  ctx.moveTo(startx, 120);
+  ctx.moveTo(startx, starty);
 
   const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
   const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
@@ -109,7 +110,7 @@ function animate() {
   tValues.forEach((dotT) => {
     const { x, y } = getBezierPoint(
       dotT.number,
-      { x: startx, y: 120 },
+      { x: startx, y: starty },
       { x: cp1x, y: cp1y },
       { x: cp2x, y: cp2y },
       { x: pointBx, y: pointBy }
