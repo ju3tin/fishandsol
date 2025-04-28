@@ -206,7 +206,7 @@ function animate() {
           )}
           <div style={{display:"none"}} ref={fishRef} className="absolute w-6 h-6">
           <img
-  src="/images/f1sh.png"
+  src="/images/chippy.svg"
   alt="End Fish"
   className="absolute w-6 h-6"
   style={{
