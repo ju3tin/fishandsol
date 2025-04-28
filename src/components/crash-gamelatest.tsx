@@ -11,7 +11,7 @@ import GameChat from "./game-chat3a"
 import Betbutton from "./betbutton1a"
 import BetList from "./BetList1"
 import GameVisual from './visualization';
-import Game5 from './Game2';
+import Game5 from './Game2c';
 import GameHistory from './gamehistory';
 import Tabs from './tabs3';
 import useSound from 'use-sound';
@@ -370,7 +370,16 @@ setbuttonPressCount1(buttonPressCount)
               </div>
 
               {/* Game visualization */}
-              <Game5 />
+              <Game5 betAmount={betAmount} 
+              dude56={currency} 
+              dude55={isCashedOut} 
+              onCashout={handleCashout} 
+              currentMultiplier={gameState5.multiplier} 
+              tValues={[
+              { number: 1.25/gameState5.multiplier, color: "gold", svg: "/demo.svg" },
+              { number: 2.5/gameState5.multiplier, color: "green", svg: "/31832.png" },
+              { number: 3.85/gameState5.multiplier, color: "purple", svg: "/sol.svg" },
+              ]}/>
               <GameVisual 
               betAmount={betAmount} 
               dude56={currency} 
