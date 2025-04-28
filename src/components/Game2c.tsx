@@ -2,7 +2,7 @@
 
 import * as THREE from 'three';
 import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
-
+import { controlPoints } from "./controlPoints";
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 
