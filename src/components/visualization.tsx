@@ -160,8 +160,6 @@ function animate(timestamp: number) {
   }
 }
 
-
-
     if (dude55 && !logged) {
       console.log("Recording t because dude55 is true:", t.toFixed(4));
       logged = true; // prevent multiple logs
@@ -170,6 +168,10 @@ function animate(timestamp: number) {
 
     if (gameState5.status === "Running") {
       animate(0);
+    } else if (gameState5.status === "Crashed") {
+      if (curveAnimationRef.current) {
+        cancelAnimationFrame(curveAnimationRef.current);
+      }
     } else {
       if (curveAnimationRef.current) {
         cancelAnimationFrame(curveAnimationRef.current);
@@ -181,7 +183,7 @@ function animate(timestamp: number) {
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [gameState5.status]); // ❗ do NOT need dude55 here
+  }, [gameState5.status]); // Ensure this effect runs when gameState5.status changes
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
