@@ -14,6 +14,7 @@ interface GameVisualProps {
   dude55: boolean;
   dude56: string;
   betAmount: string;
+  GameStatus: string;
   tValues: {
     number: number;
     color: string;
@@ -21,7 +22,7 @@ interface GameVisualProps {
   }[];
 }
 
-const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, betAmount, tValues }) => {
+const GameVisual: React.FC<GameVisualProps> = ({ GameStatus, currentMultiplier, dude55, dude56, betAmount, tValues }) => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);

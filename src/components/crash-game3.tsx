@@ -374,6 +374,7 @@ setbuttonPressCount1(buttonPressCount)
               dude56={currency} 
               dude55={isCashedOut} 
               onCashout={handleCashout} 
+              GameStatus={gameState5.status}
               currentMultiplier={gameState5.multiplier} 
               tValues={[
               { number: 1.25/gameState5.multiplier, color: "gold", svg: "/demo.svg" },

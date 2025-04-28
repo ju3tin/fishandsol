@@ -375,7 +375,8 @@ setbuttonPressCount1(buttonPressCount)
               <GameVisual 
               betAmount={betAmount} 
               dude56={currency} 
-              dude55={isCashedOut} 
+              dude55={isCashedOut}
+              GameStatus={gameState5.status} 
               onCashout={handleCashout} 
               currentMultiplier={gameState5.multiplier} 
               tValues={[
