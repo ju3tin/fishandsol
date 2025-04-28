@@ -1,6 +1,6 @@
 "use client"
 import CrashGame from "../../../components/crash-gamelatest"
-//import Image from 'next/image'; // Import the Image component
+import Image from 'next/image'; // Import the Image component
 
 export default function Home() {
   // Define the values for buttonClicked and buttonPressCount

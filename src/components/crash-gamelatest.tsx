@@ -18,6 +18,7 @@ import useSound from 'use-sound';
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 import { currencyById } from '@/lib/currencies';
+import Image from 'next/image'; // Import the Image component
 
 
 // Type for cashout events
