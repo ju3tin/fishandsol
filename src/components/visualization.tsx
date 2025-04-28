@@ -5,6 +5,7 @@ import { useGameStore, GameState } from "../store/gameStore";
 import { controlPoints } from "./controlPoints";
 import { color } from "framer-motion";
 
+const startx = -50;
 interface GameVisualProps {
   currentMultiplier: number;
   onCashout: (multiplier: number) => void;
@@ -38,9 +39,9 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
     let t = 0;
     let transitionIndex = 0;
 
-    let currentCP1 = { x: 0, y: 120 };
-    let currentCP2 = { x: 0, y: 120 };
-    let currentPointB = { x: 0, y: 120 };
+    let currentCP1 = { x: startx, y: 120 };
+    let currentCP2 = { x: startx, y: 120 };
+    let currentPointB = { x: startx, y: 120 };
     let targetCP1 = controlPoints[0].cp1;
     let targetCP2 = controlPoints[0].cp2;
     let targetPointB = controlPoints[0].pointB;
@@ -90,7 +91,7 @@ function animate() {
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.beginPath();
-  ctx.moveTo(0, 120);
+  ctx.moveTo(startx, 120);
 
   const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
   const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
@@ -108,7 +109,7 @@ function animate() {
   tValues.forEach((dotT) => {
     const { x, y } = getBezierPoint(
       dotT.number,
-      { x: 0, y: 120 },
+      { x: startx, y: 120 },
       { x: cp1x, y: cp1y },
       { x: cp2x, y: cp2y },
       { x: pointBx, y: pointBy }
