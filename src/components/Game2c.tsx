@@ -112,6 +112,7 @@ function preloadImages(imagePaths: string[]) {
 function render(
 	gameState5: GameState,
 	context: CanvasRenderingContext2D,
+	tValue: number
 ) {
 	if (!context)
 		return;
@@ -160,7 +161,7 @@ function render(
 		
 	}
 
-	drawRocketPath(context, gameState5.timeElapsed);
+	drawRocketPath(context, gameState5.timeElapsed, tValue);
 
 	if (gameState5.status == 'Crashed')
 		drawCrashedRocket(context, rocketX, rocketY);
@@ -220,6 +221,7 @@ function drawCountdown(
 function drawRocketPath(
 	context: CanvasRenderingContext2D,
 	timeElapsed: number,
+	tValue: number
 ) {
 	const canvas = context.canvas;
 	const gradient: CanvasGradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
@@ -296,6 +298,7 @@ function drawCrashedRocket(
 
 const Game: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, betAmount, tValues }) => {
 	const [pointB, setPointB] = useState({ x: startx, y: starty });
+	const [tValue, setTValue] = useState(0);
 //	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
@@ -505,13 +508,14 @@ if (curveAnimationRef.current) {
 		const doRender = () => { // Move doRender inside useEffect
 			render(
 				gameState5,
-				context
+				context,
+				tValue
 			);
 		}; // Wrap doRender in useCallback if needed
 
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [gameState5, context]); // Add dependencies
+	}, [gameState5, context, tValue]); // Add dependencies
 
 	useEffect(() => {
 		showErrorToast();
