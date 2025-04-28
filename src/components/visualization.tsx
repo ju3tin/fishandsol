@@ -86,11 +86,27 @@ fish1.onload = () => {
   requestAnimationFrame(animate);
 };
 
-
-function animate() {
+let animationFrameId;
+let isPaused = false;
+let startTime: number | null = null;
+let elapsed = 0;
+function animate(timestamp: number) {
   if (!canvas || !ctx || !fish1.complete) return;
+  if (!startTime) startTime = timestamp;
+
+  if (isPaused) return;
+
+  elapsed = timestamp - startTime;
+
+  // Your animation logic here
+  console.log("Elapsed time:", elapsed);
+
+  animationFrameId = requestAnimationFrame(animate);
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  const deltaTime = timestamp - (curveAnimationRef.current || 0);
+  curveAnimationRef.current = timestamp;
+
   ctx.beginPath();
   ctx.moveTo(startx, starty);
 
@@ -163,7 +179,7 @@ function animate() {
     }
 
     if (gameState5.status === "Running") {
-      animate();
+      animate(0);
     } else {
       if (curveAnimationRef.current) {
         cancelAnimationFrame(curveAnimationRef.current);
