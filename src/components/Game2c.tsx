@@ -295,7 +295,7 @@ function drawCrashedRocket(
 }
 
 const Game: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, betAmount, tValues }) => {
-	const [pointB, setPointB] = useState({ x: 0, y: 0 });
+	const [pointB, setPointB] = useState({ x: startx, y: starty });
 //	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
@@ -327,7 +327,7 @@ const fishRef = useRef<HTMLDivElement | null>(null);
 const curveAnimationRef = useRef<number | null>(null);
 const backgroundImage = useRef<HTMLDivElement | null>(null);
 
-const pointBRef = useRef<{ x: number; y: number }>({ x: 0, y: starty });
+const pointBRef = useRef<{ x: number; y: number }>({ x: startx, y: starty });
 
 const [paused, setPaused] = useState(false);
 
