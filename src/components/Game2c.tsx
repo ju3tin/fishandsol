@@ -1,8 +1,8 @@
 "use client";
 
 import * as THREE from 'three';
-import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
-import { controlPoints } from "./controlPoints";
+import { useRef, useEffect, useState, useCallback, useMemo, MutableRefObject } from 'react';
+import { controlPoints } from "./controlPoints1";
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 
@@ -12,6 +12,8 @@ import styles from '../styles/Game1.module.css';
 const height = 2000;
 const coeffB = 0.5;
 const coeffA = height*0.16;
+const fish1 = new Image();
+fish1.src = "/images/chippy.svg"; // Use your actual path
 
 let rocketImage: HTMLImageElement;
 let explodeImage: HTMLImageElement;
@@ -112,7 +114,12 @@ function preloadImages(imagePaths: string[]) {
 function render(
 	gameState5: GameState,
 	context: CanvasRenderingContext2D,
-	tValue: number
+	tValue: number,
+	canvasRef: React.RefObject<HTMLCanvasElement>,
+	paused: boolean,
+	animationFrame: number | null,
+	setAnimationFrame: React.Dispatch<React.SetStateAction<number | null>>,
+	tValues: { number: number; color: string; svg: string }[]
 ) {
 	if (!context)
 		return;
@@ -120,7 +127,7 @@ function render(
 	const canvas = context.canvas;
 
 
-	context.clearRect(0, 0, canvas.width, canvas.height);
+	context.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
 	const additionalImages = preloadImages([imagePaths.rocket]); // Preload only the additional1 image
 
 	const maxX = canvas.width - rocketWidth;
@@ -161,7 +168,7 @@ function render(
 		
 	}
 
-	drawRocketPath(context, gameState5.timeElapsed, tValue);
+	drawRocketPath(context, gameState5.timeElapsed, tValue, canvasRef, paused, performance.now(), setAnimationFrame, animationFrame, tValues);
 
 	if (gameState5.status == 'Crashed')
 		drawCrashedRocket(context, rocketX, rocketY);
@@ -221,29 +228,45 @@ function drawCountdown(
 function drawRocketPath(
 	context: CanvasRenderingContext2D,
 	timeElapsed: number,
-	tValue: number
+	tValue: number,
+	canvasRef: React.RefObject<HTMLCanvasElement>,
+	paused: boolean,
+	timestamp: number,
+	setAnimationFrame: React.Dispatch<React.SetStateAction<number | null>>,
+	animationFrame: number | null,
+	tValues: { number: number; color: string; svg: string }[]
 ) {
-	const canvas = context.canvas;
-	const gradient: CanvasGradient = context.createLinearGradient(0, 0, canvas.width, canvas.height);
-	gradient.addColorStop(0, 'red');
-	gradient.addColorStop(1, 'yellow');
 
-	context.strokeStyle = gradient;
-	context.lineWidth = 20;
+    let t = 0;
+    let transitionIndex = 0;
+
+    let currentCP1 = { x: startx, y: starty };
+    let currentCP2 = { x: startx, y: starty };
+    let currentPointB = { x: startx, y: starty };
+    let targetCP1 = controlPoints[0].cp1;
+    let targetCP2 = controlPoints[0].cp2;
+    let targetPointB = controlPoints[0].pointB;
+
+    function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
+		const u = 1 - t;
+		const tt = t * t;
+		const uu = u * u;
+		const uuu = uu * u;
+		const ttt = tt * t;
+  
+		const x = uuu * p0.x + 3 * uu * t * p1.x + 3 * u * tt * p2.x + ttt * p3.x;
+		const y = uuu * p0.y + 3 * uu * t * p1.y + 3 * u * tt * p2.y + ttt * p3.y;
+		return { x, y };
+	  }
+	if (!canvasRef || !context || !rocketImage.complete) return;
+	if (paused) return;
+
+	context.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+	const deltaTime = timestamp - (animationFrame || 0);
+	setAnimationFrame(timestamp);
+
 	context.beginPath();
-
-	const t = timeElapsed / 1000;
-	let currentCP1 = { x: startx, y: starty };
-	let currentCP2 = { x: startx, y: starty };
-	let currentPointB = { x: startx, y: starty };
-	let targetCP1 = { x: canvas.width * 0.5, y: canvas.height * 0.5 };
-	let targetCP2 = { x: canvas.width * 0.8, y: canvas.height * 0.2 };
-	let targetPointB = { x: canvas.width, y: canvas.height * 0.5 };
-
-	const originY = context.canvas.height;
-
 	context.moveTo(startx, starty);
-
 
 	const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
 	const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
@@ -251,12 +274,59 @@ function drawRocketPath(
 	const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
 	const pointBx = currentPointB.x + (targetPointB.x - currentPointB.x) * t;
 	const pointBy = currentPointB.y + (targetPointB.y - currentPointB.y) * t;
-  
+
 	context.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointBx, pointBy);
+	context.strokeStyle = "white";
+	context.lineWidth = 2;
+	context.stroke();
 
-	const step = 10;
+	// 🟠 Draw dots
+	tValues.forEach((dotT) => {
+		const { x, y } = getBezierPoint(
+			dotT.number,
+			{ x: startx, y: starty },
+			{ x: cp1x, y: cp1y },
+			{ x: cp2x, y: cp2y },
+			{ x: pointBx, y: pointBy }
+		);
 
+		const img = new Image();
+		img.src = dotT.svg;
 
+		context.beginPath();
+		context.arc(x, y, 4, 0, Math.PI * 2);
+		context.fillStyle = dotT.color;
+		context.fill();
+
+		img.onload = () => {
+			context.drawImage(img, x - 8, y - 8, 20, 20);
+		};
+	});
+
+	// 🐟 Draw fish1 at the end of the curve (pointB)
+	context.save();
+	context.translate(pointBx, pointBy);
+	context.drawImage(fish1, -25, -25, 50, 50); // Adjust size/offsets
+	context.restore();
+
+	t += 0.01;
+
+	// 🔥 Check again if paused before animating next frame
+	if (paused) return;
+
+	if (t <= 1) {
+		setAnimationFrame(requestAnimationFrame(() => {}));
+	} else {
+		transitionIndex = (transitionIndex + 1) % controlPoints.length;
+		t = 0;
+		currentCP1 = targetCP1;
+		currentCP2 = targetCP2;
+		currentPointB = targetPointB;
+		targetCP1 = controlPoints[transitionIndex].cp1;
+		targetCP2 = controlPoints[transitionIndex].cp2;
+		targetPointB = controlPoints[transitionIndex].pointB;
+		setAnimationFrame(requestAnimationFrame(() => {}));
+	}
 
 	
 	
@@ -299,13 +369,14 @@ function drawCrashedRocket(
 const Game: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, betAmount, tValues }) => {
 	const [pointB, setPointB] = useState({ x: startx, y: starty });
 	const [tValue, setTValue] = useState(0);
-//	const canvasRef = useRef<HTMLCanvasElement>(null);
 	const [context, setContext] = useState<any>(null);
 	const [additionalImage, setAdditionalImage] = useState<HTMLImageElement | null>(null);
 	const [errorCount, setErrorCount] = useState(0);
 	const errors: string[] = []; // Explicitly define the type of errors
+	const [paused, setPaused] = useState(false);
+	const [animationFrame, setAnimationFrame] = useState<number | null>(null);
 
-//	const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+	const pointBRef = useRef<{ x: number; y: number }>({ x: startx, y: starty });
 
 	const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
@@ -315,182 +386,166 @@ const Game: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude56, be
 		}
 	}, [errorMessages]); // ✅ Now errorMessages is a stable state
 
-	//const showErrorToast = useCallback(() => {
-	//	const currentErrors = errors; // Move errors inside the callback
-	//	if (currentErrors.length > 0) {
-	//		toast("⚠️ " + currentErrors[currentErrors.length - 1]);
-	//	}
-//	}, []); // Removed errors from dependencies
+	const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
+	const canvasRef = useRef<HTMLCanvasElement | null>(null);
+	const fishRef = useRef<HTMLDivElement | null>(null);
 
-const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+	useEffect(() => {
+		const canvas = canvasRef.current;
+		const fish = fishRef.current;
+		if (!canvas || !fish) return;
+		const ctx = canvas.getContext("2d");
+		if (!ctx) return;
 
-const canvasRef = useRef<HTMLCanvasElement | null>(null);
-const fishRef = useRef<HTMLDivElement | null>(null);
-const curveAnimationRef = useRef<number | null>(null);
-const backgroundImage = useRef<HTMLDivElement | null>(null);
+		let t = 0;
+		let transitionIndex = 0;
 
-const pointBRef = useRef<{ x: number; y: number }>({ x: startx, y: starty });
+		let currentCP1 = { x: startx, y: starty };
+		let currentCP2 = { x: startx, y: starty };
+		let currentPointB = { x: startx, y: starty };
+		let targetCP1 = controlPoints[0].cp1;
+		let targetCP2 = controlPoints[0].cp2;
+		let targetPointB = controlPoints[0].pointB;
 
-const [paused, setPaused] = useState(false);
+		function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
+			const u = 1 - t;
+			const tt = t * t;
+			const uu = u * u;
+			const uuu = uu * u;
+			const ttt = tt * t;
 
-useEffect(() => {
-  const canvas = canvasRef.current;
-  const fish = fishRef.current;
-  if (!canvas || !fish) return;
-  const ctx = canvas.getContext("2d");
-  if (!ctx) return;
+			const x = uuu * p0.x + 3 * uu * t * p1.x + 3 * u * tt * p2.x + ttt * p3.x;
+			const y = uuu * p0.y + 3 * uu * t * p1.y + 3 * u * tt * p2.y + ttt * p3.y;
+			return { x, y };
+		}
 
-  let t = 0;
-  let transitionIndex = 0;
+		function getBezierTangent(t: number, p0: any, p1: any, p2: any, p3: any) {
+			const u = 1 - t;
+			const tt = t * t;
+			const uu = u * u;
 
-  let currentCP1 = { x: startx, y: starty };
-  let currentCP2 = { x: startx, y: starty };
-  let currentPointB = { x: startx, y: starty };
-  let targetCP1 = controlPoints[0].cp1;
-  let targetCP2 = controlPoints[0].cp2;
-  let targetPointB = controlPoints[0].pointB;
+			const dx = -3 * uu * p0.x + 3 * (uu - 2 * u * t) * p1.x + 3 * (2 * t * u - tt) * p2.x + 3 * tt * p3.x;
+			const dy = -3 * uu * p0.y + 3 * (uu - 2 * u * t) * p1.y + 3 * (2 * t * u - tt) * p2.y + 3 * tt * p3.y;
+			return Math.atan2(dy, dx);
+		}
 
-  function getBezierPoint(t: number, p0: any, p1: any, p2: any, p3: any) {
-	const u = 1 - t;
-	const tt = t * t;
-	const uu = u * u;
-	const uuu = uu * u;
-	const ttt = tt * t;
+		let logged = false;
 
-	const x = uuu * p0.x + 3 * uu * t * p1.x + 3 * u * tt * p2.x + ttt * p3.x;
-	const y = uuu * p0.y + 3 * uu * t * p1.y + 3 * u * tt * p2.y + ttt * p3.y;
-	return { x, y };
-  }
+		let loggednum = 0;
 
-  function getBezierTangent(t: number, p0: any, p1: any, p2: any, p3: any) {
-	const u = 1 - t;
-	const tt = t * t;
-	const uu = u * u;
+		const fish1 = new Image();
+		fish1.src = "/images/chippy.svg"; // Use your actual path
+		fish1.onload = () => {
+			requestAnimationFrame(animate);
+		};
 
-	const dx = -3 * uu * p0.x + 3 * (uu - 2 * u * t) * p1.x + 3 * (2 * t * u - tt) * p2.x + 3 * tt * p3.x;
-	const dy = -3 * uu * p0.y + 3 * (uu - 2 * u * t) * p1.y + 3 * (2 * t * u - tt) * p2.y + 3 * tt * p3.y;
-	return Math.atan2(dy, dx);
-  }
+		let startTime: number | null = null;
+		let elapsed = 0;
+		function animate(timestamp: number) {
+			if (!canvas || !ctx || !fish1.complete) return;
+			if (paused) return; // 🔵 Check paused immediately
 
-  let logged = false;
+			ctx.clearRect(0, 0, canvasRef.current!.width, canvasRef.current!.height);
+			const deltaTime = timestamp - (animationFrame || 0);
+			setAnimationFrame(timestamp);
 
-  let loggednum = 0;
+			ctx.beginPath();
+			ctx.moveTo(startx, starty);
 
-const fish1 = new Image();
-fish1.src = "/images/chippy.svg"; // Use your actual path
-fish1.onload = () => {
-requestAnimationFrame(animate);
-};
+			const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
+			const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
+			const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
+			const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
+			const pointBx = currentPointB.x + (targetPointB.x - currentPointB.x) * t;
+			const pointBy = currentPointB.y + (targetPointB.y - currentPointB.y) * t;
 
-let animationFrameId;
-let startTime: number | null = null;
-let elapsed = 0;
-function animate(timestamp: number) {
-if (!canvas || !ctx || !fish1.complete) return;
-if (paused) return; // 🔵 Check paused immediately
+			ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointBx, pointBy);
+			ctx.strokeStyle = "white";
+			ctx.lineWidth = 2;
+			ctx.stroke();
 
-ctx.clearRect(0, 0, canvas.width, canvas.height);
-const deltaTime = timestamp - (curveAnimationRef.current || 0);
-curveAnimationRef.current = timestamp;
+			// 🟠 Draw dots
+			tValues.forEach((dotT) => {
+				const { x, y } = getBezierPoint(
+					dotT.number,
+					{ x: startx, y: starty },
+					{ x: cp1x, y: cp1y },
+					{ x: cp2x, y: cp2y },
+					{ x: pointBx, y: pointBy }
+				);
 
-ctx.beginPath();
-ctx.moveTo(startx, starty);
+				const img = new Image();
+				img.src = dotT.svg;
 
-const cp1x = currentCP1.x + (targetCP1.x - currentCP1.x) * t;
-const cp1y = currentCP1.y + (targetCP1.y - currentCP1.y) * t;
-const cp2x = currentCP2.x + (targetCP2.x - currentCP2.x) * t;
-const cp2y = currentCP2.y + (targetCP2.y - currentCP2.y) * t;
-const pointBx = currentPointB.x + (targetPointB.x - currentPointB.x) * t;
-const pointBy = currentPointB.y + (targetPointB.y - currentPointB.y) * t;
+				ctx.beginPath();
+				ctx.arc(x, y, 4, 0, Math.PI * 2);
+				ctx.fillStyle = dotT.color;
+				ctx.fill();
 
-ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, pointBx, pointBy);
-ctx.strokeStyle = "white";
-ctx.lineWidth = 2;
-ctx.stroke();
+				img.onload = () => {
+					ctx.drawImage(img, x - 8, y - 8, 20, 20);
+				};
+			});
 
-// 🟠 Draw dots
-tValues.forEach((dotT) => {
-  const { x, y } = getBezierPoint(
-	dotT.number,
-	{ x: startx, y: starty },
-	{ x: cp1x, y: cp1y },
-	{ x: cp2x, y: cp2y },
-	{ x: pointBx, y: pointBy }
-  );
+			// 🐟 Draw fish1 at the end of the curve (pointB)
+			ctx.save();
+			ctx.translate(pointBx, pointBy);
+			ctx.drawImage(fish1, -25, -25, 50, 50); // Adjust size/offsets
+			ctx.restore();
 
-  const img = new Image();
-  img.src = dotT.svg;
+			pointBRef.current = { x: pointBx, y: pointBy };
 
-  ctx.beginPath();
-  ctx.arc(x, y, 4, 0, Math.PI * 2);
-  ctx.fillStyle = dotT.color;
-  ctx.fill();
+			t += 0.01;
 
-  img.onload = () => {
-	ctx.drawImage(img, x - 8, y - 8, 20, 20);
-  };
-});
+			// 🔥 Check again if paused before animating next frame
+			if (paused) return;
 
-// 🐟 Draw fish1 at the end of the curve (pointB)
-ctx.save();
-ctx.translate(pointBx, pointBy);
-ctx.drawImage(fish1, -25, -25, 50, 50); // Adjust size/offsets
-ctx.restore();
+			if (t <= 1) {
+				setAnimationFrame(requestAnimationFrame(animate));
+			} else {
+				transitionIndex = (transitionIndex + 1) % controlPoints.length;
+				t = 0;
+				currentCP1 = targetCP1;
+				currentCP2 = targetCP2;
+				currentPointB = targetPointB;
+				targetCP1 = controlPoints[transitionIndex].cp1;
+				targetCP2 = controlPoints[transitionIndex].cp2;
+				targetPointB = controlPoints[transitionIndex].pointB;
+				setAnimationFrame(requestAnimationFrame(animate));
+			}
+		}
 
-pointBRef.current = { x: pointBx, y: pointBy };
+		function pauseAnimation() {
+			setPaused(true); // react state or just paused = true
+			if (animationFrame) {
+				cancelAnimationFrame(animationFrame);
+			}
+		}
 
-t += 0.01;
+		if (dude55 && !logged) {
+			console.log("Recording t because dude55 is true:", t.toFixed(4));
+			logged = true;
+			loggednum = t;
+		}
 
-// 🔥 Check again if paused before animating next frame
-if (paused) return;
+		if (gameState5.status === "Running") {
+			setPaused(false);
+			animate(0);
+		} else if (gameState5.status === "Crashed") {
+			pauseAnimation();
+		} else {
+			if (animationFrame) {
+				cancelAnimationFrame(animationFrame);
+			}
+		}
 
-if (t <= 1) {
-  curveAnimationRef.current = requestAnimationFrame(animate);
-} else {
-  transitionIndex = (transitionIndex + 1) % controlPoints.length;
-  t = 0;
-  currentCP1 = targetCP1;
-  currentCP2 = targetCP2;
-  currentPointB = targetPointB;
-  targetCP1 = controlPoints[transitionIndex].cp1;
-  targetCP2 = controlPoints[transitionIndex].cp2;
-  targetPointB = controlPoints[transitionIndex].pointB;
-  curveAnimationRef.current = requestAnimationFrame(animate);
-}
-}
-
-function pauseAnimation() {
-setPaused(true); // react state or just paused = true
-if (curveAnimationRef.current) {
-  cancelAnimationFrame(curveAnimationRef.current);
-  curveAnimationRef.current = null; // very important
-}
-}
-
-  if (dude55 && !logged) {
-	console.log("Recording t because dude55 is true:", t.toFixed(4));
-	logged = true;
-	loggednum = t;
-  }
-
-  if (gameState5.status === "Running") {
-	setPaused(false);
-	animate(0);
-  } else if (gameState5.status === "Crashed") {
-	pauseAnimation();
-  } else {
-	if (curveAnimationRef.current) {
-	  cancelAnimationFrame(curveAnimationRef.current);
-	}
-  }
-
-  return () => {
-	if (curveAnimationRef.current) {
-	  cancelAnimationFrame(curveAnimationRef.current);
-	}
-  };
-}, [gameState5.status]);
+		return () => {
+			if (animationFrame) {
+				cancelAnimationFrame(animationFrame);
+			}
+		};
+	}, [gameState5.status]);
 
 
 	useEffect(() => {
@@ -505,17 +560,22 @@ if (curveAnimationRef.current) {
 	}, []);
 
 	useEffect(() => {
-		const doRender = () => { // Move doRender inside useEffect
+		const doRender = () => {
 			render(
 				gameState5,
 				context,
-				tValue
+				tValue,
+				canvasRef,
+				paused,
+				animationFrame,
+				setAnimationFrame,
+				tValues
 			);
-		}; // Wrap doRender in useCallback if needed
+		};
 
 		const frame = requestAnimationFrame(doRender);
 		return () => cancelAnimationFrame(frame);
-	}, [gameState5, context, tValue]); // Add dependencies
+	}, [gameState5, context, tValue, canvasRef, paused, animationFrame, setAnimationFrame, tValues]);
 
 	useEffect(() => {
 		showErrorToast();
