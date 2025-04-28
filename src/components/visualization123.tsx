@@ -193,7 +193,7 @@ function animate() {
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
       <img src="under3a.png"  className="relative h-64 rounded-lg overflow-hidden mb-4" alt="" />
-      {gameState5.status !== "Waiting" && (
+      {gameState5.status !== "Waiting"&& gameState5.status !=="Crashed" && (
         <div className="absolute inset-0">
           <canvas
             ref={canvasRef}
@@ -240,6 +240,36 @@ function animate() {
 />
           </div>
         </div>
+      )}
+      {gameState5.status === "Crashed" && (
+          <>
+          
+
+          <span style={{ 
+            top: '100px', 
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            display: 'block', 
+            position: 'absolute',
+          }}>
+            <img width={100} height={100} src="explode.svg" />
+          </span>
+
+
+
+          <span style={{ 
+            top: '100px', 
+            left: '50%', 
+            transform: 'translateX(-50%)', 
+            display: 'block', 
+            position: 'absolute',
+            color: currentMultiplier > 5 ? 'red' : currentMultiplier > 2 ? 'yellow' : 'white',
+            fontSize: '2rem',
+           // fontWeight: 'bold'
+          }}>
+            {currentMultiplier}x
+          </span>
+          </>
       )}
       {gameState5.status === "Waiting" && (
         <>
