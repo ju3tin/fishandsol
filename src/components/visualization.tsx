@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useGameStore, GameState } from "../store/gameStore";
 import { controlPoints } from "./controlPoints";
 import { color } from "framer-motion";
@@ -25,10 +25,12 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fishRef = useRef<HTMLDivElement | null>(null);
-  const curveAnimationRef = useRef<number>(0);
+  const curveAnimationRef = useRef<number | null>(null);
   const backgroundImage = useRef<HTMLDivElement | null>(null);
 
   const pointBRef = useRef<{ x: number; y: number }>({ x: 0, y: starty });
+
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -69,16 +71,9 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
       return Math.atan2(dy, dx);
     }
 
-    let logged = false; // 👈 add this at top of useEffect
+    let logged = false;
 
     let loggednum = 0;
-/*
-    const tValues = [
-      { number: 0.2, color: 'blue', svg: '/31832.png' },
-      { number: 0.5, color: 'red', svg: '/sol.svg' },
-      { number: 0.75, color: 'orange', svg: '/demo.svg' }
-    ];
-*/
 
 const fish1 = new Image();
 fish1.src = "/images/chippy.svg"; // Use your actual path
@@ -87,11 +82,11 @@ fish1.onload = () => {
 };
 
 let animationFrameId;
-let isPaused = false;
 let startTime: number | null = null;
 let elapsed = 0;
 function animate(timestamp: number) {
   if (!canvas || !ctx || !fish1.complete) return;
+  if (paused) return; // 🔵 Check paused immediately
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const deltaTime = timestamp - (curveAnimationRef.current || 0);
@@ -138,12 +133,15 @@ function animate(timestamp: number) {
   // 🐟 Draw fish1 at the end of the curve (pointB)
   ctx.save();
   ctx.translate(pointBx, pointBy);
-  ctx.drawImage(fish1, -25, -25, 50, 50); // Adjust position/size as needed
+  ctx.drawImage(fish1, -25, -25, 50, 50); // Adjust size/offsets
   ctx.restore();
 
   pointBRef.current = { x: pointBx, y: pointBy };
 
   t += 0.01;
+
+  // 🔥 Check again if paused before animating next frame
+  if (paused) return;
 
   if (t <= 1) {
     curveAnimationRef.current = requestAnimationFrame(animate);
@@ -160,18 +158,25 @@ function animate(timestamp: number) {
   }
 }
 
+function pauseAnimation() {
+  setPaused(true); // react state or just paused = true
+  if (curveAnimationRef.current) {
+    cancelAnimationFrame(curveAnimationRef.current);
+    curveAnimationRef.current = null; // very important
+  }
+}
+
     if (dude55 && !logged) {
       console.log("Recording t because dude55 is true:", t.toFixed(4));
-      logged = true; // prevent multiple logs
+      logged = true;
       loggednum = t;
     }
 
     if (gameState5.status === "Running") {
+      setPaused(false);
       animate(0);
     } else if (gameState5.status === "Crashed") {
-      if (curveAnimationRef.current) {
-        cancelAnimationFrame(curveAnimationRef.current);
-      }
+      pauseAnimation();
     } else {
       if (curveAnimationRef.current) {
         cancelAnimationFrame(curveAnimationRef.current);
@@ -183,7 +188,7 @@ function animate(timestamp: number) {
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [gameState5.status]); // Ensure this effect runs when gameState5.status changes
+  }, [gameState5.status]);
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
@@ -206,11 +211,10 @@ function animate(timestamp: number) {
                 <div
                   className="absolute w-4 h-4 bg-red-500 rounded-full"
                   style={{
-                    left: pointBRef.current.x - currentMultiplier * 10, // ← move left
-                    top: pointBRef.current.y + currentMultiplier * 5,   // ↓ move downward
+                    left: pointBRef.current.x - currentMultiplier * 10,
+                    top: pointBRef.current.y + currentMultiplier * 5,
                     transform: "translate(-50%, -50%)",
                   }}>{dude56} and your bet amount {betAmount}</div>
-               
               )}
             </>
           )}
