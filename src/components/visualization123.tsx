@@ -177,6 +177,7 @@ function animate() {
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
+      <img src="under3a.png"  className="relative h-64 rounded-lg overflow-hidden mb-4" alt="" />
       {gameState5.status !== "Waiting" && (
         <div className="absolute inset-0">
           <canvas
@@ -187,8 +188,17 @@ function animate() {
           />
           {gameState5.status === "Running" && (
             <>
-              <span style={{ top: '100px', display: 'block', position: 'absolute' }}>
-                Current Multiplier {currentMultiplier}x
+              <span style={{ 
+                top: '100px', 
+                left: '50%', 
+                transform: 'translateX(-50%)', 
+                display: 'block', 
+                position: 'absolute',
+                color: currentMultiplier > 5 ? 'red' : currentMultiplier > 2 ? 'yellow' : 'white',
+                fontSize: '2rem',
+               // fontWeight: 'bold'
+              }}>
+                {currentMultiplier}x
               </span>
 
               {/* 🛑 Draw RED dot moving based on multiplier */}
