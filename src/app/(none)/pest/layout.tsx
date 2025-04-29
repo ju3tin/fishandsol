@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
+import "/style5.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import ContextProvider from '@/components/context-provider';
 import Header from './header';
@@ -23,7 +24,6 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body style={{backgroundColor:'black !important'}} className={inter.className}>
-      <link rel="stylesheet" crossOrigin="anonymous" href="/style5.css" />
       <ContextProvider>
           <Header />
           <div className="flex">
