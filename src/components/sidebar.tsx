@@ -76,10 +76,7 @@ const sidebarItems: SidebarItems = {
     <WalletContextProvider>
          
 
-    <LoginButton onWalletConnect={(address) => {
-      console.log("Connected wallet address:", address);
-      // Additional logic can be added here
-    }} />
+    <LoginButton/>
    {/* <Header /> */} 
          </WalletContextProvider>
     </div>
