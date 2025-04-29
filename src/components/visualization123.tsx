@@ -198,8 +198,7 @@ function animate() {
       <Image 
         src="/under3a.png" 
         alt="Background image" 
-        width={400} 
-        height={256} 
+        fill
         className="relative h-64 rounded-lg overflow-hidden mb-4" 
       />
       {GameStatus !== "Waiting"&& GameStatus !=="Crashed" && (
