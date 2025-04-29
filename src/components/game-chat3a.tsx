@@ -142,49 +142,51 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   }
 
   // Handle sending a new message
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault()
-
-    if (newMessage.trim() === "") return
-
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
+  
+    if (newMessage.trim() === "") return;
+  
+    const messageToSend = newMessage.trim();
+    const timestamp = new Date();
+  
+    // Add message to local state
     setMessages((prev) => [
       ...prev,
       {
         id: Date.now().toString(),
         sender: "You",
-        message: newMessage.trim(),
-        timestamp: new Date(),
+        message: messageToSend,
+        timestamp,
       },
-    ])
-
-    setNewMessage("")
-
-    let data = JSON.stringify({
-      "user": userAddress,
-      "time": formatTime1,
-      "message": newMessage.trim(),
-    });
-    
-    let config = {
+    ]);
+  
+    setNewMessage("");
+  
+    // Prepare data for API request
+    const data = {
+      user: userAddress,
+      time: timestamp.toISOString(),
+      message: messageToSend,
+     };
+  
+    const config = {
       method: 'post',
       maxBodyLength: Infinity,
       url: '/api/postmessage',
       headers: { 
         'Content-Type': 'application/json'
       },
-      data : data
+      data: JSON.stringify(data),
     };
-    
-    axios.request(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-    
-
-  }
+  
+    try {
+      const response = await axios.request(config);
+      console.log("Server response:", response.data);
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  };
 
   // Format timestamp
   const formatTime = (date: Date) => {
