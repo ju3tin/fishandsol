@@ -29,12 +29,17 @@ const handleWalletConnect = (address: string) => {
 
 
 function WalletButtonWrapper() {
-    handleWalletConnect;
-    const { connected } = useWallet(); // Check if a wallet is connected
+    const { connected, publicKey } = useWallet();
+
+    React.useEffect(() => {
+        if (connected && publicKey) {
+            const address = publicKey.toBase58();
+            handleWalletConnect(address);
+        }
+    }, [connected, publicKey]);
 
     return connected ? <WalletMultiButton /> : <CustomWalletButton />;
 }
-
 function LoginButton() {
     const network = "https://rpc.test.honeycombprotocol.com";
     const endpoint = useMemo(() => network, []);
