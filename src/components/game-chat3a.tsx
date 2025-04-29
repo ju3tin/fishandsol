@@ -7,10 +7,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Send } from "lucide-react"
+import { getWalletAddress } from '../store/walletStore';
 
 type ChatMessage = {
   id: string
-  sender: string
+  user: string
   message: string
   timestamp: Date
   isSystem?: boolean
@@ -27,7 +28,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
-      sender: "System",
+      user: "System",
       message: "Welcome to the Crash Game! Place your bets and have fun!",
       timestamp: new Date(),
       isSystem: true,
@@ -70,7 +71,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       ...prev,
       {
         id: Date.now().toString(),
-        sender: "System",
+        user: "System",
         message,
         timestamp: new Date(),
         isSystem: true,
@@ -121,7 +122,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
             ...prev,
             {
               id: Date.now().toString() + i,
-              sender: randomPlayer,
+              user: randomPlayer,
               message: randomMessage,
               timestamp: new Date(),
             },
@@ -132,23 +133,45 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   }
 
   // Handle sending a new message
-  const handleSendMessage = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleSendMessage = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    if (newMessage.trim() === "") return
+    if (newMessage.trim() === "") return;
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now().toString(),
-        sender: "You",
-        message: newMessage.trim(),
-        timestamp: new Date(),
-      },
-    ])
+    const userAddress = getWalletAddress() || "Unknown User";
 
-    setNewMessage("")
-  }
+    const messageToSend: ChatMessage = {
+      id: Date.now().toString(),
+      user: userAddress,
+      message: newMessage.trim(),
+      timestamp: new Date(),
+    };
+
+    // Send the message to the API
+    try {
+      const response = await fetch('/api/postmessage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(messageToSend),
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      // Update the messages state
+      setMessages((prev) => [
+        ...prev,
+        messageToSend,
+      ]);
+
+      setNewMessage("");
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
+  };
 
   // Format timestamp
   const formatTime = (date: Date) => {
@@ -171,10 +194,10 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
               <div className="flex items-start">
                 <span
                   className={`font-medium text-xs ${
-                    msg.isSystem ? "text-yellow-400" : msg.sender === "You" ? "text-green-400" : "text-blue-400"
+                    msg.isSystem ? "text-yellow-400" : msg.user === "You" ? "text-green-400" : "text-blue-400"
                   }`}
                 >
-                  {msg.sender}:
+                  {msg.user}:
                 </span>
                 <span className="text-white text-xs ml-1 break-words">{msg.message}</span>
               </div>
