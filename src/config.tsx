@@ -43,7 +43,7 @@ export const NavItems = () => {
     {
       name: 'Free Chippy Friday',
       href: '/chippyfriday',
-      icon: <Image src="/images/logo1.png" alt="Chippy" style={{ width: 20, height: 20 }} />,
+      icon: <Image src="/images/logo1.png" alt="Chippy" width={20} height={20} />,
       active: isNavItemActive(pathname, '/chippyfriday'),
       position: 'top',
     },
@@ -57,7 +57,7 @@ export const NavItems = () => {
     {
       name: 'Solana Information',
       href: '/solana',
-      icon: <Image src="/images/solanalogo.svg" alt="Solana Logo" style={{ width: 20, height: 20 }} />, // Adjust the path and size as needed
+      icon: <Image src="/images/solanalogo.svg" alt="Solana Logo" height={20} width={20} />, // Adjust the path and size as needed
       active: isNavItemActive(pathname, '/solana'),
       position: 'top',
     },

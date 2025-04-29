@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import React, { useMemo, FC } from 'react';
+// import { WalletAdapterNetwork, Wallet as WalletType } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider, useWallet } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import {
@@ -8,24 +8,38 @@ import {
 } from '@solana/wallet-adapter-wallets';
 import { clusterApiUrl } from '@solana/web3.js';
 import '@solana/wallet-adapter-react-ui/styles.css';
-import { Wallet } from 'lucide-react';
 
 function CustomWalletButton() {
     return (
         <WalletMultiButton className="custom-wallet-button">
-            <Wallet className="w-5 h-5 mr-2" />
             Select Wallet
         </WalletMultiButton>
     );
 }
 
-function WalletButtonWrapper() {
-    const { connected } = useWallet(); // Check if a wallet is connected
-
-    return connected ? <WalletMultiButton /> : <CustomWalletButton />;
+interface WalletButtonWrapperProps {
+    onWalletConnect: (address: string) => void;
 }
 
-function LoginButton() {
+const WalletButtonWrapper: FC<WalletButtonWrapperProps> = ({ onWalletConnect }) => {
+    const { connected, wallet } = useWallet();
+
+    React.useEffect(() => {
+        if (connected && wallet) {
+            if ('publicKey' in wallet && wallet.publicKey) {
+                onWalletConnect(wallet.publicKey.toString());
+            }
+        }
+    }, [connected, wallet, onWalletConnect]);
+
+    return connected ? <WalletMultiButton /> : <CustomWalletButton />;
+};
+
+interface LoginButtonProps {
+    onWalletConnect: (address: string) => void;
+}
+
+const LoginButton: FC<LoginButtonProps> = ({ onWalletConnect }) => {
     const network = "https://rpc.test.honeycombprotocol.com";
     const endpoint = useMemo(() => network, []);
   
@@ -38,11 +52,11 @@ function LoginButton() {
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
-                    <WalletButtonWrapper />
+                    <WalletButtonWrapper onWalletConnect={onWalletConnect} />
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
     );
-}
+};
 
 export default LoginButton;
