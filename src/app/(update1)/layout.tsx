@@ -5,7 +5,7 @@ import ContextProvider from '@/components/context-provider';
 import { Analytics } from "@vercel/analytics/react";
 
 import './global.css';
-
+import "../../../../public/style5.css"
 import SideNav from '../../components/side-nav';
 
 import Header from './header';
@@ -30,8 +30,7 @@ export default function RootLayout({
       </Head>
       
       <body className={inter.className}>
-      <link rel="stylesheet" crossOrigin="anonymous" href="/style5.css" />
-        <ContextProvider>
+       <ContextProvider>
           <Header />
           <div className="flex">
             <SideNav />
