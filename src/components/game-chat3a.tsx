@@ -8,11 +8,19 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Send } from "lucide-react"
 import axios from "axios"
-import { getWalletAddress } from '../store/walletStore';
+import { getWalletAddress } from "@/store/walletStore"
+const userAddress = getWalletAddress() || "Unknown User";
+
+// ... existing code ...
+  // Format timestamp
+const formatTime1 = (date: Date) => {
+    return date.toISOString().slice(0, 19) + "Z"; // Format to "YYYY-MM-DDTHH:mm:ssZ"
+  }
+// ... existing code ...
 
 type ChatMessage = {
   id: string
-  user: string
+  sender: string
   message: string
   timestamp: Date
   isSystem?: boolean
@@ -29,7 +37,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
-      user: "System",
+      sender: "System",
       message: "Welcome to the Crash Game! Place your bets and have fun!",
       timestamp: new Date(),
       isSystem: true,
@@ -72,7 +80,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       ...prev,
       {
         id: Date.now().toString(),
-        user: "System",
+        sender: "System",
         message,
         timestamp: new Date(),
         isSystem: true,
@@ -123,7 +131,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
             ...prev,
             {
               id: Date.now().toString() + i,
-              user: randomPlayer,
+              sender: randomPlayer,
               message: randomMessage,
               timestamp: new Date(),
             },
@@ -134,74 +142,49 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   }
 
   // Handle sending a new message
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSendMessage = (e: React.FormEvent) => {
+    e.preventDefault()
 
-    if (newMessage.trim() === "") return;
+    if (newMessage.trim() === "") return
 
-    const userAddress = getWalletAddress() || "Unknown User";
+    setMessages((prev) => [
+      ...prev,
+      {
+        id: Date.now().toString(),
+        sender: "You",
+        message: newMessage.trim(),
+        timestamp: new Date(),
+      },
+    ])
 
-    const messageToSend: ChatMessage = {
-      id: Date.now().toString(),
-      user: userAddress,
-      message: newMessage.trim(),
-      timestamp: new Date(),
-    };      
+    setNewMessage("")
+
     let data = JSON.stringify({
-      messageToSend
-     });
-     
-     let config = {
-       method: 'post',
-       maxBodyLength: Infinity,
-       url: 'localhost:3000/api/postmessage',
-       headers: { 
-         'Content-Type': 'application/json'
-       },
-       data : data
-     };
-     
-     axios.request(config)
-     .then((response) => {
-       console.log("what is the way home "+JSON.stringify(response.data));
-     })
-     .catch((error) => {
-       console.log(error);
-     });
+      "user": userAddress,
+      "time": formatTime1,
+      "message": newMessage.trim(),
+    });
+    
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: '/api/postmessage',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios.request(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
 
-    // Send the message to the API
-    try {
-      const response = await fetch('/api/postmessage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(messageToSend),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      // Update the messages state
-      setMessages((prev) => [
-        ...prev,
-        messageToSend,
-      ]);
-
-      setNewMessage("");
-    } catch (error) {
-      console.error('Error sending message:', error);
-    }
-
-  
-  
-      //    console.log('✅ Message sent:', response.data);
-     
-  
-  
-
-  };
+  }
 
   // Format timestamp
   const formatTime = (date: Date) => {
@@ -224,10 +207,10 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
               <div className="flex items-start">
                 <span
                   className={`font-medium text-xs ${
-                    msg.isSystem ? "text-yellow-400" : msg.user === "You" ? "text-green-400" : "text-blue-400"
+                    msg.isSystem ? "text-yellow-400" : msg.sender === "You" ? "text-green-400" : "text-blue-400"
                   }`}
                 >
-                  {msg.user}:
+                  {msg.sender}:
                 </span>
                 <span className="text-white text-xs ml-1 break-words">{msg.message}</span>
               </div>
@@ -253,4 +236,3 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
 }
 
 export default GameChat
-
