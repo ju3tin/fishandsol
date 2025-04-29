@@ -22,7 +22,9 @@ import { Menu } from 'lucide-react';
 export default function Header() {
   const navItems = NavItems();
   const [isOpen, setIsOpen] = useState(false);
-
+  const handleWalletConnect = (address: string) => {
+    console.log("Connected wallet address:", address);
+  };
   return (
     <header className="sticky top-0 z-50 flex items-center h-16 px-4 border-b bg-white dark:bg-black shadow-md md:px-6 justify-between">
       <Link
@@ -70,7 +72,7 @@ export default function Header() {
                   </div>
                 </Link>
               ))}
-              <LoginButton />
+             <LoginButton onWalletConnect={handleWalletConnect} />
             </div>
           </SheetContent>
         </Sheet>
