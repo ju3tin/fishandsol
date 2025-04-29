@@ -18,15 +18,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     }
 
     if (req.method === 'POST') {
-        const { walletAddress, time, message } = req.body;
+        const { user, time, message } = req.body;
 
-        if (!walletAddress || !time || !message) {
+        if (!user || !time || !message) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
 
         try {
             const result = await collection.insertOne({
-                walletAddress,
+                user,
                 time,
                 message,
             });
