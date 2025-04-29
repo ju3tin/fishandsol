@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import "/style5.css"
+import "../../../../public/style5.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import ContextProvider from '@/components/context-provider';
 import Header from './header';
