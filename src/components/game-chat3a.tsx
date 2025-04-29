@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Send } from "lucide-react"
+import axios from "axios"
 import { getWalletAddress } from '../store/walletStore';
 
 type ChatMessage = {
@@ -171,6 +172,21 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     } catch (error) {
       console.error('Error sending message:', error);
     }
+
+    const sendMessage = async () => {
+      try {
+          const response = await axios.post('/api/postmessage', {
+             messageToSend
+          });
+  
+          console.log('✅ Message sent:', response.data);
+      } catch (error: any) {
+          console.error('❌ Error sending message:', error.response?.data || error.message);
+      }
+  };
+  
+  sendMessage();
+
   };
 
   // Format timestamp
