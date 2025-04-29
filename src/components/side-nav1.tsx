@@ -92,7 +92,7 @@ export default function SideNav() {
 */}
               <WalletContextProvider>
                 {/* Pass the handleWalletConnect function to LoginButton */}
-                <LoginButton onWalletConnect={handleWalletConnect} />
+                <LoginButton />
               </WalletContextProvider>
             </div>
           </div>

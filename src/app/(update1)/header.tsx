@@ -72,7 +72,7 @@ export default function Header() {
                   </div>
                 </Link>
               ))}
-             <LoginButton onWalletConnect={handleWalletConnect} />
+             <LoginButton />
             </div>
           </SheetContent>
         </Sheet>

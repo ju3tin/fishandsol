@@ -1,13 +1,10 @@
+"use client";
 import React, { useMemo, FC } from 'react';
-// import { WalletAdapterNetwork, Wallet as WalletType } from '@solana/wallet-adapter-base';
 import { ConnectionProvider, WalletProvider, useWallet } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
-import {
-    PhantomWalletAdapter,
-    SolflareWalletAdapter,
-} from '@solana/wallet-adapter-wallets';
-import { clusterApiUrl } from '@solana/web3.js';
+import { PhantomWalletAdapter, SolflareWalletAdapter } from '@solana/wallet-adapter-wallets'; // Update this import
 import '@solana/wallet-adapter-react-ui/styles.css';
+import { setWalletAddress } from '../store/walletStore';
 
 function CustomWalletButton() {
     return (
@@ -22,41 +19,38 @@ interface WalletButtonWrapperProps {
 }
 
 const WalletButtonWrapper: FC<WalletButtonWrapperProps> = ({ onWalletConnect }) => {
-    const { connected, wallet } = useWallet();
+    const { connected, publicKey } = useWallet();
 
     React.useEffect(() => {
-        if (connected && wallet) {
-            if ('publicKey' in wallet && wallet.publicKey) {
-                onWalletConnect(wallet.publicKey.toString());
-            }
+        if (connected && publicKey) {
+            const address = publicKey.toString();
+            onWalletConnect(address);
         }
-    }, [connected, wallet, onWalletConnect]);
+    }, [connected, publicKey, onWalletConnect]);
 
     return connected ? <WalletMultiButton /> : <CustomWalletButton />;
 };
 
-interface LoginButtonProps {
-    onWalletConnect: (address: string) => void;
-}
+const LoginButton: FC = () => {
+    const endpoint = useMemo(() => "https://rpc.test.honeycombprotocol.com", []);
 
-const LoginButton: FC<LoginButtonProps> = ({ onWalletConnect }) => {
-    const network = "https://rpc.test.honeycombprotocol.com";
-    const endpoint = useMemo(() => network, []);
-  
-    const wallets = useMemo(() => [
-        new PhantomWalletAdapter(),
-        new SolflareWalletAdapter(),
-    ], []);
-
+    const handleWalletConnect = (address: string) => {
+        console.log("Connected wallet address:", address);
+        setWalletAddress(address); // Store it globally
+    };
+    const wallets = [new PhantomWalletAdapter(), new SolflareWalletAdapter()]; // Use SolflareWalletAdapter
     return (
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
                 <WalletModalProvider>
-                    <WalletButtonWrapper onWalletConnect={onWalletConnect} />
+                    <WalletButtonWrapper onWalletConnect={handleWalletConnect} />
                 </WalletModalProvider>
             </WalletProvider>
         </ConnectionProvider>
     );
 };
+
+
+// ... existing code ...
 
 export default LoginButton;
