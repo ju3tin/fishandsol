@@ -29,8 +29,8 @@ const CrashGame = () => {
  
   const gameState = useGameStore((state: GameState) => state);
 
-  const [play, { sound }] = useSound('/sound/cheering.mp3');
-  const [play1] = useSound('/sound/cheering.mp3');
+  const [play, { sound }] = useSound('/sounds/cheering.mp3');
+  const [play1] = useSound('/sounds/cheering.mp3');
 
   const [isMobile, setIsMobile] = useState(false);
   const [betAmount, setBetAmount] = useState("0.1")

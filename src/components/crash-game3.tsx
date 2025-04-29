@@ -45,8 +45,8 @@ const CrashGame = () => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
   const [isCashedOut, setIsCashedOut] = useState(false);
 
-  const [play, { sound }] = useSound('/sound/cheering.mp3');
-  const [play1] = useSound('/sound/cheering.mp3');
+  const [play, { sound }] = useSound('/sounds/cheering.mp3');
+  const [play1] = useSound('/sounds/cheering.mp3');
   const [buttonClicked1, setbuttonClicked1] = useState(true);
   const [buttonPressCount, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);

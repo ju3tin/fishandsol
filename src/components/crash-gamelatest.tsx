@@ -1,17 +1,11 @@
 "use client"
 
 import { useRef, useEffect, useState, useCallback, useMemo } from 'react';
-import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Fish } from "lucide-react"
 import GameChat from "./game-chat3a"
 import Betbutton from "./betbutton1a"
 import BetList from "./BetList1"
 import GameVisual from './visualization123';
-import Game5 from './Game2c';
 import GameHistory from './gamehistory';
 import Tabs from './tabs3';
 import useSound from 'use-sound';
@@ -49,8 +43,8 @@ const CrashGame = () => {
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
   const [isCashedOut, setIsCashedOut] = useState(false);
 
-  const [play, { sound }] = useSound('/sound/cheering.mp3');
-  const [play1] = useSound('/sound/cheering.mp3');
+  const [play, { sound }] = useSound('/sounds/cheering.mp3');
+  const [play1] = useSound('/sounds/cheering.mp3');
   const [buttonClicked1, setbuttonClicked1] = useState(true);
   const [buttonPressCount, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);

@@ -28,8 +28,8 @@ const CrashGame = () => {
   // Game state
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
-  const [play, { sound }] = useSound('/sound/cheering.mp3');
-  const [play1] = useSound('/sound/cheering.mp3');
+  const [play, { sound }] = useSound('/sounds/cheering.mp3');
+  const [play1] = useSound('/sounds/cheering.mp3');
 
   const [isMobile, setIsMobile] = useState(false);
   const [gameState, setGameState] = useState<"Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped">(gameState5.status)
