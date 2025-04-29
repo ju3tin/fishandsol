@@ -34,6 +34,8 @@ interface GameVisualProps {
   dude55: boolean;
   dude56: string; // Ensure this is a string
   betAmount: string;
+  GameStatus: string;
+  Gametimeremaining: number;
 }
 
 interface GameHistoryProps {
@@ -377,6 +379,7 @@ setbuttonPressCount1(buttonPressCount)
               dude56={currency} 
               dude55={isCashedOut}
               GameStatus={gameState5.status} 
+              Gametimeremaining={gameState5.timeRemaining}
               onCashout={handleCashout} 
               currentMultiplier={gameState5.multiplier} 
               tValues={[
