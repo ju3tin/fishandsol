@@ -1,4 +1,5 @@
 import { usePathname } from 'next/navigation';
+import Image from "next/image";
 
 import { Bell, Briefcase, Home, Settings, User,WalletCards, BookOpenCheck, Fish,
   Bookmark,
@@ -42,7 +43,7 @@ export const NavItems = () => {
     {
       name: 'Free Chippy Friday',
       href: '/chippyfriday',
-      icon: <img src="/images/logo1.png" alt="Chippy" style={{ width: 20, height: 20 }} />,
+      icon: <Image src="/images/logo1.png" alt="Chippy" style={{ width: 20, height: 20 }} />,
       active: isNavItemActive(pathname, '/chippyfriday'),
       position: 'top',
     },
@@ -56,7 +57,7 @@ export const NavItems = () => {
     {
       name: 'Solana Information',
       href: '/solana',
-      icon: <img src="/images/solanalogo.svg" alt="Solana Logo" style={{ width: 20, height: 20 }} />, // Adjust the path and size as needed
+      icon: <Image src="/images/solanalogo.svg" alt="Solana Logo" style={{ width: 20, height: 20 }} />, // Adjust the path and size as needed
       active: isNavItemActive(pathname, '/solana'),
       position: 'top',
     },
