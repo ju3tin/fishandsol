@@ -5,7 +5,7 @@ import ContextProvider from '@/components/context-provider';
 import { Analytics } from "@vercel/analytics/react";
 
 import './global.css';
-import "../../../../public/style5.css"
+import "../../../public/style5.css"
 import SideNav from '../../components/side-nav';
 
 import Header from './header';
