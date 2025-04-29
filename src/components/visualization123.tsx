@@ -176,7 +176,7 @@ function animate() {
       loggednum = t;
     }
 
-    if (gameState5.status === "Running") {
+    if (GameStatus === "Running") {
       animate();
     } else {
       if (curveAnimationRef.current) {
@@ -189,12 +189,12 @@ function animate() {
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [gameState5.status]); // ❗ do NOT need dude55 here
+  }, [GameStatus]); // ❗ do NOT need dude55 here
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
       <img src="under3a.png"  className="relative h-64 rounded-lg overflow-hidden mb-4" alt="" />
-      {gameState5.status !== "Waiting"&& gameState5.status !=="Crashed" && (
+      {GameStatus !== "Waiting"&& GameStatus !=="Crashed" && (
         <div className="absolute inset-0">
           <canvas
             ref={canvasRef}
@@ -202,7 +202,7 @@ function animate() {
             height={200}
             className="w-full h-full"
           />
-          {gameState5.status === "Running" && (
+          {GameStatus === "Running" && (
             <>
               <span style={{ 
                 top: '100px', 
@@ -242,7 +242,7 @@ function animate() {
           </div>
         </div>
       )}
-      {gameState5.status === "Crashed" && (
+      {GameStatus === "Crashed" && (
           <>
           
 
@@ -272,7 +272,7 @@ function animate() {
           </span>
           </>
       )}
-      {gameState5.status === "Waiting" && (
+      {GameStatus === "Waiting" && (
         <>
          <span style={{ 
                 top: '100px', 
