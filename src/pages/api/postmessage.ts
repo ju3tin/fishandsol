@@ -19,18 +19,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
     if (req.method === 'POST') {
         const { user, time, message } = req.body;
-
+    
         if (!user || !time || !message) {
             return res.status(400).json({ message: 'Missing required fields' });
         }
-
+    
         try {
+            const messageCount = await collection.countDocuments();
+    
+            // If there are 200 or more, delete the oldest one
+            if (messageCount >= 200) {
+                const oldestMessage = await collection.findOne({}, { sort: { time: 1 } }); // Find the oldest message
+                if (oldestMessage) {
+                    await collection.deleteOne({ _id: oldestMessage._id }); // Delete the oldest message by ID
+                }
+            }
+    
             const result = await collection.insertOne({
                 user,
                 time,
                 message,
             });
-
+    
             return res.status(201).json({
                 message: 'Message stored successfully',
                 insertedId: result.insertedId,
