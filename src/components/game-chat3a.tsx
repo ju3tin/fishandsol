@@ -146,7 +146,28 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       user: userAddress,
       message: newMessage.trim(),
       timestamp: new Date(),
-    };
+    };      
+    let data = JSON.stringify({
+      messageToSend
+     });
+     
+     let config = {
+       method: 'post',
+       maxBodyLength: Infinity,
+       url: 'localhost:3000/api/postmessage',
+       headers: { 
+         'Content-Type': 'application/json'
+       },
+       data : data
+     };
+     
+     axios.request(config)
+     .then((response) => {
+       console.log("what is the way home "+JSON.stringify(response.data));
+     })
+     .catch((error) => {
+       console.log(error);
+     });
 
     // Send the message to the API
     try {
@@ -173,35 +194,12 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
       console.error('Error sending message:', error);
     }
 
-    const sendMessage = async () => {
-      
-        let data = JSON.stringify({
-         messageToSend
-        });
-        
-        let config = {
-          method: 'post',
-          maxBodyLength: Infinity,
-          url: 'localhost:3000/api/postmessage',
-          headers: { 
-            'Content-Type': 'application/json'
-          },
-          data : data
-        };
-        
-        axios.request(config)
-        .then((response) => {
-          console.log(JSON.stringify(response.data));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+  
   
       //    console.log('✅ Message sent:', response.data);
      
-  };
   
-  sendMessage();
+  
 
   };
 
