@@ -174,15 +174,31 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     }
 
     const sendMessage = async () => {
-      try {
-          const response = await axios.post('/api/postmessage', {
-             messageToSend
-          });
+      
+        let data = JSON.stringify({
+         messageToSend
+        });
+        
+        let config = {
+          method: 'post',
+          maxBodyLength: Infinity,
+          url: 'localhost:3000/api/postmessage',
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+          data : data
+        };
+        
+        axios.request(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   
-          console.log('✅ Message sent:', response.data);
-      } catch (error: any) {
-          console.error('❌ Error sending message:', error.response?.data || error.message);
-      }
+      //    console.log('✅ Message sent:', response.data);
+     
   };
   
   sendMessage();
