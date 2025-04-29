@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 //import { useGameStore, GameState } from "../store/gameStore";
 import { controlPoints } from "./controlPoints";
 import { color } from "framer-motion";
+import Image from "next/image";
 
 const startx = -50;
 const starty = 120;
@@ -95,7 +96,7 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
     ];
 */
 
-const fish1 = new Image();
+const fish1 = new window.Image();
 fish1.src = "/images/chippy.svg"; // Use your actual path
 fish1.onload = () => {
   requestAnimationFrame(animate);
@@ -131,7 +132,7 @@ function animate() {
       { x: pointBx, y: pointBy }
     );
 
-    const img = new Image();
+    const img = new window.Image();
     img.src = dotT.svg;
 
     ctx.beginPath();
@@ -194,7 +195,13 @@ function animate() {
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
-      <img src="under3a.png"  className="relative h-64 rounded-lg overflow-hidden mb-4" alt="" />
+      <Image 
+        src="/under3a.png" 
+        alt="Background image" 
+        width={400} 
+        height={256} 
+        className="relative h-64 rounded-lg overflow-hidden mb-4" 
+      />
       {GameStatus !== "Waiting"&& GameStatus !=="Crashed" && (
         <div className="absolute inset-0">
           <canvas
@@ -232,14 +239,16 @@ function animate() {
             </>
           )}
           <div style={{display:"none"}} ref={fishRef} className="absolute w-6 h-6">
-          <img
-  src="/images/chippy.svg"
-  alt="End Fish"
-  className="absolute w-6 h-6"
-  style={{
-    transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`, marginTop:`-150px`
-  }}
-/>
+          <Image
+            src="/images/chippy.svg"
+            alt="End Fish"
+            width={24}
+            height={24}
+            className="absolute w-6 h-6"
+            style={{
+              transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`, marginTop:`-150px`
+            }}
+          />
           </div>
         </div>
       )}
@@ -254,7 +263,7 @@ function animate() {
             display: 'block', 
             position: 'absolute',
           }}>
-            <img width={100} height={100} src="explode.svg" />
+            <Image width={100} height={100} src="/explode.svg" alt="Explosion effect" />
           </span>
 
 

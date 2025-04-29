@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGameStore, GameState } from "../store/gameStore";
 import { controlPoints } from "./controlPoints";
 import { color } from "framer-motion";
+import Image from "next/image";
 
 const startx = -50;
 const starty = 120;
@@ -75,7 +76,7 @@ const GameVisual: React.FC<GameVisualProps> = ({ currentMultiplier, dude55, dude
 
     let loggednum = 0;
 
-const fish1 = new Image();
+const fish1 = new window.Image();
 fish1.src = "/images/chippy.svg"; // Use your actual path
 fish1.onload = () => {
   requestAnimationFrame(animate);
@@ -117,7 +118,7 @@ function animate(timestamp: number) {
       { x: pointBx, y: pointBy }
     );
 
-    const img = new Image();
+    const img = new window.Image();
     img.src = dotT.svg;
 
     ctx.beginPath();
@@ -219,14 +220,16 @@ function pauseAnimation() {
             </>
           )}
           <div style={{display:"none"}} ref={fishRef} className="absolute w-6 h-6">
-          <img
-  src="/images/f1sh.png"
-  alt="End Fish"
-  className="absolute w-6 h-6"
-  style={{
-    transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`, marginTop:`-150px`
-  }}
-/>
+          <Image
+            src="/images/f1sh.png"
+            alt="End Fish"
+            width={24}
+            height={24}
+            className="absolute w-6 h-6"
+            style={{
+              transform: `translate(${pointBRef.current.x - 12}px, ${pointBRef.current.y - 12}px))`, marginTop:`-150px`
+            }}
+          />
           </div>
         </div>
       )}
