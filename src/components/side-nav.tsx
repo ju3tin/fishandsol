@@ -50,6 +50,12 @@ export default function SideNav() {
     setIsSidebarExpanded(!isSidebarExpanded);
   };
 
+  // Define the function to handle wallet connection
+  const handleWalletConnect = (address: string) => {
+    console.log("Connected wallet address:", address);
+    // Additional logic can be added here
+  };
+
   return (
     <div className="pr-4">
       <div
@@ -84,7 +90,7 @@ export default function SideNav() {
               <button className="wallet-adapter-button wallet-adapter-button-trigger" tabIndex={0} type="button" style={{pointerEvents:'auto'}}>Select Wallet</button>
 */}
                 <WalletContextProvider>
-         <LoginButton />
+         <LoginButton onWalletConnect={handleWalletConnect} />
         {/* <Header /> */} 
               </WalletContextProvider>
             </div>
