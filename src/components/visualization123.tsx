@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useGameStore, GameState } from "../store/gameStore";
+//import { useGameStore, GameState } from "../store/gameStore";
 import { controlPoints } from "./controlPoints";
 import { color } from "framer-motion";
 
@@ -14,6 +14,7 @@ interface GameVisualProps {
   dude55: boolean;
   dude56: string;
   betAmount: string;
+  Gametimeremaining: number;
   GameStatus: string;
   tValues: {
     number: number;
@@ -22,8 +23,8 @@ interface GameVisualProps {
   }[];
 }
 
-const GameVisual: React.FC<GameVisualProps> = ({ GameStatus, currentMultiplier, dude55, dude56, betAmount, tValues }) => {
-  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
+const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, currentMultiplier, dude55, dude56, betAmount, tValues }) => {
+//  const gameState5 = useGameStore((gameState5: GameState) => gameState5);
 
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const fishRef = useRef<HTMLDivElement | null>(null);
@@ -34,14 +35,14 @@ const GameVisual: React.FC<GameVisualProps> = ({ GameStatus, currentMultiplier, 
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   
   useEffect(() => {
-    if (isNaN(gameState5.timeRemaining)) {
+    if (isNaN(Gametimeremaining)) {
       // If timeRemaining is NaN, keep the previous value
       return;
     } else {
       // Otherwise, update previousTimeRemaining with the current timeRemaining
-      setPreviousTimeRemaining(gameState5.timeRemaining);
+      setPreviousTimeRemaining(Gametimeremaining);
     }
-  }, [gameState5.timeRemaining]);
+  }, [Gametimeremaining]);
 
 
   useEffect(() => {
@@ -285,8 +286,8 @@ function animate() {
                // fontWeight: 'bold'
               }}>
                 Launch in
-                {(typeof gameState5.timeRemaining === 'number' && !isNaN(gameState5.timeRemaining) ? (
-                  <> {gameState5.timeRemaining}</>
+                {(typeof Gametimeremaining === 'number' && !isNaN(Gametimeremaining) ? (
+                  <> {Gametimeremaining}</>
                     ) : (
                       <> {previousTimeRemaining}</>
                     )
