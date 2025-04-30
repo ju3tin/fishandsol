@@ -81,6 +81,7 @@ const Betbutton = ({
   const textToCopy = "This is the text to copy!";
   //const gameState5 = useGameStore((state: GameState) => state);
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
+  const [newCount, setNewCount] = useState(0);
     
   const handleCopy = () => {
     navigator.clipboard
@@ -140,10 +141,10 @@ const Betbutton = ({
   }, [gameState, buttonPressCount, buttonClicked]);
 
   useEffect(() => {
-    
     if (gameState === "Crashed") {
       const timer = setTimeout(() => {
         setButtonPressCount(0);
+        setNewCount(0);
       }, 1000);
 
       return () => clearTimeout(timer);
@@ -181,25 +182,26 @@ const Betbutton = ({
 
   const handleButtonPress = () => {
     setButtonPressCount((prevCount) => prevCount + 1);
-    const newCount = buttonPressCount + 1;
-    console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${newCount}`);
-    onStartGame(betAmount, autoCashoutAt, currency, newCount);
+    const updatedCount = buttonPressCount + 1;
+    setNewCount(updatedCount);
+    console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${updatedCount}`);
+    onStartGame(betAmount, autoCashoutAt, currency, updatedCount);
     dude56(currency);
     dude56a(buttonClicked);
-    dude56b(newCount);
+    dude56b(updatedCount);
 
-    // Send newCount to crash-game3 if it's greater than 1
-    if (newCount === 1) {
-      dude56b(1)
+    // Send updatedCount to crash-game3 if it's greater than 1
+    if (updatedCount === 1) {
+      dude56b(updatedCount)
       sendToCrashGame3(1);
-      console.log(`the button is bigger ytrewq 0 and === ${newCount} where is the crack34 ${dude56b(1)}`)
+      console.log(`the button is bigger ytrewq 0 and === ${updatedCount} where is the crack34 ${dude56b(updatedCount)}`)
     }
 
     if (buttonPressCount === 0) {
       // Already logged above, so this block is probably redundant, but preserved for logic
-      dude56b(1)
+      dude56b(updatedCount)
       sendToCrashGame3(1);
-      console.log(`hjkl the button is smaller than 1 and === ${buttonPressCount} where is the crack34 ${dude56b(3)}`)
+      console.log(`hjkl the button is smaller than 1 and === ${buttonPressCount} where is the crack34 ${dude56b(updatedCount)}`)
     }
 
     console.log(`this is the checked ${currency} the button is if it is 1 ${buttonPressCount}`);
