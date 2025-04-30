@@ -23,7 +23,7 @@ import CurrencyList from "./CurrencyList1";
 import styles from "../styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react";
 import JSConfetti from "js-confetti";
-import { useWalletStore } from '../store/ispressed';
+import { usePressedStore } from '../store/ispressed';
 
 
 type BetbuttonProps = {
@@ -63,9 +63,9 @@ const Betbutton = ({
   dude56b,
   sendToCrashGame3,
 }: BetbuttonProps) => {
-  const { pressed, setPressedToOne, setPressedToZero } = useWalletStore();
+  const { pressed, setPressedToOne, setPressedToZero } = usePressedStore();
 
-  const pressed1 = useWalletStore((state) => state.pressed);
+  const pressed1 = usePressedStore((state) => state.pressed);
   const [setisButtonPressed] = useState(false);
   const [betgreaterthan0, setBetgreaterthan0] = useState(false);
   const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
