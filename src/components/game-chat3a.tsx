@@ -8,12 +8,10 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Send } from "lucide-react"
 import axios from "axios"
-import { getWalletAddress } from "@/store/walletStore"
-const userAddress = getWalletAddress() || "Unknown User";
 import { useWalletStore } from '../store/walletStore';
 
 
-const walletAddress = useWalletStore((state) => state.walletAddress);
+//const walletAddress = useWalletStore((state) => state.walletAddress);
 
 // ... existing code ...
   // Format timestamp
@@ -38,6 +36,7 @@ type GameChatProps = {
 }
 
 const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
+  const walletAddress = useWalletStore((state) => state.walletAddress) || "Unknown User";
   const [messages, setMessages] = useState<ChatMessage[]>([
     {
       id: "1",
