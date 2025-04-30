@@ -63,8 +63,9 @@ const Betbutton = ({
   dude56b,
   sendToCrashGame3,
 }: BetbuttonProps) => {
+  const { pressed, setPressedToOne, setPressedToZero } = useWalletStore();
+
   const pressed1 = useWalletStore((state) => state.pressed);
-  const { setPressedToOne, setPressedToZero } = useWalletStore();
   const [setisButtonPressed] = useState(false);
   const [betgreaterthan0, setBetgreaterthan0] = useState(false);
   const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
@@ -146,8 +147,8 @@ const Betbutton = ({
 
 useEffect(() => {
   if (gameState === "Crashed") {
-    setPressedToZero
-    console.log("this is what wtff is pressed dickhead who is the one "+pressed1)
+    setPressedToZero()
+    console.log("this is what wtff is pressed dickhead who is the one "+pressed)
     setButtonPressCount(0);
     const timer = setTimeout(() => {
       setButtonPressCount(0); // Also reset inside setTimeout for extra safety
@@ -188,8 +189,8 @@ useEffect(() => {
   };
 
   const handleButtonPress = () => {
-    setPressedToOne
-    console.log("this will be ok for now 1234567890 "+pressed1)
+    setPressedToOne()
+    console.log("this will be ok for now 1234567890 "+ pressed)
     setButtonPressCount(1);
     const updatedCount = buttonPressCount + 1;
     setNewCount(updatedCount);
