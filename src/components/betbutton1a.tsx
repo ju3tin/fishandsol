@@ -23,6 +23,8 @@ import CurrencyList from "./CurrencyList1";
 import styles from "../styles/components/GameControls.module.css";
 import { useState, useEffect, useRef } from "react";
 import JSConfetti from "js-confetti";
+import { useWalletStore } from '../store/ispressed';
+
 
 type BetbuttonProps = {
   isButtonPressed: boolean;
@@ -61,6 +63,8 @@ const Betbutton = ({
   dude56b,
   sendToCrashGame3,
 }: BetbuttonProps) => {
+  const pressed1 = useWalletStore((state) => state.pressed);
+  const { setPressedToOne, setPressedToZero } = useWalletStore();
   const [setisButtonPressed] = useState(false);
   const [betgreaterthan0, setBetgreaterthan0] = useState(false);
   const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
@@ -142,6 +146,8 @@ const Betbutton = ({
 
 useEffect(() => {
   if (gameState === "Crashed") {
+    setPressedToZero
+    console.log("this is what wtff is pressed dickhead who is the one "+pressed1)
     setButtonPressCount(0);
     const timer = setTimeout(() => {
       setButtonPressCount(0); // Also reset inside setTimeout for extra safety
@@ -150,7 +156,7 @@ useEffect(() => {
 
     return () => clearTimeout(timer);
   }
-}, [gameState, buttonPressCount, setButtonPressCount]);
+}, [gameState, buttonPressCount, setButtonPressCount, setPressedToZero]);
 
   const loseout = () => {
     if (audioRef1.current) {
@@ -182,6 +188,8 @@ useEffect(() => {
   };
 
   const handleButtonPress = () => {
+    setPressedToOne
+    console.log("this will be ok for now 1234567890 "+pressed1)
     setButtonPressCount(1);
     const updatedCount = buttonPressCount + 1;
     setNewCount(updatedCount);
@@ -572,5 +580,6 @@ Use demo currency to play our games without any risk. If you run out of demo cre
 </>
   );
 };
+
 
 export default Betbutton;
