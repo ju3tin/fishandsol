@@ -349,6 +349,11 @@ setbuttonPressCount1(buttonPressCount)
 
   const [isButtonPressed, setIsButtonPressed] = useState(false);
 
+  const sendToCrashGame3 = (buttonPressCount: number) => {
+    console.log(`Sending buttonPressCount to crash-game3: ${buttonPressCount}`);
+    // Add your logic to send the buttonPressCount to crash-game3 here
+  };
+
   return (
     <div className="w-full">
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -414,6 +419,7 @@ setbuttonPressCount1(buttonPressCount)
          dude56={handleCurrencyChange}
          dude56a={handleButtonClicked}
          dude56b={buttonPressCount2}
+         sendToCrashGame3={sendToCrashGame3}
        />
 
       

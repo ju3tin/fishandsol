@@ -42,6 +42,7 @@ type BetbuttonProps = {
   dude45: (hasUserCashedOut: boolean) => void;
   dude56a: (buttonClicked: boolean) => void;
   dude56b: (buttonPressCount: number) => void;
+  sendToCrashGame3: (buttonPressCount: number) => void;
 };
 
 const Betbutton = ({
@@ -58,6 +59,7 @@ const Betbutton = ({
   dude56,
   dude56a,
   dude56b,
+  sendToCrashGame3,
 }: BetbuttonProps) => {
   const [setisButtonPressed] = useState(false);
   const [betgreaterthan0, setBetgreaterthan0] = useState(false);
@@ -183,6 +185,12 @@ const Betbutton = ({
     dude56(currency);
     dude56a(buttonClicked);
     dude56b(buttonPressCount);
+
+    // Send buttonPressCount to crash-game3 if it's greater than 1
+    if (buttonPressCount > 0) {
+      console.log(`the button is bigger than 1 and === ${buttonPressCount}`)
+        sendToCrashGame3(buttonPressCount);
+    }
 
     console.log(`this is the checked ${currency} the button is if it is 1 ${buttonPressCount}`);
   };
