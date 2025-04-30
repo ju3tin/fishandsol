@@ -106,6 +106,15 @@ const [newCount, setNewCount] = useState(0);
       setIsCashedOut(false);
     }
   })
+useEffect(() =>{
+  if(placeBetCounter >= 1 ){
+    console.log('im not winning') 
+  }
+}
+
+
+)
+  
 
   // Update ref when state changes
   useEffect(() => {
