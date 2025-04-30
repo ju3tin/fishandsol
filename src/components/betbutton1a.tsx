@@ -29,7 +29,7 @@ type BetbuttonProps = {
   gametime: number;
   gameState: "Waiting" | "Running" | "Crashed" | "Unknown" | "Stopped";
   currentMultiplier: number;
-  onStartGame: (betAmount: string, autoCashoutAt: string, CurrencyId: string) => void;
+  onStartGame: (betAmount: string, autoCashoutAt: string, CurrencyId: string, buttonPressCount: number) => void;
   onCashout: (multiplier: number) => void;
   userCashedOut: boolean;
   cashouts: Array<{
@@ -179,12 +179,12 @@ const Betbutton = ({
 
   const handleButtonPress = () => {
     setButtonPressCount((prevCount) => prevCount + 1);
-    onStartGame(betAmount, autoCashoutAt, currency);
+    onStartGame(betAmount, autoCashoutAt, currency, buttonPressCount);
     dude56(currency);
     dude56a(buttonClicked);
     dude56b(buttonPressCount);
 
-    console.log(`this is the checked ${currency}`);
+    console.log(`this is the checked ${currency} the button is if it is 1 ${buttonPressCount}`);
   };
   const balances = useGameStore((game: GameState) => game.balances);
   return (
