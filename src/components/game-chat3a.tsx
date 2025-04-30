@@ -51,6 +51,32 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const [hasGameStarted, setHasGameStarted] = useState(false)
 
   // Auto-scroll to bottom when new messages arrive
+
+  useEffect(() => {
+    const fetchMessages = async () => {
+      try {
+        const response = await axios.get("/api/getmessages");
+        const fetchedMessages = response.data.messages || [];
+  
+        const formattedMessages: ChatMessage[] = fetchedMessages.map((msg: any) => ({
+          id: msg._id || Date.now().toString(), // fallback in case _id is missing
+          sender: msg.user || "Unknown",
+          message: msg.message,
+          timestamp: new Date(msg.time),
+          isSystem: msg.user === "System",
+        }));
+  
+        setMessages((prev) =>
+          [...formattedMessages, ...prev].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+        );
+      } catch (error) {
+        console.error("Failed to fetch messages:", error);
+      }
+    };
+  
+    fetchMessages();
+  }, []);
+
   useEffect(() => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight
