@@ -29,7 +29,7 @@ export const NavItems = () => {
     {
       name: 'Whitepaper',
       href: '/whitepaper',
-      icon: <Image src="/images/whitepaper.svg" alt="Chippy" width={20} height={20} />,
+      icon: <Image src="/images/whitepaper1.svg" alt="Chippy" width={20} height={20} />,
       active: isNavItemActive(pathname, '/whitepaper'),
       position: 'top',
     },
