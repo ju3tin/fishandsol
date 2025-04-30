@@ -180,28 +180,26 @@ const Betbutton = ({
   };
 
   const handleButtonPress = () => {
-   setButtonPressCount((prevCount) => prevCount + 1);
-    onStartGame(betAmount, autoCashoutAt, currency, buttonPressCount);
+    setButtonPressCount((prevCount) => prevCount + 1);
+    const newCount = buttonPressCount + 1;
+    console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${newCount}`);
+    onStartGame(betAmount, autoCashoutAt, currency, newCount);
     dude56(currency);
     dude56a(buttonClicked);
-    dude56b(buttonPressCount);
+    dude56b(newCount);
 
-    // Send buttonPressCount to crash-game3 if it's greater than 1
-    if (buttonPressCount === 1) {
+    // Send newCount to crash-game3 if it's greater than 1
+    if (newCount === 1) {
       dude56b(1)
-        sendToCrashGame3(1);
-        console.log(`the button is bigger ytrewq 0 and === ${buttonPressCount} where is the crack34 ${dude56b(0)}`)
-     
+      sendToCrashGame3(1);
+      console.log(`the button is bigger ytrewq 0 and === ${newCount} where is the crack34 ${dude56b(0)}`)
     }
 
-
     if (buttonPressCount === 0) {
-      console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${buttonPressCount + 1}`);
-    
+      // Already logged above, so this block is probably redundant, but preserved for logic
       dude56b(0)
       sendToCrashGame3(0);
-        console.log(`hjkl the button is smaller than 1 and === ${buttonPressCount} where is the crack34 ${dude56b(3)}`)
-     
+      console.log(`hjkl the button is smaller than 1 and === ${buttonPressCount} where is the crack34 ${dude56b(3)}`)
     }
 
     console.log(`this is the checked ${currency} the button is if it is 1 ${buttonPressCount}`);
