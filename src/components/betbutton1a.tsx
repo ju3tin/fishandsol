@@ -140,17 +140,17 @@ const Betbutton = ({
     }
   }, [gameState, buttonPressCount, buttonClicked]);
 
-  useEffect(() => {
-    if (gameState === "Crashed") {
-      setButtonPressCount(0); // Already being called here
-      const timer = setTimeout(() => {
-        setButtonPressCount(0); // Also reset inside setTimeout for extra safety
-        setNewCount(0);
-      }, 1000);
+useEffect(() => {
+  if (gameState === "Crashed") {
+    setButtonPressCount(0);
+    const timer = setTimeout(() => {
+      setButtonPressCount(0); // Also reset inside setTimeout for extra safety
+      setNewCount(0);
+    }, 1000);
 
-      return () => clearTimeout(timer);
-    }
-  }, [gameState]);
+    return () => clearTimeout(timer);
+  }
+}, [gameState, buttonPressCount, setButtonPressCount]);
 
   const loseout = () => {
     if (audioRef1.current) {
@@ -182,7 +182,7 @@ const Betbutton = ({
   };
 
   const handleButtonPress = () => {
-    setButtonPressCount((prevCount) => prevCount + 1);
+    setButtonPressCount(1);
     const updatedCount = buttonPressCount + 1;
     setNewCount(updatedCount);
     console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${updatedCount}`);

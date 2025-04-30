@@ -314,9 +314,7 @@ const fucku = (currency: string) => {
   const getMultiplierProgress = (multiplier: number) => {
     return Math.min(1, (multiplier - 1) / (crashPoint - 1))
   }
-  const buttonPressCount2 = (count: number) => {
-    setbuttonPressCount1(count); // Update the state with the new count
-  }
+
   // Get rocket position along the path
   const getRocketPosition = () => {
     return getPointAtProgress(pathProgress)
@@ -348,7 +346,9 @@ const fucku = (currency: string) => {
   const handleButtonClicked = (buttonClicked: boolean) => {
     setbuttonClicked1(buttonClicked);
   };
- 
+  const buttonPressCount2 = (buttonPressCount: number) => {
+setbuttonPressCount1(buttonPressCount)
+  }
 
   const [isButtonPressed, setIsButtonPressed] = useState(false);
 
@@ -396,9 +396,9 @@ const fucku = (currency: string) => {
                currentMultiplier={gameState5.multiplier}
                dude45={userCashedOut}
                dude56a={isButtonPressed}
-               dude56b={buttonPressCount2}
+               dude56b={buttonPressCount}
                buttonPressCount2={buttonPressCount}
-              />
+             />
             </CardContent>
           </Card>
         </div>

@@ -44,7 +44,7 @@ const CrashGame = () => {
   // Game state
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
   const [isCashedOut, setIsCashedOut] = useState(false);
-  const [newCount, setNewCount] = useState(0);
+const [newCount, setNewCount] = useState(0);
   const [play, { sound }] = useSound('/sounds/cheering.mp3');
   const [play1] = useSound('/sounds/cheering.mp3');
   const [buttonClicked1, setbuttonClicked1] = useState(true);
@@ -102,6 +102,7 @@ const CrashGame = () => {
   useEffect(() =>{
     if(gameState5.status == "Waiting"){
       setIsCashedOut(false);
+      
     }
   })
 
@@ -265,13 +266,11 @@ const fucku = (currency: string) => {
     }
   }, [])
 
-useEffect(() => {
-  if (gameState5.status === "Crashed") {
-    setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
-    setbuttonPressCount1(0);
-    setNewCount(0);
-  }
-}, [gameState5.status, gameState5.multiplier])
+  useEffect(() => {
+    if (gameState5.status === "Crashed") {
+      setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
+    }
+  }, [gameState5.status, gameState5.multiplier])
 
   // Calculate the curve path based on current multiplier
   const getCurvePath = () => {
@@ -399,7 +398,7 @@ setbuttonPressCount1(buttonPressCount)
                currentMultiplier={gameState5.multiplier}
                dude45={userCashedOut}
                dude56a={isButtonPressed}
-               dude56b={buttonPressCount2}
+               dude56b={buttonPressCount}
                buttonPressCount2={buttonPressCount}
              />
             </CardContent>
