@@ -102,8 +102,8 @@ const [newCount, setNewCount] = useState(0);
 
   useEffect(() =>{
     if(gameState5.status == "Waiting"){
+      setplaceBetCounter(0);
       setIsCashedOut(false);
-      
     }
   })
 
@@ -269,6 +269,7 @@ const fucku = (currency: string) => {
 
   useEffect(() => {
     if (gameState5.status === "Crashed") {
+      console.log(`what is the life of a gangstar ${placeBetCounter}`)
       setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
     }
   }, [gameState5.status, gameState5.multiplier])
