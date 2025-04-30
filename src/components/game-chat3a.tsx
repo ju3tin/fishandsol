@@ -10,6 +10,10 @@ import { Send } from "lucide-react"
 import axios from "axios"
 import { getWalletAddress } from "@/store/walletStore"
 const userAddress = getWalletAddress() || "Unknown User";
+import { useWalletStore } from '../store/walletStore';
+
+
+const walletAddress = useWalletStore((state) => state.walletAddress);
 
 // ... existing code ...
   // Format timestamp
@@ -163,9 +167,11 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   
     setNewMessage("");
   
+
+
     // Prepare data for API request
     const data = {
-      user: userAddress,
+      user: walletAddress,
       time: timestamp.toISOString(),
       message: messageToSend,
      };
@@ -183,6 +189,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     try {
       const response = await axios.request(config);
       console.log("Server response:", response.data);
+      console.log("wtf is the wallet address d1ckh3ad", walletAddress);
     } catch (error) {
       console.error("Error sending message:", error);
     }

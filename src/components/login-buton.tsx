@@ -11,7 +11,7 @@ import { clusterApiUrl } from '@solana/web3.js';
 import '@solana/wallet-adapter-react-ui/styles.css';
 import { Wallet } from 'lucide-react';
 import { setWalletAddress } from '../store/walletStore';
-
+import { useWalletStore } from '../store/walletStore';
 function CustomWalletButton() {
     return (
         <WalletMultiButton className="custom-wallet-button">
@@ -30,13 +30,15 @@ const handleWalletConnect = (address: string) => {
 
 function WalletButtonWrapper() {
     const { connected, publicKey } = useWallet();
+    const setWalletAddress = useWalletStore((state) => state.setWalletAddress);
 
     React.useEffect(() => {
         if (connected && publicKey) {
             const address = publicKey.toBase58();
-            handleWalletConnect(address);
+            console.log("Connected wallet address:", address);
+            setWalletAddress(address);
         }
-    }, [connected, publicKey]);
+    }, [connected, publicKey, setWalletAddress]);
 
     return connected ? <WalletMultiButton /> : <CustomWalletButton />;
 }
