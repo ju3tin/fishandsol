@@ -180,6 +180,7 @@ const Betbutton = ({
   };
 
   const handleButtonPress = () => {
+    console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${buttonPressCount + 1}`);
     setButtonPressCount((prevCount) => prevCount + 1);
     onStartGame(betAmount, autoCashoutAt, currency, buttonPressCount);
     dude56(currency);
