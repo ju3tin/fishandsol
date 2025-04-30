@@ -192,13 +192,13 @@ const Betbutton = ({
     if (newCount === 1) {
       dude56b(1)
       sendToCrashGame3(1);
-      console.log(`the button is bigger ytrewq 0 and === ${newCount} where is the crack34 ${dude56b(0)}`)
+      console.log(`the button is bigger ytrewq 0 and === ${newCount} where is the crack34 ${dude56b(1)}`)
     }
 
     if (buttonPressCount === 0) {
       // Already logged above, so this block is probably redundant, but preserved for logic
-      dude56b(0)
-      sendToCrashGame3(0);
+      dude56b(1)
+      sendToCrashGame3(1);
       console.log(`hjkl the button is smaller than 1 and === ${buttonPressCount} where is the crack34 ${dude56b(3)}`)
     }
 
