@@ -39,6 +39,7 @@ type BetbuttonProps = {
     multiplier: number;
     amount: number;
   }>;
+  placeBetCounter: (placeBetCounter: number) => void;
   multiplier: number;
   dude56: (CurrencyId: string) => void;
   dude45: (hasUserCashedOut: boolean) => void;
@@ -61,8 +62,11 @@ const Betbutton = ({
   dude56,
   dude56a,
   dude56b,
+  
+  //placeBetCounter,
   sendToCrashGame3,
 }: BetbuttonProps) => {
+  const [placeBetCounter, setPlaceBetCounter] = useState(0);
   const { pressed, setPressedToOne, setPressedToZero } = usePressedStore();
   const [setisButtonPressed] = useState(false);
   const [betgreaterthan0, setBetgreaterthan0] = useState(false);
@@ -151,6 +155,7 @@ useEffect(() => {
     const timer = setTimeout(() => {
       setButtonPressCount(0); // Also reset inside setTimeout for extra safety
       setNewCount(0);
+      setPlaceBetCounter(0);
     }, 1000);
 
     return () => clearTimeout(timer);
@@ -188,6 +193,7 @@ useEffect(() => {
 
   const handleButtonPress = () => {
     setPressedToOne();
+    setPlaceBetCounter(1);
     console.log("this will be ok for now 1234567890 " + pressed)
     setButtonPressCount(1);
     const updatedCount = buttonPressCount + 1;

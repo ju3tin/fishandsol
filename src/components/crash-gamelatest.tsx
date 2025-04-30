@@ -42,7 +42,7 @@ const CrashGame = () => {
   // Game state
   const gameState5 = useGameStore((gameState5: GameState) => gameState5);
   const [isCashedOut, setIsCashedOut] = useState(false);
-
+  const [placeBetCounter, setplaceBetCounter] = useState(0);
   const [play, { sound }] = useSound('/sounds/cheering.mp3');
   const [play1] = useSound('/sounds/cheering.mp3');
   const [buttonClicked1, setbuttonClicked1] = useState(true);
@@ -211,7 +211,9 @@ const CrashGame = () => {
 
     // Additional cashout logic...
   };
-
+  const placebet123 = (placeBetCounter: number) => {
+    setplaceBetCounter(placeBetCounter);
+  }
   // Reset game to idle state
   const resetGame = () => {
     setGameState("Waiting")
@@ -405,6 +407,7 @@ setbuttonPressCount1(buttonPressCount)
 
         {/* Betting controls - Right Side */}
        <Betbutton
+        placeBetCounter={placebet123}
         isButtonPressed={isButtonPressed}
          gametime={gameState5.timeRemaining}
          gameState={gameState5.status}

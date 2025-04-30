@@ -48,6 +48,7 @@ const [newCount, setNewCount] = useState(0);
   const [play, { sound }] = useSound('/sounds/cheering.mp3');
   const [play1] = useSound('/sounds/cheering.mp3');
   const [buttonClicked1, setbuttonClicked1] = useState(true);
+  const [placeBetCounter, setplaceBetCounter] = useState(0);
   const [buttonPressCount, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [gameState, setGameState] = useState(gameState5.status);
@@ -344,6 +345,11 @@ const fucku = (currency: string) => {
   const handleButtonClicked = (buttonClicked: boolean) => {
     setbuttonClicked1(buttonClicked);
   };
+
+const placebet123 = (placeBetCounter: number) => {
+  setplaceBetCounter(placeBetCounter);
+}
+
   const buttonPressCount2 = (buttonPressCount: number) => {
 setbuttonPressCount1(buttonPressCount)
   }
@@ -421,6 +427,7 @@ setbuttonPressCount1(buttonPressCount)
          dude56a={handleButtonClicked}
          dude56b={buttonPressCount2}
          sendToCrashGame3={sendToCrashGame3}
+         placeBetCounter={placebet123}
        />
 
       
