@@ -36,7 +36,7 @@ export const NavItems = () => {
     {
       name: 'About',
       href: '/about',
-      icon: <BadgeInfo size={20} />,
+      icon: <Image src="/images/info.svg" alt="Chippy" width={20} height={20} />,
       active: isNavItemActive(pathname, '/about'),
       position: 'top',
     },
