@@ -64,8 +64,6 @@ const Betbutton = ({
   sendToCrashGame3,
 }: BetbuttonProps) => {
   const { pressed, setPressedToOne, setPressedToZero } = usePressedStore();
-
-  const pressed1 = usePressedStore((state) => state.pressed);
   const [setisButtonPressed] = useState(false);
   const [betgreaterthan0, setBetgreaterthan0] = useState(false);
   const [demoamountgreaterthan0, setDemoamountgreaterthan0] = useState(false);
@@ -189,8 +187,8 @@ useEffect(() => {
   };
 
   const handleButtonPress = () => {
-    setPressedToOne()
-    console.log("this will be ok for now 1234567890 "+ pressed)
+    setPressedToOne();
+    console.log("this will be ok for now 1234567890 " + pressed)
     setButtonPressCount(1);
     const updatedCount = buttonPressCount + 1;
     setNewCount(updatedCount);
