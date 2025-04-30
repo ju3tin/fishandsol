@@ -22,7 +22,7 @@ export const NavItems = () => {
     {
       name: 'Home',
       href: '/',
-      icon: <Home size={20} />,
+      icon: <Image src="/images/home.svg" alt="Chippy" width={20} height={20} />,
       active: pathname === '/',
       position: 'top',
     },
