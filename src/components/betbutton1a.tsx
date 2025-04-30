@@ -187,9 +187,11 @@ const Betbutton = ({
     dude56b(buttonPressCount);
 
     // Send buttonPressCount to crash-game3 if it's greater than 1
-    if (buttonPressCount > 0) {
-      console.log(`the button is bigger than 0 and === ${buttonPressCount}`)
-        sendToCrashGame3(buttonPressCount);
+    if (buttonPressCount === 1) {
+      dude56b(1)
+        sendToCrashGame3(1);
+        console.log(`the button is bigger than 0 and === ${buttonPressCount} where is the crack34 ${dude56b}`)
+     
     }
 
     console.log(`this is the checked ${currency} the button is if it is 1 ${buttonPressCount}`);
