@@ -190,7 +190,21 @@ const Betbutton = ({
     if (buttonPressCount === 1) {
       dude56b(1)
         sendToCrashGame3(1);
-        console.log(`the button is bigger than 0 and === ${buttonPressCount} where is the crack34 ${dude56b}`)
+        console.log(`the button is bigger ytrewq 0 and === ${buttonPressCount} where is the crack34 ${dude56b}`)
+     
+    }
+
+    if (buttonPressCount === 2) {
+      dude56b(1)
+        sendToCrashGame3(1);
+        console.log(`the button is red and qwerty than 0 and === ${buttonPressCount} where is the crack34 ${dude56b}`)
+     
+    }
+
+    if (buttonPressCount === 0) {
+      dude56b(0)
+      sendToCrashGame3(0);
+        console.log(`hjkl the button is smaller than 1 and === ${buttonPressCount} where is the crack34 ${dude56b}`)
      
     }
 
