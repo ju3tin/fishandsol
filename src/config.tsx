@@ -64,7 +64,7 @@ export const NavItems = () => {
     {
       name: 'Leaderboards',
       href: '/leaderboard',
-      icon: <User size={20} />,
+      icon: <Image src="/images/leaderboard.svg" alt="Solana Logo" height={20} width={20} />,
       active: isNavItemActive(pathname, '/leaderboard'),
       position: 'top',
     },
