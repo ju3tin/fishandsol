@@ -188,7 +188,7 @@ const Betbutton = ({
 
     // Send buttonPressCount to crash-game3 if it's greater than 1
     if (buttonPressCount > 0) {
-      console.log(`the button is bigger than 1 and === ${buttonPressCount}`)
+      console.log(`the button is bigger than 0 and === ${buttonPressCount}`)
         sendToCrashGame3(buttonPressCount);
     }
 
