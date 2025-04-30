@@ -180,8 +180,7 @@ const Betbutton = ({
   };
 
   const handleButtonPress = () => {
-    console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${buttonPressCount + 1}`);
-    setButtonPressCount((prevCount) => prevCount + 1);
+   setButtonPressCount((prevCount) => prevCount + 1);
     onStartGame(betAmount, autoCashoutAt, currency, buttonPressCount);
     dude56(currency);
     dude56a(buttonClicked);
@@ -195,14 +194,10 @@ const Betbutton = ({
      
     }
 
-    if (buttonPressCount === 2) {
-      dude56b(1)
-        sendToCrashGame3(1);
-        console.log(`the button is red and qwerty than 0 and === ${buttonPressCount} where is the crack34 ${dude56b(2)}`)
-     
-    }
 
     if (buttonPressCount === 0) {
+      console.log(`Place Bet button pressed at ${new Date().toISOString()} - count: ${buttonPressCount + 1}`);
+    
       dude56b(0)
       sendToCrashGame3(0);
         console.log(`hjkl the button is smaller than 1 and === ${buttonPressCount} where is the crack34 ${dude56b(3)}`)
