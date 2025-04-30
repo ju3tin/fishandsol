@@ -142,8 +142,9 @@ const Betbutton = ({
 
   useEffect(() => {
     if (gameState === "Crashed") {
+      setButtonPressCount(0); // Already being called here
       const timer = setTimeout(() => {
-        setButtonPressCount(0);
+        setButtonPressCount(0); // Also reset inside setTimeout for extra safety
         setNewCount(0);
       }, 1000);
 

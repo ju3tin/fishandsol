@@ -265,11 +265,13 @@ const fucku = (currency: string) => {
     }
   }, [])
 
-  useEffect(() => {
-    if (gameState5.status === "Crashed") {
-      setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
-    }
-  }, [gameState5.status, gameState5.multiplier])
+useEffect(() => {
+  if (gameState5.status === "Crashed") {
+    setGameHistory(prev => [gameState5.multiplier, ...prev].slice(0, 10)) // Keep last 10 crashes
+    setbuttonPressCount1(0);
+    setNewCount(0);
+  }
+}, [gameState5.status, gameState5.multiplier])
 
   // Calculate the curve path based on current multiplier
   const getCurvePath = () => {
