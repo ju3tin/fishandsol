@@ -296,6 +296,11 @@ const fucku = (currency: string) => {
     return `M ${startX},${startY} C ${control1X},${control1Y} ${control2X},${control2Y} ${midX},${midY} L ${endX},${endY}`
   }
 
+  const sendToCrashGame3 = (buttonPressCount: number) => {
+    console.log(`Sending buttonPressCount to crash-game3: ${buttonPressCount}`);
+    // Add your logic to send the buttonPressCount to crash-game3 here
+  };
+
   // Get point at a specific progress along the path
   const getPointAtProgress = (progress: number) => {
     if (!pathRef.current) return { x: 0, y: 100 }
@@ -413,6 +418,7 @@ setbuttonPressCount1(buttonPressCount)
          dude56={handleCurrencyChange}
          dude56a={handleButtonClicked}
          dude56b={buttonPressCount2}
+         sendToCrashGame3={sendToCrashGame3}
        />
 
       
