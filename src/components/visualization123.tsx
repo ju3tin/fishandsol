@@ -299,7 +299,7 @@ function animate() {
                     ) : (
                       <> {previousTimeRemaining}</>
                     )
-                  )} {(typeof Gametimeremaining === 'number' && Gametimeremaining > 1 ? `${Gametimeremaining} secs` : `sec`)}
+                  )} {(typeof Gametimeremaining === 'number' && Gametimeremaining > 1 ? `secs` : `sec`)}
 
               </span>
         </>
