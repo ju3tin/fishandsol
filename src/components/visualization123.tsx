@@ -299,7 +299,8 @@ function animate() {
                     ) : (
                       <> {previousTimeRemaining}</>
                     )
-                  )} secs
+                  )} {(typeof Gametimeremaining === 'number' && Gametimeremaining > 1 ? `${Gametimeremaining} secs` : `sec`)}
+
               </span>
         </>
       )}
