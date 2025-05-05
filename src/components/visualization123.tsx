@@ -295,11 +295,12 @@ function animate() {
               }}>
                 Launch in
                 {(typeof Gametimeremaining === 'number' && !isNaN(Gametimeremaining) ? (
-                  <> {Gametimeremaining}</>
+                  <> {Gametimeremaining} {(Gametimeremaining > 1 ? `secs` : `sec`)}</>
                     ) : (
-                      <> {previousTimeRemaining}</>
+                      <> {previousTimeRemaining} {previousTimeRemaining != null && previousTimeRemaining > 1 ? 'secs' : 'sec'}
+</>
                     )
-                  )} {(typeof Gametimeremaining === 'number' && Gametimeremaining > 1 ? `secs` : `sec`)}
+                  )}
 
               </span>
         </>
