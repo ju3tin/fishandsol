@@ -291,6 +291,8 @@ function animate() {
                 position: 'absolute',
                 color: 'white',
                 fontSize: '2rem',
+                width: '100%',
+                textAlign: 'center',
                // fontWeight: 'bold'
               }}>
                 Launch in
