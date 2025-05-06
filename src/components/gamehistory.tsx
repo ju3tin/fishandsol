@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import { usePressedStore } from '../store/ispressed';
 
 interface GameHistoryProps {
   dude45: boolean;
@@ -28,7 +29,7 @@ interface HistoryEntry {
 
 const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState, dude55, currentMultiplier, isButtonPressed, buttonPressCount, dude56b, dude56a, dude45 }) => {
   const [gameHistory, setGameHistory] = useState<HistoryEntry[]>([]);
-
+  const pressed = usePressedStore((state) => state.pressed);
   useEffect(() => {
     if (gameState === "Crashed") {
       const newEntry: HistoryEntry = {
@@ -50,16 +51,32 @@ const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState,
   return (
     <div className="flex gap-2 overflow-x-auto py-2">
       {gameHistory.length > 0 ? (
-        gameHistory.map((entry, index) => (
-          <div
-            key={index}
-            className={`px-2 py-1 rounded text-xs font-mono ${
-              entry.dudeClicked ? "bg-green-900/50 text-green-400" : "bg-red-900/50 text-red-400"
-            }`}
-          >
-            {entry.multiplier.toFixed(2)}x {/*- {entry.isButtonPressed ? "1" : "2"} */}
-          </div>
-        ))
+        gameHistory.map((entry, index) => {
+          let bgColor = '';
+          let textColor = '';
+
+          if (entry.dudeClicked) {
+            bgColor = 'bg-green-900/50';
+            textColor = 'text-green-400';
+          } else {
+            if (pressed === 1) {
+              bgColor = 'bg-yellow-900/50';
+              textColor = 'text-yellow-400';
+            } else {
+              bgColor = 'bg-red-900/50';
+              textColor = 'text-red-400';
+            }
+          }
+
+          return (
+            <div
+              key={index}
+              className={`px-2 py-1 rounded text-xs font-mono ${bgColor} ${textColor}`}
+            >
+              {entry.multiplier.toFixed(2)}x
+            </div>
+          );
+        })
       ) : (
         <p className="text-gray-500 text-sm">No game history yet</p>
       )}
