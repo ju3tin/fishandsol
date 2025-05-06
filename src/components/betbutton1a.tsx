@@ -303,7 +303,7 @@ useEffect(() => {
       )}
 
       {/* You can put your BET button or controls here */}
-      <div className="p-4 flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <Input
           type="number"
           value={betAmount}
