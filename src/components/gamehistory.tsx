@@ -13,6 +13,7 @@ interface GameHistoryProps {
   dude56b: number;
   buttonPressCount2: number;
   isButtonPressed: boolean;
+  pressed: number;
 }
 
 interface HistoryEntry {
@@ -25,6 +26,7 @@ interface HistoryEntry {
   dude56a: boolean;
   buttonPressCount2: number;
   dude56b: number;
+  pressed: number;
 }
 
 const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState, dude55, currentMultiplier, isButtonPressed, buttonPressCount, dude56b, dude56a, dude45 }) => {
@@ -42,11 +44,12 @@ const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState,
         dude55: dude55,
         isButtonPressed: isButtonPressed,
         buttonPressCount: buttonPressCount,
+        pressed: pressed,
       };
       console.log(buttonPressCount2, buttonPressCount, dude55, dude56b + " data for button pressed");
       setGameHistory(prev => [newEntry, ...prev].slice(0, 10)); // Keep only the last 10 entries
     }
-  }, [gameState, currentMultiplier, dude55, buttonPressCount, dude45,dude56b, dude55, dude56a, isButtonPressed, buttonPressCount2]);
+  }, [gameState, currentMultiplier, dude55, buttonPressCount, dude45,dude56b, dude55, dude56a, isButtonPressed, pressed, buttonPressCount2]);
 
   return (
     <div className="flex gap-2 overflow-x-auto py-2">
@@ -59,7 +62,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState,
             bgColor = 'bg-green-900/50';
             textColor = 'text-green-400';
           } else {
-            if (pressed === 0) {
+            if (entry.pressed === 0) {
               bgColor = 'bg-yellow-900/50';
               textColor = 'text-yellow-400';
             } else {

@@ -420,7 +420,8 @@ setbuttonPressCount1(buttonPressCount)
               ]}/>
 
               {/* Game history */}
-             <GameHistory 
+             <GameHistory
+               pressed={pressed} 
                gameState={gameState5.status} 
                dude55={isCashedOut} 
                isButtonPressed={isButtonPressed}
