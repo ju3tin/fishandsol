@@ -258,10 +258,11 @@ function animate() {
           <span style={{ 
             top: '0px', 
             left: '50%', 
-            transform: 'translateX(-50%)', 
-            display: 'block', 
-            position: 'absolute',
-          }}>
+            transform: 'translateX(-50%)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            }}>
             <Image width={275} height={275} src="/explode1.svg" alt="Explosion effect" />
           </span>
 
