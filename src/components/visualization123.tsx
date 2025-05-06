@@ -256,13 +256,13 @@ function animate() {
           
 
           <span style={{ 
-            top: '100px', 
+            top: '50px', 
             left: '50%', 
             transform: 'translateX(-50%)', 
             display: 'block', 
             position: 'absolute',
           }}>
-            <Image width={100} height={100} src="/explode2.svg" alt="Explosion effect" />
+            <Image width={150} height={150} src="/explode1.svg" alt="Explosion effect" />
           </span>
 
 
