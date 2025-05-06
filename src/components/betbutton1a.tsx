@@ -317,12 +317,38 @@ useEffect(() => {
           placeholder="Auto cashout at"
           disabled={isAutoCashOutDisabled}
         />
-        <Button onClick={handleButtonPress} disabled={buttonPressCount > 0}>
-          Place Bet
-        </Button>
-        <Button onClick={handleCashout} disabled={!buttonPressCount || hasUserCashedOut}>
-          Cash Out
-        </Button>
+       {gameState === "Waiting" ? (
+                <Button 
+                  onClick={buttonPressCount > 0 ? undefined : handleButtonPress} 
+                  className={`w-full ${buttonPressCount > 0 ? 'bg-gray-600' : 'bg-green-600 hover:bg-green-700'}`}
+                  disabled={buttonPressCount > 0}
+                >
+                  {buttonPressCount > 0 ? (
+                    <p className="text-black">Bet Placed</p>
+                  ) : (
+                    typeof gametime === 'number' && !isNaN(gametime) ? (
+                      <p className="text-black">Place Bet {gametime}</p>
+                    ) : (
+                      <p className="text-black">Place Bet {previousTimeRemaining}</p>
+                    )
+                  )}
+                </Button>
+              ) : gameState === "Running" ? (
+                
+                
+                <Button
+                  onClick={handleCashout}
+                  className="w-full bg-yellow-600 hover:bg-yellow-700"
+                  disabled={userCashedOut || buttonClicked || buttonPressCount == 0}
+                >
+                  Cash Out ({currentMultiplier}x)
+                </Button>
+              ) : (
+                <Button disabled className="w-full bg-red-600">
+                  Crashed ({currentMultiplier}x)
+                </Button>
+              )}
+       
         <Button onClick={toggleOverlay}>
           Open Wallet Options
         </Button>
