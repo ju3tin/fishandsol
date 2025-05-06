@@ -34,7 +34,13 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
 
   const pointBRef = useRef<{ x: number; y: number }>({ x: startx, y: starty });
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
-  
+  const tValuesRef = useRef(tValues);
+const dude55Ref = useRef(dude55);
+
+useEffect(() => {
+  tValuesRef.current = tValues;
+  dude55Ref.current = dude55;
+}, [tValues, dude55]);
   useEffect(() => {
     if (isNaN(Gametimeremaining)) {
       // If timeRemaining is NaN, keep the previous value
@@ -95,13 +101,7 @@ const GameVisual: React.FC<GameVisualProps> = ({Gametimeremaining, GameStatus, c
       { number: 0.75, color: 'orange', svg: '/demo.svg' }
     ];
 */
-const tValuesRef = useRef(tValues);
-const dude55Ref = useRef(dude55);
 
-useEffect(() => {
-  tValuesRef.current = tValues;
-  dude55Ref.current = dude55;
-}, [tValues, dude55]);
 const fish1 = new window.Image();
 fish1.src = "/images/chippy.svg"; // Use your actual path
 fish1.onload = () => {
