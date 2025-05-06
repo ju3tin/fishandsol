@@ -199,7 +199,7 @@ function animate() {
         src="/images/under1.jpg" 
         alt="Background image" 
         fill
-        className="relative h-64 rounded-lg overflow-hidden mb-4" 
+        className="relative rounded-lg overflow-hidden" 
       />
       {GameStatus !== "Waiting"&& GameStatus !=="Crashed" && (
         <div className="absolute inset-0">
