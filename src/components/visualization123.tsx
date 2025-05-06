@@ -191,7 +191,7 @@ function animate() {
         cancelAnimationFrame(curveAnimationRef.current);
       }
     };
-  }, [GameStatus]); // ❗ do NOT need dude55 here
+  }, [GameStatus, dude55, tValues]);// ❗ do NOT need dude55 here
 
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
