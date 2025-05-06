@@ -49,7 +49,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState,
       console.log(buttonPressCount2, buttonPressCount, dude55, dude56b + " data for button pressed");
       setGameHistory(prev => [newEntry, ...prev].slice(0, 10)); // Keep only the last 10 entries
     }
-  }, [gameState, currentMultiplier, dude55, buttonPressCount, dude45,dude56b, dude55, dude56a, isButtonPressed, pressed, buttonPressCount2]);
+  }, [gameState, currentMultiplier, dude55, buttonPressCount, dude45,dude56b, dude55, dude56a, isButtonPressed, buttonPressCount2, pressed]);
 
   return (
     <div className="flex gap-2 overflow-x-auto py-2">
