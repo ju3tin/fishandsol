@@ -383,7 +383,7 @@ setbuttonPressCount1(buttonPressCount)
         {/* Game Display - Middle */}
         <div className="lg:col-span-7">
           <Card className="bg-black border-black">
-            <CardContent className="p-6">
+            <CardContent className="p-1">
               <div className="flex justify-between items-center mb-4">
 
                 {!isMobile && <h2 className="text-2xl font-bold text-white">{gameState === "Crashed" ? "CRASHED!" : "Multiplier"}</h2>}
