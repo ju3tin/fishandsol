@@ -12,6 +12,7 @@ import useSound from 'use-sound';
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 import { currencyById } from '@/lib/currencies';
+import { usePressedStore } from '../store/ispressed';
 import Image from 'next/image'; // Import the Image component
 
 
@@ -49,6 +50,7 @@ const CrashGame = () => {
   const [buttonPressCount, setbuttonPressCount1] = useState(0);
   const [isMobile, setIsMobile] = useState(false);
   const [gameState, setGameState] = useState(gameState5.status);
+  const pressed = usePressedStore((state) => state.pressed);
   const [currentMultiplier, setCurrentMultiplier] = useState(1);
   const [crashPoint, setCrashPoint] = useState(0)
   const [betAmount, setBetAmount] = useState("0.1")
@@ -390,7 +392,8 @@ setbuttonPressCount1(buttonPressCount)
               ]}/>
 
               {/* Game history */}
-             <GameHistory 
+              <GameHistory
+               pressed={pressed} 
                gameState={gameState5.status} 
                dude55={isCashedOut} 
                isButtonPressed={isButtonPressed}
