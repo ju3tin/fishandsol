@@ -7,7 +7,7 @@ import { color } from "framer-motion";
 import Image from "next/image";
 
 const startx = -50;
-const starty = 150;
+const starty = 200;
 
 interface GameVisualProps {
   currentMultiplier: number;
