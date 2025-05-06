@@ -62,7 +62,7 @@ const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState,
             bgColor = 'bg-green-900/50';
             textColor = 'text-green-400';
           } else {
-            if (entry.pressed === 0) {
+            if (entry.pressed === 0 && !entry.dudeClicked) {
               bgColor = 'bg-yellow-900/50';
               textColor = 'text-yellow-400';
             } else {
