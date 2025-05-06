@@ -89,6 +89,7 @@ const Betbutton = ({
   //const gameState5 = useGameStore((state: GameState) => state);
   const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
   const [newCount, setNewCount] = useState(0);
+  const [isButtonPressed1, setIsButtonPressed1] = useState<Boolean>(false);
     
   const handleCopy = () => {
     navigator.clipboard
@@ -122,6 +123,19 @@ const Betbutton = ({
       setAutoCashOut("0");
     }
   };
+
+  useEffect(() => {
+    if (gameState === 'Crashed' && !isButtonPressed1) {
+     console.log('the 1st button was not pressed')
+      setIsButtonPressed1(false);
+    }
+
+    if (gameState === 'Crashed' && isButtonPressed1) {
+      console.log('the 1st button was pressed for the l0ve')
+       setIsButtonPressed1(false);
+     }
+
+  }, [gameState,isButtonPressed1]);
 
  useEffect(() => {
       if (isNaN(gametime)) {
