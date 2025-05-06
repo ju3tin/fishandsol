@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { usePressedStore } from '../store/ispressed';
 
 interface GameHistoryProps {
@@ -32,8 +32,11 @@ interface HistoryEntry {
 const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState, dude55, currentMultiplier, isButtonPressed, buttonPressCount, dude56b, dude56a, dude45 }) => {
   const [gameHistory, setGameHistory] = useState<HistoryEntry[]>([]);
   const pressed = usePressedStore((state) => state.pressed);
+  const lastGameState = useRef<string>("");
+
   useEffect(() => {
-    if (gameState === "Crashed") {
+    if (gameState === "Crashed" && lastGameState.current !== "Crashed") {
+      lastGameState.current = "Crashed";
       const newEntry: HistoryEntry = {
         multiplier: currentMultiplier,
         dudeClicked: dude55,
@@ -48,8 +51,10 @@ const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState,
       };
       console.log(buttonPressCount2, buttonPressCount, dude55, dude56b + " data for button pressed");
       setGameHistory(prev => [newEntry, ...prev].slice(0, 10)); // Keep only the last 10 entries
+    } else if (gameState !== "Crashed") {
+      lastGameState.current = gameState;
     }
-  }, [gameState, currentMultiplier, dude55, buttonPressCount, dude45,dude56b, dude55, dude56a, isButtonPressed, buttonPressCount2, pressed]);
+  }, [gameState, currentMultiplier, dude55, buttonPressCount, dude45, dude56b, dude56a, isButtonPressed, buttonPressCount2, pressed]);
 
   return (
     <div className="flex gap-2 overflow-x-auto py-2">
@@ -58,16 +63,17 @@ const GameHistory: React.FC<GameHistoryProps> = ({ buttonPressCount2, gameState,
           let bgColor = '';
           let textColor = '';
 
-          if (entry.dudeClicked) {
+          if (entry.dudeClicked === true) {
             bgColor = 'bg-green-900/50';
             textColor = 'text-green-400';
-          } else if (entry.pressed === 0 && !entry.dudeClicked) {
+          } else if (entry.pressed === 0) {
             bgColor = 'bg-yellow-900/50';
             textColor = 'text-yellow-400';
           } else {
             bgColor = 'bg-red-900/50';
             textColor = 'text-red-400';
           }
+          
           
 
           return (
