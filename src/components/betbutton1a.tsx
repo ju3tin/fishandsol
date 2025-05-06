@@ -206,6 +206,12 @@ useEffect(() => {
   };
 
   const handleButtonPress = () => {
+    setIsButtonPressed1(true)
+    if (isButtonPressed1){
+      console.log('213 i wasnt pressed dude')
+    } else {
+      console.log('321 i was pressed')
+    }
     setPressedToOne();
     setPlaceBetCounter(1);
     console.log("this will be ok for now 1234567890 " + pressed)
