@@ -17,6 +17,7 @@ import useSound from 'use-sound';
 import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 import { currencyById } from '@/lib/currencies';
+import { usePressedStore } from '../store/ispressed';
 
 
 // Type for cashout events
@@ -62,7 +63,8 @@ const [newCount, setNewCount] = useState(0);
   const [pathProgress, setPathProgress] = useState(0)
   const [cashouts, setCashouts] = useState<CashoutEvent[]>([])
   const [currency, setCurrency] = useState<string>("USD"); // or whatever default value you want
-
+  const pressed = usePressedStore((state) => state.pressed);
+  const [hasLogged, setHasLogged] = useState(false);
   // Animation refs
   const animationRef = useRef<number>(0)
   const startTimeRef = useRef<number>(0)
@@ -78,6 +80,20 @@ const [newCount, setNewCount] = useState(0);
     // New state for previous time remaining
     const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
 
+
+    useEffect(() => {
+      if (pressed === 1 && !hasLogged) {
+        console.log('Pressed is 1 24 hours in checked');
+        setHasLogged(true); // Prevent future logs
+      }
+    }, [pressed, hasLogged]);
+  
+useEffect(() =>{
+  if(gameState5.status === "Crashed" && hasLogged){
+    setHasLogged(false)
+  }
+},[gameState5.status, hasLogged])
+    
     // Update previous time remaining whenever gameState5.timeRemaining changes
     useEffect(() => {
       if (isNaN(gameState5.timeRemaining)) {
@@ -111,8 +127,6 @@ useEffect(() =>{
     console.log('im not winning') 
   }
 }
-
-
 )
   
 
