@@ -1,0 +1,110 @@
+import { useCallback, useState } from "react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { Connection, PublicKey, SystemProgram } from "@solana/web3.js";
+import * as web3 from "@solana/web3.js";
+import { AnchorProvider, Program, Idl } from "@coral-xyz/anchor";
+import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
+import idl from '../app/(update1)/test123/idl.json'; // adjust path as needed
+
+const PROGRAM_ID = new PublicKey("4wJUM42cvcGsw6bgky4hcXG2pYAhMCY5u2khsNHp8XFr");
+
+export const useMintManager = (connection: Connection) => {
+  const wallet = useWallet();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [txSignature, setTxSignature] = useState("");
+
+  const createMint = useCallback(async () => {
+    if (!wallet.publicKey) {
+      setError("Please connect your wallet first");
+      return;
+    }
+
+    // Check for all required wallet methods
+    if (!wallet.signTransaction || !wallet.signAllTransactions) {
+      setError("Wallet doesn't support required transaction signing methods");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setTxSignature("");
+
+    try {
+      // Create provider with type-safe approach
+      const walletAdapter = {
+        publicKey: wallet.publicKey,
+        signTransaction: wallet.signTransaction,
+        signAllTransactions: wallet.signAllTransactions
+      };
+      
+      const provider = new AnchorProvider(
+        connection,
+        walletAdapter,
+        { preflightCommitment: 'confirmed' }
+      );
+      
+      // Create program with the imported IDL
+      const program = new Program(idl as Idl, PROGRAM_ID, provider);
+
+      // Find PDA for mint
+      const [mintPda] = PublicKey.findProgramAddressSync(
+        [Buffer.from("mint")],
+        PROGRAM_ID
+      );
+
+      console.log("Mint PDA:", mintPda.toString());
+
+      // Check if the mint account already exists
+      const mintAccount = await connection.getAccountInfo(mintPda);
+      
+      if (mintAccount !== null) {
+        console.log("✅ Mint already exists:", mintPda.toString());
+        console.log("Account info:", {
+          owner: mintAccount.owner.toString(),
+          lamports: mintAccount.lamports,
+          dataSize: mintAccount.data.length
+        });
+        
+        setTxSignature("Account already exists");
+        return mintPda;
+      }
+
+      // Execute the transaction
+      const tx = await program.methods
+        .createMint()
+        .accounts({
+          signer: wallet.publicKey,
+          mint: mintPda,
+          tokenProgram: TOKEN_PROGRAM_ID,
+          systemProgram: web3.SystemProgram.programId,
+        })
+        .rpc();
+
+      setTxSignature(tx);
+      console.log("Transaction signature:", tx);
+      return mintPda;
+    } catch (err: any) {
+      console.error("Error creating mint:", err);
+      
+      // Check if the error contains logs suggesting account already exists
+      if (err.logs && err.logs.some(log => log.includes("already in use"))) {
+        console.log("⚠️ The mint account appears to exist but might be in an unexpected state");
+        setError("Mint account already exists but might be in an unexpected state");
+        
+        // Find PDA for mint again to return it
+        const [mintPda] = PublicKey.findProgramAddressSync(
+          [Buffer.from("mint")],
+          PROGRAM_ID
+        );
+        return mintPda;
+      } else {
+        setError(err.message || "An unknown error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
+  }, [wallet, connection]);
+
+  return { createMint, loading, error, txSignature };
+};

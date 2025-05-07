@@ -1,5 +1,5 @@
 "use client"
-import CrashGame from "../../../components/main1"
+import CrashGame from "../../../components/main3"
 import Image from 'next/image'; // Import the Image component
 
 export default function Home() {
