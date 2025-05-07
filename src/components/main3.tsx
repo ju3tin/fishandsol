@@ -375,11 +375,12 @@ export default function Home() {
                   
                   <form onSubmit={createCustomMint} className="space-y-4 pt-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Custom Seed</label>
+                      <label className="block text-sm font-medium text-gray-700">You can get one token at a time<br /> for now if it doesn't work first time. </label>
                       <input
                         type="text"
-                        value={tokenSeed}
-                        onChange={(e) => setTokenSeed('chippy'+Math.random())}
+                        value={'chippy'+Math.random(5)}
+                        
+                        onChange={(e) => setTokenSeed('chippy'+Math.random(5))}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="my-token-seed"
                         required
@@ -391,6 +392,7 @@ export default function Home() {
                       <input
                         type="number"
                         value={6}
+                        disabled
                         onChange={(e) => setTokenDecimals(parseInt(e.target.value))}
                         min="0"
                         max="9"
