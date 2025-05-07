@@ -3,7 +3,7 @@ import { PublicKey } from '@solana/web3.js';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Program, AnchorProvider, Wallet, web3, BN } from '@project-serum/anchor';
-import idl from '../app/(update4)/test1231/idl.json';
+import idl from '../app/(update1)/test123/idl.json';
 
 export default function MintCreatorForm() {
   const { connection } = useConnection();
