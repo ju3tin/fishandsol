@@ -18,6 +18,8 @@ import { useGameStore, GameState } from '../store/gameStore2';
 import { toast } from 'react-toastify'; // Ensure you have the toast library
 import { currencyById } from '@/lib/currencies';
 import { usePressedStore } from '../store/ispressed';
+import axios from 'axios';
+import { useWalletStore } from '../store/walletStore';
 
 
 // Type for cashout events
@@ -80,11 +82,44 @@ const [newCount, setNewCount] = useState(0);
     // New state for previous time remaining
     const [previousTimeRemaining, setPreviousTimeRemaining] = useState<number | null>(null);
 
-
+    const walletAddress = useWalletStore((state) => state.walletAddress) || "Unknown User";
+  
     useEffect(() => {
+    
       if (pressed === 1 && !hasLogged) {
         console.log('Pressed is 1 24 hours in checked');
         setHasLogged(true); // Prevent future logs
+// set bet 1st
+
+let data = JSON.stringify({
+  "walletAddress": walletAddress,
+  "betAmount": betAmount,
+  "autoCashout": true,
+  "currency": currency
+});
+
+let config = {
+  method: 'post',
+  maxBodyLength: Infinity,
+  url: '/api/1stpostbet',
+  headers: { 
+    'Content-Type': 'application/json'
+  },
+  data : data
+};
+
+axios.request(config)
+.then((response) => {
+  console.log(JSON.stringify(response.data));
+  console.log('The 1st bet has been logged and the wallet address is '+walletAddress)
+})
+.catch((error) => {
+  console.log(error);
+});
+
+
+// end of set bet 1st
+
       }
     }, [pressed, hasLogged]);
   

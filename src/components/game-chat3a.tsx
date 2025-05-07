@@ -263,7 +263,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
           style={{ height: "100%" }}
         >
 
-{messages1.map((msg, i) => (
+{/*messages1.map((msg, i) => (
         <div key={i} className="flex flex-col">
            <div className="flex items-start">
           
@@ -279,7 +279,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
           </div>
           <span className="text-gray-500 text-xs">{formatTime(new Date(msg.time))}</span>
         </div>
-      ))}
+      )) */}
 
           {messages.map((msg) => (
             <div key={msg.id} className="flex flex-col">
