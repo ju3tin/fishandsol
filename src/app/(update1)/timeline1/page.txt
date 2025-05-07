@@ -2,7 +2,7 @@ declare module '@knight-lab/timelinejs/dist/js/timeline.js' {
   export default class Timeline {
     constructor(
       container: HTMLElement | string,
-      data: any,
+      d/ata: any,
       options?: any
     );
     setData(data: any): void;
