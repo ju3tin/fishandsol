@@ -82,7 +82,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get("/api/getmessages");
+        const response = await axios.get("/api/postmessage");
         console.log("Fetched messages:", response.data);
   
         const fetchedMessages = response.data || [];
