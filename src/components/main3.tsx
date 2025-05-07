@@ -353,19 +353,7 @@ export default function Home() {
             ) : (
               <>
                 <div className="mb-6">
-                  <div className="flex justify-between mb-2">
-                    <h2 className="text-xl font-medium text-gray-900">Create Token Mint</h2>
-                  </div>
-                  
-                  <div className="mb-4">
-                    <button
-                      onClick={createDefaultMint}
-                      disabled={loading}
-                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 mb-2"
-                    >
-                      {loading ? 'Processing...' : 'Create Default Mint (seed="mint")'}
-                    </button>
-                  </div>
+                
                   
                   <form onSubmit={createCustomMint} className="space-y-4 border-t pt-4">
                     <div>
