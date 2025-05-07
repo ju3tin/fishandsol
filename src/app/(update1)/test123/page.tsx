@@ -9,10 +9,11 @@ import {
   Program,
   web3,
 } from '@coral-xyz/anchor';
+import type { Idl } from '@coral-xyz/anchor';
 import idl from './idl.json'; // Ensure this JSON file exists
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
-const PROGRAM_ID = new PublicKey('4wJUM42cvcGsw6bgky4hcXG2pYAhMCY5u2khsNHp8XFr');
+const PROGRAM_IDS = new PublicKey('4wJUM42cvcGsw6bgky4hcXG2pYAhMCY5u2khsNHp8XFr');
 const TOKEN_PROGRAM_ID = new PublicKey('TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA');
 
 export default function Home() {
@@ -29,11 +30,10 @@ export default function Home() {
       preflightCommitment: 'processed',
     });
 
-    const program = new Program(idl as any, PROGRAM_ID, provider); // ✅ Correct
-    // Generate PDA with seed "mint"
+    const program = new Program(idl as any, new PublicKey(PROGRAM_IDS), provider);// Generate PDA with seed "mint"
     const [mintPda, bump] = PublicKey.findProgramAddressSync(
       [Buffer.from('mint')],
-      PROGRAM_ID
+      PROGRAM_IDS
     );
 
     try {
