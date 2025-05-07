@@ -134,8 +134,7 @@ const idl = {
 };
 
 export default function Home() {
-    let minm = 10000;
-    let maxm = 99999;
+    
   const { publicKey, signTransaction, signAllTransactions } = useWallet();
   const [connection, setConnection] = useState<Connection | null>(null);
   const [loading, setLoading] = useState(false);
@@ -376,12 +375,11 @@ export default function Home() {
                   
                   <form onSubmit={createCustomMint} className="space-y-4 pt-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Chippie ID</label>
+                      <label className="block text-sm font-medium text-gray-700">Custom Seed</label>
                       <input
                         type="text"
                         value={tokenSeed}
-                        disabled
-                        onChange={(e) => setTokenSeed('chppie'+(Math.random() * (maxm - minm + 1)) + minm)}
+                        onChange={(e) => setTokenSeed('chippy'+Math.random())}
                         className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
                         placeholder="my-token-seed"
                         required
@@ -392,7 +390,7 @@ export default function Home() {
                       <label className="block text-sm font-medium text-gray-700">Decimals</label>
                       <input
                         type="number"
-                        value={tokenDecimals}
+                        value={6}
                         onChange={(e) => setTokenDecimals(parseInt(e.target.value))}
                         min="0"
                         max="9"
