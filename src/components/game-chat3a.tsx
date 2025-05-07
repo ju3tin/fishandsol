@@ -82,7 +82,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get("/api/postmessage");
+        const response = await axios.get("/api/getmessages");
         console.log("Fetched messages:", response.data);
   
         const fetchedMessages = response.data || [];
@@ -96,9 +96,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
         }));
   
         // Combine and sort by timestamp ascending (oldest to newest)
-        setMessages((prev) =>
-          [...prev, ...formattedMessages].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
-        );
+        setMessages(formattedMessages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()));
       } catch (error: any) {
         console.error("Failed to fetch messages:", error.message || error);
       }
@@ -109,7 +107,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const interval = setInterval(fetchMessages, 5000); // poll every 5 seconds
 
   return () => clearInterval(interval); // cleanup
-  }, [messages]);
+  }, []);
 
   useEffect(() => {
     if (chatContainerRef.current) {
@@ -281,7 +279,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
                     msg.user ? "text-yellow-400" : msg.user === "You" ? "text-green-400" : "text-blue-400"
                   }`}
                 >
-                  {msg.user}:
+                  {msg.user || "Unknown".slice(0, 10)}:
                 </span>  
           <span className="text-white text-xs ml-1 break-words">{msg.message}</span>
           </div>
