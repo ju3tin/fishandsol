@@ -15,6 +15,10 @@ import { useWalletStore } from '../store/walletStore';
 
 // ... existing code ...
   // Format timestamp
+  const formatTime2 = (date: Date) => {
+    return date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  };
+
 const formatTime1 = (date: Date) => {
     return date.toISOString().slice(0, 19) + "Z"; // Format to "YYYY-MM-DDTHH:mm:ssZ"
   }
@@ -50,7 +54,30 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   const chatContainerRef = useRef<HTMLDivElement>(null)
   const [hasGameStarted, setHasGameStarted] = useState(false)
 
+  const [messages1, setMessages1] = useState<{ user: string; message: string; time: string }[]>([]);
+  const [loading1, setLoading1] = useState(true);
+
   // Auto-scroll to bottom when new messages arrive
+
+  useEffect(() => {
+    axios.get('/api/postmessage')
+      .then(response => {
+        setMessages1(response.data);
+        setLoading1(false);
+      })
+      .catch(error => {
+        console.error('Error fetching chatroom messages:', error);
+        setLoading1(false);
+      });
+
+
+
+
+
+      
+  }, []);
+
+  //if (loading1) return <p>Loading...</p>;
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -238,6 +265,25 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
           className="flex-1 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-700"
           style={{ height: "100%" }}
         >
+
+{messages1.map((msg, i) => (
+        <div key={i} className="flex flex-col">
+           <div className="flex items-start">
+          
+
+           <span
+                  className={`font-medium text-xs ${
+                    msg.user ? "text-yellow-400" : msg.user === "You" ? "text-green-400" : "text-blue-400"
+                  }`}
+                >
+                  {msg.user}:
+                </span>  
+          <span className="text-white text-xs ml-1 break-words">{msg.message}</span>
+          </div>
+          <span className="text-gray-500 text-xs">{formatTime(new Date(msg.time))}</span>
+        </div>
+      ))}
+
           {messages.map((msg) => (
             <div key={msg.id} className="flex flex-col">
               <div className="flex items-start">
