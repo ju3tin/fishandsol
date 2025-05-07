@@ -82,29 +82,34 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const response = await axios.get("/api/getmessages");
+        const response = await axios.get("/api/postmessage");
         console.log("Fetched messages:", response.data);
   
         const fetchedMessages = response.data || [];
   
         const formattedMessages: ChatMessage[] = fetchedMessages.map((msg: any) => ({
           id: msg._id?.toString() || Date.now().toString(),
-          sender: msg.user || "Unknown",
+          sender: (msg.user || "Unknown").slice(0, 10),
           message: msg.message,
           timestamp: new Date(msg.time),
           isSystem: msg.user === "System",
         }));
   
+        // Combine and sort by timestamp ascending (oldest to newest)
         setMessages((prev) =>
-          [...formattedMessages, ...prev].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
+          [...prev, ...formattedMessages].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
         );
       } catch (error: any) {
         console.error("Failed to fetch messages:", error.message || error);
       }
     };
   
-    fetchMessages();
-  }, []);
+    
+  fetchMessages(); // initial load
+  const interval = setInterval(fetchMessages, 5000); // poll every 5 seconds
+
+  return () => clearInterval(interval); // cleanup
+  }, [messages]);
 
   useEffect(() => {
     if (chatContainerRef.current) {
