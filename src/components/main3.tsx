@@ -1,5 +1,6 @@
 // pages/index.tsx
 import { useState, useEffect } from 'react';
+import Image from "next/image";
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import {
@@ -342,8 +343,24 @@ export default function Home() {
         <div className="relative px-4 py-10 bg-white shadow-lg sm:rounded-3xl sm:p-20">
           <div className="max-w-md mx-auto">
             <div className="flex justify-between items-center mb-8">
-              <h1 className="text-2xl font-semibold text-gray-900">Anchor Token Minter</h1>
-              <WalletMultiButton />
+            <Image
+            src="/images/logo2.png"
+            alt="Next.js logo"
+            width={180}
+            height={38}
+            priority
+          /><p></p>
+           <Image
+            src="/image07.png"
+            alt="Next.js logo"
+            width={180}
+            height={38}
+            priority
+          />< br /><p>
+
+
+<WalletMultiButton />
+          </p>
             </div>
             
             {!publicKey ? (
@@ -355,7 +372,7 @@ export default function Home() {
                 <div className="mb-6">
                 
                   
-                  <form onSubmit={createCustomMint} className="space-y-4 border-t pt-4">
+                  <form onSubmit={createCustomMint} className="space-y-4 pt-4">
                     <div>
                       <label className="block text-sm font-medium text-gray-700">Custom Seed</label>
                       <input
@@ -387,55 +404,13 @@ export default function Home() {
                         disabled={loading}
                         className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:opacity-50"
                       >
-                        {loading ? 'Processing...' : 'Create Custom Mint'}
+                        {loading ? 'Processing...' : 'Create Chippie Tokens'}
                       </button>
                     </div>
                   </form>
                 </div>
                 
-                <form onSubmit={mintTokens} className="space-y-4 pt-6 border-t">
-                  <div className="flex justify-between mb-2">
-                    <h2 className="text-xl font-medium text-gray-900">Mint Tokens</h2>
-                  </div>
-                  
-                  {mintPubkey && (
-                    <p className="text-sm text-gray-600">Current Mint: {mintPubkey.toString()}</p>
-                  )}
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Amount to Mint</label>
-                    <input
-                      type="number"
-                      value={mintAmount}
-                      onChange={(e) => setMintAmount(parseInt(e.target.value))}
-                      min="1"
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700">Recipient Address</label>
-                    <input
-                      type="text"
-                      value={recipient}
-                      onChange={(e) => setRecipient(e.target.value)}
-                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                      placeholder="Solana address"
-                      required
-                    />
-                  </div>
-                  
-                  <div>
-                    <button
-                      type="submit"
-                      disabled={loading || !mintPubkey}
-                      className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 disabled:opacity-50"
-                    >
-                      {loading ? 'Processing...' : 'Mint Tokens'}
-                    </button>
-                  </div>
-                </form>
+               
               </>
             )}
           </div>
