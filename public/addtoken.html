@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Create Mint - Solana Devnet</title>
+  <script src="https://unpkg.com/@solana/web3.js@1.92.1/lib/index.iife.js"></script>
+  <script src="https://unpkg.com/@coral-xyz/anchor@0.28.0/dist/anchor.iife.js"></script>
+</head>
+<body>
+  <h1>Create Mint Token (Devnet)</h1>
+  <button id="connect">Connect Wallet</button>
+  <button id="createMint">Create Mint</button>
+
+  <script type="module">
+    const { Connection, PublicKey, clusterApiUrl } = solanaWeb3;
+    const { AnchorProvider, Program, web3, utils } = anchor;
+
+    const PROGRAM_ID = new PublicKey("4wJUM42cvcGsw6bgky4hcXG2pYAhMCY5u2khsNHp8XFr");
+    const IDL = await (await fetch("./idl.json")).json(); // Put your Anchor IDL here
+    const NETWORK = clusterApiUrl('devnet');
+
+    let provider;
+
+    // Connect Phantom
+    document.getElementById('connect').onclick = async () => {
+      if ('solana' in window) {
+        await window.solana.connect();
+        provider = new AnchorProvider(new Connection(NETWORK), window.solana, { preflightCommitment: "processed" });
+        console.log("Connected wallet:", provider.wallet.publicKey.toBase58());
+      } else {
+        alert("Phantom Wallet not found");
+      }
+    };
+
+    // Create Mint
+    document.getElementById('createMint').onclick = async () => {
+      if (!provider) return alert("Connect wallet first");
+
+      const program = new Program(IDL, PROGRAM_ID, provider);
+
+      // Derive PDA
+      const [mintPda, bump] = await PublicKey.findProgramAddressSync(
+        [Buffer.from("mint")],
+        PROGRAM_ID
+      );
+
+      try {
+        const tx = await program.methods.createMint()
+          .accounts({
+            signer: provider.wallet.publicKey,
+            mint: mintPda,
+            tokenProgram: new PublicKey("TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"),
+            systemProgram: web3.SystemProgram.programId,
+          })
+          .signers([])
+          .rpc();
+
+        console.log("✅ Mint created! Transaction:", tx);
+        alert("Mint created! Tx: " + tx);
+      } catch (err) {
+        console.error(err);
+        alert("Transaction failed: " + err.message);
+      }
+    };
+  </script>
+</body>
+</html>

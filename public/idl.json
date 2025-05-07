@@ -1,0 +1,1 @@
+{"version":"0.1.0","name":"token_example","instructions":[{"name":"createMint","accounts":[{"name":"signer","isMut":true,"isSigner":true},{"name":"mint","isMut":true,"isSigner":false},{"name":"tokenProgram","isMut":false,"isSigner":false},{"name":"systemProgram","isMut":false,"isSigner":false}],"args":[]}]}
