@@ -1,5 +1,6 @@
 "use client"
 import { useState, useEffect } from "react";
+import CrashGame from "../../../components/main3"
 import CoinMarketCapWidget from '../../../components/Coinmaket';
 import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js"; // Import Solana's SDK
 //import { parseEther } from "ethers/lib/utils"; // You might still use ethers utils for formatting if needed
@@ -98,7 +99,7 @@ function App() {
         </div>
 
         {/* Transfer Token Form */}
-        <div className="mt-7 mb-9">
+       {/*  <div className="mt-7 mb-9">
           <form className="form-style">
             <input
               type="text"
@@ -123,7 +124,8 @@ function App() {
               Transfer Tokens
             </button>
           </form>
-        </div>
+        </div>*/}
+        <CrashGame />
       </section>
     </main>
   );
