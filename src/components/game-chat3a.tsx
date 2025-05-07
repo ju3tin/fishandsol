@@ -88,15 +88,19 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
         const fetchedMessages = response.data || [];
   
         const formattedMessages: ChatMessage[] = fetchedMessages.map((msg: any) => ({
-          id: msg._id?.toString() || Date.now().toString(),
+          id: "server-" + (msg._id?.toString() || Date.now().toString()),
           sender: (msg.user || "Unknown").slice(0, 10),
           message: msg.message,
           timestamp: new Date(msg.time),
           isSystem: msg.user === "System",
         }));
   
-        // Combine and sort by timestamp ascending (oldest to newest)
-        setMessages(formattedMessages.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime()));
+        // Combine and sort by timestamp ascending (oldest to newest), preserving system and simulated player messages
+        setMessages(prev => {
+          const preservedMessages = prev.filter(msg => msg.isSystem || !msg.id.startsWith("server-"));
+          return [...preservedMessages, ...formattedMessages]
+            .sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+        });
       } catch (error: any) {
         console.error("Failed to fetch messages:", error.message || error);
       }
@@ -212,17 +216,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
     const timestamp = new Date();
   
     // Add message to local state
-    setMessages((prev) => [
-      ...prev,
-      {
-        id: Date.now().toString(),
-        sender: "You",
-        message: messageToSend,
-        timestamp,
-      },
-    ]);
-  
-    setNewMessage("");
+   
   
 
 
