@@ -85,7 +85,7 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
         const response = await axios.get("/api/getmessages");
         console.log("Fetched messages:", response.data);
   
-        const fetchedMessages = response.data.messages || [];
+        const fetchedMessages = response.data || [];
   
         const formattedMessages: ChatMessage[] = fetchedMessages.map((msg: any) => ({
           id: msg._id?.toString() || Date.now().toString(),
@@ -98,8 +98,8 @@ const GameChat = ({ currentMultiplier, gameState, onCrash }: GameChatProps) => {
         setMessages((prev) =>
           [...formattedMessages, ...prev].sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime())
         );
-      } catch (error) {
-        console.error("Failed to fetch messages:", error);
+      } catch (error: any) {
+        console.error("Failed to fetch messages:", error.message || error);
       }
     };
   
