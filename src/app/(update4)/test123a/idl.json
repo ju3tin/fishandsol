@@ -1,0 +1,105 @@
+{
+    "version": "0.1.0",
+    "name": "crash_game",
+    "instructions": [
+      {
+        "name": "initializeGame",
+        "accounts": [
+          { "name": "game", "isMut": true, "isSigner": false },
+          { "name": "pool", "isMut": true, "isSigner": false },
+          { "name": "authority", "isMut": true, "isSigner": true },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [
+          { "name": "seed", "type": "u64" }
+        ]
+      },
+      {
+        "name": "depositToPool",
+        "accounts": [
+          { "name": "poolBalance", "isMut": true, "isSigner": false },
+          { "name": "pool", "isMut": true, "isSigner": false },
+          { "name": "player", "isMut": true, "isSigner": true },
+          { "name": "game", "isMut": false, "isSigner": false },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [
+          { "name": "amount", "type": "u64" }
+        ]
+      },
+      {
+        "name": "placeBet",
+        "accounts": [
+          { "name": "game", "isMut": true, "isSigner": false },
+          { "name": "bet", "isMut": true, "isSigner": false },
+          { "name": "poolBalance", "isMut": true, "isSigner": false },
+          { "name": "player", "isMut": true, "isSigner": true },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [
+          { "name": "amount", "type": "u64" }
+        ]
+      },
+      {
+        "name": "cashOut",
+        "accounts": [
+          { "name": "game", "isMut": true, "isSigner": false },
+          { "name": "bet", "isMut": true, "isSigner": false },
+          { "name": "poolBalance", "isMut": true, "isSigner": false },
+          { "name": "player", "isMut": true, "isSigner": true },
+          { "name": "vault", "isMut": true, "isSigner": false },
+          { "name": "pool", "isMut": true, "isSigner": false },
+          { "name": "systemProgram", "isMut": false, "isSigner": false }
+        ],
+        "args": [
+          { "name": "multiplier", "type": "u32" }
+        ]
+      }
+    ],
+    "accounts": [
+      {
+        "name": "game",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            { "name": "authority", "type": "publicKey" },
+            { "name": "seed", "type": "u64" },
+            { "name": "pool", "type": "publicKey" }
+          ]
+        }
+      },
+      {
+        "name": "poolBalance",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            { "name": "player", "type": "publicKey" },
+            { "name": "amount", "type": "u64" }
+          ]
+        }
+      },
+      {
+        "name": "bet",
+        "type": {
+          "kind": "struct",
+          "fields": [
+            { "name": "player", "type": "publicKey" },
+            { "name": "amount", "type": "u64" },
+            { "name": "cashoutMultiplier", "type": "u32" }
+          ]
+        }
+      }
+    ],
+    "errors": [
+      {
+        "code": 6000,
+        "name": "InsufficientPoolBalance",
+        "msg": "Insufficient pool balance"
+      },
+      {
+        "code": 6001,
+        "name": "AlreadyCashedOut",
+        "msg": "Already cashed out"
+      }
+    ]
+  }
