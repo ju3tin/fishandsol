@@ -5,7 +5,7 @@ import { AnchorProvider, Program, BN } from "@coral-xyz/anchor";
 import { Connection, PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import styles from "../styles/Home.module.css";
+import styles from "../../(west)/globals.css";
 import { CrashGame } from "../../target/types/crash_game";
 import IDL from "../../target/idl/crash_game.json";
 
