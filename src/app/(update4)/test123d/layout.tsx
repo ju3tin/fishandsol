@@ -5,7 +5,7 @@ import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { PhantomWalletAdapter, SolflareWalletAdapter } from "@solana/wallet-adapter-wallets";
 import { useMemo } from "react";
 import "@solana/wallet-adapter-react-ui/styles.css";
-import "../styles/globals.css";
+import "./globals.css";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const endpoint = "https://api.devnet.solana.com";
