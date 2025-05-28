@@ -22,6 +22,7 @@ export default function CrashGame() {
   const [gameStatus, setGameStatus] = useState<string>("");
   const [lastOutcome, setLastOutcome] = useState<string>("");
   const [betNonce, setBetNonce] = useState<number>(0);
+  const [place1, place1ad] = useState<string>("what the f");
 
   useEffect(() => {
     if (publicKey && wallet && signTransaction && signAllTransactions) {
@@ -35,12 +36,12 @@ export default function CrashGame() {
       const newProgram = new Program<CrashGame>(IDL, PROGRAM_ID, newProvider);
       setProgram(newProgram);
 
-      newProgram.addEventListener("DepositMade", (event) => {
+      const depositId = newProgram.addEventListener("DepositMade", (event) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(event.poolBalance.toNumber() / 1_000_000_000);
         }
       });
-      newProgram.addEventListener("GameOutcome", (event) => {
+      const gameOutcomeId = newProgram.addEventListener("GameOutcome", (event) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(event.poolBalance.toNumber() / 1_000_000_000);
           setLastOutcome(
@@ -52,16 +53,16 @@ export default function CrashGame() {
           );
         }
       });
-      newProgram.addEventListener("Withdrawal", (event) => {
+      const withdrawalId = newProgram.addEventListener("Withdrawal", (event) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(0);
         }
       });
 
       return () => {
-        newProgram.removeEventListener("DepositMade");
-        newProgram.removeEventListener("GameOutcome");
-        newProgram.removeEventListener("Withdrawal");
+        newProgram.removeEventListener(depositId);
+        newProgram.removeEventListener(gameOutcomeId);
+        newProgram.removeEventListener(withdrawalId);
       };
     }
   }, [publicKey, wallet, signTransaction, signAllTransactions, connection]);
