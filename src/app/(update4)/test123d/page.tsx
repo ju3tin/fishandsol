@@ -5,7 +5,6 @@ import { AnchorProvider, Program, BN } from "@coral-xyz/anchor";
 import { Connection, PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 import styles from "../styles/Home.module.css";
 import { CrashGame } from "../../target/types/crash_game";
 import IDL from "../../target/idl/crash_game.json";
@@ -14,7 +13,7 @@ const PROGRAM_ID = new PublicKey("EAbNs7LJmCajXU3cP7dhn5h2SQ4BRx4XgBgZPaKYaujy")
 const SEED = 1234;
 
 export default function CrashGame() {
-  const { publicKey, wallet } = useWallet();
+  const { publicKey, wallet, signTransaction, signAllTransactions } = useWallet();
   const { connection } = useConnection();
   const [provider, setProvider] = useState<AnchorProvider | null>(null);
   const [program, setProgram] = useState<Program<CrashGame> | null>(null);
@@ -24,56 +23,48 @@ export default function CrashGame() {
   const [lastOutcome, setLastOutcome] = useState<string>("");
   const [betNonce, setBetNonce] = useState<number>(0);
 
-useEffect(() => {
-  if (
-    publicKey &&
-    wallet?.adapter &&
-    "signTransaction" in wallet.adapter &&
-    "signAllTransactions" in wallet.adapter
-  ) {
-    const adapter = wallet.adapter;
-    const anchorWallet = {
-      publicKey: adapter.publicKey!,
-      signTransaction: (adapter as any).signTransaction.bind(adapter),
-      signAllTransactions: (adapter as any).signAllTransactions.bind(adapter),
-    };
+  useEffect(() => {
+    if (publicKey && wallet && signTransaction && signAllTransactions) {
+      const anchorWallet = {
+        publicKey,
+        signTransaction,
+        signAllTransactions,
+      };
+      const newProvider = new AnchorProvider(connection, anchorWallet, {});
+      setProvider(newProvider);
+      const newProgram = new Program<CrashGame>(IDL, PROGRAM_ID, newProvider);
+      setProgram(newProgram);
 
-    const newProvider = new AnchorProvider(connection, anchorWallet, {});
-    setProvider(newProvider);
-    const newProgram = new Program<CrashGame>(IDL, PROGRAM_ID, newProvider);
+      newProgram.addEventListener("DepositMade", (event) => {
+        if (event.player.toString() === publicKey.toString()) {
+          setBalance(event.poolBalance.toNumber() / 1_000_000_000);
+        }
+      });
+      newProgram.addEventListener("GameOutcome", (event) => {
+        if (event.player.toString() === publicKey.toString()) {
+          setBalance(event.poolBalance.toNumber() / 1_000_000_000);
+          setLastOutcome(
+            `Bet: ${(event.betAmount / 1_000_000_000).toFixed(4)} SOL, Multiplier: ${
+              event.multiplier / 100
+            }x, Payout: ${(event.payout / 1_000_000_000).toFixed(4)} SOL, ${
+              event.isWin ? "Win" : "Loss"
+            }`
+          );
+        }
+      });
+      newProgram.addEventListener("Withdrawal", (event) => {
+        if (event.player.toString() === publicKey.toString()) {
+          setBalance(0);
+        }
+      });
 
-    newProgram.addEventListener("DepositMade", (event) => {
-      if (event.player.toString() === publicKey.toString()) {
-        setBalance(event.poolBalance.toNumber() / 1_000_000_000);
-      }
-    });
-    newProgram.addEventListener("GameOutcome", (event) => {
-      if (event.player.toString() === publicKey.toString()) {
-        setBalance(event.poolBalance.toNumber() / 1_000_000_000);
-        setLastOutcome(
-          `Bet: ${(event.betAmount / 1_000_000_000).toFixed(4)} SOL, Multiplier: ${
-            event.multiplier / 100
-          }x, Payout: ${(event.payout / 1_000_000_000).toFixed(4)} SOL, ${
-            event.isWin ? "Win" : "Loss"
-          }`
-        );
-      }
-    });
-    newProgram.addEventListener("Withdrawal", (event) => {
-      if (event.player.toString() === publicKey.toString()) {
-        setBalance(0);
-      }
-    });
-
-    setProgram(newProgram);
-
-    return () => {
-      newProgram.removeEventListener("DepositMade");
-      newProgram.removeEventListener("GameOutcome");
-      newProgram.removeEventListener("Withdrawal");
-    };
-  }
-}, [publicKey, wallet, connection]);
+      return () => {
+        newProgram.removeEventListener("DepositMade");
+        newProgram.removeEventListener("GameOutcome");
+        newProgram.removeEventListener("Withdrawal");
+      };
+    }
+  }, [publicKey, wallet, signTransaction, signAllTransactions, connection]);
 
   const [game, poolBalance, pool, vault] = useMemo(() => {
     const [gamePda] = PublicKey.findProgramAddressSync(

@@ -1,9 +1,10 @@
+"use client"
 import { useWallet, Wallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Program, AnchorProvider, web3, BN } from "@coral-xyz/anchor";
 import { PublicKey, Connection } from "@solana/web3.js";
 import { useState, useEffect, useMemo } from "react";
-import { CrashGame, IDL } from "../idl";
+import { CrashGame, IDL } from "./idl";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
 import { WalletModalProvider } from "@solana/wallet-adapter-react-ui";
 import { PhantomWalletAdapter } from "@solana/wallet-adapter-wallets";
@@ -36,18 +37,28 @@ export default function Home() {
 
     // Set up provider
     const provider = useMemo(() => {
-        if (!wallet || !publicKey || !signTransaction) return null;
+        const adapter = wallet?.adapter;
+
+        if (
+            !adapter ||
+            typeof adapter.publicKey === "undefined" ||
+            typeof adapter.signTransaction !== "function" ||
+            typeof adapter.signAllTransactions !== "function"
+        ) {
+            return null;
+        }
 
         const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
         const anchorWallet = {
-            publicKey,
-            signTransaction,
-            signAllTransactions: wallet.adapter.signAllTransactions,
+            publicKey: adapter.publicKey,
+            signTransaction: adapter.signTransaction.bind(adapter),
+            signAllTransactions: adapter.signAllTransactions.bind(adapter),
         };
+
         return new AnchorProvider(connection, anchorWallet, {
             preflightCommitment: "confirmed",
         });
-    }, [wallet, publicKey, signTransaction]);
+    }, [wallet]);
 
     const initializeGame = async () => {
         if (!provider || !publicKey) {
@@ -55,12 +66,14 @@ export default function Home() {
             return;
         }
 
-        const program = new Program<CrashGame>(IDL, provider);
+        const program = new Program(IDL, programId, provider);
         const seed = Math.floor(Math.random() * 10000);
         const [pda, bump] = await PublicKey.findProgramAddress(
             [Buffer.from("game"), publicKey.toBuffer(), Buffer.from(seed.toString())],
             programId
         );
+
+        console.log("initializeGame PDA:", pda.toBase58());
 
         const pool = web3.Keypair.generate();
 
@@ -88,15 +101,18 @@ export default function Home() {
             return;
         }
 
-        const program = new Program<CrashGame>(IDL, provider);
+        const program = new Program(IDL, programId, provider);
         const amount = 0.1 * web3.LAMPORTS_PER_SOL;
         const [poolBalancePda] = await PublicKey.findProgramAddress(
             [Buffer.from("pool_balance"), gamePda.toBuffer(), publicKey.toBuffer()],
             programId
         );
 
+        console.log("depositToPool poolBalancePda:", poolBalancePda.toBase58());
+        console.log("depositToPool gamePda:", gamePda.toBase58());
+
         try {
-            const gameAccount = await program.account.game.fetch(gamePda);
+            const gameAccount = await (program.account as any).game.fetch(gamePda);
             const pool = gameAccount.pool;
 
             await program.methods
@@ -124,7 +140,7 @@ export default function Home() {
             return;
         }
 
-        const program = new Program<CrashGame>(IDL, provider);
+        const program = new Program(IDL, programId, provider);
         const amount = 0.01 * web3.LAMPORTS_PER_SOL;
         const [betPda] = await PublicKey.findProgramAddress(
             [Buffer.from("bet"), gamePda.toBuffer(), publicKey.toBuffer()],
@@ -134,6 +150,10 @@ export default function Home() {
             [Buffer.from("pool_balance"), gamePda.toBuffer(), publicKey.toBuffer()],
             programId
         );
+
+        console.log("placeBet betPda:", betPda.toBase58());
+        console.log("placeBet poolBalancePda:", poolBalancePda.toBase58());
+        console.log("placeBet gamePda:", gamePda.toBase58());
 
         try {
             await program.methods
@@ -161,7 +181,7 @@ export default function Home() {
             return;
         }
 
-        const program = new Program<CrashGame>(IDL, provider);
+        const program = new Program(IDL, programId, provider);
         const [betPda] = await PublicKey.findProgramAddress(
             [Buffer.from("bet"), gamePda.toBuffer(), publicKey.toBuffer()],
             programId
@@ -170,6 +190,10 @@ export default function Home() {
             [Buffer.from("pool_balance"), gamePda.toBuffer(), publicKey.toBuffer()],
             programId
         );
+
+        console.log("cashOut betPda:", betPda.toBase58());
+        console.log("cashOut poolBalancePda:", poolBalancePda.toBase58());
+        console.log("cashOut gamePda:", gamePda.toBase58());
 
         try {
             const gameAccount = await program.account.game.fetch(gamePda);
