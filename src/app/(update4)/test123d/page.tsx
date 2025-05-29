@@ -7,7 +7,7 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import styles from "./page.module.css"
 import type { CrashGame } from "../../../types/crashgame";
-import IDL from "./idl.json";
+import { IDL } from "../../../types/crashgame";
 
 const PROGRAM_ID = new PublicKey("EAbNs7LJmCajXU3cP7dhn5h2SQ4BRx4XgBgZPaKYaujy");
 const SEED = 1234;
@@ -31,9 +31,9 @@ export default function CrashGame() {
         signTransaction,
         signAllTransactions,
       };
-      const newProvider: AnchorProvider = new AnchorProvider(connection, anchorWallet, {});
+      const newProvider = new AnchorProvider(connection, anchorWallet, {});
       setProvider(newProvider);
-      const newProgram = new Program<CrashGame>(IDL, PROGRAM_ID as unknown as PublicKey, newProvider as unknown as Provider);
+      const newProgram = new Program<CrashGame>(IDL, newProvider, PROGRAM_ID);
       setProgram(newProgram);
 
       const depositId = newProgram.addEventListener("DepositMade", (event: { player: PublicKey; poolBalance: BN }) => {
@@ -67,7 +67,7 @@ export default function CrashGame() {
     }
   }, [publicKey, wallet, signTransaction, signAllTransactions, connection]);
 
-  const [game, poolBalance, pool, vault] = useMemo(() => {
+  const [game, poolBalance, pool, vault, bet] = useMemo(() => {
     const [gamePda] = PublicKey.findProgramAddressSync(
       [Buffer.from("game"), publicKey?.toBuffer() || Buffer.alloc(32), new BN(SEED).toArrayLike(Buffer, "le", 8)],
       PROGRAM_ID
@@ -80,8 +80,12 @@ export default function CrashGame() {
       [Buffer.from("vault"), gamePda.toBuffer()],
       PROGRAM_ID
     );
+    const [betPda] = PublicKey.findProgramAddressSync(
+      [Buffer.from("bet"), gamePda.toBuffer(), publicKey?.toBuffer() || Buffer.alloc(32)],
+      PROGRAM_ID
+    );
     const poolKey = Keypair.generate();
-    return [gamePda, poolBalancePda, poolKey, vaultPda];
+    return [gamePda, poolBalancePda, poolKey, vaultPda, betPda];
   }, [publicKey]);
 
   const initializeGame = async () => {
@@ -95,7 +99,6 @@ export default function CrashGame() {
         .accounts({
           game,
           pool: pool.publicKey,
-          vault,
           authority: publicKey,
           systemProgram: SystemProgram.programId,
         })
@@ -121,12 +124,11 @@ export default function CrashGame() {
       await program.methods
         .depositToPool(new BN(amount))
         .accounts({
-          poolBalance,
+          pool_balance: poolBalance,
           pool: pool.publicKey,
           player: publicKey,
           game,
           systemProgram: SystemProgram.programId,
-          authority: publicKey,
         })
         .rpc();
       setGameStatus("Deposit successful");
@@ -143,16 +145,7 @@ export default function CrashGame() {
       return;
     }
     try {
-      await program.methods
-        .getPoolBalance()
-        .accounts({
-          game,
-          poolBalance,
-          player: publicKey,
-          authority: publicKey,
-        })
-        .rpc();
-      const poolBalanceAccount = await program.account.poolBalance.fetch(poolBalance);
+      const poolBalanceAccount = await program.account.PoolBalance.fetch(poolBalance);
       setBalance(poolBalanceAccount.amount.toNumber() / 1_000_000_000);
     } catch (err) {
       console.error(err);
@@ -167,14 +160,15 @@ export default function CrashGame() {
     }
     try {
       await program.methods
-        .withdraw()
+        .cashOut(0)
         .accounts({
           game,
-          poolBalance,
+          bet,
+          pool_balance: poolBalance,
           player: publicKey,
+          vault,
           pool: pool.publicKey,
           systemProgram: SystemProgram.programId,
-          authority: publicKey,
         })
         .rpc();
       setGameStatus("Withdrawal successful");
@@ -196,16 +190,13 @@ export default function CrashGame() {
       );
       try {
         await program.methods
-          .startGame(new BN(betAmount), multiplier, new BN(betNonce))
+          .placeBet(new BN(betAmount))
           .accounts({
             game,
             bet,
-            poolBalance,
+            pool_balance: poolBalance,
             player: publicKey,
-            vault,
-            pool: pool.publicKey,
             systemProgram: SystemProgram.programId,
-            authority: publicKey,
           })
           .rpc();
         setGameStatus(`Game started with multiplier: ${multiplier / 100}x`);
