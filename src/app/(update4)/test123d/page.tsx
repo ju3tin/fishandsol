@@ -6,7 +6,7 @@ import { Connection, PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import styles from "./page.module.css"
-import { CrashGame } from "../../target/types/crash_game";
+import type { CrashGame } from "../../../types/crashgame";
 import IDL from "../../(update4)/test123a/idl.json";
 
 const PROGRAM_ID = new PublicKey("EAbNs7LJmCajXU3cP7dhn5h2SQ4BRx4XgBgZPaKYaujy");
@@ -36,24 +36,24 @@ export default function CrashGame() {
       const newProgram = new Program<CrashGame>(IDL, PROGRAM_ID as unknown as PublicKey, newProvider as unknown as Provider);
       setProgram(newProgram);
 
-      const depositId = newProgram.addEventListener("DepositMade", (event) => {
+      const depositId = newProgram.addEventListener("DepositMade", (event: { player: PublicKey; poolBalance: BN }) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(event.poolBalance.toNumber() / 1_000_000_000);
         }
       });
-      const gameOutcomeId = newProgram.addEventListener("GameOutcome", (event) => {
+      const gameOutcomeId = newProgram.addEventListener("GameOutcome", (event: { player: PublicKey; betAmount: BN; multiplier: number; payout: BN; isWin: boolean; poolBalance: BN }) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(event.poolBalance.toNumber() / 1_000_000_000);
           setLastOutcome(
-            `Bet: ${(event.betAmount / 1_000_000_000).toFixed(4)} SOL, Multiplier: ${
+            `Bet: ${(event.betAmount.toNumber() / 1_000_000_000).toFixed(4)} SOL, Multiplier: ${
               event.multiplier / 100
-            }x, Payout: ${(event.payout / 1_000_000_000).toFixed(4)} SOL, ${
+            }x, Payout: ${(event.payout.toNumber() / 1_000_000_000).toFixed(4)} SOL, ${
               event.isWin ? "Win" : "Loss"
             }`
           );
         }
       });
-      const withdrawalId = newProgram.addEventListener("Withdrawal", (event) => {
+      const withdrawalId = newProgram.addEventListener("Withdrawal", (event: { player: PublicKey }) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(0);
         }
