@@ -7,7 +7,7 @@ import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import styles from "./page.module.css"
 import type { CrashGame } from "../../../types/crashgame";
-import IDL from "../../(update4)/test123a/idl.json";
+import IDL from "./idl.json";
 
 const PROGRAM_ID = new PublicKey("EAbNs7LJmCajXU3cP7dhn5h2SQ4BRx4XgBgZPaKYaujy");
 const SEED = 1234;
