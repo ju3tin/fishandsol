@@ -1,13 +1,13 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { AnchorProvider, Program, BN } from "@coral-xyz/anchor";
+import { AnchorProvider, Program, BN, Provider } from "@coral-xyz/anchor";
 import { Connection, PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import styles from "./page.module.css"
 import { CrashGame } from "../../target/types/crash_game";
-import IDL from "../../target/idl/crash_game.json";
+import IDL from "../../(update4)/test123a/idl.json";
 
 const PROGRAM_ID = new PublicKey("EAbNs7LJmCajXU3cP7dhn5h2SQ4BRx4XgBgZPaKYaujy");
 const SEED = 1234;
@@ -31,9 +31,9 @@ export default function CrashGame() {
         signTransaction,
         signAllTransactions,
       };
-      const newProvider = new AnchorProvider(connection, anchorWallet, {});
+      const newProvider: AnchorProvider = new AnchorProvider(connection, anchorWallet, {});
       setProvider(newProvider);
-      const newProgram = new Program<CrashGame>(IDL, PROGRAM_ID, newProvider);
+      const newProgram = new Program<CrashGame>(IDL, PROGRAM_ID as unknown as PublicKey, newProvider as unknown as Provider);
       setProgram(newProgram);
 
       const depositId = newProgram.addEventListener("DepositMade", (event) => {

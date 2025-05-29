@@ -6,6 +6,7 @@ import { PublicKey } from "@solana/web3.js";
 
 import { useState, useEffect } from "react";
 import idl from "./idl.json";
+import { CrashGame } from "./generated-types";
 
 const programId = new PublicKey("YOUR_PROGRAM_ID_HERE");
 
@@ -35,14 +36,19 @@ export default function Home() {
             web3.clusterApiUrl("devnet"),
             "confirmed"
         );
-        return new AnchorProvider(connection, wallet, {});
+        const anchorWallet = {
+            publicKey,
+            signTransaction,
+            signAllTransactions: wallet.signAllTransactions
+        };
+        return new AnchorProvider(connection, anchorWallet, {});
     };
 
     const depositToPool = async () => {
         const provider = getProvider();
         if (!provider || !gamePda) return;
 
-        const program = new Program(idl, programId, provider);
+        const program = new Program<CrashGame>(idl, programId, provider);
         const amount = 0.1 * web3.LAMPORTS_PER_SOL;
         const [poolBalancePda] = await PublicKey.findProgramAddress(
             [Buffer.from("pool_balance"), gamePda.toBuffer(), publicKey.toBuffer()],
@@ -68,7 +74,7 @@ export default function Home() {
         const provider = getProvider();
         if (!provider || !gamePda || gameStatus !== "waiting") return;
 
-        const program = new Program(idl, programId, provider);
+        const program = new Program<CrashGame>(idl, programId, provider);
         const amount = 0.01 * web3.LAMPORTS_PER_SOL;
         const [betPda] = await PublicKey.findProgramAddress(
             [Buffer.from("bet"), gamePda.toBuffer(), publicKey.toBuffer()],
@@ -98,7 +104,7 @@ export default function Home() {
         const provider = getProvider();
         if (!provider || !gamePda || gameStatus !== "running") return;
 
-        const program = new Program(idl, programId, provider);
+        const program = new Program<CrashGame>(idl, programId, provider);
         const [betPda] = await PublicKey.findProgramAddress(
             [Buffer.from("bet"), gamePda.toBuffer(), publicKey.toBuffer()],
             programId
