@@ -116,7 +116,7 @@ export default function CrashGame() {
       return;
     }
     const amount = parseFloat(depositAmount) * 1_000_000_000;
-    if (isNaN(amount) || amount <= 0) {
+    if (isNaN(amount) || amount <= 0) { 
       setGameStatus("Invalid deposit amount");
       return;
     }
