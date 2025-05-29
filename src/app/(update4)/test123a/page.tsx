@@ -2,7 +2,7 @@
 import { useWallet, Wallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Program, AnchorProvider, web3, BN } from "@coral-xyz/anchor";
-import { PublicKey, Connection } from "@solana/web3.js";
+import { PublicKey, Connection, Transaction, VersionedTransaction } from "@solana/web3.js";
 import { useState, useEffect, useMemo } from "react";
 import { CrashGame, IDL } from "./idl";
 import { WalletAdapterNetwork } from "@solana/wallet-adapter-base";
@@ -40,22 +40,23 @@ export default function Home() {
 
     // Set up provider
     const provider = useMemo(() => {
-        const adapter = wallet?.adapter;
-
-        if (
-            !adapter ||
-            typeof adapter.publicKey === "undefined" ||
-            typeof adapter.signTransaction !== "function" ||
-            typeof adapter.signAllTransactions !== "function"
-        ) {
+        if (!wallet || !wallet.adapter || !wallet.adapter.publicKey) {
             return null;
         }
 
         const connection = new Connection(clusterApiUrl("devnet"), "confirmed");
+        
+        // Create a custom wallet implementation that matches Anchor's Wallet interface
         const anchorWallet = {
-            publicKey: adapter.publicKey,
-            signTransaction: adapter.signTransaction.bind(adapter),
-            signAllTransactions: adapter.signAllTransactions.bind(adapter),
+            publicKey: wallet.adapter.publicKey,
+            signTransaction: async (tx: Transaction | VersionedTransaction) => {
+                if (!wallet.adapter) throw new Error("Wallet not connected");
+                return await wallet.adapter.signTransaction(tx);
+            },
+            signAllTransactions: async (txs: (Transaction | VersionedTransaction)[]) => {
+                if (!wallet.adapter) throw new Error("Wallet not connected");
+                return await wallet.adapter.signAllTransactions(txs);
+            }
         };
 
         return new AnchorProvider(connection, anchorWallet, {
