@@ -33,7 +33,7 @@ export default function CrashGame() {
         {}
       );
       setProvider(newProvider);
-      const newProgram = new Program<CrashGame>(IDL as any, PROGRAM_ID, newProvider);
+      const newProgram = new Program<CrashGame>(IDL as Idl, PROGRAM_ID, newProvider);
       setProgram(newProgram);
 
       newProgram.addEventListener("DepositMade", (event: any) => {
