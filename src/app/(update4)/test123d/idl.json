@@ -17,7 +17,7 @@
       {
         "name": "depositToPool",
         "accounts": [
-          { "name": "poolBalance", "isMut": true, "isSigner": false },
+          { "name": "pool_balance", "isMut": true, "isSigner": false },
           { "name": "pool", "isMut": true, "isSigner": false },
           { "name": "player", "isMut": true, "isSigner": true },
           { "name": "game", "isMut": false, "isSigner": false },
@@ -32,7 +32,7 @@
         "accounts": [
           { "name": "game", "isMut": true, "isSigner": false },
           { "name": "bet", "isMut": true, "isSigner": false },
-          { "name": "poolBalance", "isMut": true, "isSigner": false },
+          { "name": "pool_balance", "isMut": true, "isSigner": false },
           { "name": "player", "isMut": true, "isSigner": true },
           { "name": "systemProgram", "isMut": false, "isSigner": false }
         ],
@@ -45,7 +45,7 @@
         "accounts": [
           { "name": "game", "isMut": true, "isSigner": false },
           { "name": "bet", "isMut": true, "isSigner": false },
-          { "name": "poolBalance", "isMut": true, "isSigner": false },
+          { "name": "pool_balance", "isMut": true, "isSigner": false },
           { "name": "player", "isMut": true, "isSigner": true },
           { "name": "vault", "isMut": true, "isSigner": false },
           { "name": "pool", "isMut": true, "isSigner": false },
@@ -58,7 +58,7 @@
     ],
     "accounts": [
       {
-        "name": "game",
+        "name": "Game",
         "type": {
           "kind": "struct",
           "fields": [
@@ -69,7 +69,7 @@
         }
       },
       {
-        "name": "poolBalance",
+        "name": "PoolBalance",
         "type": {
           "kind": "struct",
           "fields": [
@@ -79,13 +79,13 @@
         }
       },
       {
-        "name": "bet",
+        "name": "Bet",
         "type": {
           "kind": "struct",
           "fields": [
             { "name": "player", "type": "publicKey" },
             { "name": "amount", "type": "u64" },
-            { "name": "cashoutMultiplier", "type": "u32" }
+            { "name": "cashout_multiplier", "type": "u32" }
           ]
         }
       }
@@ -101,5 +101,8 @@
         "name": "AlreadyCashedOut",
         "msg": "Already cashed out"
       }
-    ]
+    ],
+    "metadata": {
+      "address": "3YBVhgxgzCwHSTnzguWkqZgrooHigbi91n9ThZ7EMcjn"
+    }
   }
