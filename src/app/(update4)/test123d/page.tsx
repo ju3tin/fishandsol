@@ -34,7 +34,7 @@ export default function CrashGame() {
       const newProvider = new AnchorProvider(connection, anchorWallet, {});
       setProvider(newProvider);
       try {
-        const newProgram = new Program(IDL as unknown as Idl & { coder: { instruction: any; accounts: any; events: any; types: any } }, newProvider as unknown as Provider, PROGRAM_ID) as CrashGameProgram;
+        const newProgram = new Program(IDL as any, newProvider as any, PROGRAM_ID as any) as CrashGameProgram;
         setProgram(newProgram);
 
         const depositId = newProgram.addEventListener("DepositMade", (event: { player: PublicKey; poolBalance: BN }) => {
