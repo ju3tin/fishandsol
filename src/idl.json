@@ -159,7 +159,7 @@
   ],
   "accounts": [
     {
-      "name": "Game",
+      "name": "game",
       "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "type": {
         "kind": "struct",
@@ -180,7 +180,7 @@
       }
     },
     {
-      "name": "PoolBalance",
+      "name": "pool_balance",
       "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "type": {
         "kind": "struct",
@@ -197,7 +197,7 @@
       }
     },
     {
-      "name": "Bet",
+      "name": "bet",
       "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "type": {
         "kind": "struct",

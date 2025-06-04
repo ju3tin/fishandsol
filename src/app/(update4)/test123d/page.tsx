@@ -1,12 +1,12 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { AnchorProvider, Program, BN, Provider } from "@coral-xyz/anchor";
+import { AnchorProvider, Program, BN, Idl } from "@coral-xyz/anchor";
 import { Connection, PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
-import styles from "./page.module.css"
-import type { CrashGame } from "../../../types/crashgame";
+import styles from "./page.module.css";
+import type { CrashGame, CrashGameProgram } from "../../../types/crashgame";
 import { IDL } from "../../../types/crashgame";
 
 const PROGRAM_ID = new PublicKey("EAbNs7LJmCajXU3cP7dhn5h2SQ4BRx4XgBgZPaKYaujy");
@@ -16,13 +16,13 @@ export default function CrashGame() {
   const { publicKey, wallet, signTransaction, signAllTransactions } = useWallet();
   const { connection } = useConnection();
   const [provider, setProvider] = useState<AnchorProvider | null>(null);
-  const [program, setProgram] = useState<Program<CrashGame> | null>(null);
+  const [program, setProgram] = useState<CrashGameProgram | null>(null);
   const [balance, setBalance] = useState<number>(0);
   const [depositAmount, setDepositAmount] = useState<string>("");
   const [gameStatus, setGameStatus] = useState<string>("");
   const [lastOutcome, setLastOutcome] = useState<string>("");
   const [betNonce, setBetNonce] = useState<number>(0);
-  const [place1, place1ad] = useState<string>("what the f");
+  const [place1, setPlace1] = useState<string>("what the f"); // Fixed: Correct useState syntax
 
   useEffect(() => {
     if (publicKey && wallet && signTransaction && signAllTransactions) {
@@ -33,7 +33,7 @@ export default function CrashGame() {
       };
       const newProvider = new AnchorProvider(connection, anchorWallet, {});
       setProvider(newProvider);
-      const newProgram = new Program<CrashGame>(IDL, newProvider, PROGRAM_ID);
+      const newProgram = new Program(IDL as Idl, PROGRAM_ID, newProvider) as CrashGameProgram;
       setProgram(newProgram);
 
       const depositId = newProgram.addEventListener("DepositMade", (event: { player: PublicKey; poolBalance: BN }) => {
@@ -41,18 +41,21 @@ export default function CrashGame() {
           setBalance(event.poolBalance.toNumber() / 1_000_000_000);
         }
       });
-      const gameOutcomeId = newProgram.addEventListener("GameOutcome", (event: { player: PublicKey; betAmount: BN; multiplier: number; payout: BN; isWin: boolean; poolBalance: BN }) => {
-        if (event.player.toString() === publicKey.toString()) {
-          setBalance(event.poolBalance.toNumber() / 1_000_000_000);
-          setLastOutcome(
-            `Bet: ${(event.betAmount.toNumber() / 1_000_000_000).toFixed(4)} SOL, Multiplier: ${
-              event.multiplier / 100
-            }x, Payout: ${(event.payout.toNumber() / 1_000_000_000).toFixed(4)} SOL, ${
-              event.isWin ? "Win" : "Loss"
-            }`
-          );
+      const gameOutcomeId = newProgram.addEventListener(
+        "GameOutcome",
+        (event: { player: PublicKey; betAmount: BN; multiplier: number; payout: BN; isWin: boolean; poolBalance: BN }) => {
+          if (event.player.toString() === publicKey.toString()) {
+            setBalance(event.poolBalance.toNumber() / 1_000_000_000);
+            setLastOutcome(
+              `Bet: ${(event.betAmount.toNumber() / 1_000_000_000).toFixed(4)} SOL, Multiplier: ${
+                event.multiplier / 100
+              }x, Payout: ${(event.payout.toNumber() / 1_000_000_000).toFixed(4)} SOL, ${
+                event.isWin ? "Win" : "Loss"
+              }`
+            );
+          }
         }
-      });
+      );
       const withdrawalId = newProgram.addEventListener("Withdrawal", (event: { player: PublicKey }) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(0);
@@ -68,12 +71,21 @@ export default function CrashGame() {
   }, [publicKey, wallet, signTransaction, signAllTransactions, connection]);
 
   const [game, poolBalance, pool, vault, bet] = useMemo(() => {
+    if (!publicKey) {
+      return [
+        null,
+        null,
+        Keypair.generate().publicKey,
+        null,
+        null,
+      ] as [PublicKey | null, PublicKey | null, PublicKey, PublicKey | null, PublicKey | null];
+    }
     const [gamePda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("game"), publicKey?.toBuffer() || Buffer.alloc(32), new BN(SEED).toArrayLike(Buffer, "le", 8)],
+      [Buffer.from("game"), publicKey.toBuffer(), new BN(SEED).toArrayLike(Buffer, "le", 8)],
       PROGRAM_ID
     );
     const [poolBalancePda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("pool_balance"), gamePda.toBuffer(), publicKey?.toBuffer() || Buffer.alloc(32)],
+      [Buffer.from("pool_balance"), gamePda.toBuffer(), publicKey.toBuffer()],
       PROGRAM_ID
     );
     const [vaultPda] = PublicKey.findProgramAddressSync(
@@ -81,16 +93,16 @@ export default function CrashGame() {
       PROGRAM_ID
     );
     const [betPda] = PublicKey.findProgramAddressSync(
-      [Buffer.from("bet"), gamePda.toBuffer(), publicKey?.toBuffer() || Buffer.alloc(32)],
+      [Buffer.from("bet"), gamePda.toBuffer(), publicKey.toBuffer()],
       PROGRAM_ID
     );
-    const poolKey = Keypair.generate();
+    const poolKey = Keypair.generate().publicKey;
     return [gamePda, poolBalancePda, poolKey, vaultPda, betPda];
   }, [publicKey]);
 
   const initializeGame = async () => {
-    if (!program || !publicKey || !provider) {
-      setGameStatus("Wallet not connected");
+    if (!program || !publicKey || !provider || !game || !pool) {
+      setGameStatus("Wallet not connected or accounts not initialized");
       return;
     }
     try {
@@ -98,7 +110,7 @@ export default function CrashGame() {
         .initializeGame(new BN(SEED))
         .accounts({
           game,
-          pool: pool.publicKey,
+          pool,
           authority: publicKey,
           systemProgram: SystemProgram.programId,
         })
@@ -111,12 +123,12 @@ export default function CrashGame() {
   };
 
   const deposit = async () => {
-    if (!program || !publicKey || !provider) {
-      setGameStatus("Wallet not connected");
+    if (!program || !publicKey || !provider || !game || !pool || !poolBalance) {
+      setGameStatus("Wallet not connected or accounts not initialized");
       return;
     }
     const amount = parseFloat(depositAmount) * 1_000_000_000;
-    if (isNaN(amount) || amount <= 0) { 
+    if (isNaN(amount) || amount <= 0) {
       setGameStatus("Invalid deposit amount");
       return;
     }
@@ -124,8 +136,8 @@ export default function CrashGame() {
       await program.methods
         .depositToPool(new BN(amount))
         .accounts({
-          pool_balance: poolBalance,
-          pool: pool.publicKey,
+          poolBalance,
+          pool,
           player: publicKey,
           game,
           systemProgram: SystemProgram.programId,
@@ -140,12 +152,12 @@ export default function CrashGame() {
   };
 
   const queryBalance = async () => {
-    if (!program || !publicKey || !provider) {
-      setGameStatus("Wallet not connected");
+    if (!program || !publicKey || !provider || !poolBalance) {
+      setGameStatus("Wallet not connected or accounts not initialized");
       return;
     }
     try {
-      const poolBalanceAccount = await program.account.PoolBalance.fetch(poolBalance);
+      const poolBalanceAccount = await program.account.poolBalance.fetch(poolBalance);
       setBalance(poolBalanceAccount.amount.toNumber() / 1_000_000_000);
     } catch (err) {
       console.error(err);
@@ -154,20 +166,20 @@ export default function CrashGame() {
   };
 
   const withdraw = async () => {
-    if (!program || !publicKey || !provider) {
-      setGameStatus("Wallet not connected");
+    if (!program || !publicKey || !provider || !game || !pool || !vault || !bet) {
+      setGameStatus("Wallet not connected or accounts not initialized");
       return;
     }
     try {
       await program.methods
-        .cashOut(0)
+        .cashOut(new BN(0)) // Ensure BN is used for consistency
         .accounts({
           game,
           bet,
-          pool_balance: poolBalance,
+          poolBalance,
           player: publicKey,
           vault,
-          pool: pool.publicKey,
+          pool,
           systemProgram: SystemProgram.programId,
         })
         .rpc();
@@ -179,12 +191,12 @@ export default function CrashGame() {
   };
 
   useEffect(() => {
-    if (!program || !publicKey || !provider) return;
+    if (!program || !publicKey || !provider || !game || !poolBalance) return;
     const ws = new WebSocket("ws://localhost:8080");
     ws.onmessage = async (event) => {
       const multiplier = parseInt(event.data);
       const betAmount = 50_000;
-      const [bet] = PublicKey.findProgramAddressSync(
+      const [betPda] = PublicKey.findProgramAddressSync(
         [Buffer.from("bet"), game.toBuffer(), publicKey.toBuffer(), new BN(betNonce).toArrayLike(Buffer, "le", 8)],
         PROGRAM_ID
       );
@@ -193,8 +205,8 @@ export default function CrashGame() {
           .placeBet(new BN(betAmount))
           .accounts({
             game,
-            bet,
-            pool_balance: poolBalance,
+            bet: betPda,
+            poolBalance,
             player: publicKey,
             systemProgram: SystemProgram.programId,
           })
@@ -207,7 +219,7 @@ export default function CrashGame() {
       }
     };
     return () => ws.close();
-  }, [program, publicKey, provider, game, poolBalance, pool, vault, betNonce]);
+  }, [program, publicKey, provider, game, poolBalance, betNonce]);
 
   return (
     <div className={styles.container}>
@@ -219,6 +231,7 @@ export default function CrashGame() {
           <p>Balance: {balance.toFixed(4)} SOL</p>
           <p>Status: {gameStatus}</p>
           <p>Last Outcome: {lastOutcome}</p>
+          <p>Place1: {place1}</p> {/* Added to display the state variable */}
           <div className={styles.inputGroup}>
             <input
               type="number"
@@ -226,6 +239,7 @@ export default function CrashGame() {
               onChange={(e) => setDepositAmount(e.target.value)}
               placeholder="Deposit amount (SOL)"
               className={styles.input}
+              step="0.01" // Added for better UX with SOL amounts
             />
             <button onClick={deposit} className={styles.button}>
               Deposit
