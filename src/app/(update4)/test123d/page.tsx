@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { AnchorProvider, Program, BN, Idl } from "@coral-xyz/anchor";
+import { AnchorProvider, Program, BN, Idl, Coder, Provider } from "@coral-xyz/anchor";
 import { Connection, PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -34,7 +34,7 @@ export default function CrashGame() {
       const newProvider = new AnchorProvider(connection, anchorWallet, {});
       setProvider(newProvider);
       try {
-        const newProgram = new Program(IDL as Idl, newProvider, PROGRAM_ID) as CrashGameProgram;
+        const newProgram = new Program(IDL as unknown as Idl & { coder: { instruction: any; accounts: any; events: any; types: any } }, newProvider as unknown as Provider, PROGRAM_ID) as CrashGameProgram;
         setProgram(newProgram);
 
         const depositId = newProgram.addEventListener("DepositMade", (event: { player: PublicKey; poolBalance: BN }) => {
@@ -162,7 +162,7 @@ export default function CrashGame() {
       return;
     }
     try {
-      const poolBalanceAccount = await program.account.pool_balance.fetch(poolBalance);
+      const poolBalanceAccount = await (program.account as any).PoolBalance.fetch(poolBalance);
       setBalance(poolBalanceAccount.amount.toNumber() / 1_000_000_000);
     } catch (err) {
       console.error(err);
