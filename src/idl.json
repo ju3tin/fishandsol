@@ -5,6 +5,7 @@
   "instructions": [
     {
       "name": "initializeGame",
+      "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "accounts": [
         {
           "name": "game",
@@ -36,6 +37,7 @@
     },
     {
       "name": "depositToPool",
+      "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "accounts": [
         {
           "name": "pool_balance",
@@ -72,6 +74,7 @@
     },
     {
       "name": "placeBet",
+      "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "accounts": [
         {
           "name": "game",
@@ -108,6 +111,7 @@
     },
     {
       "name": "cashOut",
+      "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "accounts": [
         {
           "name": "game",
@@ -156,6 +160,7 @@
   "accounts": [
     {
       "name": "Game",
+      "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "type": {
         "kind": "struct",
         "fields": [
@@ -176,6 +181,7 @@
     },
     {
       "name": "PoolBalance",
+      "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "type": {
         "kind": "struct",
         "fields": [
@@ -192,6 +198,7 @@
     },
     {
       "name": "Bet",
+      "discriminator": [0, 0, 0, 0, 0, 0, 0, 0],
       "type": {
         "kind": "struct",
         "fields": [
