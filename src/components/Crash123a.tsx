@@ -3,7 +3,8 @@
 import { useState, useEffect, useMemo } from "react";
 import { AnchorProvider, Program, BN } from "@coral-xyz/anchor";
 import { Connection, PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
-import { useWallet, WalletMultiButton } from "@solana/wallet-adapter-react";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 import styles from "../styles/Home.module.css";
 import { CrashGame } from "../../target/types/crash_game";
