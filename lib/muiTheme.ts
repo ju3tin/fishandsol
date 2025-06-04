@@ -5,7 +5,7 @@ import { createTheme, ThemeOptions } from '@mui/material/styles'
 const themeOptions: ThemeOptions = {
 	palette: {
 		mode: 'dark',
-		primary: {
+		primary: { 
 			main: '#20feff',
 		},
 		secondary: {
