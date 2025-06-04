@@ -115,7 +115,8 @@ export type CrashGame = {
 };
 
 // Export the IDL
-export const IDL: CrashGame = require("../idl.json");
+import idl from "../idl.json";
+export const IDL: CrashGame = idl;
 
 // Export the Program type
 export type CrashGameProgram = Program<CrashGame>;
