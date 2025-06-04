@@ -5,7 +5,7 @@ import { useGameStore, GameState } from "../store/gameStore2"; // Import Zustand
 const CrashGraph: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const gameState = useGameStore((gameState: GameState) => gameState);
-  //const { timeElapsed, multiplier, timeRemaining, isCrashed } = useGameStore();
+  //const  { timeElapsed, multiplier, timeRemaining, isCrashed } = useGameStore();
   const timeElapsed = gameState.timeElapsed;
   const multiplier = gameState.multiplier;
   const timeRemaining = gameState.timeRemaining;
