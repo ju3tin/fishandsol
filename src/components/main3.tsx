@@ -11,7 +11,7 @@ import {
   Keypair,
   LAMPORTS_PER_SOL,
 } from '@solana/web3.js';
-import { Program, AnchorProvider, web3, utils, BN } from '@project-serum/anchor';
+import { Program, AnchorProvider, web3, utils, BN, Idl } from '@coral-xyz/anchor';
 import { getAssociatedTokenAddress } from '@solana/spl-token';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -130,8 +130,11 @@ const idl = {
         }
       ]
     }
-  ]
-};
+  ],
+  "metadata": {
+    "address": TOKEN_PROGRAM_ID.toString()
+  }
+} as any;
 
 export default function Home() {
     
@@ -167,7 +170,7 @@ export default function Home() {
       );
       
       // Create Program
-      const prog = new Program(idl as any, TOKEN_PROGRAM_ID, provider);
+      const prog = new Program(idl as any, provider, TOKEN_PROGRAM_ID as any);
       setProgram(prog);
 
       // Initialize default recipient
