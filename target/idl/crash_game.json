@@ -1,0 +1,112 @@
+{
+  "version": "0.1.0",
+  "name": "crash_game",
+  "instructions": [
+    {
+      "name": "initializeGame",
+      "accounts": [
+        {
+          "name": "game",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "pool",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "vault",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "authority",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "seed",
+          "type": "u64"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "poolBalance",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "amount",
+            "type": "u64"
+          }
+        ]
+      }
+    }
+  ],
+  "events": [
+    {
+      "name": "DepositMade",
+      "fields": [
+        {
+          "name": "player",
+          "type": "publicKey"
+        },
+        {
+          "name": "poolBalance",
+          "type": "u64"
+        }
+      ]
+    },
+    {
+      "name": "GameOutcome",
+      "fields": [
+        {
+          "name": "player",
+          "type": "publicKey"
+        },
+        {
+          "name": "poolBalance",
+          "type": "u64"
+        },
+        {
+          "name": "betAmount",
+          "type": "u64"
+        },
+        {
+          "name": "multiplier",
+          "type": "u64"
+        },
+        {
+          "name": "payout",
+          "type": "u64"
+        },
+        {
+          "name": "isWin",
+          "type": "bool"
+        }
+      ]
+    },
+    {
+      "name": "Withdrawal",
+      "fields": [
+        {
+          "name": "player",
+          "type": "publicKey"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "address": "EAbNs7LJmCajXU3cP7dhn5h2SQ4BRx4XgBgZPaKYaujy"
+  }
+} 

@@ -1,14 +1,15 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { AnchorProvider, Program, BN } from "@coral-xyz/anchor";
+import { AnchorProvider, Program, BN, Idl } from "@coral-xyz/anchor";
 import { Connection, PublicKey, SystemProgram, Keypair } from "@solana/web3.js";
 import { useWallet } from "@solana/wallet-adapter-react";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { WalletNotConnectedError } from "@solana/wallet-adapter-base";
 import styles from "../styles/Home.module.css";
-import { CrashGame } from "../../target/types/crash_game";
+import type { CrashGame } from "../../target/types/crash_game";
 import IDL from "../../target/idl/crash_game.json";
+import type { Wallet } from "@coral-xyz/anchor";
 
 const PROGRAM_ID = new PublicKey("EAbNs7LJmCajXU3cP7dhn5h2SQ4BRx4XgBgZPaKYaujy");
 const SEED = 1234;
@@ -26,17 +27,21 @@ export default function CrashGame() {
   useEffect(() => {
     if (publicKey && wallet) {
       const connection = new Connection("https://api.devnet.solana.com", "confirmed");
-      const newProvider = new AnchorProvider(connection, wallet, {});
+      const newProvider = new AnchorProvider(
+        connection,
+        wallet as unknown as Wallet,
+        {}
+      );
       setProvider(newProvider);
-      const newProgram = new Program<CrashGame>(IDL, PROGRAM_ID, newProvider);
+      const newProgram = new Program<CrashGame>(IDL as any, PROGRAM_ID, newProvider);
       setProgram(newProgram);
 
-      newProgram.addEventListener("DepositMade", (event) => {
+      newProgram.addEventListener("DepositMade", (event: any) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(event.poolBalance.toNumber() / 1_000_000_000);
         }
       });
-      newProgram.addEventListener("GameOutcome", (event) => {
+      newProgram.addEventListener("GameOutcome", (event: any) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(event.poolBalance.toNumber() / 1_000_000_000);
           setLastOutcome(
@@ -48,7 +53,7 @@ export default function CrashGame() {
           );
         }
       });
-      newProgram.addEventListener("Withdrawal", (event) => {
+      newProgram.addEventListener("Withdrawal", (event: any) => {
         if (event.player.toString() === publicKey.toString()) {
           setBalance(0);
         }
