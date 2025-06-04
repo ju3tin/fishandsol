@@ -22,7 +22,7 @@ export default function CrashGame() {
   const [gameStatus, setGameStatus] = useState<string>("");
   const [lastOutcome, setLastOutcome] = useState<string>("");
   const [betNonce, setBetNonce] = useState<number>(0);
-  const [place1, setPlace1] = useState<string>("what the f"); // Fixed: Correct useState syntax
+  const [place1, setPlace1] = useState<string>("what the f");
 
   useEffect(() => {
     if (publicKey && wallet && signTransaction && signAllTransactions) {
@@ -33,40 +33,45 @@ export default function CrashGame() {
       };
       const newProvider = new AnchorProvider(connection, anchorWallet, {});
       setProvider(newProvider);
-      const newProgram = new Program(IDL as Idl, PROGRAM_ID, newProvider) as CrashGameProgram;
-      setProgram(newProgram);
+      try {
+        const newProgram = new Program(IDL as Idl, newProvider, PROGRAM_ID) as CrashGameProgram;
+        setProgram(newProgram);
 
-      const depositId = newProgram.addEventListener("DepositMade", (event: { player: PublicKey; poolBalance: BN }) => {
-        if (event.player.toString() === publicKey.toString()) {
-          setBalance(event.poolBalance.toNumber() / 1_000_000_000);
-        }
-      });
-      const gameOutcomeId = newProgram.addEventListener(
-        "GameOutcome",
-        (event: { player: PublicKey; betAmount: BN; multiplier: number; payout: BN; isWin: boolean; poolBalance: BN }) => {
+        const depositId = newProgram.addEventListener("DepositMade", (event: { player: PublicKey; poolBalance: BN }) => {
           if (event.player.toString() === publicKey.toString()) {
             setBalance(event.poolBalance.toNumber() / 1_000_000_000);
-            setLastOutcome(
-              `Bet: ${(event.betAmount.toNumber() / 1_000_000_000).toFixed(4)} SOL, Multiplier: ${
-                event.multiplier / 100
-              }x, Payout: ${(event.payout.toNumber() / 1_000_000_000).toFixed(4)} SOL, ${
-                event.isWin ? "Win" : "Loss"
-              }`
-            );
           }
-        }
-      );
-      const withdrawalId = newProgram.addEventListener("Withdrawal", (event: { player: PublicKey }) => {
-        if (event.player.toString() === publicKey.toString()) {
-          setBalance(0);
-        }
-      });
+        });
+        const gameOutcomeId = newProgram.addEventListener(
+          "GameOutcome",
+          (event: { player: PublicKey; betAmount: BN; multiplier: number; payout: BN; isWin: boolean; poolBalance: BN }) => {
+            if (event.player.toString() === publicKey.toString()) {
+              setBalance(event.poolBalance.toNumber() / 1_000_000_000);
+              setLastOutcome(
+                `Bet: ${(event.betAmount.toNumber() / 1_000_000_000).toFixed(4)} SOL, Multiplier: ${
+                  event.multiplier / 100
+                }x, Payout: ${(event.payout.toNumber() / 1_000_000_000).toFixed(4)} SOL, ${
+                  event.isWin ? "Win" : "Loss"
+                }`
+              );
+            }
+          }
+        );
+        const withdrawalId = newProgram.addEventListener("Withdrawal", (event: { player: PublicKey }) => {
+          if (event.player.toString() === publicKey.toString()) {
+            setBalance(0);
+          }
+        });
 
-      return () => {
-        newProgram.removeEventListener(depositId);
-        newProgram.removeEventListener(gameOutcomeId);
-        newProgram.removeEventListener(withdrawalId);
-      };
+        return () => {
+          newProgram.removeEventListener(depositId);
+          newProgram.removeEventListener(gameOutcomeId);
+          newProgram.removeEventListener(withdrawalId);
+        };
+      } catch (err) {
+        console.error("Failed to initialize program:", err);
+        setGameStatus("Failed to initialize program");
+      }
     }
   }, [publicKey, wallet, signTransaction, signAllTransactions, connection]);
 
@@ -136,7 +141,7 @@ export default function CrashGame() {
       await program.methods
         .depositToPool(new BN(amount))
         .accounts({
-          poolBalance,
+          pool_balance: poolBalance,
           pool,
           player: publicKey,
           game,
@@ -157,7 +162,7 @@ export default function CrashGame() {
       return;
     }
     try {
-      const poolBalanceAccount = await program.account.poolBalance.fetch(poolBalance);
+      const poolBalanceAccount = await program.account.pool_balance.fetch(poolBalance);
       setBalance(poolBalanceAccount.amount.toNumber() / 1_000_000_000);
     } catch (err) {
       console.error(err);
@@ -172,11 +177,11 @@ export default function CrashGame() {
     }
     try {
       await program.methods
-        .cashOut(new BN(0)) // Ensure BN is used for consistency
+        .cashOut(new BN(0))
         .accounts({
           game,
           bet,
-          poolBalance,
+          pool_balance: poolBalance!,
           player: publicKey,
           vault,
           pool,
@@ -206,7 +211,7 @@ export default function CrashGame() {
           .accounts({
             game,
             bet: betPda,
-            poolBalance,
+            pool_balance: poolBalance,
             player: publicKey,
             systemProgram: SystemProgram.programId,
           })
@@ -231,7 +236,7 @@ export default function CrashGame() {
           <p>Balance: {balance.toFixed(4)} SOL</p>
           <p>Status: {gameStatus}</p>
           <p>Last Outcome: {lastOutcome}</p>
-          <p>Place1: {place1}</p> {/* Added to display the state variable */}
+          <p>Place1: {place1}</p>
           <div className={styles.inputGroup}>
             <input
               type="number"
@@ -239,7 +244,7 @@ export default function CrashGame() {
               onChange={(e) => setDepositAmount(e.target.value)}
               placeholder="Deposit amount (SOL)"
               className={styles.input}
-              step="0.01" // Added for better UX with SOL amounts
+              step="0.01"
             />
             <button onClick={deposit} className={styles.button}>
               Deposit
