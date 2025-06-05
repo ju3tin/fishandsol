@@ -202,7 +202,7 @@ function animate() {
   return (
     <div className="relative h-64 bg-gray-900 rounded-lg overflow-hidden mb-4">
       <Image 
-        src="/images/under1.jpg" 
+        src="/images/123.png" 
         alt="Background image" 
         fill
         className="relative rounded-lg overflow-hidden" 
