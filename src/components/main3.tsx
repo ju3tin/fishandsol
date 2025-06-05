@@ -157,7 +157,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (publicKey && connection) {
+    if (publicKey && connection) { 
       // Create AnchorProvider
       const provider = new AnchorProvider(
         connection,
