@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   try {
     const twitterRes = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${process.env.TWITTER_BEARER_TOKEN}`,
+        Authorization: `Bearer ${process.env.TWITTER_API_ACCESS_TOKEN}`,
       },
     });
 
