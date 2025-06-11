@@ -4,7 +4,7 @@ export const controlPoints = [
     { cp1: { x: 12.5, y: 170 }, cp2: { x: 25, y: 170 }, pointB: { x: 0, y: 170 } },
     { cp1: { x: 12.5, y: 170 }, cp2: { x: 25, y: 170 }, pointB: { x: 25, y: 170 } },
     { cp1: { x: 25, y: 170 }, cp2: { x: 50, y: 170 }, pointB: { x: 50, y: 170 } },
-     { cp1: { x: 25, y: 170 }, cp2: { x: 50, y: 170 }, pointB: { x: 100, y: 170 } },
+    { cp1: { x: 25, y: 170 }, cp2: { x: 50, y: 170 }, pointB: { x: 100, y: 170 } },
     { cp1: { x: 37.5, y: 170 }, cp2: { x: 75, y: 170 }, pointB: { x: 150, y: 170 } },
     { cp1: { x: 37.5, y: 170 }, cp2: { x: 75, y: 170 }, pointB: { x: 170, y: 170 } },
     { cp1: { x: 50, y: 170 }, cp2: { x: 100, y: 170 }, pointB: { x: 180, y: 170 } },
