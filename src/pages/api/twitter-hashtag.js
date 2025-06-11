@@ -11,7 +11,7 @@ export default async function handler(req, res) {
   try {
     const twitterRes = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${process.env.twitter1}`,
+        Authorization: `Bearer ${process.env.dude2}`,
       },
     });
 
