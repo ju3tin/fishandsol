@@ -30,16 +30,11 @@ export default function CrashGamePage() {
     if (!wallet?.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
 
     // Wrap wallet object to satisfy Wallet interface
-    const walletObj: Wallet = {
-      publicKey: wallet.publicKey,
-      signTransaction: wallet.signTransaction,
-      signAllTransactions: wallet.signAllTransactions,
-      payer: {
-        publicKey: wallet.publicKey,
-        signTransaction: wallet.signTransaction,
-        signAllTransactions: wallet.signAllTransactions,
-      },
-    };
+  const walletObj: Wallet = {
+  publicKey: wallet.publicKey,
+  signTransaction: wallet.signTransaction,
+  signAllTransactions: wallet.signAllTransactions,
+};
 
     const provider = new AnchorProvider(connection, walletObj, { commitment: 'confirmed' });
     const loadedProgram = new Program(idl as any, PROGRAM_ID, provider);
