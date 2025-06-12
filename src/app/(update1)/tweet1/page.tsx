@@ -1,4 +1,4 @@
-import { getTweets, Tweet } from '../../../../lib/getTweets';
+import { getTweets, Tweet } from '../../../lib/getTweets';
 
 // Server component (default in app/)
 export default async function TweetPage() {
