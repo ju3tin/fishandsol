@@ -1,15 +1,14 @@
-"use client" 
+"use client";
+
 import { useEffect, useState } from 'react';
 import { Program, AnchorProvider, web3, BN, Wallet } from '@coral-xyz/anchor';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import idl from '../../../../lib/west2.json'; // Import the IDL file
 
-
 const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
 const network = 'https://api.devnet.solana.com';
 const connection = new Connection(network, 'confirmed');
-
 
 type Game = {
   authority: PublicKey;
@@ -29,14 +28,13 @@ export default function CrashGamePage() {
   useEffect(() => {
     if (!wallet?.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
 
-    // Wrap wallet object to satisfy Wallet interface
-  const walletObj: Wallet = {
-  publicKey: wallet.publicKey,
-  signTransaction: wallet.signTransaction,
-  signAllTransactions: wallet.signAllTransactions,
-};
+    // Cast wallet to satisfy Anchor's Wallet interface
+    const anchorWallet = wallet as Wallet;
 
-    const provider = new AnchorProvider(connection, walletObj, { commitment: 'confirmed' });
+    const provider = new AnchorProvider(connection, anchorWallet, {
+      commitment: 'confirmed',
+    });
+
     const loadedProgram = new Program(idl as any, PROGRAM_ID, provider);
 
     setProvider(provider);
@@ -74,9 +72,9 @@ export default function CrashGamePage() {
       <button
         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
         onClick={() => {
-          const dummyGame = new PublicKey('...'); // replace with actual
-          const dummyEscrow = new PublicKey('...');
-          const dummyBet = new PublicKey('...');
+          const dummyGame = new PublicKey('11111111111111111111111111111111'); // Replace with actual public key
+          const dummyEscrow = new PublicKey('22222222222222222222222222222222');
+          const dummyBet = new PublicKey('33333333333333333333333333333333');
           placeBet(1000, dummyGame, dummyEscrow, dummyBet);
         }}
       >
@@ -85,4 +83,3 @@ export default function CrashGamePage() {
     </div>
   );
 }
-
