@@ -22,7 +22,7 @@ export default function TweetPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Embedded Tweets</h1>
+      <h1 className="text-2xl font-bold mb-4">Get Your Free Chips When you buy Chippy Tokens</h1>
       <div className="space-y-6">
         {tweets.map((tweet) => (
           <TwitterEmbed key={tweet.id} tweetUrl={tweet.url} />
