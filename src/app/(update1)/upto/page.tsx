@@ -9,11 +9,6 @@ const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
 const network = 'https://api.devnet.solana.com';
 const connection = new Connection(network, 'confirmed');
 
-
-const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
-const network = 'https://api.devnet.solana.com';
-const connection = new Connection(network, 'confirmed');
-
 type Game = {
   authority: PublicKey;
   maxPlayers: number;
