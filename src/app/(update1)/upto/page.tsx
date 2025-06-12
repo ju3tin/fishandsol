@@ -9,6 +9,11 @@ const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
 const network = 'https://api.devnet.solana.com';
 const connection = new Connection(network, 'confirmed');
 
+
+const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
+const network = 'https://api.devnet.solana.com';
+const connection = new Connection(network, 'confirmed');
+
 type Game = {
   authority: PublicKey;
   maxPlayers: number;
@@ -24,16 +29,34 @@ export default function CrashGamePage() {
   const [program, setProgram] = useState<Program | null>(null);
   const [status, setStatus] = useState('Disconnected');
 
-  useEffect(() => {
-    if (!wallet?.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
+  const anchorWallet = useMemo(() => {
+    if (
+      wallet?.publicKey &&
+      wallet.signTransaction &&
+      wallet.signAllTransactions
+    ) {
+      return {
+        publicKey: wallet.publicKey,
+        signTransaction: wallet.signTransaction,
+        signAllTransactions: wallet.signAllTransactions,
+        payer: wallet.publicKey as any,
+      } as Wallet;
+    }
+    return null;
+  }, [wallet]);
 
-    const anchorProvider = new AnchorProvider(connection, wallet, { commitment: 'confirmed' });
+  useEffect(() => {
+    if (!anchorWallet) return;
+
+    const anchorProvider = new AnchorProvider(connection, anchorWallet, {
+      commitment: 'confirmed',
+    });
     const loadedProgram = new Program(idl as any, PROGRAM_ID, anchorProvider);
 
     setProvider(anchorProvider);
     setProgram(loadedProgram);
     setStatus('Wallet connected!');
-  }, [wallet]);
+  }, [anchorWallet]);
 
   const placeBet = async (amount: number, game: PublicKey, escrow: PublicKey, bet: PublicKey) => {
     if (!program || !wallet.publicKey) return;
