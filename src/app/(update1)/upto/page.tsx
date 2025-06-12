@@ -132,7 +132,7 @@ export default function CrashGame() {
 
     const response = await fetch('http://localhost:3000/current-multiplier');
     // Expect response: { multiplier: number, isActive: boolean, crashed: boolean }
-    const { multiplier, isActive, offset: gameState } = await response.json();
+   const { multiplier, isActive, Offset: gameState } = await response.json();
     if (!isActive || crashed) {
       setStatus('Cannot cash out: Game is not active or has crashed');
       return;
