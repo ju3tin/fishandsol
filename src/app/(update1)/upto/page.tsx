@@ -4,7 +4,7 @@ import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
 import { AnchorProvider, Program, Idl, BN } from '@project-serum/anchor';
 import { io, Socket } from 'socket.io-client';
 import Head from 'next/head';
-import idl from '../../../lib/west1.json'; // Import the IDL file
+import idl from '../../../../lib/west1.json'; // Import the IDL file
 
 // Define IDL type (cast the imported JSON as Idl)
 interface CrashGameIdl extends Idl {
