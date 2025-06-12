@@ -1,6 +1,6 @@
 "use client" 
 import { useEffect, useState } from 'react';
-import { Program, AnchorProvider, web3, BN } from '@coral-xyz/anchor';
+import { Program, AnchorProvider, web3, BN, Wallet } from '@coral-xyz/anchor';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import idl from '../../../../lib/west2.json'; // Import the IDL file
@@ -28,7 +28,7 @@ export default function CrashGamePage() {
   useEffect(() => {
     if (!wallet?.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
 
-    const walletObj = {
+    const walletObj: Wallet = {
       publicKey: wallet.publicKey,
       signTransaction: wallet.signTransaction,
       signAllTransactions: wallet.signAllTransactions,
@@ -83,6 +83,5 @@ export default function CrashGamePage() {
     </div>
   );
 }
-
 
 
