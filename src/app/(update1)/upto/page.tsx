@@ -5,6 +5,7 @@ import { Connection, PublicKey } from '@solana/web3.js';
 import { useWallet } from '@solana/wallet-adapter-react';
 import idl from '../../../../lib/west2.json'; // Import the IDL file
 
+
 const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
 const network = 'https://api.devnet.solana.com';
 const connection = new Connection(network, 'confirmed');
@@ -25,10 +26,15 @@ export default function CrashGamePage() {
   const [status, setStatus] = useState('Disconnected');
 
   useEffect(() => {
-    if (!wallet?.publicKey) return;
+    if (!wallet?.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
 
-   const provider = new AnchorProvider(connection, walletContext, { commitment: 'confirmed' });
+    const walletObj = {
+      publicKey: wallet.publicKey,
+      signTransaction: wallet.signTransaction,
+      signAllTransactions: wallet.signAllTransactions,
+    };
 
+    const provider = new AnchorProvider(connection, walletObj, { commitment: 'confirmed' });
     const loadedProgram = new Program(idl as any, PROGRAM_ID, provider);
 
     setProvider(provider);
@@ -77,5 +83,6 @@ export default function CrashGamePage() {
     </div>
   );
 }
+
 
 
