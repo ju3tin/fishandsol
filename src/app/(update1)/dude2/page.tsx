@@ -8,7 +8,7 @@ import {
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Program, AnchorProvider, web3, BN } from '@project-serum/anchor';
-import idl from '../../idl/token_sale.json'; // replace with your actual IDL path
+import idl from './west.json'; // replace with your actual IDL path
 import { useState } from 'react';
 
 const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID'); // Replace with actual program ID
