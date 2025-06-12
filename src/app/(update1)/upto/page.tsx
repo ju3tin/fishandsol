@@ -1,7 +1,7 @@
 "use client"
 import { useState, useEffect } from 'react';
 import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
-import { AnchorProvider, Program, Idl } from '@project-serum/anchor';
+import { AnchorProvider, Program, Idl, BN } from '@project-serum/anchor';
 import { io, Socket } from 'socket.io-client';
 import Head from 'next/head';
 
@@ -20,7 +20,7 @@ interface GameState {
 }
 
 export default function CrashGame() {
-  const [wallet, setWallet] = useState<any>(null);
+  const [wallet, setWallet] = useState<any>(null); // Use specific wallet type if available
   const [provider, setProvider] = useState<AnchorProvider | null>(null);
   const [program, setProgram] = useState<Program<CrashGameIdl> | null>(null);
   const [status, setStatus] = useState<string>('');
@@ -107,7 +107,7 @@ export default function CrashGame() {
 
     try {
       await program.methods
-        .placeBet(new anchor.BN(amount))
+        .placeBet(new BN(amount))
         .accounts({
           game: gamePda,
           bet: betPda,
@@ -155,7 +155,7 @@ export default function CrashGame() {
 
     try {
       await program.methods
-        .cashOut(new anchor.BN(multiplier))
+        .cashOut(new BN(multiplier))
         .accounts({
           game: gamePda,
           bet: betPda,
