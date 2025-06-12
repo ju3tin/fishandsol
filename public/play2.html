@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Solana Vault</title>
+  <!-- Solana web3.js UMD with global `solanaWeb3` -->
+<script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
+
+<!-- Anchor UMD with global `anchor` -->
+<script src="https://cdn.jsdelivr.net/npm/@project-serum/anchor@0.26.0/dist/umd/index.js"></script>
+</head>
+<body>
+  <h1>Solana Vault Interface</h1>
+  <button onclick="connectWallet()">Connect Wallet</button>
+  <p id="wallet-address">Wallet: Not connected</p>
+
+  <hr>
+
+  <button onclick="initializeVault()">Initialize Vault</button>
+  <br><br>
+
+  <input type="number" id="deposit-amount" placeholder="Deposit Amount">
+  <button onclick="deposit()">Deposit</button>
+  <br><br>
+
+  <input type="number" id="withdraw-amount" placeholder="Withdraw Amount">
+  <button onclick="withdraw()">Withdraw</button>
+
+  <script src="app.js"></script>
+</body>
+</html>

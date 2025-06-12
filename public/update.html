@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Solana Frontend</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      padding: 40px;
+      text-align: center;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+      background-color: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #4f46e5;
+    }
+    .info {
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Solana dApp</h1>
+    <button id="connect-button">Connect Wallet</button>
+
+    <div class="info" id="wallet-info" style="display: none;">
+      <p><strong>Address:</strong> <span id="wallet-address"></span></p>
+      <p><strong>SOL Balance:</strong> <span id="wallet-balance">Loading...</span></p>
+    </div>
+  </div>
+
+  <!-- Load Solana web3.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@solana/web3.js@1.95.3/lib/index.iife.min.js"></script>
+
+  <script>
+    const connectButton = document.getElementById('connect-button');
+    const walletInfo = document.getElementById('wallet-info');
+    const walletAddress = document.getElementById('wallet-address');
+    const walletBalance = document.getElementById('wallet-balance');
+
+    let wallet;
+
+    async function connectWallet() {
+      if ('solana' in window && window.solana.isPhantom) {
+        try {
+          const resp = await window.solana.connect();
+          wallet = window.solana;
+          const publicKey = resp.publicKey.toString();
+          walletAddress.textContent = publicKey;
+          walletInfo.style.display = 'block';
+          await updateBalance(publicKey);
+        } catch (err) {
+          alert('Wallet connection failed: ' + err.message);
+        }
+      } else {
+        alert('Phantom Wallet not found. Please install it.');
+      }
+    }
+
+    async function updateBalance(publicKeyStr) {
+      const connection = new solanaWeb3.Connection('https://api.mainnet-beta.solana.com');
+      const publicKey = new solanaWeb3.PublicKey(publicKeyStr);
+      const balance = await connection.getBalance(publicKey);
+      walletBalance.textContent = (balance / solanaWeb3.LAMPORTS_PER_SOL).toFixed(4) + ' SOL';
+    }
+
+    connectButton.addEventListener('click', connectWallet);
+  </script>
+</body>
+</html>
