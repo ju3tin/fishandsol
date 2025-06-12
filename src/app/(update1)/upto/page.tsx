@@ -4,8 +4,9 @@ import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
 import { AnchorProvider, Program, Idl, BN } from '@project-serum/anchor';
 import { io, Socket } from 'socket.io-client';
 import Head from 'next/head';
+import idl from '../lib/idl/crash_game.json'; // Import the IDL file
 
-// Define IDL type (manually extracted from crash_game.rs or fetched at runtime)
+// Define IDL type (cast the imported JSON as Idl)
 interface CrashGameIdl extends Idl {
   instructions: any[];
   accounts: any[];
@@ -64,12 +65,8 @@ export default function CrashGame() {
         setWallet(wallet);
         const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
         const provider = new AnchorProvider(connection, wallet, { commitment: 'confirmed' });
-        const idl = await Program.fetchIdl<CrashGameIdl>(PROGRAM_ID, provider);
-        if (!idl) {
-          setStatus('Failed to fetch program IDL');
-          return;
-        }
-        const program = new Program<CrashGameIdl>(idl, PROGRAM_ID, provider);
+        // Use imported IDL instead of fetching
+        const program = new Program<CrashGameIdl>(idl as CrashGameIdl, PROGRAM_ID, provider);
         setProvider(provider);
         setProgram(program);
         setStatus('Wallet connected!');
@@ -107,7 +104,7 @@ export default function CrashGame() {
 
     try {
       await program.methods
-        .placeBet(new BN(amount))
+        .place_bet(new BN(amount))
         .accounts({
           game: gamePda,
           bet: betPda,
@@ -134,7 +131,7 @@ export default function CrashGame() {
     }
 
     const response = await fetch('http://localhost:3000/current-multiplier');
-    const { multiplier, isActive, crashed }: GameState = await response.json();
+    const { multiplier, isActive,.Offset: GameState = await response.json();
     if (!isActive || crashed) {
       setStatus('Cannot cash out: Game is not active or has crashed');
       return;
@@ -155,7 +152,7 @@ export default function CrashGame() {
 
     try {
       await program.methods
-        .cashOut(new BN(multiplier))
+        .cash_out(new BN(multiplier))
         .accounts({
           game: gamePda,
           bet: betPda,
