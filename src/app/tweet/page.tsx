@@ -1,53 +1,30 @@
 "use client"
-import fs from 'fs';
+import fs from 'fs/promises';
 import path from 'path';
-import { GetStaticProps } from 'next';
 
-// Define Tweet type
+// Define the Tweet type
 type Tweet = {
   id: string;
   user: string;
   content: string;
 };
 
-type TweetsPageProps = {
-  tweets: Tweet[];
-};
+export default async function TweetPage() {
+  const filePath = path.join(process.cwd(), 'src', 'data', 'tweets.json');
+  const jsonData = await fs.readFile(filePath, 'utf-8');
+  const tweets: Tweet[] = JSON.parse(jsonData);
 
-export default function TweetsPage({ tweets }: TweetsPageProps) {
   return (
-    <main style={{ padding: '2rem', fontFamily: 'Arial, sans-serif' }}>
-      <h1 style={{ fontSize: '2rem', marginBottom: '1rem' }}>Latest Tweets</h1>
-      <ul style={{ listStyle: 'none', padding: 0 }}>
+    <main className="p-6 max-w-2xl mx-auto">
+      <h1 className="text-3xl font-bold mb-4">Latest Tweets</h1>
+      <ul className="space-y-4">
         {tweets.map((tweet) => (
-          <li
-            key={tweet.id}
-            style={{
-              marginBottom: '1rem',
-              padding: '1rem',
-              border: '1px solid #ddd',
-              borderRadius: '0.5rem',
-            }}
-          >
-            <p>
-              <strong>@{tweet.user}</strong>
-            </p>
-            <p>{tweet.content}</p>
+          <li key={tweet.id} className="p-4 border rounded-xl shadow">
+            <p className="font-semibold">@{tweet.user}</p>
+            <p className="text-gray-700">{tweet.content}</p>
           </li>
         ))}
       </ul>
     </main>
   );
 }
-
-export const getStaticProps: GetStaticProps = async () => {
-  const filePath = path.join(process.cwd(), 'data', 'tweets.json');
-  const jsonData = fs.readFileSync(filePath, 'utf-8');
-  const tweets: Tweet[] = JSON.parse(jsonData);
-
-  return {
-    props: {
-      tweets,
-    },
-  };
-};
