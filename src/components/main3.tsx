@@ -375,7 +375,7 @@ export default function Home() {
                   
                   <form onSubmit={createCustomMint} className="space-y-4 pt-4">
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Click in the field below to make a new key.<br /> Only One Token at the moment.</label>
+                      <label className="block text-sm font-medium text-gray-700">Fill out the field below to make new tokens.<br /> Only One Token at the moment.</label>
                       <input
                         type="text"
                         value={'chippy'+Math.random()}
