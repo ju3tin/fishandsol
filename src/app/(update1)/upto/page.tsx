@@ -10,6 +10,7 @@ const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
 const network = 'https://api.devnet.solana.com';
 const connection = new Connection(network, 'confirmed');
 
+
 type Game = {
   authority: PublicKey;
   maxPlayers: number;
@@ -28,13 +29,17 @@ export default function CrashGamePage() {
   useEffect(() => {
     if (!wallet?.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
 
-    // Construct a wallet object compatible with AnchorProvider
-    const walletObj = {
+    // Wrap wallet object to satisfy Wallet interface
+    const walletObj: Wallet = {
       publicKey: wallet.publicKey,
       signTransaction: wallet.signTransaction,
       signAllTransactions: wallet.signAllTransactions,
-      payer: wallet.publicKey, // Dummy payer to satisfy type requirements
-    } as any;
+      payer: {
+        publicKey: wallet.publicKey,
+        signTransaction: wallet.signTransaction,
+        signAllTransactions: wallet.signAllTransactions,
+      },
+    };
 
     const provider = new AnchorProvider(connection, walletObj, { commitment: 'confirmed' });
     const loadedProgram = new Program(idl as any, PROGRAM_ID, provider);
@@ -85,5 +90,4 @@ export default function CrashGamePage() {
     </div>
   );
 }
-
 
