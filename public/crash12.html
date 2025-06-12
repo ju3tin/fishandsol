@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solana Crash Game</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.21.4/babel.min.js"></script>
+    <script src="https://unpkg.com/@solana/web3.js@latest/lib/index.iife.js"></script>
+    <script src="https://unpkg.com/@project-serum/anchor@0.26.0/dist/browser/index.js"></script>
+    <script src="https://unpkg.com/socket.io-client@4.7.5/dist/socket.io.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        const { Connection, PublicKey, SystemProgram } = solanaWeb3;
+        const { AnchorProvider, Program } = anchor;
+
+        const PROGRAM_ID = new PublicKey("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+
+        function CrashGame() {
+            const [wallet, setWallet] = useState(null);
+            const [provider, setProvider] = useState(null);
+            const [program, setProgram] = useState(null);
+            const [status, setStatus] = useState("");
+            const [betAmount, setBetAmount] = useState("");
+            const [multiplier, setMultiplier] = useState(1_000);
+            const [isGameActive, setIsGameActive] = useState(false);
+            const [crashed, setCrashed] = useState(false);
+            const [potentialPayout, setPotentialPayout] = useState(0);
+            const [hasBet, setHasBet] = useState(false);
+
+            useEffect(() => {
+                const socket = io("http://localhost:3000");
+                socket.on("multiplierUpdate", ({ multiplier, isActive, crashed }) => {
+                    setMultiplier(multiplier);
+                    setIsGameActive(isActive);
+                    setCrashed(crashed);
+                    if (hasBet && betAmount) {
+                        setPotentialPayout((betAmount * (multiplier / 1000)).toFixed(2));
+                    }
+                    if (crashed) {
+                        setStatus("Game crashed!");
+                        setHasBet(false);
+                    }
+                });
+                return () => socket.disconnect();
+            }, [hasBet, betAmount]);
+
+            const connectWallet = async () => {
+                if (window.solana && window.solana.isPhantom) {
+                    try {
+                        await window.solana.connect();
+                        const wallet = window.solana;
+                        setWallet(wallet);
+                        const connection = new Connection("https://api.devnet.solana.com");
+                        const provider = new AnchorProvider(connection, wallet, {});
+                        const idl = await Program.fetchIdl(PROGRAM_ID, provider);
+                        const program = new Program(idl, PROGRAM_ID, provider);
+                        setProvider(provider);
+                        setProgram(program);
+                        setStatus("Wallet connected!");
+                    } catch (err) {
+                        setStatus("Error connecting wallet: " + err.message);
+                    }
+                } else {
+                    setStatus("Please install Phantom Wallet");
+                }
+            };
+
+            const placeBet = async () => {
+                if (!program || !wallet) {
+                    setStatus("Connect wallet first!");
+                    return;
+                }
+                const amount = parseFloat(betAmount) * 1_000_000_000; // SOL to lamports
+                if (amount < 10_000_000) {
+                    setStatus("Minimum bet is 0.01 SOL");
+                    return;
+                }
+
+                const gamePda = PublicKey.findProgramAddressSync(
+                    [Buffer.from("game"), wallet.publicKey.toBuffer()],
+                    PROGRAM_ID
+                )[0];
+                const betPda = PublicKey.findProgramAddressSync(
+                    [Buffer.from("bet"), gamePda.toBuffer(), wallet.publicKey.toBuffer()],
+                    PROGRAM_ID
+                )[0];
+                const escrowPda = PublicKey.findProgramAddressSync(
+                    [Buffer.from("escrow"), gamePda.toBuffer()],
+                    PROGRAM_ID
+                )[0];
+
+                try {
+                    await program.methods
+                        .placeBet(amount)
+                        .accounts({
+                            game: gamePda,
+                            bet: betPda,
+                            player: wallet.publicKey,
+                            escrow: escrowPda,
+                            systemProgram: SystemProgram.programId,
+                        })
+                        .rpc();
+                    setStatus("Bet placed successfully!");
+                    setHasBet(true);
+                } catch (err) {
+                    setStatus("Error placing bet: " + err.message);
+                }
+            };
+
+            const cashOut = async () => {
+                if (!program || !wallet) {
+                    setStatus("Connect wallet first!");
+                    return;
+                }
+                if (!hasBet) {
+                    setStatus("Place a bet first!");
+                    return;
+                }
+
+                const response = await fetch("http://localhost:3000/current-multiplier");
+                const { multiplier, isActive, crashed } = await response.json();
+                if (!isActive || crashed) {
+                    setStatus("Cannot cash out: Game is not active or has crashed");
+                    return;
+                }
+
+                const gamePda = PublicKey.findProgramAddressSync(
+                    [Buffer.from("game"), wallet.publicKey.toBuffer()],
+                    PROGRAM_ID
+                )[0];
+                const betPda = PublicKey.findProgramAddressSync(
+                    [Buffer.from("bet"), gamePda.toBuffer(), wallet.publicKey.toBuffer()],
+                    PROGRAM_ID
+                )[0];
+                const escrowPda = PublicKey.findProgramAddressSync(
+                    [Buffer.from("escrow"), gamePda.toBuffer()],
+                    PROGRAM_ID
+                )[0];
+
+                try {
+                    await program.methods
+                        .cashOut(multiplier)
+                        .accounts({
+                            game: gamePda,
+                            bet: betPda,
+                            player: wallet.publicKey,
+                            escrow: escrowPda,
+                            authority: wallet.publicKey,
+                        })
+                        .rpc();
+                    setStatus(`Cashed out at ${(multiplier / 1000).toFixed(2)}x!`);
+                    setHasBet(false);
+                } catch (err) {
+                    setStatus("Error cashing out: " + err.message);
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+                    <h1 className="text-4xl font-bold mb-6">Solana Crash Game</h1>
+                    <button
+                        onClick={connectWallet}
+                        disabled={wallet}
+                        className="bg-blue-500 text-white px-4 rounded py-2 mb-4 hover:bg-blue-600 disabled:bg-gray-400"
+                    >
+                        {wallet ? "Wallet Connected" : "Connect Wallet"}
+                    </button>
+                    <div className="flex items-center mb-4">
+                        <input
+                            type="number"
+                            placeholder="Bet Amount (SOL)"
+                            step="0.01"
+                            value={betAmount}
+                            onChange={(e) => setBetAmount(e.target.value)}
+                            className="border p-2 mr-2 rounded"
+                            disabled={hasBet}
+                        />
+                        <button
+                            onClick={placeBet}
+                            disabled={hasBet || !wallet}
+                            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:bg-gray-400"
+                        >
+                            Place Bet
+                        </button>
+                    </div>
+                    <div className="text-3xl font-semibold mb-4">
+                        Multiplier: {(multiplier / 1000).toFixed(2)}x
+                    </div>
+                    {hasBet && (
+                        <div className="text-2xl text-green-600 mb-4">
+                            Potential Payout: {potentialPayout} SOL
+                        </div>
+                    )}
+                    <button
+                        onClick={cashOut}
+                        disabled={!hasBet || !isGameActive || crashed || !wallet}
+                        className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 disabled:bg-gray-400"
+                    >
+                        Cash Out
+                    </button>
+                    <p className="text-red-500 mt-4">{status}</p>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<CrashGame />, document.getElementById("root"));
+    </script>
+</body>
+</html>
