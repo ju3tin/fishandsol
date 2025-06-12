@@ -388,7 +388,7 @@ export default function Home() {
                     </div>
                     
                     <div>
-                      <label className="block text-sm font-medium text-gray-700">Decimals</label>
+                      <label className="block text-sm font-medium text-gray-700">How many</label>
                       <input
                         type="number"
                         value={6}
