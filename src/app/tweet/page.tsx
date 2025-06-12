@@ -1,3 +1,4 @@
+"use client"
 import fs from 'fs';
 import path from 'path';
 import { GetStaticProps } from 'next';
