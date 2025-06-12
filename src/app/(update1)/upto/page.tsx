@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from 'react';
 import { Program, AnchorProvider, web3, BN } from '@coral-xyz/anchor';
 import { Connection, PublicKey } from '@solana/web3.js';
