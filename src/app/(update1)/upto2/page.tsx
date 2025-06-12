@@ -1,223 +1,86 @@
 "use client"
-import { useState, useEffect } from 'react';
-import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
-import { AnchorProvider, Program, Idl, BN } from '@project-serum/anchor';
-import { io, Socket } from 'socket.io-client';
-import Head from 'next/head';
+
+import { useEffect, useState } from 'react';
+import { Program, AnchorProvider, web3, BN } from '@coral-xyz/anchor';
+import { Connection, PublicKey } from '@solana/web3.js';
+import { useWallet } from '@solana/wallet-adapter-react';
 import idl from '../../../../lib/west2.json'; // Import the IDL file
 
-// Define IDL type (cast the imported JSON as Idl)
-interface CrashGameIdl extends Idl {
-  instructions: any[];
-  accounts: any[];
-  errors: any[];
-}
+const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
+const network = 'https://api.devnet.solana.com';
+const connection = new Connection(network, 'confirmed');
 
-// Type for WebSocket game state updates
-interface GameState {
-  multiplier: number;
+type Game = {
+  authority: PublicKey;
+  maxPlayers: number;
+  currentPlayers: number;
+  multiplier: BN;
   isActive: boolean;
-  crashed: boolean;
-}
+  crashPoint: BN;
+};
 
-export default function CrashGame() {
-  const [wallet, setWallet] = useState<any>(null); // Use specific wallet type if available
+export default function CrashGamePage() {
+  const wallet = useWallet();
   const [provider, setProvider] = useState<AnchorProvider | null>(null);
-  const [program, setProgram] = useState<Program<CrashGameIdl> | null>(null);
-  const [status, setStatus] = useState<string>('');
-  const [betAmount, setBetAmount] = useState<string>('');
-  const [multiplier, setMultiplier] = useState<number>(1_000);
-  const [isGameActive, setIsGameActive] = useState<boolean>(false);
-  const [crashed, setCrashed] = useState<boolean>(false);
-  const [potentialPayout, setPotentialPayout] = useState<number>(0);
-  const [hasBet, setHasBet] = useState<boolean>(false);
-  const [socket, setSocket] = useState<Socket | null>(null);
-
-  const PROGRAM_ID = new PublicKey('Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS');
+  const [program, setProgram] = useState<Program | null>(null);
+  const [status, setStatus] = useState('Disconnected');
 
   useEffect(() => {
-    const socketInstance = io('http://localhost:3000');
-    setSocket(socketInstance);
+    if (!wallet?.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
 
-    socketInstance.on('multiplierUpdate', ({ multiplier, isActive, crashed }: GameState) => {
-      setMultiplier(multiplier);
-      setIsGameActive(isActive);
-      setCrashed(crashed);
-      if (hasBet && betAmount) {
-        setPotentialPayout(parseFloat(betAmount) * (multiplier / 1000));
-      }
-      if (crashed) {
-        setStatus('Game crashed!');
-        setHasBet(false);
-      }
-    });
-
-    return () => {
-      socketInstance.disconnect();
+    const walletObj = {
+      publicKey: wallet.publicKey,
+      signTransaction: wallet.signTransaction,
+      signAllTransactions: wallet.signAllTransactions,
     };
-  }, [hasBet, betAmount]);
 
-  const connectWallet = async () => {
-    if (window.solana && window.solana.isPhantom) {
-      try {
-        await window.solana.connect();
-        const wallet = window.solana;
-        setWallet(wallet);
-        const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
-        const provider = new AnchorProvider(connection, wallet, { commitment: 'confirmed' });
-        // Use imported IDL instead of fetching
-        const program = new Program<CrashGameIdl>(idl as CrashGameIdl, PROGRAM_ID, provider);
-        setProvider(provider);
-        setProgram(program);
-        setStatus('Wallet connected!');
-      } catch (err: any) {
-        setStatus('Error connecting wallet: ' + err.message);
-      }
-    } else {
-      setStatus('Please install Phantom Wallet');
-    }
-  };
+    const provider = new AnchorProvider(connection, walletObj, { commitment: 'confirmed' });
+    const loadedProgram = new Program(idl as any, PROGRAM_ID, provider);
 
-  const placeBet = async () => {
-    if (!program || !wallet) {
-      setStatus('Connect wallet first!');
-      return;
-    }
-    const amount = parseFloat(betAmount) * 1_000_000_000; // SOL to lamports
-    if (amount < 10_000_000) {
-      setStatus('Minimum bet is 0.01 SOL');
-      return;
-    }
+    setProvider(provider);
+    setProgram(loadedProgram);
+    setStatus('Wallet connected!');
+  }, [wallet]);
 
-    const gamePda = PublicKey.findProgramAddressSync(
-      [Buffer.from('game'), wallet.publicKey.toBuffer()],
-      PROGRAM_ID
-    )[0];
-    const betPda = PublicKey.findProgramAddressSync(
-      [Buffer.from('bet'), gamePda.toBuffer(), wallet.publicKey.toBuffer()],
-      PROGRAM_ID
-    )[0];
-    const escrowPda = PublicKey.findProgramAddressSync(
-      [Buffer.from('escrow'), gamePda.toBuffer()],
-      PROGRAM_ID
-    )[0];
+  const placeBet = async (amount: number, game: PublicKey, escrow: PublicKey, bet: PublicKey) => {
+    if (!program || !wallet.publicKey) return;
 
     try {
       await program.methods
-        .place_bet(new BN(amount))
+        .placeBet(new BN(amount))
         .accounts({
-          game: gamePda,
-          bet: betPda,
+          game,
+          bet,
           player: wallet.publicKey,
-          escrow: escrowPda,
-          systemProgram: SystemProgram.programId,
+          escrow,
+          systemProgram: web3.SystemProgram.programId,
         })
         .rpc();
-      setStatus('Bet placed successfully!');
-      setHasBet(true);
-    } catch (err: any) {
-      setStatus('Error placing bet: ' + err.message);
-    }
-  };
 
-  const cashOut = async () => {
-    if (!program || !wallet) {
-      setStatus('Connect wallet first!');
-      return;
-    }
-    if (!hasBet) {
-      setStatus('Place a bet first!');
-      return;
-    }
-
-    const response = await fetch('http://localhost:3000/current-multiplier');
-    const { multiplier, isActive, Offset: gameState } = await response.json();
-    if (!isActive || crashed) {
-      setStatus('Cannot cash out: Game is not active or has crashed');
-      return;
-    }
-
-    const gamePda = PublicKey.findProgramAddressSync(
-      [Buffer.from('game'), wallet.publicKey.toBuffer()],
-      PROGRAM_ID
-    )[0];
-    const betPda = PublicKey.findProgramAddressSync(
-      [Buffer.from('bet'), gamePda.toBuffer(), wallet.publicKey.toBuffer()],
-      PROGRAM_ID
-    )[0];
-    const escrowPda = PublicKey.findProgramAddressSync(
-      [Buffer.from('escrow'), gamePda.toBuffer()],
-      PROGRAM_ID
-    )[0];
-
-    try {
-      await program.methods
-        .cash_out(new BN(multiplier))
-        .accounts({
-          game: gamePda,
-          bet: betPda,
-          player: wallet.publicKey,
-          escrow: escrowPda,
-          authority: wallet.publicKey,
-        })
-        .rpc();
-      setStatus(`Cashed out at ${(multiplier / 1000).toFixed(2)}x!`);
-      setHasBet(false);
-    } catch (err: any) {
-      setStatus('Error cashing out: ' + err.message);
+      setStatus('Bet placed!');
+    } catch (err) {
+      console.error('Error placing bet:', err);
+      setStatus('Error placing bet');
     }
   };
 
   return (
-    <>
-      <Head>
-        <title>Solana Crash Game</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      </Head>
-      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
-        <h1 className="text-4xl font-bold mb-6">Solana Crash Game</h1>
-        <button
-          onClick={connectWallet}
-          disabled={!!wallet}
-          className="bg-blue-500 text-white px-4 py-2 rounded mb-4 hover:bg-blue-600 disabled:bg-gray-400"
-        >
-          {wallet ? 'Wallet Connected' : 'Connect Wallet'}
-        </button>
-        <div className="flex items-center mb-4">
-          <input
-            type="number"
-            placeholder="Bet Amount (SOL)"
-            step="0.01"
-            value={betAmount}
-            onChange={(e) => setBetAmount(e.target.value)}
-            className="border p-2 mr-2 rounded"
-            disabled={hasBet}
-          />
-          <button
-            onClick={placeBet}
-            disabled={hasBet || !wallet}
-            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 disabled:bg-gray-400"
-          >
-            Place Bet
-          </button>
-        </div>
-        <div className="text-3xl font-semibold mb-4">
-          Multiplier: {(multiplier / 1000).toFixed(2)}x
-        </div>
-        {hasBet && (
-          <div className="text-2xl text-green-600 mb-4">
-            Potential Payout: {potentialPayout.toFixed(2)} SOL
-          </div>
-        )}
-        <button
-          onClick={cashOut}
-          disabled={!hasBet || !isGameActive || crashed || !wallet}
-          className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 disabled:bg-gray-400"
-        >
-          Cash Out
-        </button>
-        <p className="text-red-500 mt-4">{status}</p>
-      </div>
-    </>
+    <div className="p-4">
+      <h1 className="text-2xl font-bold mb-4">Crash Game</h1>
+      <p>Status: {status}</p>
+
+      <button
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
+        onClick={() => {
+          const dummyGame = new PublicKey('...'); // replace with actual
+          const dummyEscrow = new PublicKey('...');
+          const dummyBet = new PublicKey('...');
+          placeBet(1000, dummyGame, dummyEscrow, dummyBet);
+        }}
+      >
+        Place Bet
+      </button>
+    </div>
   );
 }
+
