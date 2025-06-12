@@ -28,11 +28,13 @@ export default function CrashGamePage() {
   useEffect(() => {
     if (!wallet?.publicKey || !wallet.signTransaction || !wallet.signAllTransactions) return;
 
-    const walletObj: Wallet = {
+    // Construct a wallet object compatible with AnchorProvider
+    const walletObj = {
       publicKey: wallet.publicKey,
       signTransaction: wallet.signTransaction,
       signAllTransactions: wallet.signAllTransactions,
-    };
+      payer: wallet.publicKey, // Dummy payer to satisfy type requirements
+    } as any;
 
     const provider = new AnchorProvider(connection, walletObj, { commitment: 'confirmed' });
     const loadedProgram = new Program(idl as any, PROGRAM_ID, provider);
