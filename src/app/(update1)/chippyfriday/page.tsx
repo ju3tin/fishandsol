@@ -1,24 +1,33 @@
+'use client';
 
-export default function Roadmap() {
-    return (
-<div id="container12" className="container default pt-4">
-    <div className="wrapper1">
-        <div className="inner">
-      <h1 className='text-3xl font-semibold capitalize'>Free Chipppy Friday</h1>
-      <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe sapiente
-        tenetur animi excepturi tempora aperiam, fugit in architecto, iusto
-        magni placeat obcaecati voluptatem soluta labore similique reiciendis
-        non a harum autem id provident omnis corrupti consequuntur velit?
-        Architecto repellat maiores quam ducimus nobis veritatis delectus
-        molestias, inventore corrupti modi minima commodi quos fugit odit
-        ratione tempore iure ipsam soluta harum sequi quas excepturi! Tenetur
-        laboriosam laborum quibusdam enim dicta adipisci, nostrum ipsa provident
-        odio nemo dolore optio, ad doloremque ducimus praesentium iure neque
-        voluptas. Aliquid eveniet incidunt facere qui itaque reiciendis labore
-        est, facilis, iusto ex iste. Eos, ducimus iure!
-      </p>
-        </div>
+import React, { useEffect, useState } from 'react';
+import TwitterEmbed from '../../components/TwitterEmbed';
+
+type Tweet = {
+  id: string;
+  url: string;
+};
+
+export default function TweetPage() {
+  const [tweets, setTweets] = useState<Tweet[]>([]);
+
+  useEffect(() => {
+    const fetchTweets = async () => {
+      const res = await fetch('/data/tweets.json');
+      const json = await res.json();
+      setTweets(json);
+    };
+    fetchTweets();
+  }, []);
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Get Your Free Chips When you buy Chippy Tokens</h1>
+      <div className="space-y-6">
+        {tweets.map((tweet) => (
+          <TwitterEmbed key={tweet.id} tweetUrl={tweet.url} />
+        ))}
+      </div>
     </div>
-</div>
-)}
+  );
+}
