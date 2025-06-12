@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { Program, AnchorProvider, web3, BN } from '@coral-xyz/anchor';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { useWallet } from '@solana/wallet-adapter-react';
-import idl from '@/idl/crash_game.json'; // Ensure this path is correct
+import idl from '../../../../lib/west2.json'; // Import the IDL file
 
 const PROGRAM_ID = new PublicKey('YOUR_PROGRAM_ID_HERE');
 const network = 'https://api.devnet.solana.com';
