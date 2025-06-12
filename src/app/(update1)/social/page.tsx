@@ -1,35 +1,33 @@
-"use client"
-import React from 'react';
-import InstagramEmbed from '../../components/InstagramEmbed';
-import TikTokEmbed from '../../components/TikTokEmbed';
+'use client';
+
+import React, { useEffect, useState } from 'react';
 import TwitterEmbed from '../../components/TwitterEmbed';
 
+type Tweet = {
+  id: string;
+  url: string;
+};
 
-export default function social() {
-    const tweetUrl = 'https://twitter.com/ju3t1ng/status/1845047137077203376';
-    const tiktokPostUrl = 'https://www.tiktok.com/@ju3ting/video/7314258976999361824';
-    const instagramPostUrl = 'https://www.instagram.com/p/DB8SQnFuLdS/';
-    return (
-        <div>
-            
-            <div>
-            <br></br>
-      <TwitterEmbed tweetUrl={tweetUrl} />
+export default function TweetPage() {
+  const [tweets, setTweets] = useState<Tweet[]>([]);
+
+  useEffect(() => {
+    const fetchTweets = async () => {
+      const res = await fetch('/data/tweets.json');
+      const json = await res.json();
+      setTweets(json);
+    };
+    fetchTweets();
+  }, []);
+
+  return (
+    <div className="p-6">
+      <h1 className="text-2xl font-bold mb-4">Embedded Tweets</h1>
+      <div className="space-y-6">
+        {tweets.map((tweet) => (
+          <TwitterEmbed key={tweet.id} tweetUrl={tweet.url} />
+        ))}
+      </div>
     </div>
-
-<div>
-     <br></br>
-      <InstagramEmbed url={instagramPostUrl} />
-    </div>
-
-    <div>
-    <br></br>
-      <TikTokEmbed url={tiktokPostUrl} />
-      <script async src="https://www.tiktok.com/embed.js"></script>
-    </div>
-
-
-</div>
-)}
-
-
+  );
+}
