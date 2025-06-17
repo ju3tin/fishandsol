@@ -5,7 +5,6 @@ import { Connection } from "@solana/web3.js";
 import { useState, useEffect } from "react";
 import WalletButton from "../../../components/Walletbutton";
 import { checkTokenOwnership } from "../../../../lib/solana";
-import { useSearchParams } from 'next/navigation'
 
 export default function CheckTokenPage() {
   const { publicKey, connected } = useWallet();
