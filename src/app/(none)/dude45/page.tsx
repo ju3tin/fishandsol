@@ -8,9 +8,6 @@ import { checkTokenOwnership } from "../../../../lib/solana";
 import { useSearchParams } from 'next/navigation'
 
 export default function CheckTokenPage() {
-  const searchParams = useSearchParams();
-  const TOKEN_MINT_ADDRESS = searchParams?.get('tokenMint') || "YOUR_TOKEN_MINT_ADDRESS";
-
   const { publicKey, connected } = useWallet();
   const { connection } = useConnection();
   const [tokenStatus, setTokenStatus] = useState<{
@@ -21,7 +18,7 @@ export default function CheckTokenPage() {
   const [error, setError] = useState<string | null>(null);
 
   // Replace with your token's mint address
-  //const TOKEN_MINT_ADDRESS = "YOUR_TOKEN_MINT_ADDRESS";
+  const TOKEN_MINT_ADDRESS = "YOUR_TOKEN_MINT_ADDRESS";
 
   useEffect(() => {
     async function fetchTokenStatus() {
