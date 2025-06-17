@@ -18,7 +18,7 @@ export default function CheckTokenPage() {
   const [error, setError] = useState<string | null>(null);
 
   // ✅ Replace with a real devnet token mint address
-  const TOKEN_MINT_ADDRESS = "So11111111111111111111111111111111111111112";
+  const TOKEN_MINT_ADDRESS = "9n4nbM75f5Ui33ZbPYXn59EwSgE8CGsHtAeTH5YFeJ9E";
 
   useEffect(() => {
     async function checkTokenOwnership() {
