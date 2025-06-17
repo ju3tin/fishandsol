@@ -3,7 +3,7 @@ import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { getAssociatedTokenAddressSync, getAccount, getMint } from '@solana/spl-token';
-import styles from './checktoken.css';
+import styles from '../../styles/CheckToken.module.css';
 
 require('@solana/wallet-adapter-react-ui/styles.css');
 
