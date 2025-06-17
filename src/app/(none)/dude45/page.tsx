@@ -3,8 +3,8 @@
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Connection } from "@solana/web3.js";
 import { useState, useEffect } from "react";
-import WalletButton from "../components/WalletButton";
-import { checkTokenOwnership } from "../lib/solana";
+import WalletButton from "../../../components/Walletbutton";
+import { checkTokenOwnership } from "../../../../lib/solana";
 
 export default function CheckTokenPage() {
   const { publicKey, connected } = useWallet();
