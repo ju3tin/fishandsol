@@ -1,14 +1,14 @@
 "use client";
 
 import { useConnection, useWallet } from "@solana/wallet-adapter-react";
-import { Connection } from "@solana/web3.js";
+import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { useState, useEffect } from "react";
 import WalletButton from "../../../components/Walletbutton";
 import { checkTokenOwnership } from "../../../../lib/solana";
 
 export default function CheckTokenPage() {
   const { publicKey, connected } = useWallet();
-  const { connection } = useConnection();
+  const connection = new Connection(clusterApiUrl('devnet'));
   const [tokenStatus, setTokenStatus] = useState<{
     hasToken: boolean;
     balance: number;
