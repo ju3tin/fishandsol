@@ -1,0 +1,76 @@
+import { useState, useEffect } from 'react';
+import { Connection, PublicKey } from '@solana/web3.js';
+import { getAssociatedTokenAddress, getAccount } from '@solana/spl-token';
+
+const SOLANA_RPC_URL = 'https://api.mainnet-beta.solana.com';
+const TOKEN_MINT_ADDRESS = 'YOUR_TOKEN_MINT_ADDRESS'; // Replace with your token's mint address
+
+export default function WalletChecker() {
+  const [walletAddress, setWalletAddress] = useState<string | null>(null);
+  const [isPhantomInstalled, setIsPhantomInstalled] = useState(false);
+  const [tokenBalance, setTokenBalance] = useState<number | null>(null);
+  const [hasToken, setHasToken] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    if (window.solana?.isPhantom) {
+      setIsPhantomInstalled(true);
+    }
+  }, []);
+
+  const connectWallet = async () => {
+    try {
+      const { solana } = window;
+      if (solana?.isPhantom) {
+        const response = await solana.connect();
+        const address = response.publicKey.toString();
+        setWalletAddress(address);
+        checkTokenBalance(address);
+      } else {
+        alert('Please install Phantom Wallet');
+      }
+    } catch (error) {
+      console.error('Error connecting to Phantom:', error);
+    }
+  };
+
+  const checkTokenBalance = async (walletAddress: string) => {
+    try {
+      const connection = new Connection(SOLANA_RPC_URL, 'confirmed');
+      const mintPublicKey = new PublicKey(TOKEN_MINT_ADDRESS);
+      const walletPublicKey = new PublicKey(walletAddress);
+
+      const associatedTokenAddress = await getAssociatedTokenAddress(
+        mintPublicKey,
+        walletPublicKey
+      );
+
+      const tokenAccount = await getAccount(connection, associatedTokenAddress);
+      const balance = Number(tokenAccount.amount);
+      setTokenBalance(balance);
+      setHasToken(balance > 0);
+    } catch (error) {
+      console.error('Error checking token balance:', error);
+      setHasToken(false);
+      setTokenBalance(0);
+    }
+  };
+
+  return (
+    <div>
+      {isPhantomInstalled ? (
+        <button onClick={connectWallet}>
+          {walletAddress ? `Connected: ${walletAddress}` : 'Connect Phantom Wallet'}
+        </button>
+      ) : (
+        <p>Phantom Wallet not detected. Please install it.</p>
+      )}
+      {walletAddress && hasToken !== null && (
+        <p>
+          {hasToken
+            ? `User has ${tokenBalance} tokens`
+            : 'User does not hold this token'}
+        </p>
+      )}
+    </div>
+  );
+}
