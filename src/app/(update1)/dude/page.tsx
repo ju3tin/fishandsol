@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
 
-const HELIUS_API_KEY = env.local.HELIUS_API_KEY; // Replace with your Helius API key
+const HELIUS_API_KEY = process.env.HELIUS_API_KEY; // Replace with your Helius API key
 const heliusDevnetRpcUrl = `https://devnet.helius-rpc.com/?api-key=${HELIUS_API_KEY}`;
 const connection = new Connection(heliusDevnetRpcUrl, 'confirmed');
 
