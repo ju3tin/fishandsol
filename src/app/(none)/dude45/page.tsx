@@ -9,7 +9,7 @@ import { useSearchParams } from 'next/navigation'
 
 export default function CheckTokenPage() {
   const searchParams = useSearchParams();
-  const TOKEN_MINT_ADDRESS = searchParams?.get('tokenMint');
+  const TOKEN_MINT_ADDRESS = searchParams?.get('tokenMint') || "YOUR_TOKEN_MINT_ADDRESS";
 
   const { publicKey, connected } = useWallet();
   const { connection } = useConnection();
