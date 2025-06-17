@@ -1,16 +1,17 @@
-export const metadata = {
-  title: 'Fish and Sol',
-  description: 'Fish and Sol Game',
-}
+// app/layout.tsx
+import { SolanaProviders } from './providers';
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export const metadata = {
+  title: 'Token Checker',
+  description: 'Check SPL token ownership from Phantom wallet',
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <SolanaProviders>{children}</SolanaProviders>
+      </body>
     </html>
-  )
-} 
+  );
+}
