@@ -9,7 +9,7 @@ export default function TweetFormPage() {
     e.preventDefault();
 
     const tweetText = encodeURIComponent(tweet);
-    const tweetUrl = `https://twitter.com/intent/tweet?text=${tweetText}`;
+    const tweetUrl = `https://twitter.com/intent/tweet?text=#ChippyFriday ${tweetText}`;
 
     window.open(tweetUrl, '_blank');
   };
