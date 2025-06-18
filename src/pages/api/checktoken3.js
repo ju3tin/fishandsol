@@ -8,7 +8,7 @@ async function fetchAllAssets(ownerAddress, apiKey) {
         method: "getAssetsByOwner",
         params: { ownerAddress, page, limit: 1000 }
       });
-      const response = await fetch(`https://mainnet.helius-rpc.com/?api-key=4859defa-46ae-4d87-abe4-1355598c6d76`, {
+      const response = await fetch(`https://mainnet.helius-rpc.com/?api-key=${apiKey}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: raw
