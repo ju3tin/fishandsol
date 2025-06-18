@@ -50,7 +50,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 
   const config = {
     method: 'post',
-    url: `https://devnet.helius-rpc.com/?api-key=${process.env.HELIUS_API_KEY || '4859defa-46ae-4d87-abe4-1355598c6d76'}`,
+    url: `https://devnet.helius-rpc.com/?api-key=4859defa-46ae-4d87-abe4-1355598c6d76`,
     headers: {
       'Content-Type': 'application/json',
     },
