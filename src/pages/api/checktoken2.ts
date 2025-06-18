@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     method: 'getAssetsByOwner',
     params: {
       ownerAddress: wallet,
+      limit: 1000
     },
   });
 
