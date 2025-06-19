@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Helius getAssetsByOwner</title>
+  </head>
+  <body>
+    <h1>Check Solana Assets</h1>
+    <pre id="output">Loading...</pre>
+
+    <script>
+      // Get ownerAddress from URL: ?ownerAddress=YourWalletAddress
+      const urlParams = new URLSearchParams(window.location.search);
+      const ownerAddress = urlParams.get("ownerAddress");
+
+      if (!ownerAddress) {
+        document.getElementById("output").textContent =
+          "Error: ownerAddress query parameter missing in URL.";
+      } else {
+        const data = {
+          jsonrpc: "2.0",
+          id: "1",
+          method: "getAssetsByOwner",
+          params: {
+            ownerAddress: ownerAddress
+          }
+        };
+
+        fetch("https://mainnet.helius-rpc.com/?api-key=4859defa-46ae-4d87-abe4-1355598c6d76", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify(data)
+        })
+          .then((res) => res.json())
+          .then((json) => {
+            document.getElementById("output").textContent = JSON.stringify(json, null, 2);
+          })
+          .catch((err) => {
+            document.getElementById("output").textContent = "Error: " + err.message;
+          });
+      }
+    </script>
+  </body>
+</html>
