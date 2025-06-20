@@ -41,7 +41,7 @@ function StakeComponent() {
   useEffect(() => {
     if (wallet.publicKey && wallet.signTransaction) {
       const provider = new AnchorProvider(connection, wallet as any, {});
-      const program = new Program(idl as Idl, programID, provider);
+      const program = new Program(idl as unknown as Idl, programID, provider);
       setProgram(program);
     }
   }, [wallet]);
