@@ -5,8 +5,11 @@
 import { useEffect, useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { Program, AnchorProvider, web3, BN, Idl } from '@coral-xyz/anchor';
-import idl from '../../../../idl/staking.json';
+// import { Program, Provider } from '@project-serum/anchor';
+import { Program, AnchorProvider, BN, Idl } from '@coral-xyz/anchor';
+import idlJson from '../../../../idl/staking.json';
+import type { Idl as IdlType } from '@coral-xyz/anchor';
+const idl = idlJson as unknown as IdlType;
 import { useWallet, ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { PhantomWalletAdapter } from '@solana/wallet-adapter-wallets';
@@ -40,8 +43,10 @@ function StakeComponent() {
 
   useEffect(() => {
     if (wallet.publicKey && wallet.signTransaction) {
-      const provider = new AnchorProvider(connection, wallet as any, {});
-      const program = new Program(idl as unknown as Idl, programID, provider);
+      const provider = new AnchorProvider(connection, wallet as any, {
+        commitment: 'confirmed',
+      });
+      const program = new Program(idl, programID, provider);
       setProgram(program);
     }
   }, [wallet]);
