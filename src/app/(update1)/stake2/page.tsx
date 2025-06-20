@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-import { Program, AnchorProvider, web3, BN } from '@coral-xyz/anchor';
+import { Program, AnchorProvider, web3, BN, Idl } from '@coral-xyz/anchor';
 import idl from '../../../../idl/staking.json';
 import { useWallet, ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
@@ -41,7 +41,7 @@ function StakeComponent() {
   useEffect(() => {
     if (wallet.publicKey && wallet.signTransaction) {
       const provider = new AnchorProvider(connection, wallet as any, {});
-      const program = new Program(idl as any, programID, provider);
+      const program = new Program(idl as Idl, programID, provider);
       setProgram(program);
     }
   }, [wallet]);
