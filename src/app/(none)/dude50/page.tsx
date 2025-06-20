@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Connection, PublicKey } from "@solana/web3.js";
-import { getAssociatedTokenAddress, getAccount } from "@solana/spl-token";
+import { getAssociatedTokenAddressSync, getAccount } from "@solana/spl-token";
 
 export default function Home() {
   const [walletAddress, setWalletAddress] = useState<string | null>(null);
@@ -45,7 +45,7 @@ export default function Home() {
       const tokenMintPublicKey = new PublicKey(TOKEN_MINT_ADDRESS);
 
       // Get the associated token account address for the wallet
-      const associatedTokenAddress = await getAssociatedTokenAddress(
+      const associatedTokenAddress = getAssociatedTokenAddressSync(
         tokenMintPublicKey,
         walletPublicKey
       );

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
-import { getAssociatedTokenAddress, getAccount } from '@solana/spl-token';
+import { getAssociatedTokenAddressSync, getAccount } from '@solana/spl-token';
 
 const SOLANA_RPC_URL = 'https://api.mainnet-beta.solana.com';
 const TOKEN_MINT_ADDRESS = 'YOUR_TOKEN_MINT_ADDRESS'; // Replace with your token's mint address
@@ -39,7 +39,7 @@ export default function WalletChecker() {
       const mintPublicKey = new PublicKey(TOKEN_MINT_ADDRESS);
       const walletPublicKey = new PublicKey(walletAddress);
 
-      const associatedTokenAddress = await getAssociatedTokenAddress(
+      const associatedTokenAddress = getAssociatedTokenAddressSync(
         mintPublicKey,
         walletPublicKey
       );

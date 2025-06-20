@@ -12,7 +12,7 @@ import {
   LAMPORTS_PER_SOL,
 } from '@solana/web3.js';
 import { Program, AnchorProvider, web3, utils, BN } from '@project-serum/anchor';
-import { getAssociatedTokenAddress } from '@solana/spl-token';
+import { getAssociatedTokenAddressSync } from '@solana/spl-token';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -297,7 +297,7 @@ export default function Home() {
       }
       
       // Get associated token account for recipient
-      const associatedTokenAccount = await getAssociatedTokenAddress(
+      const associatedTokenAccount = getAssociatedTokenAddressSync(
         mintPubkey,
         recipientPubkey
       );
