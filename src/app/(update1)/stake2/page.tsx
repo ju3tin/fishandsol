@@ -4,6 +4,7 @@
 
 import { useEffect, useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
 import { Program, AnchorProvider, web3, BN } from '@coral-xyz/anchor';
 import idl from '../../../../idl/staking.json';
 import { useWallet, ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
