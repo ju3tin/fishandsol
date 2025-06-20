@@ -5,10 +5,10 @@
 import { useEffect, useState } from 'react';
 import { Connection, PublicKey } from '@solana/web3.js';
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token';
-// import { Program, Provider } from '@project-serum/anchor';
-import { Program, AnchorProvider, BN, Idl } from '@coral-xyz/anchor';
+import { Program, Provider } from '@project-serum/anchor';
+import { AnchorProvider, BN, Idl } from '@project-serum/anchor';
 import idlJson from '../../../../idl/staking.json';
-import type { Idl as IdlType } from '@coral-xyz/anchor';
+import type { Idl as IdlType } from '@project-serum/anchor';
 const idl = idlJson as unknown as IdlType;
 import { useWallet, ConnectionProvider, WalletProvider } from '@solana/wallet-adapter-react';
 import { WalletModalProvider, WalletMultiButton } from '@solana/wallet-adapter-react-ui';
