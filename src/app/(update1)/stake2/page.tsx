@@ -59,7 +59,7 @@ function StakeComponent() {
           user: wallet.publicKey,
           userTokenAccount,
           stakingVault,
-          tokenProgram: web3.TOKEN_PROGRAM_ID,
+          tokenProgram: TOKEN_PROGRAM_ID,
         })
         .rpc();
 
