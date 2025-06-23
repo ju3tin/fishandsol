@@ -342,7 +342,7 @@ export default function Home() {
       <div>
        <div>
           <div className="max-w-md mx-auto">
-            <div className="flex justify-between items-center mb-8">
+         {/*   <div className="flex justify-between items-center mb-8">
             <Image
             src="/images/logo2.png"
             alt="Next.js logo"
@@ -362,7 +362,7 @@ export default function Home() {
 <WalletMultiButton />
           </p>
             </div>
-            
+            */}
             {!publicKey ? (
               <div className="text-center py-4">
                 <p className="text-gray-600">Please connect your wallet to create and mint tokens.</p>
