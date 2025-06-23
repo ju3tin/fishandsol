@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
+import CrashGame from "../../../components/main3"
+import CoinMarketCapWidget from '../../../components/Coinmaket';
 import { AnchorProvider, Program, web3, utils, BN } from '@coral-xyz/anchor';
 import idl from '../../../../idl/123.json';
 import { useAnchorWallet } from '@solana/wallet-adapter-react';
@@ -80,7 +82,12 @@ export default function StakingPage() {
 
     return (
         <div className="p-8">
-            <h1 className="text-3xl font-bold mb-6">CHIPPY Staking Dashboard</h1>
+             <h2 className="headline">
+        <span className="headline-gradient">Chippy Ⓜ</span> (Solana)
+      </h2>
+      <CoinMarketCapWidget />
+      <CrashGame />
+      <hr className="border-gray-800 dark:border-white"></hr>
             <WalletMultiButton />
 
             <div className="mt-8">
