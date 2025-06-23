@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { Connection, PublicKey } from '@solana/web3.js';
+import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
 import { AnchorProvider, Program, web3, utils, BN } from '@coral-xyz/anchor';
 import idl from '../../../../idl/123.json';
-import { useWallet, useAnchorWallet, WalletProvider } from '@solana/wallet-adapter-react';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
 const PROGRAM_ID = new PublicKey('97wCxKPKifEEUqNV7LAUVqzmCsXzYR88eZjYuKqTk5BY');
@@ -39,11 +39,11 @@ export default function StakingPage() {
             ).accounts({
                 stakeAccount: stakeAccountKeypair.publicKey,
                 user: wallet.publicKey,
-                userTokenAccount: 'YOUR_USER_TOKEN_ACCOUNT_PUBLIC_KEY', // Replace with real token account
-                vaultAccount: 'YOUR_VAULT_ACCOUNT_PUBLIC_KEY', // Replace with real vault account
-                stakingConfig: 'YOUR_STAKING_CONFIG_PUBLIC_KEY', // Replace with actual config
+                userTokenAccount: new PublicKey('YOUR_USER_TOKEN_ACCOUNT_PUBLIC_KEY'),
+                vaultAccount: new PublicKey('YOUR_VAULT_ACCOUNT_PUBLIC_KEY'),
+                stakingConfig: new PublicKey('YOUR_STAKING_CONFIG_PUBLIC_KEY'),
                 tokenProgram: utils.token.TOKEN_PROGRAM_ID,
-                systemProgram: web3.SystemProgram.programId,
+                systemProgram: SystemProgram.programId,
             }).signers([stakeAccountKeypair]).rpc();
 
             alert('Staking successful!');
@@ -58,12 +58,12 @@ export default function StakingPage() {
 
         try {
             await program.methods.unstake().accounts({
-                stakeAccount: 'YOUR_STAKE_ACCOUNT_PUBLIC_KEY', // Replace with actual stake account
+                stakeAccount: new PublicKey('YOUR_STAKE_ACCOUNT_PUBLIC_KEY'),
                 user: wallet.publicKey,
-                userTokenAccount: 'YOUR_USER_TOKEN_ACCOUNT_PUBLIC_KEY', // Replace with real token account
-                vaultAccount: 'YOUR_VAULT_ACCOUNT_PUBLIC_KEY', // Replace with real vault account
-                vaultAuthority: 'YOUR_VAULT_AUTHORITY_PUBLIC_KEY', // Replace with PDA or vault authority
-                stakingConfig: 'YOUR_STAKING_CONFIG_PUBLIC_KEY', // Replace with actual config
+                userTokenAccount: new PublicKey('YOUR_USER_TOKEN_ACCOUNT_PUBLIC_KEY'),
+                vaultAccount: new PublicKey('YOUR_VAULT_ACCOUNT_PUBLIC_KEY'),
+                vaultAuthority: new PublicKey('YOUR_VAULT_AUTHORITY_PUBLIC_KEY'),
+                stakingConfig: new PublicKey('YOUR_STAKING_CONFIG_PUBLIC_KEY'),
                 tokenProgram: utils.token.TOKEN_PROGRAM_ID,
             }).rpc();
 
