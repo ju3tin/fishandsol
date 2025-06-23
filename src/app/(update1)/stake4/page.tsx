@@ -80,7 +80,7 @@ export default function StakingPage() {
 
     return (
         <div className="p-8">
-            <h1 className="text-3xl font-bold mb-6">FLWR Staking Dashboard</h1>
+            <h1 className="text-3xl font-bold mb-6">CHIPPY Staking Dashboard</h1>
             <WalletMultiButton />
 
             <div className="mt-8">
