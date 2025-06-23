@@ -21,9 +21,13 @@ export default function StakingPage() {
 
     useEffect(() => {
         if (provider) {
-            // @ts-ignore
-            const _program = new Program(idl as any, PROGRAM_ID, provider);
-            setProgram(_program);
+            try {
+                // @ts-ignore
+                const _program = new Program(idl as any, PROGRAM_ID, provider);
+                setProgram(_program);
+            } catch (e) {
+                console.error('Failed to create Program:', e);
+            }
         }
     }, [provider]);
 
