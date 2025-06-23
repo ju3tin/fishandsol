@@ -1,134 +1,122 @@
-"use client"
-import { useState, useEffect } from "react";
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import { Connection, PublicKey, SystemProgram } from '@solana/web3.js';
 import CrashGame from "../../../components/main3"
 import CoinMarketCapWidget from '../../../components/Coinmaket';
-import { Connection, PublicKey, Transaction, SystemProgram } from "@solana/web3.js"; // Import Solana's SDK
-//import { parseEther } from "ethers/lib/utils"; // You might still use ethers utils for formatting if needed
+import { AnchorProvider, Program, web3, utils, BN } from '@coral-xyz/anchor';
+import idl from '../../../../idl/123.json';
+import { useAnchorWallet } from '@solana/wallet-adapter-react';
+import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 
-function App() {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
-  const [inputValue, setInputValue] = useState({
-    walletAddress: "",
-    transferAmount: "",
-    burnAmount: "",
-    mintAmount: "",
-  });
-  const [error, setError] = useState<string | null>(null);
-  const [yourWalletAddress, setYourWalletAddress] = useState<string | null>(null);
+const PROGRAM_ID = new PublicKey('97wCxKPKifEEUqNV7LAUVqzmCsXzYR88eZjYuKqTk5BY');
+const NETWORK = 'https://api.devnet.solana.com';
 
-  // Phantom Wallet connection setup
-  const checkIfWalletIsConnected = async () => {
-    try {
-      if ("solana" in window) {
-        const { solana } = window as any; // Phantom's API injected into window
-        if (solana.isPhantom) {
-          const response = await solana.connect(); // Connect to Phantom wallet
-          setIsWalletConnected(true);
-          setYourWalletAddress(response.publicKey.toString());
-          console.log("Wallet connected:", response.publicKey.toString());
-        } else {
-          setError("Please install Phantom wallet.");
+export default function StakingPage() {
+    const wallet = useAnchorWallet();
+    const [program, setProgram] = useState<Program | null>(null);
+    const [amount, setAmount] = useState('');
+    const [tierIndex, setTierIndex] = useState(0);
+
+    const connection = new Connection(NETWORK, 'confirmed');
+    const provider = wallet ? new AnchorProvider(connection, wallet, { preflightCommitment: 'processed' }) : null;
+
+    useEffect(() => {
+        if (provider) {
+            try {
+                // @ts-ignore
+                const _program = new Program(idl as any, PROGRAM_ID, provider);
+                setProgram(_program);
+            } catch (e) {
+                console.error('Failed to create Program:', e);
+            }
         }
-      } else {
-        setError("No Solana object found. Please install Phantom wallet.");
-      }
-    } catch (err) {
-      console.error("Error connecting wallet:", err);
-      setError("Failed to connect wallet. Try again.");
-    }
-  };
+    }, [provider]);
 
-  // Transfer Token (Solana example)
-  const transferToken = async (event: React.FormEvent) => {
-    event.preventDefault();
-    try {
-      if (window.solana && isWalletConnected) {
-        if (!yourWalletAddress) {
-          setError("Wallet address is not available.");
-          return;
+    const stake = async () => {
+        if (!program || !wallet?.publicKey) return;
+
+        const stakeAccountKeypair = web3.Keypair.generate();
+
+        try {
+            await program.methods.stakeFlwr(
+                new BN(amount),
+                tierIndex
+            ).accounts({
+                stakeAccount: stakeAccountKeypair.publicKey,
+                user: wallet.publicKey,
+                userTokenAccount: new PublicKey('YOUR_USER_TOKEN_ACCOUNT_PUBLIC_KEY'),
+                vaultAccount: new PublicKey('YOUR_VAULT_ACCOUNT_PUBLIC_KEY'),
+                stakingConfig: new PublicKey('YOUR_STAKING_CONFIG_PUBLIC_KEY'),
+                tokenProgram: utils.token.TOKEN_PROGRAM_ID,
+                systemProgram: SystemProgram.programId,
+            }).signers([stakeAccountKeypair]).rpc();
+
+            alert('Staking successful!');
+        } catch (err) {
+            console.error(err);
+            alert('Staking failed.');
         }
+    };
 
-        const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
-        const { solana } = window as any;
-        const sender = new PublicKey(yourWalletAddress); // Ensure that `yourWalletAddress` is a valid string
-        const receiver = new PublicKey(inputValue.walletAddress);
-        
-        // Convert transfer amount from SOL to lamports (1 SOL = 1 billion lamports)
-        const lamports = BigInt((inputValue.transferAmount).toString()); 
+    const unstake = async () => {
+        if (!program || !wallet?.publicKey) return;
 
-        const transaction = new Transaction().add(
-          SystemProgram.transfer({
-            fromPubkey: sender,
-            toPubkey: receiver,
-            lamports: lamports, // Pass as BigInt
-          })
-        );
+        try {
+            await program.methods.unstake().accounts({
+                stakeAccount: new PublicKey('YOUR_STAKE_ACCOUNT_PUBLIC_KEY'),
+                user: wallet.publicKey,
+                userTokenAccount: new PublicKey('YOUR_USER_TOKEN_ACCOUNT_PUBLIC_KEY'),
+                vaultAccount: new PublicKey('YOUR_VAULT_ACCOUNT_PUBLIC_KEY'),
+                vaultAuthority: new PublicKey('YOUR_VAULT_AUTHORITY_PUBLIC_KEY'),
+                stakingConfig: new PublicKey('YOUR_STAKING_CONFIG_PUBLIC_KEY'),
+                tokenProgram: utils.token.TOKEN_PROGRAM_ID,
+            }).rpc();
 
-        const signature = await solana.signAndSendTransaction(transaction);
-        await connection.confirmTransaction(signature, "confirmed");
-        console.log("Transaction successful with signature:", signature);
-      } else {
-        setError("Solana wallet not found. Make sure Phantom is installed.");
-      }
-    } catch (err) {
-      console.error("Error transferring tokens:", err);
-      setError("Failed to transfer tokens. Try again.");
-    }
-  };
+            alert('Unstaking successful!');
+        } catch (err) {
+            console.error(err);
+            alert('Unstaking failed.');
+        }
+    };
 
-  // Handle input changes
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
-  };
-
-  // Initialize on component mount
-  useEffect(() => {
-    checkIfWalletIsConnected();
-  }, []);
-
-  return (
-    <main className="main-container">
-      <h2 className="headline">
+    return (
+        <div className="p-8">
+             <h2 className="headline">
         <span className="headline-gradient">Chippy Ⓜ</span> (Solana)
       </h2>
       <CoinMarketCapWidget />
-      <section className="customer-section px-10 pt-5 pb-10">
-        {error && <p className="text-2xl text-red-700">{error}</p>}
-        <div className="mt-5">
-          <span className="mr-5"><strong>Connected Wallet:</strong> {yourWalletAddress}</span>
+      <CrashGame />
+      <hr className="border-gray-800 dark:border-white"></hr>
+           {/*  <WalletMultiButton /> */}
+<div><p></p></div>
+            <div className="flex items-center justify-center">
+                <input
+                    type="number"
+                    placeholder="Amount to stake"
+                    value={amount}
+                    onChange={(e) => setAmount(e.target.value)}
+                    className="p-2 border rounded mr-4"
+                />
+
+                <select
+                    value={tierIndex}
+                    onChange={(e) => setTierIndex(Number(e.target.value))}
+                    className="p-2 border rounded mr-4"
+                >
+                    <option value={0}>4 Months (3% reward, 6% penalty)</option>
+                    <option value={1}>6 Months (6% reward, 12% penalty)</option>
+                    <option value={2}>12 Months (10% reward, 24% penalty)</option>
+                </select>
+
+                <button onClick={stake} className="p-2 bg-green-500 text-white rounded mr-4">
+                    Stake
+                </button>
+
+                <button onClick={unstake} className="p-2 bg-red-500 text-white rounded">
+                    Unstake
+                </button>
+            </div>
         </div>
-
-        {/* Transfer Token Form */}
-       {/*  <div className="mt-7 mb-9">
-          <form className="form-style">
-            <input
-              type="text"
-              className="input-double"
-              onChange={handleInputChange}
-              name="walletAddress"
-              placeholder="Wallet Address"
-              value={inputValue.walletAddress}
-            />
-            <input
-              type="number"
-              className="input-double"
-              onChange={handleInputChange}
-              name="transferAmount"
-              placeholder={`Amount in SOL`}
-              value={inputValue.transferAmount}
-            />
-            <button
-              className="btn-purple"
-              onClick={transferToken}
-            >
-              Transfer Tokens
-            </button>
-          </form>
-        </div>*/}
-        <CrashGame />
-      </section>
-    </main>
-  );
+    );
 }
-
-export default App;
