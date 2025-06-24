@@ -84,6 +84,9 @@ export default function StakingPage() {
         }
     };
 
+    const userTokenAccount = process.env.NEXT_PUBLIC_USER_TOKEN_ACCOUNT_PUBLIC_KEY;
+    if (!userTokenAccount) throw new Error('Missing env: NEXT_PUBLIC_USER_TOKEN_ACCOUNT_PUBLIC_KEY');
+
     return (
         <div className="p-8">
             <h1 className="text-3xl font-bold mb-6">🌸 FLWR Staking Dashboard</h1>
