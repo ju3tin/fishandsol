@@ -68,7 +68,7 @@ export default function StakingPage() {
 
         try {
             await program.methods.unstake().accounts({
-                stakeAccount: new PublicKey('REPLACE_WITH_YOUR_STAKE_ACCOUNT_PUBLIC_KEY'),
+                stakeAccount: new PublicKey(process.env.NEXT_PUBLIC_STAKE_ACCOUNT_PUBLIC_KEY as string),
                 user: wallet.publicKey,
                 userTokenAccount: USER_TOKEN_ACCOUNT,
                 vaultAccount: VAULT_ACCOUNT,
