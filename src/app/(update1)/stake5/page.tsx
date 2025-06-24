@@ -49,9 +49,9 @@ export default function StakingPage() {
             ).accounts({
                 stakeAccount: stakeAccountKeypair.publicKey,
                 user: wallet.publicKey,
-                userTokenAccount: USER_TOKEN_ACCOUNT,
-                vaultAccount: VAULT_ACCOUNT,
-                stakingConfig: STAKING_CONFIG,
+                userTokenAccount: new PublicKey(process.env.NEXT_PUBLIC_USER_TOKEN_ACCOUNT_PUBLIC_KEY as string),
+                vaultAccount: new PublicKey(process.env.NEXT_PUBLIC_VAULT_ACCOUNT_PUBLIC_KEY as string),
+                stakingConfig: new PublicKey(process.env.NEXT_PUBLIC_STAKING_CONFIG_PUBLIC_KEY as string),
                 tokenProgram: utils.token.TOKEN_PROGRAM_ID,
                 systemProgram: SystemProgram.programId,
             }).signers([stakeAccountKeypair]).rpc();
@@ -70,10 +70,10 @@ export default function StakingPage() {
             await program.methods.unstake().accounts({
                 stakeAccount: new PublicKey(process.env.NEXT_PUBLIC_STAKE_ACCOUNT_PUBLIC_KEY as string),
                 user: wallet.publicKey,
-                userTokenAccount: USER_TOKEN_ACCOUNT,
-                vaultAccount: VAULT_ACCOUNT,
-                vaultAuthority: VAULT_AUTHORITY,
-                stakingConfig: STAKING_CONFIG,
+                userTokenAccount: new PublicKey(process.env.NEXT_PUBLIC_USER_TOKEN_ACCOUNT_PUBLIC_KEY as string),
+                vaultAccount: new PublicKey(process.env.NEXT_PUBLIC_VAULT_ACCOUNT_PUBLIC_KEY as string),
+                vaultAuthority: new PublicKey(process.env.NEXT_PUBLIC_VAULT_AUTHORITY_PDA as string),
+                stakingConfig: new PublicKey(process.env.NEXT_PUBLIC_STAKING_CONFIG_PUBLIC_KEY as string),
                 tokenProgram: utils.token.TOKEN_PROGRAM_ID,
             }).rpc();
 
