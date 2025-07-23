@@ -11,10 +11,10 @@ const PROGRAM_ID = new PublicKey('97wCxKPKifEEUqNV7LAUVqzmCsXzYR88eZjYuKqTk5BY')
 const NETWORK = 'https://api.devnet.solana.com';
 
 // ⚙️ Replace these with the public keys from your CLI output
-const STAKING_CONFIG = new PublicKey('REPLACE_WITH_STAKING_CONFIG_PUBLIC_KEY');
-const USER_TOKEN_ACCOUNT = new PublicKey('REPLACE_WITH_USER_TOKEN_ACCOUNT_PUBLIC_KEY');
-const VAULT_ACCOUNT = new PublicKey('REPLACE_WITH_VAULT_ACCOUNT_PUBLIC_KEY');
-const VAULT_AUTHORITY = new PublicKey('REPLACE_WITH_VAULT_AUTHORITY_PDA');
+//const STAKING_CONFIG = new PublicKey('REPLACE_WITH_STAKING_CONFIG_PUBLIC_KEY');
+//const USER_TOKEN_ACCOUNT = new PublicKey('REPLACE_WITH_USER_TOKEN_ACCOUNT_PUBLIC_KEY');
+//const VAULT_ACCOUNT = new PublicKey('REPLACE_WITH_VAULT_ACCOUNT_PUBLIC_KEY');
+//const VAULT_AUTHORITY = new PublicKey('REPLACE_WITH_VAULT_AUTHORITY_PDA');
 
 export default function StakingPage() {
     const wallet = useAnchorWallet();
