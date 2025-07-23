@@ -26,7 +26,7 @@ export default function Home() {
     if (!wallet) return null;
     const provider = new AnchorProvider(connection, wallet, {});
     
-    return new Program(idl, PROGRAM_ID1, provider);
+    return new Program(idl, provider, PROGRAM_ID1);
   }, [wallet, connection]);
 
   const initializePool = async () => {
