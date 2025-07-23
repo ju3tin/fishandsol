@@ -2,7 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { WalletProvider } from "../test5/wallet-provider"
+import { WalletProvider } from "../test5a/wallet-provider"
 import { ErrorBoundary } from "../../../components/error-boundary"
 
 const inter = Inter({ subsets: ["latin"] })
