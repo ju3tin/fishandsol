@@ -8,7 +8,7 @@ import { PublicKey, SystemProgram } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import idl from "../../../../idl/idl1.json"; // Replace with path to your IDL
 
-const programId = new PublicKey("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"); // Replace with your program ID
+const programId1 = new PublicKey("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS"); // Replace with your program ID
 
 export default function Home() {
   const { connection } = useConnection();
@@ -22,7 +22,7 @@ export default function Home() {
   const program = useMemo(() => {
     if (!wallet) return null;
     const provider = new AnchorProvider(connection, wallet, {});
-    return new Program(idl as unknown as Idl, programId, provider);
+    return new Program(idl as unknown as Idl, programId1, provider);
   }, [wallet, connection]);
 
   const initializePool = async () => {
@@ -34,7 +34,7 @@ export default function Home() {
     try {
       const [pool] = await PublicKey.findProgramAddress(
         [Buffer.from("pool"), wallet.publicKey.toBuffer()],
-        programId
+        programId1
       );
       await program.methods
         .initializePool([new PublicKey(mintAddress)])
@@ -64,15 +64,15 @@ export default function Home() {
     try {
       const [pool] = await PublicKey.findProgramAddress(
         [Buffer.from("pool"), wallet.publicKey.toBuffer()],
-        programId
+        programId1
       );
       const [stakeAccount] = await PublicKey.findProgramAddress(
         [Buffer.from("stake"), wallet.publicKey.toBuffer(), pool.toBuffer()],
-        programId
+        programId1
       );
       const [stakeVault] = await PublicKey.findProgramAddress(
         [Buffer.from("vault"), pool.toBuffer()],
-        programId
+        programId1
       );
 
       // Replace with actual user token account and mint
@@ -108,15 +108,15 @@ export default function Home() {
     try {
       const [pool] = await PublicKey.findProgramAddress(
         [Buffer.from("pool"), wallet.publicKey.toBuffer()],
-        programId
+        programId1
       );
       const [stakeAccount] = await PublicKey.findProgramAddress(
         [Buffer.from("stake"), wallet.publicKey.toBuffer(), pool.toBuffer()],
-        programId
+        programId1
       );
       const [stakeVault] = await PublicKey.findProgramAddress(
         [Buffer.from("vault"), pool.toBuffer()],
-        programId
+        programId1
       );
 
       // Replace with actual user token account
