@@ -48,7 +48,7 @@ export const NavItems = () => {
       position: 'top',
     },
     {
-      name: 'Buy Chippy',
+      name: 'Stake Chippy',
       href: '/stable',
       icon: <Image src="/images/token.svg" alt="Buy Chippy" width={20} height={20} />,
       active: isNavItemActive(pathname, '/stable'),
