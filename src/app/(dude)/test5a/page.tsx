@@ -136,7 +136,7 @@ export default function Home() {
 
       console.log("Provider:", provider)
 
-      const programInstance = new Program(idl, programId, provider)
+      const programInstance = new Program(idl, provider)
       console.log("Program initialized:", programInstance.programId.toBase58())
       setMessage("") // Clear any previous messages
       return programInstance
