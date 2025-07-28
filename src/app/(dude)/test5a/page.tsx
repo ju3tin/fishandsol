@@ -14,7 +14,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Loader2, ExternalLink } from "lucide-react"
 import { BN } from "@coral-xyz/anchor";
-import idl from "@/idl/staking.json";
+import idl from "../../../../idl/staking.json";
 
 // Type the program properly
 type StakingProgram = Program<typeof idl>
@@ -86,7 +86,7 @@ export default function Home() {
         preflightCommitment: "confirmed",
       })
 
-      const programInstance = new Program(idl, programId, provider) as StakingProgram;
+      const programInstance = new Program(idl, provider) as StakingProgram;
       console.log("Program initialized successfully:", programInstance.programId.toBase58())
       setMessage("")
       return programInstance
