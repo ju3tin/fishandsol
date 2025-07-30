@@ -17,7 +17,7 @@ const TwitterEmbed = ({ tweetUrl }) => {
 
   return (
     <blockquote className="twitter-tweet">
-      <a href={tweetUrl}>Check out this tweet!</a>
+      <a href={tweetUrl} data-theme="dark">Check out this tweet!</a>
     </blockquote>
   );
 };
