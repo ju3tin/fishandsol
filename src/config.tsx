@@ -49,7 +49,7 @@ export const NavItems = () => {
     },
     {
       name: 'Stake Chippy',
-      href: '/stable',
+      href: 'https://chipsandsol.vercel.app/',
       icon: <Image src="/images/token.svg" alt="Buy Chippy" width={20} height={20} />,
       active: isNavItemActive(pathname, '/stable'),
       position: 'top',
