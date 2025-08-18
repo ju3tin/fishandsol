@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <!-- Jupiter Terminal -->
+    <script src="https://terminal.jup.ag/main-v2.js" data-preload></script>
+    <title>Buy CHIPPY</title>
+    <style>
+      body { margin:0; font-family: system-ui, sans-serif; }
+      #jupiter-terminal { max-width: 560px; margin: 24px auto; }
+    </style>
+  </head>
+  <body>
+    <div id="jupiter-terminal"></div>
+    <script>
+      window.addEventListener('DOMContentLoaded', async () => {
+        await window.Jupiter.init({
+          // Where to render
+          containerId: 'jupiter-terminal',
+          // Use your own RPC in production to avoid rate limits
+          endpoint: 'https://api.mainnet-beta.solana.com',
+
+          // Make it feel like a built-in widget
+          displayMode: 'widget',
+          containerClassName: 'w-full',
+
+          // Prefill mints (input can be SOL/USDC/etc; output is your token)
+          formProps: {
+            // SOL mint
+            initialInputMint: 'So11111111111111111111111111111111111111112',
+            // CHIPPY mint — replace this with your real mint address
+            initialOutputMint: 'CHIPPY_MINT_ADDRESS',
+            // Optional: lock the output token so users can only buy CHIPPY
+            fixedOutputMint: true,
+            // Optional: prefill amount in lamports (e.g., 1 SOL = 1_000_000_000 lamports)
+            // initialAmount: '100000000'
+          },
+
+          // Optional: choose your explorer, add fees, callbacks, styles, etc.
+          defaultExplorer: 'Solana Explorer',
+          containerStyles: { maxHeight: '90vh' },
+        });
+      });
+    </script>
+  </body>
+</html>
