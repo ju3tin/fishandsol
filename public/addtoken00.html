@@ -2,44 +2,37 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <!-- Jupiter Terminal -->
-    <script src="https://terminal.jup.ag/main-v2.js" data-preload></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Buy CHIPPY</title>
+    <!-- Load Jupiter Terminal -->
+    <script src="https://terminal.jup.ag/main-v2.js"></script>
     <style>
-      body { margin:0; font-family: system-ui, sans-serif; }
-      #jupiter-terminal { max-width: 560px; margin: 24px auto; }
+      body { margin:0; font-family:sans-serif; background:#f9fafb; }
+      #jupiter-terminal { max-width:560px; margin:40px auto; min-height:600px; }
     </style>
   </head>
   <body>
+    <h1 style="text-align:center;">Buy CHIPPY</h1>
     <div id="jupiter-terminal"></div>
+
     <script>
-      window.addEventListener('DOMContentLoaded', async () => {
+      window.addEventListener("load", async () => {
+        if (!window.Jupiter) {
+          console.error("Jupiter script not loaded");
+          return;
+        }
+
         await window.Jupiter.init({
-          // Where to render
-          containerId: 'jupiter-terminal',
-          // Use your own RPC in production to avoid rate limits
-          endpoint: 'https://api.mainnet-beta.solana.com',
-
-          // Make it feel like a built-in widget
-          displayMode: 'widget',
-          containerClassName: 'w-full',
-
-          // Prefill mints (input can be SOL/USDC/etc; output is your token)
+          containerId: "jupiter-terminal",
+          displayMode: "widget",
+          endpoint: "https://rpc.helius.xyz/?api-key=4859defa-46ae-4d87-abe4-1355598c6d76", // ✅ Helius RPC
           formProps: {
-            // SOL mint
-            initialInputMint: 'So11111111111111111111111111111111111111112',
-            // CHIPPY mint — replace this with your real mint address
-            initialOutputMint: 'CHIPPY_MINT_ADDRESS',
-            // Optional: lock the output token so users can only buy CHIPPY
-            fixedOutputMint: true,
-            // Optional: prefill amount in lamports (e.g., 1 SOL = 1_000_000_000 lamports)
-            // initialAmount: '100000000'
-          },
-
-          // Optional: choose your explorer, add fees, callbacks, styles, etc.
-          defaultExplorer: 'Solana Explorer',
-          containerStyles: { maxHeight: '90vh' },
+            // SOL mint (input)
+            initialInputMint: "3T9mBXQzfAn8Rf1LKDutvGMTd1EruJbFh3cM7MSMq3Py",
+            // CHIPPY mint (output)
+            initialOutputMint: "3T9mBXQzfAn8Rf1LKDutvGMTd1EruJbFh3cM7MSMq3Py",
+            fixedOutputMint: true
+          }
         });
       });
     </script>
