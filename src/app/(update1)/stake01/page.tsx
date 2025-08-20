@@ -22,6 +22,8 @@ import CoinMarketCapWidget from "../../../components/Coinmaket"
 interface StakingProgramIDL {
   version: string
   name: string
+  address: string
+  metadata: string
   instructions: any[]
   accounts: any[]
   types: any[]
@@ -32,6 +34,8 @@ interface StakingProgramIDL {
 const getIDL = (): StakingProgramIDL => {
   return {
     version: "0.1.0",
+    address: "",
+    metadata: "",
     name: "staking_program",
     instructions: [
       {
