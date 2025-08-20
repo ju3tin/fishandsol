@@ -2,7 +2,10 @@
 
 import React, { useEffect, useState } from 'react';
 import TwitterEmbed from '../../components/TwitterEmbed';
-import Link from 'next/link'
+import Link from 'next/link';
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
+import { useWallet } from "@solana/wallet-adapter-react"
+
 
 type Tweet = {
   id: string;
