@@ -23,7 +23,7 @@ interface StakingProgramIDL {
   version: string
   name: string
   address: string
-  metadata: string
+  metadata: any
   instructions: any[]
   accounts: any[]
   types: any[]
@@ -35,7 +35,10 @@ const getIDL = (): StakingProgramIDL => {
   return {
     version: "0.1.0",
     address: "",
-    metadata: "",
+    metadata: {
+      name: "my_program",
+      address: "FILL_PROGRAM_ADDRESS_HERE"
+    },
     name: "staking_program",
     instructions: [
       {
